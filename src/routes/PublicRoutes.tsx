@@ -11,7 +11,7 @@ const ForgetPasswordReqeust = Loadable(lazy(() => import('@/pages/authentication
 const ResetPassword = Loadable(lazy(() => import('@/pages/authentication/forget-password/ResetPassword')));
 const NotFoundPage = Loadable(lazy(() => import('@/pages/errors/PageNotFound')));
 const PrivacyPolicy = Loadable(lazy(() => import('@/pages/legal/PrivacyPolicies')));
-const TermsAndConditions = Loadable(lazy(() => import('@/pages/legal/TermsAndConditions')));
+const DeveloperInfo = Loadable(lazy(() => import('@/pages/legal/DeveloperInfo')));
 
 // ==============================|| PUBLIC ROUTES ||============================== //
 
@@ -26,7 +26,7 @@ const PublicRoutes = () => (
       </Route>
       <Route path="*" element={<NotFoundPage />} />
       <Route path="privacy-policy" element={<PrivacyPolicy />} />
-      <Route path="terms-and-conditions" element={<TermsAndConditions />} />
+      <Route path="developer-info" element={<DeveloperInfo />} />
     </Routes>
   </>
 );

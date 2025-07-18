@@ -23,8 +23,8 @@ export default function AuthFooter() {
         </Typography>
 
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 3 }} textAlign={{ xs: 'center', sm: 'inherit' }}>
-          <Typography variant="subtitle2" color="secondary" component={Link} href="/terms-and-conditions" target="_blank" underline="hover">
-            Terms and Conditions
+          <Typography variant="subtitle2" color="secondary" component={Link} href="/developer-info" target="_blank" underline="hover">
+            Developer Info
           </Typography>
         </Stack>
       </Stack>
