@@ -92,7 +92,7 @@ export type FormField<T extends FieldValues> = {
   defaultValue?: any; // Default value for the field.
   sx?: any; // Style object for the field.
   imageSize?: number; // Size of the image for image inputs.
-  required?: boolean; // Whether the field is required. default is true.
+  required?: boolean; // Whether the field is required. default is false.
   trueLabel?: string; // Label for the true value of a checkbox.
   multipleChips?: boolean; // Whether the field allows multiple chip selections.
   falseLabel?: string; // Label for the false value of a checkbox.
@@ -102,6 +102,8 @@ export type FormField<T extends FieldValues> = {
   itemFields?: unknown;
   onDelete?: (index: number, field: TField<T>) => void; // Function to handle deletion of an item in an array field.
   showIf?: (values: T) => boolean; // Function to conditionally show the field based on form values.
+  allowDuplicates?: boolean; // Whether the field allows duplicate values in select options in array field. default is false.
+  maxSelectable?: number; // Maximum number of dynamic filelds that can be added in array filed. default is inifinty. 
   inputStyle?: SxProps; // Style object for the input element.
 };
 

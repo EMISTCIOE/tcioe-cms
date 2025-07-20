@@ -5,6 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import {
   Box,
+  Button,
   Checkbox,
   Chip,
   FormControlLabel,
@@ -25,12 +26,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 // React imports
 import dayjs from 'dayjs';
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 
 // Project imports
 import { CustomInputProps, SelectOption } from './types';
 import { ErrorForInput, LabelForInput } from './Helpers';
 import { useInputHandlers } from './useInputHandlers';
+import AppDialog from '../app-dialog';
 
 /* ------------------------------------------------------------------
    CustomInput Component
@@ -77,6 +79,12 @@ const CustomInput = forwardRef<any, CustomInputProps>(
       imagePreview,
       handleImageChange,
       handleRemoveImage,
+      isFileModalOpen,
+      fileModalUrl,
+      isCurrentFilePdf,
+      handleOpenFileModal,
+      handleCloseFileModal,
+      handleFileChange,
       renderPasswordVisibility,
       handleSelectChange
     } = useInputHandlers({
@@ -123,13 +131,13 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                           display: 'inline-flex',
                           ...(selectedOption?.sx
                             ? {
-                                backgroundColor: selectedOption.sx['& .MuiBox-root']?.backgroundColor,
-                                color: selectedOption.sx['& .MuiBox-root']?.color,
-                                fontSize: (theme) => theme.typography.body2.fontSize,
-                                borderRadius: '4px',
-                                padding: '2px 10px',
-                                maxWidth: 'fit-content'
-                              }
+                              backgroundColor: selectedOption.sx['& .MuiBox-root']?.backgroundColor,
+                              color: selectedOption.sx['& .MuiBox-root']?.color,
+                              fontSize: (theme) => theme.typography.body2.fontSize,
+                              borderRadius: '4px',
+                              padding: '2px 10px',
+                              maxWidth: 'fit-content'
+                            }
                             : {})
                         }}
                       >
@@ -196,9 +204,9 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                             width: '100%',
                             ...(option?.sx
                               ? {
-                                  backgroundColor: option.sx['& .MuiBox-root']?.backgroundColor,
-                                  color: option.sx['& .MuiBox-root']?.color
-                                }
+                                backgroundColor: option.sx['& .MuiBox-root']?.backgroundColor,
+                                color: option.sx['& .MuiBox-root']?.color
+                              }
                               : {}),
                             maxWidth: 'fit-content',
                             padding: '1px 10px',
@@ -274,13 +282,48 @@ const CustomInput = forwardRef<any, CustomInputProps>(
         );
 
       case 'file':
+        // Determine currentDisplayedUrl and initial file type flags
+        let currentDisplayedUrl;
+        let isImage = false;
+        let isPdf = false;
+
+        const isCurrentlyAFileObject = value instanceof File;
+
+        if (isCurrentlyAFileObject) {
+          currentDisplayedUrl = fileModalUrl; // Use the URL created by the hook
+          isImage = value.type.startsWith('image/');
+          isPdf = value.type === 'application/pdf';
+        } else {
+          // 'value' is an existing URL string (from API)
+          currentDisplayedUrl = value;
+          isImage = currentDisplayedUrl && (currentDisplayedUrl.endsWith('.png') || currentDisplayedUrl.endsWith('.jpg') || currentDisplayedUrl.endsWith('.jpeg') || currentDisplayedUrl.endsWith('.gif'));
+          isPdf = currentDisplayedUrl && currentDisplayedUrl.endsWith('.pdf');
+        }
+
         return (
           <Box sx={sx} style={style} className={className}>
             <LabelForInput label={label} name={name} required={required} />
+            {/* Display existing file or newly selected file preview */}
+            {currentDisplayedUrl && (
+              <Box sx={{ mt: 1, mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+                {isImage && (
+                  <img src={currentDisplayedUrl} alt="Existing File" style={{ maxWidth: '80px', maxHeight: '80px', objectFit: 'contain' }} />
+                )}
+                <Typography variant="body2">
+                  <span
+                    onClick={() => handleOpenFileModal(currentDisplayedUrl, isPdf)} // Use hook's handler
+                    style={{ cursor: 'pointer', color: theme.palette.primary.main, textDecoration: 'underline' }}
+                  >
+                    {isPdf ? 'View Existing PDF' : (isImage ? 'View Existing Image' : 'View Existing File')}
+                  </span>
+                </Typography>
+              </Box>
+            )}
+
             <input
               type="file"
               name={name}
-              onChange={onChange}
+              onChange={handleFileChange}
               style={{ ...inputStyle }}
               ref={setRef}
               {...inputProps}
@@ -288,6 +331,42 @@ const CustomInput = forwardRef<any, CustomInputProps>(
             />
             <ErrorForInput error={error} helperText={helperText} />
             {children}
+
+            {/* --- AppDialog for File Preview --- */}
+            <AppDialog
+              open={isFileModalOpen}
+              onClose={handleCloseFileModal}
+              title={isCurrentFilePdf ? 'Document Preview' : 'Image Preview'}
+              fullWidth
+              maxWidth={'lg'}
+              content={
+                <Box sx={{ p: 0, height: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  {fileModalUrl && (
+                    isCurrentFilePdf ? (
+                      <iframe
+                        src={fileModalUrl}
+                        style={{ width: '100%', height: '100%', border: 'none' }}
+                        title="PDF Preview"
+                      />
+                    ) : (
+                      <img
+                        src={fileModalUrl}
+                        alt="File Preview"
+                        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+                      />
+                    )
+                  )}
+                </Box>
+              }
+              actions={
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
+                  <Button variant="outlined" onClick={handleCloseFileModal}>
+                    Close
+                  </Button>
+                </Box>
+              }
+            />
+            {/* --------------------------------- */}
           </Box>
         );
 

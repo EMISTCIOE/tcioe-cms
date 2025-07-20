@@ -15,7 +15,8 @@ const Settings = Loadable(lazy(() => import('@/pages/account/settings')));
 // User Setup Pages
 const User = Loadable(lazy(() => import('@/pages/user')));
 const UserRole = Loadable(lazy(() => import('@/pages/user-role')));
-// Blog Pages
+// Notice Pages
+const Notice = Loadable(lazy(() => import('@/pages/notice')));
 
 // ==============================|| PRIVATE ROUTES ||============================== //
 
@@ -33,6 +34,9 @@ const PrivateRoutes = () => (
           <Route path="change-password" element={<ChangePassword />} />
           <Route path="settings" element={<Settings />} />
         </Route>
+        {/* Notice */}
+        <Route path="notice" element={<Notice />} />
+        {/* User Setup */}
         <Route path="user-setup">
           <Route path="users" element={<User />} />
           <Route path="user-roles" element={<UserRole />} />

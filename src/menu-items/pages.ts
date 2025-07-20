@@ -1,10 +1,9 @@
 // mui-icons imports
-import { DashboardOutlined } from '@mui/icons-material';
-import SummarizeIcon from '@mui/icons-material/Summarize';
+import { DashboardOutlined, Campaign, Summarize } from '@mui/icons-material';
 import { MenuItem } from './types';
 
 // icons
-const icons = { DashboardOutlined, SummarizeIcon };
+const icons = { DashboardOutlined, Summarize, Campaign };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
 
@@ -19,6 +18,14 @@ const pages: MenuItem = {
       type: 'item',
       url: '/dashboard/default',
       icon: icons.DashboardOutlined,
+      breadcrumbs: false
+    },
+    {
+      id: 'notice',
+      title: 'Notice',
+      type: 'item',
+      url: '/notice',
+      icon: icons.Campaign,
       breadcrumbs: false
     }
   ]

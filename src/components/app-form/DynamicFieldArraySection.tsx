@@ -22,7 +22,13 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
 }: DynamicFieldArraySectionProps<T>) {
   const { fields, append, remove } = useFieldArray({ control, name, keyName: 'uid' });
   const currentNoOfFileds = fields.length;
-  const totalOptions = itemFields.find((item) => item.type === 'select')?.options?.length || 0;
+
+  const selectField = itemFields.find((item) => item.type === 'select');
+  const resolvedMaxSelectable =
+    selectField?.maxSelectable ??
+    (selectField?.allowDuplicates
+      ? Infinity
+      : selectField?.options?.length || 0);
 
   const errorAtIndex = (index: number, fieldName: FormField<T>['name']) => {
     return (errors[name] as FieldErrors<any>[] | undefined)?.[index]?.[fieldName] as FieldError | undefined;
@@ -32,6 +38,7 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
 
   const getFilteredOptions = (item: FormField<T>, index: number) => {
     if (item.type !== 'select') return item.options;
+    if (item.allowDuplicates) return item.options; // allow all options, no filtering
 
     const selectedValues = currentValues.map((row: any, i: number) => (i !== index ? row[item.name] : null)).filter((v: any) => v !== null);
 
@@ -60,6 +67,7 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
                         options={getFilteredOptions(item, index) ?? item.options}
                         error={!!errorAtIndex(index, item.name)}
                         helperText={errorAtIndex(index, item.name)?.message}
+                        required={item.required}
                       />
                     )}
                   />
@@ -88,7 +96,7 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
       {/* Add More Button */}
       <Button
         variant="outlined"
-        disabled={currentNoOfFileds >= totalOptions}
+        disabled={currentNoOfFileds >= resolvedMaxSelectable}
         onClick={() =>
           append(
             itemFields.reduce(
