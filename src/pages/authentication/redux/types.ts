@@ -11,6 +11,7 @@ export interface IRole {
 }
 
 export interface IAuthState {
+  id: number;
   fullName: string;
   email: string;
   phoneNo: string;
@@ -27,6 +28,8 @@ export interface IAuthState {
   isAuthenticated?: boolean;
   authVerificationEmailSent?: boolean;
   forgetPasswordEmailSent?: boolean;
+  status?: string;
+  message?: string; 
 }
 
 export interface UnverifiedLoginState {

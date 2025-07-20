@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { IAuthState } from './types';
 
 const initialState: IAuthState = {
+  id: -1,
   fullName: '',
   email: '',
   phoneNo: '',
@@ -16,7 +17,10 @@ const initialState: IAuthState = {
   isSuperuser: false,
   isAuthenticated: false,
   authVerificationEmailSent: false,
-  forgetPasswordEmailSent: false
+  forgetPasswordEmailSent: false,
+  status: undefined,
+  message: undefined,
+  tokens: undefined
 };
 
 export const authSlice = createSlice({
@@ -25,7 +29,7 @@ export const authSlice = createSlice({
   reducers: {
     loginSuccess: (state, action: PayloadAction<IAuthState>) => {
       const {
-        payload: { fullName, email, photo, phoneNo, tokens, isEmailVerified, isPhoneVerified, isSuperuser, roles, permissions }
+        payload: { fullName, email, photo, phoneNo, tokens, isEmailVerified, isPhoneVerified, isSuperuser, roles, permissions, status, message }
       } = action;
 
       state.fullName = fullName;
@@ -37,6 +41,9 @@ export const authSlice = createSlice({
       state.isSuperuser = isSuperuser;
       state.roles = roles;
       state.permissions = permissions;
+      state.tokens = tokens;
+      state.status = status;
+      state.message = message;
       state.isAuthenticated = true;
       // Save access and refresh tokens in the cookies
       Cookies.set('access', tokens?.access as string, {
