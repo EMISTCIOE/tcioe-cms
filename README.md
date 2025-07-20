@@ -1,6 +1,3 @@
-Perfect — thanks for the context!
-
-Here’s a clean and professional version of your README message tailored specifically for **Thapathali Campus CMS**, developed by the **EMIS Unit**. This emphasizes its purpose, real-world use, and contributors.
 
 ---
 
