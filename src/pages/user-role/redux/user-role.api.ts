@@ -11,7 +11,7 @@ import {
 } from './types';
 import { getQueryParams } from '@/utils/functions/queryBuilder';
 
-export const userRoleAPI = 'admin/user-app/roles';
+export const userRoleAPI = 'cms/user-mod/roles';
 
 export const userRoleAPISlice = rootAPI.injectEndpoints({
   endpoints: (builder) => ({

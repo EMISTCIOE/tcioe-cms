@@ -10,7 +10,7 @@ import {
   UserUpdatePayload
 } from './types';
 
-export const userAPI = 'admin/user-app/users';
+export const userAPI = 'cms/user-mod/users';
 
 export const userAPISlice = rootAPI.injectEndpoints({
   endpoints: (builder) => ({

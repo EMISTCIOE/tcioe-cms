@@ -1,7 +1,7 @@
 import { rootAPI } from '../../../libs/apiSlice';
 import { ChangePasswordFormDataType, UserProfile } from './types';
 
-export const accountAPI = 'admin/user-app/account';
+export const accountAPI = 'cms/user-mod/account';
 
 export const accountAPISlice = rootAPI.injectEndpoints({
   endpoints: (builder) => ({

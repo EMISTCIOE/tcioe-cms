@@ -1,7 +1,7 @@
 import { rootAPI } from '../../../libs/apiSlice';
 import { ForgetPasswordRequestFormDataType, IAuthState, LoginFormDataType, ResetPasswordRequestFormDataType } from './types';
 
-export const authAPI = 'admin/user-app/auth';
+export const authAPI = 'cms/user-mod/auth';
 
 export const authAPISlice = rootAPI.injectEndpoints({
   endpoints: (builder) => ({
