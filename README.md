@@ -1,86 +1,106 @@
+Perfect — thanks for the context!
+
+Here’s a clean and professional version of your README message tailored specifically for **Thapathali Campus CMS**, developed by the **EMIS Unit**. This emphasizes its purpose, real-world use, and contributors.
+
+---
+
 [![License: Private](https://img.shields.io/badge/license-private-lightgrey.svg)](#license)
 
-# What is IMS ?
+# 🏫 Thapathali Campus CMS
 
-This repository contains a base template for a CMS dashboard, designed to be a reusable starting point for other projects. Built with modern technologies, it incorporates essential tools and patterns for scalable and efficient development.
+This repository contains the **official Content Management System (CMS)** for **Thapathali Campus**, developed and maintained by the **EMIS Unit**.
+It is a fully functional, production-ready system designed to manage institutional data, departments, announcements, users, and more.
+
+Built using modern frontend technologies, this system ensures smooth performance, scalability, and a rich user experience for both staff and admins.
 
 <br/>
 
 <div align="center">
-<img alt="Website Banner" src="./src/assets/images/website.png" width="100%"/>
+  <img alt="Website Banner" src="./src/assets/images/website.png" width="100%"/>
 </div>
 
-<br />
+<br/>
 
-# Contributing to Project 🔐
+# 🤝 Contributing to the Project
 
-Remember, Good PR makes you a Good contributor !
+> **"A good pull request reflects a good contributor!"**
 
-We work hard to maintain the structure, and [use conventional Pull](https://github.com/bibekjoshi01/ims-template/blob/main/CONTRIBUTING.md#pull-request-title-format-) request titles and commits. Without a proper template for the PR, not following the guidelines and spam might get the pull request closed, or banned.
-
-## 1️. Setting up the project locally
-
-1. Clone from Github
-
-```
-git clone https://github.com/bibekjoshi01/ims-template
-```
-
-2. Install packages
-
-```
-yarn
-```
-
-3. Run project
-
-```
-yarn start
-```
+We follow standard contribution workflows. To maintain code quality and consistency, please read and follow our [contribution guidelines](https://github.com/ManishJoc14/tcioe-cms/blob/main/CONTRIBUTING.md).
+PRs that don’t follow the structure or appear spammy may be declined or flagged.
 
 ---
 
-### Features
+## ⚙️ Getting Started Locally
 
-- 🧱 Material UI v5 components with full customization.
-- ⚛️ Built with React 19 and Hooks API.
-- 🔁 Global state management via React Context API.
-- 📡 Data fetching with SWR.
-- 🚦 Routing using React Router v7.
-- ⚡ Lightning-fast development experience with Vite.
-- 🎨 CSS-in-JS via Emotion.
-- 📦 Code splitting and optimized build.
-- 📅 Integrated date pickers, charts, tables, and more.
-- 💾 Persistent Redux store with `redux-persist`.
-- 📚 Form handling with `react-hook-form` and `zod`.
+1. **Clone the repository**
 
----
+   ```bash
+   git clone https://github.com/ManishJoc14/tcioe-cms
+   ```
 
-### 🛠 Tech Stack
+2. **Install dependencies**
 
-- **Framework**: React 19, Vite
-- **UI Kit**: Material UI (MUI v5), Ant Design Icons
-- **Routing**: React Router v7
-- **State Management**: React Context, Redux Toolkit, Redux Persist
-- **Forms**: React Hook Form, Zod
-- **Charts**: ApexCharts
-- **PDF/Excel**: jsPDF, jsPDF AutoTable, SheetJS (xlsx)
-- **Data Grid**: MUI X Data Grid
-- **Utilities**: Day.js, Lodash, File Saver, SWR
-- **Styling**: Emotion, CSS-in-JS, Fontsource
-- **Code Quality**: Prettier, Husky, Lint-Staged
+   ```bash
+   yarn
+   ```
+
+3. **Run the development server**
+
+   ```bash
+   yarn start
+   ```
 
 ---
 
-## 2️. Contributing guidelines & more
+## ✨ Features
 
-- [Contributing Guidelines](/CONTRIBUTING.md) to be followed.
-- [Proper API documentation](https://ims-backend.bibekjoshi34.com.np/docs/) for developers.
+* 🧱 Custom-built UI using Material UI v5
+* ⚛️ Developed using React 19 and the modern Hooks API
+* 🔁 Global state via Context API + Redux Toolkit
+* 📡 Efficient data fetching with SWR
+* 🚦 Route handling via React Router v7
+* ⚡ Fast development with Vite
+* 🎨 CSS-in-JS with Emotion
+* 📅 Integrated charts, calendars, tables, and more
+* 💾 Persistent state using Redux Persist
+* 📚 Robust form validation using `react-hook-form` and `zod`
 
-# License 👮
+---
 
-This is Licensed under the <a href="./LICENSE">Private License</a>. Please go through the License at least once before contributing.
+## 🛠 Tech Stack
 
-# Support 🙏
+| Category         | Stack                                     |
+| ---------------- | ----------------------------------------- |
+| **Framework**    | React 19, Vite                            |
+| **UI**           | Material UI (v5), Ant Design Icons        |
+| **Routing**      | React Router v7                           |
+| **State**        | Context API, Redux Toolkit, Redux Persist |
+| **Forms**        | React Hook Form, Zod                      |
+| **Charts**       | ApexCharts                                |
+| **PDF/Excel**    | jsPDF, jsPDF AutoTable, SheetJS (xlsx)    |
+| **Tables**       | MUI X Data Grid                           |
+| **Utilities**    | RTK, Day.js, Lodash, File Saver           |
+| **Styling**      | Emotion, Fontsource                       |
+| **Code Quality** | Prettier, Husky, Lint-Staged              |
 
-**Don't forget to drop a star ⭐.** A heartfelt thank you to those who have contributed to this project. We are really grateful for your contribution. You all are amazing.
+---
+
+## 📌 Contribution Guidelines
+
+Please check the [CONTRIBUTING.md](/CONTRIBUTING.md) file for detailed steps before contributing.
+
+---
+
+## 📜 License
+
+This project is protected under a [Private License](./LICENSE).
+Ensure you understand the license terms before using or modifying the source.
+
+---
+
+## 🌟 Support the Project
+
+If you find this project helpful or use it internally, **consider dropping a star ⭐** on the repository.
+Big thanks to everyone from the **Thapathali Campus EMIS Unit** and contributors who are building and improving this system.
+
+---
