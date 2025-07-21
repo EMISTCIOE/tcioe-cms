@@ -88,9 +88,9 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
     const updatedFields = formFields.map((f) =>
       f.name === 'medias'
         ? {
-          ...f,
-          onDelete: (index: number, field: TField<Media>) => handleDeleteMedia(index, field?.id)
-        }
+            ...f,
+            onDelete: (index: number, field: TField<Media>) => handleDeleteMedia(index, field?.id)
+          }
         : f
     );
     setFormFields(updatedFields);
