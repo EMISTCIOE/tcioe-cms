@@ -22,10 +22,7 @@ export const useNoticeDepartments = () => {
   }, [noticeDepartmentsData]);
 
   const updatedNoticeDepartmentsOptions = useMemo(() => {
-    return [
-      { label: 'NA', value: null },
-      ...noticeDepartmentsOptions
-    ];
+    return [{ label: 'NA', value: null }, ...noticeDepartmentsOptions];
   }, [noticeDepartmentsOptions]);
 
   return { noticeDepartmentsOptions: updatedNoticeDepartmentsOptions, isLoading };

@@ -42,7 +42,7 @@ export default function AppDialog({
   maxWidth = false,
 
   // Callbacks
-  onClose = () => { },
+  onClose = () => {},
 
   // Additional props
   transitionDirection = 'up'

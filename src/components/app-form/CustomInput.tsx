@@ -25,13 +25,18 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 // React imports
 import dayjs from 'dayjs';
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 
 // Project imports
 import { CustomInputProps, SelectOption } from './types';
 import { ErrorForInput, LabelForInput } from './Helpers';
 import { useInputHandlers } from './useInputHandlers';
 import AppDialog from '../app-dialog';
+
+// Import RichTextEditor and any required subcomponents or extensions
+import { RichTextEditor, RichTextEditorRef } from 'mui-tiptap';
+import useExtensions from './useExtensions';
+import EditorMenuControls from './EditorMenuControls';
 
 /* ------------------------------------------------------------------
    CustomInput Component
@@ -70,6 +75,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
     const { sx, style, inputStyle, className, ...inputProps } = rest;
     const errorId = error ? `${name}-error-text` : undefined;
     const theme = useTheme();
+    const extensions = useExtensions({ placeholder: 'Write something awesome...' });
 
     const {
       setRef,
@@ -130,13 +136,13 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                           display: 'inline-flex',
                           ...(selectedOption?.sx
                             ? {
-                              backgroundColor: selectedOption.sx['& .MuiBox-root']?.backgroundColor,
-                              color: selectedOption.sx['& .MuiBox-root']?.color,
-                              fontSize: (theme) => theme.typography.body2.fontSize,
-                              borderRadius: '4px',
-                              padding: '2px 10px',
-                              maxWidth: 'fit-content'
-                            }
+                                backgroundColor: selectedOption.sx['& .MuiBox-root']?.backgroundColor,
+                                color: selectedOption.sx['& .MuiBox-root']?.color,
+                                fontSize: (theme) => theme.typography.body2.fontSize,
+                                borderRadius: '4px',
+                                padding: '2px 10px',
+                                maxWidth: 'fit-content'
+                              }
                             : {})
                         }}
                       >
@@ -203,9 +209,9 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                             width: '100%',
                             ...(option?.sx
                               ? {
-                                backgroundColor: option.sx['& .MuiBox-root']?.backgroundColor,
-                                color: option.sx['& .MuiBox-root']?.color
-                              }
+                                  backgroundColor: option.sx['& .MuiBox-root']?.backgroundColor,
+                                  color: option.sx['& .MuiBox-root']?.color
+                                }
                               : {}),
                             maxWidth: 'fit-content',
                             padding: '1px 10px',
@@ -309,7 +315,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
             <LabelForInput label={label} name={name} required={required} />
             {/* Display existing file or newly selected file preview */}
             {currentDisplayedUrl && (
-              <Box sx={{ mt: 1, mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ mt: 1, mb: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 1 }}>
                 {isImage && (
                   <img
                     src={currentDisplayedUrl}
@@ -328,23 +334,9 @@ const CustomInput = forwardRef<any, CustomInputProps>(
               </Box>
             )}
 
-            <Button
-              component="label"
-              variant="outlined"
-              size="small"
-              startIcon={<CloudUploadOutlined />}
-              sx={{ mt: 1 }}
-            >
+            <Button component="label" variant="outlined" size="small" startIcon={<CloudUploadOutlined />} sx={{ mt: 1 }}>
               Upload File
-              <input
-                type="file"
-                name={name}
-                hidden
-                onChange={handleFileChange}
-                ref={setRef}
-                {...inputProps}
-                aria-describedby={errorId}
-              />
+              <input type="file" name={name} hidden onChange={handleFileChange} ref={setRef} {...inputProps} aria-describedby={errorId} />
             </Button>
             <ErrorForInput error={error} helperText={helperText} />
             {children}
@@ -615,6 +607,56 @@ const CustomInput = forwardRef<any, CustomInputProps>(
             {children}
           </Box>
         );
+
+      case 'editor': {
+        const rteRef = useRef<RichTextEditorRef>(null);
+
+        // Sync external value into TipTap editor
+        useEffect(() => {
+          if (rteRef.current?.editor && value !== rteRef.current.editor.getHTML()) {
+            rteRef.current.editor.commands.setContent(value || '');
+          }
+        }, [value]);
+
+        return (
+          <Box sx={sx} style={style} className={className}>
+            <LabelForInput label={label} name={name} required={required} />
+            <Box sx={{ minHeight: 220, ...inputStyle }}>
+              <RichTextEditor
+                ref={rteRef}
+                extensions={extensions}
+                content={value}
+                sx={{
+                  width: '100%',
+                  minHeight: 220,
+                  overflowY: 'auto',
+                  resize: 'vertical',
+                  border: (theme) => `1px solid ${theme.palette.grey[300]}`,
+                  '& .MuiTiptap-FieldContainer-notchedOutline': {
+                    border: 'none'
+                  },
+                  '&:focus': {
+                    border: `1px solid ${theme.palette.primary.light}`
+                  },
+                  '&:hover': {
+                    border: `1px solid ${theme.palette.primary.light}`
+                  }
+                }}
+                onUpdate={({ editor }) => {
+                  const html = editor.getHTML();
+                  if (html !== value) {
+                    onChange({ target: { name, value: html } });
+                  }
+                }}
+                renderControls={() => <EditorMenuControls />}
+                {...inputProps}
+              />
+            </Box>
+            <ErrorForInput error={error} helperText={helperText} />
+            {children}
+          </Box>
+        );
+      }
 
       default:
         return (

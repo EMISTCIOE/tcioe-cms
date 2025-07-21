@@ -44,7 +44,7 @@ export const useNoticeTable = () => {
     transformResponseToTableData: (apiData) => {
       return apiData.results.map((item) => ({
         ...item,
-        isFeatured: item.isFeatured ? 'true' : 'false',
+        isFeatured: item.isFeatured ? 'true' : 'false'
       })) as ITableData[];
     },
     transformTableDataToUpdateInput: (rowData) => {

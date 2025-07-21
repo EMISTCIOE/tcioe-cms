@@ -7,7 +7,7 @@ import { Controller, useFieldArray, FieldArray, ArrayPath, Path, FieldErrors, Fi
 
 // PROJECT IMPORTS
 import CustomInput from './CustomInput';
-import { LabelForInput } from './Helpers';
+import { LabelForDynamicSection, LabelForInput } from './Helpers';
 import { DynamicFieldArraySectionProps, FormField, TField } from './types';
 
 export default function DynamicFieldArraySection<T extends Record<string, any>>({
@@ -46,7 +46,7 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
   return (
     <>
       {/* Label */}
-      <LabelForInput name={name} label={label} required={required} />
+      <LabelForDynamicSection name={name} label={label} required={required} />
       {fields.length > 0 ? (
         (fields as TField<T>[]).map((field, index) => (
           <Grid container spacing={2} key={field.uid} sx={{ mb: 2 }}>
@@ -73,7 +73,7 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
               );
             })}
             {fields.length > 1 && (
-              <Grid item xxs={1} xs={1} sm={1} alignSelf="flex-end">
+              <Grid item xxs={1} xs={1} sm={1} alignSelf="center">
                 <IconButton
                   color="error"
                   onClick={() => {

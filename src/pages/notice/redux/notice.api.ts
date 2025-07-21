@@ -20,9 +20,6 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
     getNotices: builder.query<INoticeList, IListQueryParams>({
       query: ({ search, paginationModel, sortModel, filterModel }) => {
         // build query params
-
-        console.log(filterModel)
-
         const { page, pageSize, orderingString, filterString } = getQueryParams({
           search,
           paginationModel,
@@ -61,6 +58,14 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
           if (value !== undefined && value !== null) {
             body.append(key, value as string | Blob);
           }
+        }
+
+        console.log(rest.department, 'department in createNotice');
+
+        // append department if it's null also
+        if (!rest.department) {
+          console.log('rest.department', rest.department);
+          body.append('department', '');
         }
 
         // Append thumbnail if it's a File
@@ -106,6 +111,11 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
           if (value !== undefined && value !== null) {
             body.append(key, value as string | Blob);
           }
+        }
+
+        // append department if it's null also
+        if (!rest.department) {
+          body.append('department', '');
         }
 
         // Append thumbnail if it's a File
@@ -217,7 +227,7 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
           url: `${noticeAPI}/${id}/media/${media_id}`,
           method: 'DELETE'
         };
-      },
+      }
       // invalidatesTags: ['Notice']
     })
   })

@@ -1,7 +1,6 @@
 import { FormField } from '@/components/app-form/types';
 import * as z from 'zod';
 import { MediaType, NoticeStatus } from '../../redux/types';
-import { enumToOptions } from '@/utils/functions/formatString';
 
 // NOTE - Schema definition for media item
 export const mediaSchema = z.object({
@@ -81,7 +80,7 @@ export const defaultValues: Partial<TNoticeUpdateFormDataType> = {
 // NOTE - Define the form fields
 export const noticeUpdateFields: FormField<TNoticeUpdateFormDataType>[] = [
   { name: 'title', label: 'Title', xs: 12, sm: 12, type: 'text', multiline: true, rows: 3, required: true },
-  { name: 'description', label: 'Description', xs: 12, sm: 12, type: 'text', multiline: true, rows: 5 },
+  { name: 'description', label: 'Description', xs: 12, sm: 12, type: 'editor', multiline: true, rows: 5 },
   { name: 'department', label: 'Department', xs: 8, sm: 5, type: 'select', options: [], required: true },
   { name: 'category', label: 'Category', xs: 4, sm: 4, type: 'select', options: [], required: true },
   { name: 'isDraft', label: 'SaveAs Draft', xs: 2, sm: 2, type: 'switch', showIf: (formData) => formData.status === NoticeStatus.DRAFT },
@@ -107,10 +106,10 @@ export const noticeUpdateFields: FormField<TNoticeUpdateFormDataType>[] = [
         label: 'File',
         type: 'file',
         xs: 12,
-        sm: 3,
+        sm: 2,
         required: true
       },
-      { name: 'caption', label: 'Caption', type: 'text', xs: 11, sm: 8 }
+      { name: 'caption', label: 'Caption', type: 'text', xs: 11, sm: 9 }
     ] as FormField<Media>[]
   }
 ];

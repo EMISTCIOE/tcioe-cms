@@ -6,7 +6,7 @@ import { ArrayPath, Control, FieldArrayWithId, FieldErrors, FieldValues } from '
    Input Types & Option Types
 ------------------------------------------------------------------ */
 
-export type InputType = 'text' | 'number' | 'select' | 'switch' | 'file' | 'image' | 'password' | 'date' | string;
+export type InputType = 'text' | 'number' | 'select' | 'switch' | 'file' | 'image' | 'password' | 'date' | 'editor' | string;
 
 export interface SelectOption {
   label: string;
