@@ -8,7 +8,7 @@ export default function OutlinedInput(theme) {
     MuiOutlinedInput: {
       styleOverrides: {
         input: {
-          padding: '10.5px 14px 10.5px 12px'
+          padding: '10px'
         },
         notchedOutline: {
           borderColor: theme.palette.mode == 'dark' ? theme.palette.grey.dark : theme.palette.grey.lighter
@@ -36,6 +36,9 @@ export default function OutlinedInput(theme) {
                 border: `1px solid ${theme.palette.error.light}`
               }
             }
+          },
+          '&.MuiInputBase-multiline': {
+            padding: '10px'
           }
         },
         inputSizeSmall: {
@@ -43,7 +46,7 @@ export default function OutlinedInput(theme) {
           color: 'currentColor'
         },
         inputMultiline: {
-          padding: 0
+          padding: '0'
         }
       }
     }

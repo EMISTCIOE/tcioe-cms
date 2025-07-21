@@ -1,7 +1,6 @@
 // MUI imports
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import { DeleteOutline, EditOutlined, CloudUploadOutlined } from '@mui/icons-material';
 
 import {
   Box,
@@ -19,7 +18,7 @@ import {
   Switch,
   Typography
 } from '@mui/material';
-import { useTheme } from '@mui/system';
+import { alpha, useTheme } from '@mui/system';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -131,13 +130,13 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                           display: 'inline-flex',
                           ...(selectedOption?.sx
                             ? {
-                                backgroundColor: selectedOption.sx['& .MuiBox-root']?.backgroundColor,
-                                color: selectedOption.sx['& .MuiBox-root']?.color,
-                                fontSize: (theme) => theme.typography.body2.fontSize,
-                                borderRadius: '4px',
-                                padding: '2px 10px',
-                                maxWidth: 'fit-content'
-                              }
+                              backgroundColor: selectedOption.sx['& .MuiBox-root']?.backgroundColor,
+                              color: selectedOption.sx['& .MuiBox-root']?.color,
+                              fontSize: (theme) => theme.typography.body2.fontSize,
+                              borderRadius: '4px',
+                              padding: '2px 10px',
+                              maxWidth: 'fit-content'
+                            }
                             : {})
                         }}
                       >
@@ -204,9 +203,9 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                             width: '100%',
                             ...(option?.sx
                               ? {
-                                  backgroundColor: option.sx['& .MuiBox-root']?.backgroundColor,
-                                  color: option.sx['& .MuiBox-root']?.color
-                                }
+                                backgroundColor: option.sx['& .MuiBox-root']?.backgroundColor,
+                                color: option.sx['& .MuiBox-root']?.color
+                              }
                               : {}),
                             maxWidth: 'fit-content',
                             padding: '1px 10px',
@@ -290,7 +289,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
         const isCurrentlyAFileObject = value instanceof File;
 
         if (isCurrentlyAFileObject) {
-          currentDisplayedUrl = fileModalUrl; // Use the URL created by the hook
+          currentDisplayedUrl = fileModalUrl;
           isImage = value.type.startsWith('image/');
           isPdf = value.type === 'application/pdf';
         } else {
@@ -320,7 +319,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                 )}
                 <Typography variant="body2">
                   <span
-                    onClick={() => handleOpenFileModal(currentDisplayedUrl, isPdf)} // Use hook's handler
+                    onClick={() => handleOpenFileModal(currentDisplayedUrl, isPdf)}
                     style={{ cursor: 'pointer', color: theme.palette.primary.main, textDecoration: 'underline' }}
                   >
                     {isPdf ? 'View Existing PDF' : isImage ? 'View Existing Image' : 'View Existing File'}
@@ -329,15 +328,24 @@ const CustomInput = forwardRef<any, CustomInputProps>(
               </Box>
             )}
 
-            <input
-              type="file"
-              name={name}
-              onChange={handleFileChange}
-              style={{ ...inputStyle }}
-              ref={setRef}
-              {...inputProps}
-              aria-describedby={errorId}
-            />
+            <Button
+              component="label"
+              variant="outlined"
+              size="small"
+              startIcon={<CloudUploadOutlined />}
+              sx={{ mt: 1 }}
+            >
+              Upload File
+              <input
+                type="file"
+                name={name}
+                hidden
+                onChange={handleFileChange}
+                ref={setRef}
+                {...inputProps}
+                aria-describedby={errorId}
+              />
+            </Button>
             <ErrorForInput error={error} helperText={helperText} />
             {children}
 
@@ -450,12 +458,12 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                             internalRef.current?.click();
                           }}
                           sx={{
-                            color: 'white',
-                            backgroundColor: 'rgba(255,255,255,0.2)',
-                            '&:hover': { backgroundColor: 'rgba(255,255,255,0.3)' }
+                            color: 'primary.main',
+                            backgroundColor: 'primary.lighter',
+                            '&:hover': { backgroundColor: alpha(theme.palette.primary.light, 0.4) }
                           }}
                         >
-                          <EditIcon />
+                          <EditOutlined />
                         </IconButton>
 
                         <IconButton
@@ -465,12 +473,12 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                             handleRemoveImage();
                           }}
                           sx={{
-                            color: 'white',
-                            backgroundColor: 'rgba(255,255,255,0.2)',
-                            '&:hover': { backgroundColor: 'rgba(255,255,255,0.3)' }
+                            color: 'error.main',
+                            backgroundColor: 'error.lighter',
+                            '&:hover': { backgroundColor: alpha(theme.palette.error.light, 0.4) }
                           }}
                         >
-                          <DeleteIcon />
+                          <DeleteOutline />
                         </IconButton>
                       </Box>
                     </Box>

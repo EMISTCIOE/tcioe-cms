@@ -1,4 +1,4 @@
-import { Button, Grid } from '@mui/material';
+import { Box, Button, Divider, Grid } from '@mui/material';
 
 // UI Components
 import FormSection from '@/components/app-form/FormSection';
@@ -7,6 +7,7 @@ import MainCard from '@/components/cards/MainCard';
 import useUpdateNotice from '../../hooks/useUpdateNotice';
 import { INoticeDetails } from '../../redux/types';
 import { TNoticeUpdateFormDataType } from './config';
+import { useMemo } from 'react';
 
 export interface INoticeUpdateFormProps {
   noticeData?: INoticeDetails;
@@ -16,12 +17,19 @@ export interface INoticeUpdateFormProps {
 export default function NoticeUpdateForm({ noticeData, onClose }: INoticeUpdateFormProps) {
   const { control, errors, watch, formFields, handleSubmit } = useUpdateNotice({ noticeData, onClose });
   const formValues = watch();
+
+  const SeparatorComponent = useMemo(() => {
+    return () => <Box sx={{ mt: 6, mb: 2, width: '100%', height: '2px', backgroundColor: (theme) => theme.palette.divider }} />
+  }, []);
+
   return (
     <form onSubmit={handleSubmit()}>
       <Grid container spacing={3} sx={{ pt: 1 }}>
         <Grid item xs={12}>
           <MainCard divider title={'Update Notice'}>
-            <FormSection<TNoticeUpdateFormDataType> fields={formFields} formValues={formValues} control={control} errors={errors} />
+            <FormSection<TNoticeUpdateFormDataType> fields={formFields} formValues={formValues} control={control} errors={errors}
+              childrenForInput={{ 'thumbnail': <SeparatorComponent /> }}
+            />
           </MainCard>
         </Grid>
 

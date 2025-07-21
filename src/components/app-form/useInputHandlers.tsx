@@ -51,8 +51,6 @@ export function useInputHandlers({
 
   const handleCloseFileModal = () => {
     setIsFileModalOpen(false);
-    setFileModalUrl(null);
-    setIsCurrentFilePdf(false);
   };
 
   // Cleanup for Blob URLs when component unmounts or value changes
@@ -94,6 +92,7 @@ export function useInputHandlers({
       const isPdfFile = file.type === 'application/pdf';
       setFileModalUrl(url);
       setIsCurrentFilePdf(isPdfFile);
+      // }
     } else {
       // If file is cleared, clear modal state as well
       if (fileModalUrl) {

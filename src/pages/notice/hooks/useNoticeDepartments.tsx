@@ -21,5 +21,12 @@ export const useNoticeDepartments = () => {
     );
   }, [noticeDepartmentsData]);
 
-  return { noticeDepartmentsOptions, isLoading };
+  const updatedNoticeDepartmentsOptions = useMemo(() => {
+    return [
+      { label: 'NA', value: null },
+      ...noticeDepartmentsOptions
+    ];
+  }, [noticeDepartmentsOptions]);
+
+  return { noticeDepartmentsOptions: updatedNoticeDepartmentsOptions, isLoading };
 };

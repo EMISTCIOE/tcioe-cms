@@ -106,7 +106,7 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
             ) as FieldArray<T, ArrayPath<T>>
           )
         }
-        sx={{ alignSelf: 'flex-start' }}
+        sx={{ my: 4 }}
       >
         Add More
       </Button>

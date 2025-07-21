@@ -39,10 +39,10 @@ export default function AppDialog({
   open,
   keepMounted = true,
   fullWidth = false,
-  maxWidth = 'sm',
+  maxWidth = false,
 
   // Callbacks
-  onClose = () => {},
+  onClose = () => { },
 
   // Additional props
   transitionDirection = 'up'
@@ -69,7 +69,7 @@ export default function AppDialog({
         onClose={onClose}
         TransitionComponent={CustomTransition}
         keepMounted={keepMounted}
-        fullWidth={fullWidth}
+        fullScreen={fullWidth}
         maxWidth={maxWidth}
       >
         {title && <DialogTitle>{title}</DialogTitle>}

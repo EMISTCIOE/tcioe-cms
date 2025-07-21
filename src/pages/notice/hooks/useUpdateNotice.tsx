@@ -77,7 +77,7 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
 
     try {
       await deleteNoticeMedia({ id: noticeData.id, media_id }).unwrap();
-      enqueueSnackbar('Media deleted successfully', { variant: 'success' });
+      enqueueSnackbar('Media Deleted Successfully', { variant: 'success' });
     } catch (error) {
       enqueueSnackbar('Failed to delete media', { variant: 'error' });
       console.error('Delete error:', error);
@@ -88,9 +88,9 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
     const updatedFields = formFields.map((f) =>
       f.name === 'medias'
         ? {
-            ...f,
-            onDelete: (index: number, field: TField<Media>) => handleDeleteMedia(index, field?.id)
-          }
+          ...f,
+          onDelete: (index: number, field: TField<Media>) => handleDeleteMedia(index, field?.id)
+        }
         : f
     );
     setFormFields(updatedFields);

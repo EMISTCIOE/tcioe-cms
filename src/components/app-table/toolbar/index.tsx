@@ -118,7 +118,7 @@ const CombinedToolbar = React.forwardRef<HTMLDivElement, ToolbarProps>((props, r
 
       {/* Create New Form Dialog */}
       {createNewForm && (
-        <AppDialog open={showForm} onClose={handleCloseForm} content={createNewForm(handleCloseForm)} fullWidth maxWidth="lg" />
+        <AppDialog open={showForm} onClose={handleCloseForm} content={createNewForm(handleCloseForm)} fullWidth />
       )}
     </GridToolbarContainer>
   );

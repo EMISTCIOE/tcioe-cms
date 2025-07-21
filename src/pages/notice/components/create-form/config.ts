@@ -23,8 +23,8 @@ export type Media = z.infer<typeof mediaSchema>;
 
 // NOTE - Define the schema for the form.
 export const noticeCreateFormSchema = z.object({
-  title: z.string().optional(),
-  department: z.number().nullable(),
+  title: z.string().min(1, 'Title is required'),
+  department: z.union([z.number(), z.string()]).nullable(),
   category: z.number().min(1, 'Category is required'),
   description: z.string().optional(),
   isFeatured: z.boolean().default(true),
@@ -50,10 +50,10 @@ export type TNoticeCreateFormDataType = z.infer<typeof noticeCreateFormSchema>;
 
 // NOTE -  Define default Values for the Form using the generated type
 export const defaultValues: Partial<TNoticeCreateFormDataType> = {
-  title: 'Embedded Systems Workshop',
+  title: '',
   department: null,
   category: undefined,
-  description: 'Embedded Systems Workshop organized by E-cast and Electronics Club pulchowk',
+  description: '',
   isFeatured: true,
   isDraft: false,
   thumbnail: null,
@@ -62,23 +62,23 @@ export const defaultValues: Partial<TNoticeCreateFormDataType> = {
 
 // NOTE - Define the form fields
 export const noticeCreateFields: FormField<TNoticeCreateFormDataType>[] = [
-  { name: 'title', label: 'Title', xs: 12, sm: 12, type: 'text', multiline: true, rows: 2 },
-  { name: 'description', label: 'Description', xs: 12, sm: 12, type: 'text', multiline: true, rows: 2 },
-  { name: 'department', label: 'Department', xs: 6, sm: 4, type: 'select', options: [] },
-  { name: 'category', label: 'Category', xs: 6, sm: 4, type: 'select', options: [], required: true },
+  { name: 'title', label: 'Title', xs: 12, sm: 12, type: 'text', multiline: true, rows: 3, required: true },
+  { name: 'description', label: 'Description', xs: 12, sm: 12, type: 'text', multiline: true, rows: 5 },
+  { name: 'department', label: 'Department', xs: 8, sm: 5, type: 'select', options: [] },
+  { name: 'category', label: 'Category', xs: 4, sm: 3, type: 'select', options: [], required: true },
   { name: 'isFeatured', label: 'Mark As Featured', xs: 2, sm: 2, type: 'switch' },
   { name: 'isDraft', label: 'Mark As Draft', xs: 2, sm: 2, type: 'switch' },
   {
     name: 'thumbnail',
     label: 'Thumbnail',
-    xs: 4,
-    sm: 2,
+    xs: 12,
+    sm: 12,
     type: 'image',
-    imageSize: 100
+    imageSize: 120
   },
   {
     name: 'medias',
-    label: 'Media Files',
+    label: 'Attachments',
     type: 'array',
     required: false,
     xs: 12,
@@ -89,12 +89,11 @@ export const noticeCreateFields: FormField<TNoticeCreateFormDataType>[] = [
         name: 'file',
         label: 'File',
         type: 'file',
-        imageSize: 80,
         xs: 12,
-        sm: 3,
+        sm: 2,
         required: true
       },
-      { name: 'caption', label: 'Caption', type: 'text', xs: 6, sm: 4 }
+      { name: 'caption', label: 'Caption', type: 'text', xs: 11, sm: 9}
     ] as FormField<Media>[]
   }
 ];

@@ -90,7 +90,7 @@ export interface INoticeMediaCreatePayload {
 }
 
 export interface INoticeCreatePayload {
-  title?: string;
+  title: string;
   department: number | null;
   category: number;
   thumbnail?: File | null;
@@ -109,7 +109,7 @@ export interface INoticeMediaPatchPayload {
 }
 
 export interface INoticeUpdatePayload {
-  title?: string;
+  title: string;
   department?: number;
   category?: number;
   thumbnail?: File | string | null;

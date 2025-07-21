@@ -20,6 +20,9 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
     getNotices: builder.query<INoticeList, IListQueryParams>({
       query: ({ search, paginationModel, sortModel, filterModel }) => {
         // build query params
+
+        console.log(filterModel)
+
         const { page, pageSize, orderingString, filterString } = getQueryParams({
           search,
           paginationModel,
@@ -215,7 +218,7 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
           method: 'DELETE'
         };
       },
-      invalidatesTags: ['Notice']
+      // invalidatesTags: ['Notice']
     })
   })
 });

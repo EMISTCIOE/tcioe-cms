@@ -7,11 +7,11 @@ import { FormHelperText } from '@mui/material';
 ------------------------------------------------------------------ */
 export const LabelForInput = React.memo(({ name, label, required }: { name: string; label?: string; required?: boolean }) =>
   label ? (
-    <Typography variant="body1" sx={{ mb: 1 }}>
+    <Typography variant="h5" fontWeight={400} sx={{ mb: 1 }}>
       <label htmlFor={name}>
         {label}
         {required && (
-          <Typography variant="caption" sx={{ display: 'inline' }} color="error.main">
+          <Typography variant="body1" sx={{ display: 'inline' }} color="error.main">
             *
           </Typography>
         )}
