@@ -10,12 +10,7 @@ import { useCreateNoticeMutation } from '../redux/notice.api';
 import { handleClientError } from '@/utils/functions/handleError';
 import { useMemo, useState } from 'react';
 import { INoticeCreateFormProps } from '../components/create-form';
-import {
-  defaultValues,
-  noticeCreateFields,
-  noticeCreateFormSchema,
-  TNoticeCreateFormDataType,
-} from '../components/create-form/config';
+import { defaultValues, noticeCreateFields, noticeCreateFormSchema, TNoticeCreateFormDataType } from '../components/create-form/config';
 import { useNoticeCategories } from './useNoticeCategories';
 import { useNoticeDepartments } from './useNoticeDepartments';
 

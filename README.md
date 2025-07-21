@@ -1,4 +1,3 @@
-
 ---
 
 [![License: Private](https://img.shields.io/badge/license-private-lightgrey.svg)](#license)
@@ -51,16 +50,16 @@ PRs that don’t follow the structure or appear spammy may be declined or flagge
 
 ## ✨ Features
 
-* 🧱 Custom-built UI using Material UI v5
-* ⚛️ Developed using React 19 and the modern Hooks API
-* 🔁 Global state via Context API + Redux Toolkit
-* 📡 Efficient data fetching with SWR
-* 🚦 Route handling via React Router v7
-* ⚡ Fast development with Vite
-* 🎨 CSS-in-JS with Emotion
-* 📅 Integrated charts, calendars, tables, and more
-* 💾 Persistent state using Redux Persist
-* 📚 Robust form validation using `react-hook-form` and `zod`
+- 🧱 Custom-built UI using Material UI v5
+- ⚛️ Developed using React 19 and the modern Hooks API
+- 🔁 Global state via Context API + Redux Toolkit
+- 📡 Efficient data fetching with SWR
+- 🚦 Route handling via React Router v7
+- ⚡ Fast development with Vite
+- 🎨 CSS-in-JS with Emotion
+- 📅 Integrated charts, calendars, tables, and more
+- 💾 Persistent state using Redux Persist
+- 📚 Robust form validation using `react-hook-form` and `zod`
 
 ---
 

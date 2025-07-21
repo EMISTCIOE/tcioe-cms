@@ -18,17 +18,15 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
   errors,
   formValues,
   itemFields,
-  onDelete
+  onDelete,
+  maxSelectable = Infinity
 }: DynamicFieldArraySectionProps<T>) {
   const { fields, append, remove } = useFieldArray({ control, name, keyName: 'uid' });
   const currentNoOfFileds = fields.length;
 
   const selectField = itemFields.find((item) => item.type === 'select');
   const resolvedMaxSelectable =
-    selectField?.maxSelectable ??
-    (selectField?.allowDuplicates
-      ? Infinity
-      : selectField?.options?.length || 0);
+    maxSelectable ?? selectField?.maxSelectable ?? (selectField?.allowDuplicates ? Infinity : selectField?.options?.length || 0);
 
   const errorAtIndex = (index: number, fieldName: FormField<T>['name']) => {
     return (errors[name] as FieldErrors<any>[] | undefined)?.[index]?.[fieldName] as FieldError | undefined;
@@ -108,7 +106,7 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
             ) as FieldArray<T, ArrayPath<T>>
           )
         }
-        sx={{ alignSelf: 'flex-end' }}
+        sx={{ alignSelf: 'flex-start' }}
       >
         Add More
       </Button>

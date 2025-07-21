@@ -70,7 +70,8 @@ const CombinedToolbar = React.forwardRef<HTMLDivElement, ToolbarProps>((props, r
             sx={{
               minWidth: 200,
               '& .MuiInputBase-root': {
-                backgroundColor: 'background.paper'
+                backgroundColor: 'background.paper',
+                marginTop: '4px'
               }
             }}
           />

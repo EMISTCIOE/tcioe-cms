@@ -3,33 +3,30 @@ import * as z from 'zod';
 import { MediaType, NoticeStatus } from '../../redux/types';
 import { enumToOptions } from '@/utils/functions/formatString';
 
-
 // NOTE - Schema definition for media item
 export const mediaSchema = z.object({
   id: z.number().optional(),
-  file: z.union([
-    z.string().min(1, 'File URL cannot be empty.'),
-    z.any()
-  ])
-    .refine(
-      (file) => {
-        if (typeof file === 'string') {
-          return true;
-        }
-        const f = file instanceof FileList ? file[0] : file;
-
-        // Ensure it's a File object and its type
-        return f instanceof File && (f.type.startsWith('image/') || f.type === 'application/pdf');
-      },
-      {
-        message: 'A file or a valid file URL is required, and only image/PDF files are allowed.'
+  file: z.union([z.string().min(1, 'File URL cannot be empty.'), z.any()]).refine(
+    (file) => {
+      if (typeof file === 'string') {
+        return true;
       }
-    ),
+      const f = file instanceof FileList ? file[0] : file;
+
+      // Ensure it's a File object and its type
+      return f instanceof File && (f.type.startsWith('image/') || f.type === 'application/pdf');
+    },
+    {
+      message: 'A file or a valid file URL is required, and only image/PDF files are allowed.'
+    }
+  ),
   caption: z.string().optional(),
-  mediaType: z.enum([MediaType.IMAGE, MediaType.DOCUMENT], {
-    required_error: 'Media type is required',
-    invalid_type_error: 'Invalid media type'
-  }).default(MediaType.DOCUMENT),
+  mediaType: z
+    .enum([MediaType.IMAGE, MediaType.DOCUMENT], {
+      required_error: 'Media type is required',
+      invalid_type_error: 'Invalid media type'
+    })
+    .default(MediaType.DOCUMENT)
 });
 
 export type Media = z.infer<typeof mediaSchema>;
@@ -42,20 +39,10 @@ export const noticeUpdateFormSchema = z.object({
   category: z.number().min(1, 'Category is required').optional(),
   description: z.string().optional(),
   isFeatured: z.boolean().default(true).optional(),
-  status: z.enum([
-    NoticeStatus.DRAFT,
-    NoticeStatus.PENDING,
-    NoticeStatus.REJECTED,
-    NoticeStatus.APPROVED
-  ], {
-    required_error: 'Status is required',
-    invalid_type_error: 'Invalid status type'
-  }).default(NoticeStatus.PENDING).optional(),
   isDraft: z.boolean().default(true).optional(),
-  thumbnail: z.union([
-    z.string().min(1, 'Thumbnail URL cannot be empty.'),
-    z.any()
-  ])
+  status: z.nativeEnum(NoticeStatus).default(NoticeStatus.PENDING).optional(),
+  thumbnail: z
+    .union([z.string().min(1, 'Thumbnail URL cannot be empty.'), z.any()])
     .refine(
       (file) => {
         if (!file) return true;
@@ -68,10 +55,11 @@ export const noticeUpdateFormSchema = z.object({
         return f instanceof File && f.type.startsWith('image/');
       },
       {
-        message: 'Only image files are allowed',
+        message: 'Only image files are allowed'
       }
-    ).optional(),
-  medias: z.array(mediaSchema).optional(),
+    )
+    .optional(),
+  medias: z.array(mediaSchema).optional()
 });
 
 // NOTE - Generate a type from the schema
@@ -87,28 +75,24 @@ export const defaultValues: Partial<TNoticeUpdateFormDataType> = {
   status: NoticeStatus.PENDING,
   isDraft: false,
   thumbnail: null,
-  medias: [{ file: null, caption: '', mediaType: MediaType.DOCUMENT }],
+  medias: [{ file: null, caption: '', mediaType: MediaType.DOCUMENT }]
 };
 
 // NOTE - Define the form fields
 export const noticeUpdateFields: FormField<TNoticeUpdateFormDataType>[] = [
-  { name: 'title', label: 'Title', xs: 6, sm: 6, type: 'text', multiline: true, rows: 2 },
-  { name: 'description', label: 'Description', xs: 6, sm: 6, type: 'text', multiline: true, rows: 2 },
+  { name: 'title', label: 'Title', xs: 12, sm: 12, type: 'text', multiline: true, rows: 2 },
+  { name: 'description', label: 'Description', xs: 12, sm: 12, type: 'text', multiline: true, rows: 2 },
   { name: 'department', label: 'Department', xs: 6, sm: 4, type: 'select', options: [], required: true },
-  { name: 'category', label: 'Category', xs: 6, sm: 2, type: 'select', options: [], required: true },
-  { name: 'isFeatured', label: 'SaveAs Featured', xs: 2, sm: 2, type: 'switch' },
-  {
-    name: 'status', label: 'Status', xs: 2, sm: 2, type: 'select',
-    options: [...enumToOptions(NoticeStatus).filter(n => n.value !== NoticeStatus.DRAFT)], required: true, showIf: (formData) => formData.status !== NoticeStatus.DRAFT
-  },
+  { name: 'category', label: 'Category', xs: 6, sm: 4, type: 'select', options: [], required: true },
   { name: 'isDraft', label: 'SaveAs Draft', xs: 2, sm: 2, type: 'switch', showIf: (formData) => formData.status === NoticeStatus.DRAFT },
+  { name: 'isFeatured', label: 'SaveAs Featured', xs: 2, sm: 2, type: 'switch' },
   {
     name: 'thumbnail',
     label: 'Thumbnail',
     xs: 4,
     sm: 2,
     type: 'image',
-    imageSize: 90,
+    imageSize: 90
   },
   {
     name: 'medias',
@@ -125,13 +109,9 @@ export const noticeUpdateFields: FormField<TNoticeUpdateFormDataType>[] = [
         imageSize: 80,
         xs: 12,
         sm: 3,
-        required: true,
+        required: true
       },
-      { name: 'caption', label: 'Caption', type: 'text', xs: 6, sm: 3 },
-      {
-        name: 'mediaType', label: 'Media Type', type: 'select', xs: 5, sm: 2,
-        options: enumToOptions(MediaType), allowDuplicates: true, required: true
-      }
+      { name: 'caption', label: 'Caption', type: 'text', xs: 6, sm: 4 }
     ] as FormField<Media>[]
   }
 ];

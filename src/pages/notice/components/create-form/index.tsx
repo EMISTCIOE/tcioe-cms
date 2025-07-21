@@ -14,18 +14,12 @@ export interface INoticeCreateFormProps {
 export default function NoticeCreateForm({ onClose }: INoticeCreateFormProps) {
   const { control, errors, watch, formFields, handleSubmit } = useCreateNotice({ onClose });
   const formValues = watch();
-  console.log('NoticeCreateForm - formValues:', formValues);
   return (
     <form onSubmit={handleSubmit()} noValidate>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <MainCard divider title="Create New Notice">
-            <FormSection<TNoticeCreateFormDataType>
-              fields={formFields}
-              control={control}
-              errors={errors}
-              formValues={formValues}
-            />
+            <FormSection<TNoticeCreateFormDataType> fields={formFields} control={control} errors={errors} formValues={formValues} />
           </MainCard>
         </Grid>
 

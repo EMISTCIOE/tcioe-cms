@@ -12,14 +12,16 @@ import useFocus from '@/hooks/useFocus';
 
 export const createSelectColumn = <T extends object>(config: ColumnConfig<T>, theme: Theme, baseCol: GridColDef<T>): GridColDef<T> => {
   // Create a properly typed select column definition
+
   const selectColumn: GridSingleSelectColDef<T> = {
     ...baseCol,
     type: 'singleSelect',
     valueOptions: config.valueOptions,
     renderCell: (params) => {
-      const value = params.value as string;
-      const colors = config.colorMap?.[value] || {
-        backgroundColor: theme.palette.grey[200],
+      const value = config.valueOptions?.find((option) => option.value === params.value)?.label || params.value;
+      const label = config.valueOptions?.find((option) => option.value === params.value)?.label || ('' as string);
+      const colors = config.colorMap?.[label.toUpperCase()] || {
+        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[50],
         color: theme.palette.text.primary
       };
 
@@ -44,22 +46,21 @@ export const createSelectColumn = <T extends object>(config: ColumnConfig<T>, th
       // Use React hooks to manage the select ref and focus
       const SelectCellEdit = () => {
         const selectRef = useFocus(params);
-
         const options =
           config.valueOptions?.map((option) => ({
-            label: option,
-            value: option,
+            label: option.label,
+            value: option.value,
             sx: {
               padding: '4px 10px',
               fontWeight: 500,
               display: 'flex',
               justifyContent: 'center',
               '& .MuiBox-root': {
-                backgroundColor: config.colorMap?.[option]?.backgroundColor,
-                color: config.colorMap?.[option]?.color,
+                backgroundColor: config.colorMap?.[option.label]?.backgroundColor,
+                color: config.colorMap?.[option.label]?.color,
                 padding: '4px 10px',
                 '&:hover': {
-                  backgroundColor: config.colorMap?.[option]?.backgroundColor,
+                  backgroundColor: config.colorMap?.[option.label]?.backgroundColor,
                   opacity: 0.8
                 }
               }

@@ -29,7 +29,20 @@ export const authSlice = createSlice({
   reducers: {
     loginSuccess: (state, action: PayloadAction<IAuthState>) => {
       const {
-        payload: { fullName, email, photo, phoneNo, tokens, isEmailVerified, isPhoneVerified, isSuperuser, roles, permissions, status, message }
+        payload: {
+          fullName,
+          email,
+          photo,
+          phoneNo,
+          tokens,
+          isEmailVerified,
+          isPhoneVerified,
+          isSuperuser,
+          roles,
+          permissions,
+          status,
+          message
+        }
       } = action;
 
       state.fullName = fullName;

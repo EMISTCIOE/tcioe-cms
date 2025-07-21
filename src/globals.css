@@ -3,11 +3,11 @@ html {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  width: 8px;
+  width: 6px;
   border-radius: 10px;
   background-color: #ccc;
 }

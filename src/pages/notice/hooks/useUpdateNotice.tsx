@@ -1,7 +1,7 @@
 // PACKAGE IMPORTS
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSnackbar } from 'notistack';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 // PROJECT IMPORTS
@@ -10,17 +10,25 @@ import { setMessage } from '@/pages/common/redux/common.slice';
 import { handleClientError } from '@/utils/functions/handleError';
 
 // LOCAL IMPORTS
-import { defaultValues, noticeUpdateFields, noticeUpdateFormSchema, TNoticeUpdateFormDataType } from '../components/update-form/config';
+import {
+  defaultValues,
+  Media,
+  noticeUpdateFields,
+  noticeUpdateFormSchema,
+  TNoticeUpdateFormDataType
+} from '../components/update-form/config';
 import { INoticeUpdateFormProps } from '../components/update-form/Form';
-import { usePatchNoticeMutation } from '../redux/notice.api';
+import { useDeleteNoticeMediaMutation, usePatchNoticeMutation } from '../redux/notice.api';
 import { useNoticeCategories } from './useNoticeCategories';
 import { useNoticeDepartments } from './useNoticeDepartments';
-import { INoticeUpdatePayload } from '../redux/types';
+import { INoticeUpdatePayload, NoticeStatus } from '../redux/types';
+import { TField } from '@/components/app-form/types';
 
 const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [updateNotice] = usePatchNoticeMutation();
+  const [deleteNoticeMedia] = useDeleteNoticeMediaMutation();
   const [formFields, setFormFields] = useState(noticeUpdateFields);
   const { noticeCategoriesOptions } = useNoticeCategories();
   const { noticeDepartmentsOptions } = useNoticeDepartments();
@@ -43,7 +51,9 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
       reset({
         ...noticeData,
         category: noticeData.category?.id ?? null,
-        department: noticeData.department?.id ?? null
+        department: noticeData.department?.id ?? undefined,
+        medias: noticeData.medias ?? undefined,
+        isDraft: noticeData.status === NoticeStatus.DRAFT
       });
     }
   }, [noticeData, reset]);
@@ -61,6 +71,30 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
       })
     );
   }, [noticeCategoriesOptions, noticeDepartmentsOptions]);
+
+  const handleDeleteMedia = async (index: number, media_id: number | undefined) => {
+    if (!noticeData?.id || !media_id) return;
+
+    try {
+      await deleteNoticeMedia({ id: noticeData.id, media_id }).unwrap();
+      enqueueSnackbar('Media deleted successfully', { variant: 'success' });
+    } catch (error) {
+      enqueueSnackbar('Failed to delete media', { variant: 'error' });
+      console.error('Delete error:', error);
+    }
+  };
+
+  useEffect(() => {
+    const updatedFields = formFields.map((f) =>
+      f.name === 'medias'
+        ? {
+            ...f,
+            onDelete: (index: number, field: TField<Media>) => handleDeleteMedia(index, field?.id)
+          }
+        : f
+    );
+    setFormFields(updatedFields);
+  }, [noticeData]);
 
   // This is for form update not for inline update
   const onSubmit = async (data: TNoticeUpdateFormDataType) => {

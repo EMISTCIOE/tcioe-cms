@@ -3,6 +3,7 @@ import { useAppDispatch } from '@/libs/hooks';
 import { TableData } from '../components/listing/config';
 import { useArchiveUserRoleMutation, useGetRolesQuery, usePatchUserRoleMutation } from '../redux/user-role.api';
 import { currentUserRoleId, setEdit, setViewId } from '../redux/user-role.slice';
+import { UserRoleList } from '../redux/types';
 
 /**
  * Custom hook for User table Fetching and updating
@@ -34,8 +35,11 @@ export const useUserRoleTable = () => {
     },
 
     // NOTE - Data transformations api data to table data
-    transformResponseToTableData: (apiData) => {
-      return apiData?.results;
+    transformResponseToTableData: (apiData: UserRoleList) => {
+      return apiData?.results.map((item) => ({
+        ...item,
+        isActive: item?.isActive ? 'true' : 'false'
+      }));
     },
 
     // NOTE - Data transformations table data to api data of inline update

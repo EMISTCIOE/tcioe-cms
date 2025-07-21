@@ -131,13 +131,13 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                           display: 'inline-flex',
                           ...(selectedOption?.sx
                             ? {
-                              backgroundColor: selectedOption.sx['& .MuiBox-root']?.backgroundColor,
-                              color: selectedOption.sx['& .MuiBox-root']?.color,
-                              fontSize: (theme) => theme.typography.body2.fontSize,
-                              borderRadius: '4px',
-                              padding: '2px 10px',
-                              maxWidth: 'fit-content'
-                            }
+                                backgroundColor: selectedOption.sx['& .MuiBox-root']?.backgroundColor,
+                                color: selectedOption.sx['& .MuiBox-root']?.color,
+                                fontSize: (theme) => theme.typography.body2.fontSize,
+                                borderRadius: '4px',
+                                padding: '2px 10px',
+                                maxWidth: 'fit-content'
+                              }
                             : {})
                         }}
                       >
@@ -158,7 +158,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
               }}
               sx={{
                 maxHeight: 300,
-                overflowY: 'auto',
+                overflowY: 'hidden',
                 '& .MuiSelect-select': {
                   display: 'flex',
                   alignItems: 'center',
@@ -204,9 +204,9 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                             width: '100%',
                             ...(option?.sx
                               ? {
-                                backgroundColor: option.sx['& .MuiBox-root']?.backgroundColor,
-                                color: option.sx['& .MuiBox-root']?.color
-                              }
+                                  backgroundColor: option.sx['& .MuiBox-root']?.backgroundColor,
+                                  color: option.sx['& .MuiBox-root']?.color
+                                }
                               : {}),
                             maxWidth: 'fit-content',
                             padding: '1px 10px',
@@ -296,7 +296,12 @@ const CustomInput = forwardRef<any, CustomInputProps>(
         } else {
           // 'value' is an existing URL string (from API)
           currentDisplayedUrl = value;
-          isImage = currentDisplayedUrl && (currentDisplayedUrl.endsWith('.png') || currentDisplayedUrl.endsWith('.jpg') || currentDisplayedUrl.endsWith('.jpeg') || currentDisplayedUrl.endsWith('.gif'));
+          isImage =
+            currentDisplayedUrl &&
+            (currentDisplayedUrl.endsWith('.png') ||
+              currentDisplayedUrl.endsWith('.jpg') ||
+              currentDisplayedUrl.endsWith('.jpeg') ||
+              currentDisplayedUrl.endsWith('.gif'));
           isPdf = currentDisplayedUrl && currentDisplayedUrl.endsWith('.pdf');
         }
 
@@ -307,14 +312,18 @@ const CustomInput = forwardRef<any, CustomInputProps>(
             {currentDisplayedUrl && (
               <Box sx={{ mt: 1, mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
                 {isImage && (
-                  <img src={currentDisplayedUrl} alt="Existing File" style={{ maxWidth: '80px', maxHeight: '80px', objectFit: 'contain' }} />
+                  <img
+                    src={currentDisplayedUrl}
+                    alt="Existing File"
+                    style={{ maxWidth: '80px', maxHeight: '80px', objectFit: 'contain' }}
+                  />
                 )}
                 <Typography variant="body2">
                   <span
                     onClick={() => handleOpenFileModal(currentDisplayedUrl, isPdf)} // Use hook's handler
                     style={{ cursor: 'pointer', color: theme.palette.primary.main, textDecoration: 'underline' }}
                   >
-                    {isPdf ? 'View Existing PDF' : (isImage ? 'View Existing Image' : 'View Existing File')}
+                    {isPdf ? 'View Existing PDF' : isImage ? 'View Existing Image' : 'View Existing File'}
                   </span>
                 </Typography>
               </Box>
@@ -341,21 +350,12 @@ const CustomInput = forwardRef<any, CustomInputProps>(
               maxWidth={'lg'}
               content={
                 <Box sx={{ p: 0, height: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  {fileModalUrl && (
-                    isCurrentFilePdf ? (
-                      <iframe
-                        src={fileModalUrl}
-                        style={{ width: '100%', height: '100%', border: 'none' }}
-                        title="PDF Preview"
-                      />
+                  {fileModalUrl &&
+                    (isCurrentFilePdf ? (
+                      <iframe src={fileModalUrl} style={{ width: '100%', height: '100%', border: 'none' }} title="PDF Preview" />
                     ) : (
-                      <img
-                        src={fileModalUrl}
-                        alt="File Preview"
-                        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-                      />
-                    )
-                  )}
+                      <img src={fileModalUrl} alt="File Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                    ))}
                 </Box>
               }
               actions={

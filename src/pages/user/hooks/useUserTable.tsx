@@ -40,13 +40,14 @@ export const useUserTable = () => {
     transformResponseToTableData: (apiData) => {
       return apiData?.results.map((item: UserItem) => ({
         ...item,
-        name: combineName(item?.firstName, item?.middleName, item?.lastName)
+        firstName: combineName(item?.firstName, item?.middleName, item?.lastName),
+        isActive: item?.isActive ? 'true' : 'false'
       }));
     },
 
     // NOTE - Data transformations table data to api data of inline update
     transformTableDataToUpdateInput: (rowData) => {
-      const { firstName, lastName } = splitName(rowData?.name);
+      const { firstName, lastName } = splitName(rowData?.firstName); // i have renamed name to firstName for sorting purposes
 
       return {
         firstName,

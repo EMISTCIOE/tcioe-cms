@@ -13,7 +13,6 @@ import AppDialog from '@/components/app-dialog';
 import { viewNoticeConfig } from './config';
 import { INoticeDetails } from '../../redux/types';
 
-
 interface IDetailViewProps {
   noticeData: INoticeDetails | undefined;
   onClose: () => void;
@@ -97,7 +96,12 @@ const DetailView: React.FC<IDetailViewProps> = ({ noticeData, onClose }) => {
                 if (!media.file) return null;
 
                 const isPdf = media.mediaType === 'DOCUMENT' && media.file.endsWith('.pdf');
-                const isImage = media.mediaType === 'IMAGE' && (media.file.endsWith('.png') || media.file.endsWith('.jpg') || media.file.endsWith('.jpeg') || media.file.endsWith('.gif'));
+                const isImage =
+                  media.mediaType === 'IMAGE' &&
+                  (media.file.endsWith('.png') ||
+                    media.file.endsWith('.jpg') ||
+                    media.file.endsWith('.jpeg') ||
+                    media.file.endsWith('.gif'));
 
                 return (
                   <MainCard
@@ -111,7 +115,7 @@ const DetailView: React.FC<IDetailViewProps> = ({ noticeData, onClose }) => {
                       gap: 1,
                       cursor: 'pointer',
                       '&:hover': {
-                        backgroundColor: theme.palette.action.hover,
+                        backgroundColor: theme.palette.action.hover
                       },
                       minWidth: '120px',
                       maxWidth: '150px',
@@ -130,8 +134,11 @@ const DetailView: React.FC<IDetailViewProps> = ({ noticeData, onClose }) => {
                     ) : (
                       <InsertDriveFile sx={{ fontSize: 48, color: theme.palette.text.secondary }} />
                     )}
-                    <Typography variant="body2" sx={{ fontSize: '0.75rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
-                      {media.caption || (isPdf ? 'Document' : (isImage ? 'Image' : 'File'))}
+                    <Typography
+                      variant="body2"
+                      sx={{ fontSize: '0.75rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}
+                    >
+                      {media.caption || (isPdf ? 'Document' : isImage ? 'Image' : 'File')}
                     </Typography>
                     <Typography variant="caption" color="primary" sx={{ textDecoration: 'underline', fontSize: '0.65rem' }}>
                       View
@@ -159,21 +166,12 @@ const DetailView: React.FC<IDetailViewProps> = ({ noticeData, onClose }) => {
         maxWidth={'lg'}
         content={
           <Box sx={{ p: 0, height: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            {fileModalUrl && (
-              isCurrentFilePdf ? (
-                <iframe
-                  src={fileModalUrl}
-                  style={{ width: '100%', height: '100%', border: 'none' }}
-                  title="PDF Preview"
-                />
+            {fileModalUrl &&
+              (isCurrentFilePdf ? (
+                <iframe src={fileModalUrl} style={{ width: '100%', height: '100%', border: 'none' }} title="PDF Preview" />
               ) : (
-                <img
-                  src={fileModalUrl}
-                  alt="File Preview"
-                  style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-                />
-              )
-            )}
+                <img src={fileModalUrl} alt="File Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+              ))}
           </Box>
         }
         actions={

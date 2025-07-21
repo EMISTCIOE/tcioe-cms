@@ -11,12 +11,12 @@ export enum NoticeStatus {
   PENDING = 'PENDING',
   DRAFT = 'DRAFT',
   APPROVED = 'APPROVED',
-  REJECTED = 'REJECTED',
+  REJECTED = 'REJECTED'
 }
 
 export enum MediaType {
   IMAGE = 'IMAGE',
-  DOCUMENT = 'DOCUMENT',
+  DOCUMENT = 'DOCUMENT'
 }
 
 /* -------------------------- Notice get interfaces ------------------------- */
@@ -49,10 +49,10 @@ export interface INoticeItem {
   slug: string;
   thumbnail: string;
   isFeatured: boolean;
-  department: number;
+  department: number | null;
   category: number;
   status: NoticeStatus;
-  departmentName: string;
+  departmentName: string | null;
   categoryName: string;
   authorName: string;
   publishedAt: string; // ISO Date string
@@ -69,15 +69,16 @@ export interface INoticeDetails {
   description: string;
   thumbnail: string;
   isFeatured: boolean;
-  department: INoticeDepartmentItem;
+  department: INoticeDepartmentItem | null;
   category: INoticeCategoryItem;
-  medias: INoticeMediaItem[];
+  medias: INoticeMediaItem[] | null;
   author: INoticeAuthorItem;
+  status: NoticeStatus;
   createdBy: string;
   updatedBy: string;
   publishedAt: string; // ISO Date string
-  createdAt: string;   // ISO Date string
-  updatedAt: string;   // ISO Date string
+  createdAt: string; // ISO Date string
+  updatedAt: string; // ISO Date string
   isActive: boolean;
 }
 
@@ -90,7 +91,7 @@ export interface INoticeMediaCreatePayload {
 
 export interface INoticeCreatePayload {
   title?: string;
-  department: number;
+  department: number | null;
   category: number;
   thumbnail?: File | null;
   isFeatured: boolean;
@@ -104,7 +105,7 @@ export interface INoticeMediaPatchPayload {
   id?: number;
   file: File | string | null;
   caption?: string;
-  mediaType: MediaType
+  mediaType: MediaType;
 }
 
 export interface INoticeUpdatePayload {
@@ -114,6 +115,7 @@ export interface INoticeUpdatePayload {
   thumbnail?: File | string | null;
   isFeatured?: boolean;
   isDraft?: boolean;
+  status?: NoticeStatus;
   description?: string;
   medias?: INoticeMediaPatchPayload[];
 }

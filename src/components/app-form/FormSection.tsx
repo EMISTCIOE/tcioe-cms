@@ -39,6 +39,7 @@ export default function FormSection<T extends Record<string, any>>({
                   formValues={formValues}
                   itemFields={Array.isArray(field.itemFields) ? field.itemFields : []}
                   onDelete={field?.onDelete}
+                  maxSelectable={field?.maxSelectable}
                 />
               ) : (
                 <Controller

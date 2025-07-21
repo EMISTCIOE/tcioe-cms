@@ -30,7 +30,7 @@ export interface ColumnConfig<T extends object> {
   editable?: boolean; // default true
   filterable?: boolean; // default false
   sortable?: boolean; // default false
-  valueOptions?: string[];
+  valueOptions?: { label: string; value: string | number | boolean }[]; // only for 'select' type
   renderCell?: GridColDef<T>['renderCell'];
   colorMap?: BadgeColorMap; // only for 'select' type
   trueLabel?: string; // only for 'boolean' type

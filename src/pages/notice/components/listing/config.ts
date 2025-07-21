@@ -1,9 +1,11 @@
 import { Theme } from '@mui/material/styles';
 import { INoticeItem, NoticeStatus } from '../../redux/types';
 import { BadgeColorMap, ColumnConfig } from '@/components/app-table/columns';
+import { enumToOptions } from '@/utils/functions/formatString';
 
-export interface ITableData extends INoticeItem {
+export interface ITableData extends Omit<INoticeItem, 'isFeatured'> {
   actions?: string;
+  isFeatured: 'true' | 'false'; // Convert boolean to string for select options
 }
 
 const StatusColorMap: BadgeColorMap = {
@@ -13,14 +15,56 @@ const StatusColorMap: BadgeColorMap = {
   PENDING: { backgroundColor: 'warning.lighter', color: 'warning.main' }
 };
 
-export const getColumnConfig = (theme: Theme): ColumnConfig<ITableData>[] => [
-  { field: 'thumbnail', headerName: 'THUMBNAIL', type: 'image', },
+const IsFeaturedColorMap: BadgeColorMap = {
+  YES: { backgroundColor: 'primary.lighter', color: 'primary.main' },
+  NO: { backgroundColor: 'error.lighter', color: 'error.main' }
+};
+
+export const getColumnConfig = (
+  theme: Theme,
+  categoryOptions: ColumnConfig<ITableData>['valueOptions'],
+  departmentOptions: ColumnConfig<ITableData>['valueOptions']
+): ColumnConfig<ITableData>[] => [
+  { field: 'thumbnail', headerName: 'THUMBNAIL', type: 'image' },
   { field: 'title', headerName: 'TITLE', type: 'text', minWidth: 200 },
-  { field: 'departmentName', headerName: 'DEPARTMENT', type: 'text', editable: false, minWidth: 280, },
-  { field: 'categoryName', headerName: 'CATEGORY', type: 'text', editable: false },
+  {
+    field: 'department',
+    headerName: 'DEPARTMENT',
+    type: 'select',
+    editable: true,
+    minWidth: 380,
+    valueOptions: departmentOptions,
+    filterable: true
+  },
+  {
+    field: 'category',
+    headerName: 'CATEGORY',
+    type: 'select',
+    editable: true,
+    minWidth: 200,
+    valueOptions: categoryOptions,
+    filterable: true
+  },
   { field: 'authorName', headerName: 'AUTHOR', type: 'text', editable: false },
   { field: 'publishedAt', headerName: 'PUBLISHED AT', type: 'date', sortable: true, editable: false },
-  { field: 'isFeatured', headerName: 'FEATURED', type: 'boolean' },
-  { field: 'status', headerName: 'STATUS', type: 'select', filterable: true, valueOptions: [...Object.values(NoticeStatus)], colorMap: StatusColorMap },
+  {
+    field: 'isFeatured',
+    headerName: 'FEATURED',
+    type: 'select',
+    filterable: true,
+    valueOptions: [
+      { label: 'Yes', value: 'true' },
+      { label: 'No', value: 'false' }
+    ],
+    colorMap: IsFeaturedColorMap
+  },
+  {
+    field: 'status',
+    headerName: 'STATUS',
+    type: 'select',
+    filterable: true,
+    valueOptions: [...enumToOptions(NoticeStatus)],
+    colorMap: StatusColorMap
+  },
   { field: 'actions', headerName: '', type: 'actions' }
 ];

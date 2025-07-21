@@ -9,6 +9,7 @@ import {
   INoticeAuthorListResponse,
   INoticeCategoryListResponse,
   INoticeDepartmentListResponse,
+  MediaType
 } from './types';
 
 export const noticeAPI = 'cms/notice-mod/notices';
@@ -66,21 +67,23 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
 
         // Append medias
         if (medias && medias.length > 0) {
+          let mediaType: MediaType;
           medias.forEach((media, index) => {
+            if (!media.file) return;
+
             if (media.file instanceof File) {
-              console.log(`Appending media file: ${media.file.name}`);
               body.append(`medias[${index}][file]`, media.file);
+              mediaType = media.file.type === 'application/pdf' ? MediaType.DOCUMENT : MediaType.IMAGE;
             }
             if (media.caption) {
               body.append(`medias[${index}][caption]`, media.caption);
             }
-            if (media.mediaType) {
-              console.log(`Appending media type: ${media.mediaType}`);
-              body.append(`medias[${index}][mediaType]`, media.mediaType);
+
+            if (mediaType) {
+              body.append(`medias[${index}][mediaType]`, mediaType);
             }
           });
         }
-
 
         return {
           url: `${noticeAPI}`,
@@ -109,9 +112,13 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
 
         // Append medias
         if (medias && medias.length > 0) {
+          let mediaType: MediaType;
           medias.forEach((media, index) => {
+            if (!media.file) return;
+
             if (media.file instanceof File) {
               body.append(`medias[${index}][file]`, media.file);
+              mediaType = media.file.type === 'application/pdf' ? MediaType.DOCUMENT : MediaType.IMAGE;
             }
             if (media.id !== undefined) {
               body.append(`medias[${index}][id]`, String(media.id));
@@ -119,8 +126,9 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
             if (media.caption) {
               body.append(`medias[${index}][caption]`, media.caption);
             }
-            if (media.mediaType) {
-              body.append(`medias[${index}][mediaType]`, media.mediaType);
+
+            if (mediaType || media.mediaType) {
+              body.append(`medias[${index}][mediaType]`, mediaType || media.mediaType);
             }
           });
         }
@@ -190,17 +198,25 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
       keepUnusedDataFor: 0.1,
       providesTags: ['Notice']
     }),
-
     // Archive Notice
-    // archiveNotice: builder.mutation<IMutationSuccessResponse, number>({
-    //   query: (id) => {
-    //     return {
-    //       url: `${noticeAPI}/${id}`,
-    //       method: 'DELETE'
-    //     };
-    //   },
-    //   invalidatesTags: ['Notice']
-    // })
+    deleteNotice: builder.mutation<IMutationSuccessResponse, number>({
+      query: (id) => {
+        return {
+          url: `${noticeAPI}/${id}`,
+          method: 'DELETE'
+        };
+      },
+      invalidatesTags: ['Notice']
+    }),
+    deleteNoticeMedia: builder.mutation<IMutationSuccessResponse, { id: number; media_id: number }>({
+      query: ({ id, media_id }) => {
+        return {
+          url: `${noticeAPI}/${id}/media/${media_id}`,
+          method: 'DELETE'
+        };
+      },
+      invalidatesTags: ['Notice']
+    })
   })
 });
 
@@ -214,5 +230,6 @@ export const {
   useGetNoticeDepartmentsQuery,
   useGetNoticeCategoriesQuery,
   useGetNoticeAuthorsQuery,
-  // useArchiveNoticeMutation
+  useDeleteNoticeMutation,
+  useDeleteNoticeMediaMutation
 } = noticeAPISlice;

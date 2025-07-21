@@ -29,7 +29,7 @@ export interface IAuthState {
   authVerificationEmailSent?: boolean;
   forgetPasswordEmailSent?: boolean;
   status?: string;
-  message?: string; 
+  message?: string;
 }
 
 export interface UnverifiedLoginState {

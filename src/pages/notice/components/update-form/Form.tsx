@@ -16,7 +16,6 @@ export interface INoticeUpdateFormProps {
 export default function NoticeUpdateForm({ noticeData, onClose }: INoticeUpdateFormProps) {
   const { control, errors, watch, formFields, handleSubmit } = useUpdateNotice({ noticeData, onClose });
   const formValues = watch();
-  console.log(formFields)
   return (
     <form onSubmit={handleSubmit()}>
       <Grid container spacing={3} sx={{ pt: 1 }}>
