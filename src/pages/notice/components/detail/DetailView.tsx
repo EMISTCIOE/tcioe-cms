@@ -89,19 +89,22 @@ const DetailView: React.FC<IDetailViewProps> = ({ noticeData, onClose }) => {
         {/* --- Description Section --- */}
         {noticeData.description && (
           <Box sx={{ mt: 3 }}>
-            <Typography variant="body2" sx={{
-              fontWeight: 500,
-              color: theme.palette.text.secondary,
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-              mb: 2
-            }}>
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 500,
+                color: theme.palette.text.secondary,
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                mb: 2
+              }}
+            >
               Description
             </Typography>
             {/* <MainCard> */}
             <Box
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(noticeData.description),
+                __html: DOMPurify.sanitize(noticeData.description)
               }}
             />
             {/* </MainCard> */}

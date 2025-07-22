@@ -107,12 +107,7 @@ const DynamicInfoSection = <T,>({
       {visibleFields.map((path) => {
         const rawValue = getNestedValue(data, String(path));
         const label = customLabels[path as keyof typeof customLabels] || camelCaseToNormal(String(path).split('.').pop() || String(path));
-        const content = renderValue(
-          String(path),
-          rawValue,
-          dateTimeFields.map(String),
-          booleanFields.map(String)
-        );
+        const content = renderValue(String(path), rawValue, dateTimeFields.map(String), booleanFields.map(String));
 
         return (
           <Grid item xs={12} sm={6} md={12 / columns} key={String(path)}>

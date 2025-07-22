@@ -3,7 +3,7 @@ import { INoticeDetails } from '../../redux/types';
 
 export const viewNoticeConfig: Omit<DynamicInfoSectionProps<INoticeDetails>, 'data'> = {
   excludeFields: ['id', 'thumbnail', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'department', 'category', 'slug', 'description'],
-  fieldOrder: ['title', 'author.fullName', 'department.name', 'category.name', 'isFeatured', 'isActive',],
+  fieldOrder: ['title', 'author.fullName', 'department.name', 'category.name', 'isFeatured', 'isActive'],
   booleanFields: ['isActive', 'isFeatured'],
   columns: 4,
   customLabels: {
@@ -12,6 +12,6 @@ export const viewNoticeConfig: Omit<DynamicInfoSectionProps<INoticeDetails>, 'da
     'department.name': 'Department',
     'category.name': 'Category',
     isFeatured: 'Featured Status',
-    isActive: 'Active Status',
+    isActive: 'Active Status'
   }
 };
