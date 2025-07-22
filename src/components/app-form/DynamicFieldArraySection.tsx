@@ -7,7 +7,7 @@ import { Controller, useFieldArray, FieldArray, ArrayPath, Path, FieldErrors, Fi
 
 // PROJECT IMPORTS
 import CustomInput from './CustomInput';
-import { LabelForDynamicSection, LabelForInput } from './Helpers';
+import { LabelForDynamicSection } from './Helpers';
 import { DynamicFieldArraySectionProps, FormField, TField } from './types';
 
 export default function DynamicFieldArraySection<T extends Record<string, any>>({

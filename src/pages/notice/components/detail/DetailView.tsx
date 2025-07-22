@@ -1,17 +1,18 @@
+import DOMPurify from 'dompurify';
 import { useState } from 'react';
 
 // MUI Imports
-import Button from '@mui/material/Button';
 import { Close, InsertDriveFile, PictureAsPdf } from '@mui/icons-material';
 import { Avatar, Box, CircularProgress, IconButton, Paper, Typography, useTheme } from '@mui/material';
+import Button from '@mui/material/Button';
 
 // PROJECT IMPORTS
 import DefaultImage from '@/assets/images/users/avatar-1.png';
-import DynamicInfoSection from '@/components/detail-section';
-import MainCard from '@/components/cards/MainCard';
 import AppDialog from '@/components/app-dialog';
-import { viewNoticeConfig } from './config';
+import MainCard from '@/components/cards/MainCard';
+import DynamicInfoSection from '@/components/detail-section';
 import { INoticeDetails } from '../../redux/types';
+import { viewNoticeConfig } from './config';
 
 interface IDetailViewProps {
   noticeData: INoticeDetails | undefined;
@@ -85,9 +86,31 @@ const DetailView: React.FC<IDetailViewProps> = ({ noticeData, onClose }) => {
       <Box sx={{ px: { xxs: 0, xs: 2 }, py: 1 }}>
         <DynamicInfoSection {...DynamicInfoSectionProps} />
 
+        {/* --- Description Section --- */}
+        {noticeData.description && (
+          <Box sx={{ mt: 3 }}>
+            <Typography variant="body2" sx={{
+              fontWeight: 500,
+              color: theme.palette.text.secondary,
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              mb: 2
+            }}>
+              Description
+            </Typography>
+            {/* <MainCard> */}
+            <Box
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(noticeData.description),
+              }}
+            />
+            {/* </MainCard> */}
+          </Box>
+        )}
+
         {/* --- Medias Section --- */}
         {noticeData.medias && noticeData.medias.length > 0 && (
-          <Box sx={{ mt: 3, px: { xxs: 0, xs: 2 }, borderTop: 1, borderColor: 'divider', pt: 2 }}>
+          <Box sx={{ mt: 4, px: { xxs: 0, xs: 2 }, borderTop: 1, borderColor: 'divider', pt: 4 }}>
             <Typography variant="h5" sx={{ mb: 2 }}>
               Attached Media
             </Typography>

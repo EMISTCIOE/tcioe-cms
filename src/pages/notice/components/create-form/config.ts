@@ -62,7 +62,7 @@ export const defaultValues: Partial<TNoticeCreateFormDataType> = {
 
 // NOTE - Define the form fields
 export const noticeCreateFields: FormField<TNoticeCreateFormDataType>[] = [
-  { name: 'title', label: 'Title', xs: 12, sm: 12, type: 'text', multiline: true, rows: 3, required: true },
+  { name: 'title', label: 'Title', xs: 12, sm: 12, type: 'text', multiline: true, rows: 3, required: true, inputStyle: { fontSize: '1rem' } },
   { name: 'description', label: 'Description', xs: 12, sm: 12, type: 'editor', multiline: true, rows: 5 },
   { name: 'department', label: 'Department', xs: 8, sm: 5, type: 'select', options: [] },
   { name: 'category', label: 'Category', xs: 4, sm: 3, type: 'select', options: [], required: true },

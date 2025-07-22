@@ -88,7 +88,7 @@ export const InfoField: React.FC<InfoFieldProps> = ({ label, value }) => (
 // ------------------------
 // Main Component
 // ------------------------
-const DynamicInfoSection: React.FC<DynamicInfoSectionProps<any>> = ({
+const DynamicInfoSection = <T,>({
   data,
   columns = 2,
   excludeFields = [],
@@ -96,21 +96,26 @@ const DynamicInfoSection: React.FC<DynamicInfoSectionProps<any>> = ({
   dateTimeFields = [],
   booleanFields = [],
   customLabels = {}
-}) => {
+}: DynamicInfoSectionProps<T>) => {
   if (!data || typeof data !== 'object') return null;
 
   const fields = fieldOrder.length > 0 ? fieldOrder : Object.keys(data);
-  const visibleFields = fields.filter((field) => !excludeFields.some((ex) => field === ex || field.startsWith(`${ex}.`)));
+  const visibleFields = fields.filter((field) => !excludeFields.some((ex) => field === ex || String(field).startsWith(`${ex}.`)));
 
   return (
     <Grid container spacing={2}>
       {visibleFields.map((path) => {
-        const rawValue = getNestedValue(data, path);
-        const label = customLabels[path] || camelCaseToNormal(path.split('.').pop() || path);
-        const content = renderValue(path, rawValue, dateTimeFields, booleanFields);
+        const rawValue = getNestedValue(data, String(path));
+        const label = customLabels[path as keyof typeof customLabels] || camelCaseToNormal(String(path).split('.').pop() || String(path));
+        const content = renderValue(
+          String(path),
+          rawValue,
+          dateTimeFields.map(String),
+          booleanFields.map(String)
+        );
 
         return (
-          <Grid item xs={12} sm={6} md={12 / columns} key={path}>
+          <Grid item xs={12} sm={6} md={12 / columns} key={String(path)}>
             <InfoField label={label} value={content} />
           </Grid>
         );
