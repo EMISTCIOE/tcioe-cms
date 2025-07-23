@@ -17,6 +17,7 @@ const User = Loadable(lazy(() => import('@/pages/user')));
 const UserRole = Loadable(lazy(() => import('@/pages/user-role')));
 // Notice Pages
 const Notice = Loadable(lazy(() => import('@/pages/notice')));
+const College = Loadable(lazy(() => import('@/pages/college')));
 
 // ==============================|| PRIVATE ROUTES ||============================== //
 
@@ -36,6 +37,7 @@ const PrivateRoutes = () => (
         </Route>
         {/* Notice */}
         <Route path="notice" element={<Notice />} />
+        <Route path="college" element={<College />} />
         {/* User Setup */}
         <Route path="user-setup">
           <Route path="users" element={<User />} />
