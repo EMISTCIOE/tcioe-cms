@@ -3,9 +3,9 @@ import { Box, Button, Grid } from '@mui/material';
 
 // Project Imports
 import MainCard from '@/components/cards/MainCard';
-import useCreateCampusInfo from './hooks/useCreateCampusInfo';
+import useCreateCampusInfo from '../../hooks/useCreateCampusInfo';
 import FormSection from '@/components/app-form/FormSection';
-import { TCampusInfoCreateFormDataType } from './components/create-form/config';
+import { TCampusInfoCreateFormDataType } from './config';
 
 export interface ICampusInfoCreateFormProps {
   onClose?: () => void;
