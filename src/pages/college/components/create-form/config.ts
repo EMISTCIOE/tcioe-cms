@@ -19,7 +19,7 @@ export const campusInfoCreateFormSchema = z.object({
         message: 'Only image files are allowed'
       }
     )
-    .optional(),
+    .optional()
 });
 
 // NOTE - Generate a type from the schema
@@ -29,9 +29,9 @@ export type TCampusInfoCreateFormDataType = z.infer<typeof campusInfoCreateFormS
 export const defaultValues: Partial<TCampusInfoCreateFormDataType> = {
   name: '',
   email: '',
-  phone:undefined,
-  location:'',
-  organizationChart:null,
+  phone: undefined,
+  location: '',
+  organizationChart: null
 };
 
 // NOTE - Define the form fields
@@ -42,11 +42,11 @@ export const campusInfoCreateFields: FormField<TCampusInfoCreateFormDataType>[] 
     xs: 12,
     sm: 4,
     type: 'text',
-    required: true,
+    required: true
   },
-  { name: 'email', label: 'Email', xs: 12, sm: 4, type: 'email'},
-  { name: 'phone', label: 'Phone', xs: 12, sm: 4, type: 'number'},
-  { name: 'location', label: 'Location', xs: 12, sm: 4, type: 'text'},
+  { name: 'email', label: 'Email', xs: 12, sm: 4, type: 'email' },
+  { name: 'phone', label: 'Phone', xs: 12, sm: 4, type: 'number' },
+  { name: 'location', label: 'Location', xs: 12, sm: 4, type: 'text' },
   {
     name: 'organizationChart',
     label: 'OrganizationChart',
@@ -54,5 +54,5 @@ export const campusInfoCreateFields: FormField<TCampusInfoCreateFormDataType>[] 
     sm: 4,
     type: 'image',
     imageSize: 120
-  },
+  }
 ];

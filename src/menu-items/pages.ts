@@ -1,5 +1,5 @@
 // mui-icons imports
-import { DashboardOutlined, Campaign, Summarize , School} from '@mui/icons-material';
+import { DashboardOutlined, Campaign, Summarize, School } from '@mui/icons-material';
 import { MenuItem } from './types';
 
 // icons
@@ -28,15 +28,14 @@ const pages: MenuItem = {
       icon: icons.Campaign,
       breadcrumbs: false
     },
-     {
+    {
       id: 'college',
       title: 'College',
       type: 'item',
       url: '/college',
       icon: icons.School,
       breadcrumbs: false
-    },
-    
+    }
   ]
 };
 

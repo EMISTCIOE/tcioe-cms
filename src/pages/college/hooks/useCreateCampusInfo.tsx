@@ -9,9 +9,13 @@ import { setMessage } from '@/pages/common/redux/common.slice';
 
 import { handleClientError } from '@/utils/functions/handleError';
 import { useState } from 'react';
-import { ICampusInfoCreateFormProps } from '../components/create-form'
-import { defaultValues, campusInfoCreateFields, campusInfoCreateFormSchema, TCampusInfoCreateFormDataType } from '../components/create-form/config';
-
+import { ICampusInfoCreateFormProps } from '../components/create-form';
+import {
+  defaultValues,
+  campusInfoCreateFields,
+  campusInfoCreateFormSchema,
+  TCampusInfoCreateFormDataType
+} from '../components/create-form/config';
 
 const useCreateCampusInfo = ({ onClose }: ICampusInfoCreateFormProps) => {
   const dispatch = useAppDispatch();
@@ -34,7 +38,7 @@ const useCreateCampusInfo = ({ onClose }: ICampusInfoCreateFormProps) => {
   const onSubmit = async (data: TCampusInfoCreateFormDataType) => {
     try {
       const payload = { ...data } as ICampusInfoCreatePayload;
-     // const res = await createCampusInfo(payload).unwrap();
+      // const res = await createCampusInfo(payload).unwrap();
       dispatch(setMessage({ message: 'updated', variant: 'success' }));
       onClose?.();
     } catch (error) {
@@ -43,11 +47,11 @@ const useCreateCampusInfo = ({ onClose }: ICampusInfoCreateFormProps) => {
         setError,
         enqueueSnackbar,
         fieldKeyMap: {
-          name:'name',
-          email:'email',
-          phone:'phone',
-          location:'location',
-          organizationChart:'organizationChart',
+          name: 'name',
+          email: 'email',
+          phone: 'phone',
+          location: 'location',
+          organizationChart: 'organizationChart'
         }
       });
     }
