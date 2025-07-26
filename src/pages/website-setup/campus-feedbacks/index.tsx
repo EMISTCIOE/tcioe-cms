@@ -4,13 +4,18 @@ import { lazy } from 'react';
 // PROJECT IMPORTS
 import { validatePermissions } from '@/utils/permissions/validatePermissions';
 import { campusFeedbacksPermissions } from './constants/persmissions';
-import { Typography } from '@mui/material';
+
+// LAZY COMPONENT IMPORTS
+const CampusFeedbacksListing = lazy(() => import('./components/listing'));
+const CampusFeedbacksDetailsModal = lazy(() => import('./components/detail'));
+const CampusFeedbacksEditModal = lazy(() => import('./components/update-form'));
 
 const CampusFeedbacks = () => {
   return (
     <>
-      <Typography variant="h4">Campus Feedbacks</Typography>
-      <Typography variant="body2">This page is under construction.</Typography>
+      <CampusFeedbacksListing />
+      <CampusFeedbacksEditModal />
+      <CampusFeedbacksDetailsModal />
     </>
   );
 };
