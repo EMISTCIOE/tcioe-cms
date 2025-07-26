@@ -2,6 +2,12 @@
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import Person3Icon from '@mui/icons-material/Person3';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ArticleIcon from '@mui/icons-material/Article';
+import DownloadIcon from '@mui/icons-material/Download';
+import FeedbackIcon from '@mui/icons-material/Feedback';
+import InfoIcon from '@mui/icons-material/Info';
+import LanguageIcon from '@mui/icons-material/Language';
 
 // project-imports
 import { MenuItem } from './types';
@@ -10,7 +16,13 @@ import { MenuItem } from './types';
 const icons = {
   SupervisedUserCircleIcon,
   ManageAccountsIcon,
-  Person3Icon
+  Person3Icon,
+  CalendarMonthIcon,
+  ArticleIcon,
+  DownloadIcon,
+  FeedbackIcon,
+  InfoIcon,
+  LanguageIcon
 };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
@@ -40,6 +52,62 @@ const modules: MenuItem = {
           type: 'item',
           icon: icons.ManageAccountsIcon,
           url: '/user-setup/user-roles',
+          breadcrumbs: false
+        }
+      ]
+    },
+    {
+      id: 'website-management',
+      title: 'Manage Website',
+      type: 'collapse',
+      icon: icons.LanguageIcon,
+      children: [
+        {
+          id: 'academic-calenders',
+          title: 'Academic Calenders',
+          icon: icons.CalendarMonthIcon,
+          type: 'item',
+          url: '/website-setup/academic-calenders',
+          breadcrumbs: false
+        },
+        {
+          id: 'campus-downloads',
+          title: 'Campus Downloads',
+          type: 'item',
+          icon: icons.DownloadIcon,
+          url: '/website-setup/campus-downloads',
+          breadcrumbs: false
+        },
+        {
+          id: 'campus-feedbacks',
+          title: 'Campus Feedbacks',
+          type: 'item',
+          icon: icons.FeedbackIcon,
+          url: '/website-setup/campus-feedbacks',
+          breadcrumbs: false
+        },
+        {
+          id: 'campus-info',
+          title: 'Campus Info',
+          type: 'item',
+          icon: icons.InfoIcon,
+          url: '/website-setup/campus-info',
+          breadcrumbs: false
+        },
+        {
+          id: 'campus-key-officials',
+          title: 'Campus Key Officials',
+          type: 'item',
+          icon: icons.Person3Icon,
+          url: '/website-setup/campus-key-officials',
+          breadcrumbs: false
+        },
+        {
+          id: 'campus-reports',
+          title: 'Campus Reports',
+          type: 'item',
+          icon: icons.ArticleIcon,
+          url: '/website-setup/campus-reports',
           breadcrumbs: false
         }
       ]
