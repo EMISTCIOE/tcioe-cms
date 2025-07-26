@@ -13,7 +13,7 @@ export interface ICampusInfoUpdateFormProps {
 }
 
 export default function CampusInfoUpdateForm({ campusInfoData }: ICampusInfoUpdateFormProps) {
-  const { control, errors, formFields, handleSubmit } = useUpdateCampusInfo({ campusInfoData});
+  const { control, errors, formFields, handleSubmit } = useUpdateCampusInfo({ campusInfoData });
 
   return (
     <form onSubmit={handleSubmit()}>
