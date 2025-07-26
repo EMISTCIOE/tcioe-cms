@@ -31,7 +31,7 @@ export default function App() {
         <ErrorBoundary>
           <ThemeCustomization>
             <ScrollTop>
-              <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+              <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
                 <SnackbarInitializer />
                 <Routes />
               </SnackbarProvider>

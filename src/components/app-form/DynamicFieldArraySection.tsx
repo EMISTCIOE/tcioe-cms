@@ -72,7 +72,10 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
                 </Grid>
               );
             })}
-            {fields.length > 1 && (
+
+            {/* Delete Button */}
+            {/* if it is required, ensure at least one field remains else allow deletion all */}
+            {fields.length > (required ? 1 : 0) && (
               <Grid item xxs={1} xs={1} sm={1} alignSelf="center">
                 <IconButton
                   color="error"

@@ -31,7 +31,6 @@ const NoticeDetailsModal = () => {
       open={!!viewId}
       onClose={handleClose}
       fullWidth
-      maxWidth="lg"
       content={
         isLoading ? (
           <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>

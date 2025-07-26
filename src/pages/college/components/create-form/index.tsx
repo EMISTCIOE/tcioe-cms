@@ -3,7 +3,7 @@ import { Box, Button, Grid } from '@mui/material';
 
 // Project Imports
 import MainCard from '@/components/cards/MainCard';
-import useCreateCampusInfo from '../../hooks/useCreateCampusInfo';
+import useUpdateCampusInfo from '../../hooks/useUpdateCollegeInfo'
 import FormSection from '@/components/app-form/FormSection';
 import { TCampusInfoCreateFormDataType } from './config';
 
@@ -12,7 +12,7 @@ export interface ICampusInfoCreateFormProps {
 }
 
 export default function CampusInfoCreateForm({ onClose }: ICampusInfoCreateFormProps) {
-  const { control, errors, watch, formFields, handleSubmit } = useCreateCampusInfo({ onClose });
+  const { control, errors, watch, formFields, handleSubmit } = useUpdateCampusInfo({ onClose });
   const formValues = watch();
 
   return (

@@ -95,6 +95,8 @@ export const createActionsColumn = <T extends object>(
         ];
       }
 
+      const additionalActions = config.customActions?.map((fn) => fn(params)) ?? [];
+
       return [
         allowEditing && (
           <GridActionsCellItem
@@ -123,6 +125,9 @@ export const createActionsColumn = <T extends object>(
           label="View Details"
           onClick={() => handlers?.viewDetails?.(params.id)}
         />,
+        // Adding more actions before the delete action
+        ...additionalActions,
+        // Delete action at the end
         allowDeleting && (
           <GridActionsCellItem
             key="delete"

@@ -2,16 +2,17 @@ import DOMPurify from 'dompurify';
 import { useState } from 'react';
 
 // MUI Imports
-import { Close, InsertDriveFile, PictureAsPdf } from '@mui/icons-material';
-import { Avatar, Box, CircularProgress, IconButton, Paper, Typography, useTheme } from '@mui/material';
-import Button from '@mui/material/Button';
+import { InsertDriveFile } from '@mui/icons-material';
+import { Avatar, Box, CircularProgress, Paper, Typography, useTheme } from '@mui/material';
 
 // PROJECT IMPORTS
+import FilePreviewDialog from '@/components/app-dialog/FilePreviewDialog';
 import DefaultImage from '@/assets/images/users/avatar-1.png';
-import AppDialog from '@/components/app-dialog';
-import MainCard from '@/components/cards/MainCard';
 import DynamicInfoSection from '@/components/detail-section';
+import CloseButton from '@/components/app-dialog/CloseButton';
+import MainCard from '@/components/cards/MainCard';
 import { INoticeDetails } from '../../redux/types';
+import PdfImage from '@/assets/images/pdf.png';
 import { viewNoticeConfig } from './config';
 
 interface IDetailViewProps {
@@ -58,9 +59,7 @@ const DetailView: React.FC<IDetailViewProps> = ({ noticeData, onClose }) => {
   return (
     <MainCard sx={{ p: 0, overflow: 'hidden', position: 'relative' }}>
       {/* Close Button */}
-      <IconButton onClick={onClose} aria-label="close" size="small" sx={{ position: 'absolute', top: 5, right: 5, zIndex: 1 }}>
-        <Close />
-      </IconButton>
+      <CloseButton onClose={onClose} />
 
       {/* Header */}
       <Box
@@ -113,8 +112,17 @@ const DetailView: React.FC<IDetailViewProps> = ({ noticeData, onClose }) => {
 
         {/* --- Medias Section --- */}
         {noticeData.medias && noticeData.medias.length > 0 && (
-          <Box sx={{ mt: 4, px: { xxs: 0, xs: 2 }, borderTop: 1, borderColor: 'divider', pt: 4 }}>
-            <Typography variant="h5" sx={{ mb: 2 }}>
+          <Box sx={{ mt: 4, borderTop: 1, borderColor: 'divider', pt: 4 }}>
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 500,
+                color: theme.palette.text.secondary,
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                mb: 2
+              }}
+            >
               Attached Media
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
@@ -153,10 +161,10 @@ const DetailView: React.FC<IDetailViewProps> = ({ noticeData, onClose }) => {
                       <img
                         src={media.file!}
                         alt={media.caption || 'Attached Image'}
-                        style={{ width: '100px', maxHeight: '100px', objectFit: 'contain' }}
+                        style={{ width: 60, maxHeight: 60, objectFit: 'cover' }}
                       />
                     ) : isPdf ? (
-                      <PictureAsPdf sx={{ fontSize: 48, color: theme.palette.error.main }} />
+                      <img src={PdfImage} alt="PDF Icon" style={{ width: 60, height: 60, objectFit: 'cover' }} />
                     ) : (
                       <InsertDriveFile sx={{ fontSize: 48, color: theme.palette.text.secondary }} />
                     )}
@@ -183,32 +191,8 @@ const DetailView: React.FC<IDetailViewProps> = ({ noticeData, onClose }) => {
         {/* --- End Medias Section --- */}
       </Box>
 
-      {/* --- AppDialog for File Preview --- */}
-      <AppDialog
-        open={isFileModalOpen}
-        onClose={handleCloseFileModal}
-        title={isCurrentFilePdf ? 'Document Preview' : 'Image Preview'}
-        fullWidth
-        maxWidth={'lg'}
-        content={
-          <Box sx={{ p: 0, height: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            {fileModalUrl &&
-              (isCurrentFilePdf ? (
-                <iframe src={fileModalUrl} style={{ width: '100%', height: '100%', border: 'none' }} title="PDF Preview" />
-              ) : (
-                <img src={fileModalUrl} alt="File Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
-              ))}
-          </Box>
-        }
-        actions={
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-            <Button variant="outlined" onClick={handleCloseFileModal}>
-              Close
-            </Button>
-          </Box>
-        }
-      />
-      {/* --------------------------------- */}
+      {/* --- File Preview Dialog --- */}
+      <FilePreviewDialog open={isFileModalOpen} onClose={handleCloseFileModal} fileUrl={fileModalUrl} isPdf={isCurrentFilePdf} />
     </MainCard>
   );
 };

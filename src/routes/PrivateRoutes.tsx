@@ -17,8 +17,14 @@ const User = Loadable(lazy(() => import('@/pages/user')));
 const UserRole = Loadable(lazy(() => import('@/pages/user-role')));
 // Notice Pages
 const Notice = Loadable(lazy(() => import('@/pages/notice')));
-const College = Loadable(lazy(() => import('@/pages/college')));
 
+// Website Setup Pages
+const AcademicCalenders = Loadable(lazy(() => import('@/pages/website-setup/academic-calenders')));
+const CampusDownloads = Loadable(lazy(() => import('@/pages/website-setup/campus-downloads')));
+const CampusFeedbacks = Loadable(lazy(() => import('@/pages/website-setup/campus-feedbacks')));
+const CampusInfo = Loadable(lazy(() => import('@/pages/website-setup/campus-info')));
+const CampusKeyOfficials = Loadable(lazy(() => import('@/pages/website-setup/campus-key-officials')));
+const CampusReports = Loadable(lazy(() => import('@/pages/website-setup/campus-reports')));
 // ==============================|| PRIVATE ROUTES ||============================== //
 
 const PrivateRoutes = () => (
@@ -37,11 +43,18 @@ const PrivateRoutes = () => (
         </Route>
         {/* Notice */}
         <Route path="notice" element={<Notice />} />
-        <Route path="college" element={<College />} />
         {/* User Setup */}
         <Route path="user-setup">
           <Route path="users" element={<User />} />
           <Route path="user-roles" element={<UserRole />} />
+        </Route>
+        <Route path="website-setup">
+          <Route path="academic-calenders" element={<AcademicCalenders />} />
+          <Route path="campus-downloads" element={<CampusDownloads />} />
+          <Route path="campus-feedbacks" element={<CampusFeedbacks />} />
+          <Route path="campus-info" element={<CampusInfo />} />
+          <Route path="campus-key-officials" element={<CampusKeyOfficials />} />
+          <Route path="campus-reports" element={<CampusReports />} />
         </Route>
       </Route>
       <Route path="app-settings" element={<UnderConstruction />} />
