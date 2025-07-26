@@ -1,4 +1,3 @@
-// PACKAGE IMPORTS
 import { lazy } from 'react';
 
 // PROJECT IMPORTS
