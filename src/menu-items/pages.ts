@@ -1,9 +1,9 @@
 // mui-icons imports
-import { DashboardOutlined, Campaign, Summarize } from '@mui/icons-material';
+import { DashboardOutlined, Campaign, Summarize, School } from '@mui/icons-material';
 import { MenuItem } from './types';
 
 // icons
-const icons = { DashboardOutlined, Summarize, Campaign };
+const icons = { DashboardOutlined, Summarize, Campaign, School };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
 

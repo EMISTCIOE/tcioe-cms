@@ -67,6 +67,7 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
                         helperText={errorAtIndex(index, item.name)?.message}
                         required={item.required}
                         accpetFileTypes={item?.accpetFileTypes}
+                        defaultValue={item?.defaultValue}
                       />
                     )}
                   />

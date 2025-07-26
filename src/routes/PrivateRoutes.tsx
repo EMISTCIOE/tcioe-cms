@@ -17,6 +17,7 @@ const User = Loadable(lazy(() => import('@/pages/user')));
 const UserRole = Loadable(lazy(() => import('@/pages/user-role')));
 // Notice Pages
 const Notice = Loadable(lazy(() => import('@/pages/notice')));
+
 // Website Setup Pages
 const AcademicCalenders = Loadable(lazy(() => import('@/pages/website-setup/academic-calenders')));
 const CampusDownloads = Loadable(lazy(() => import('@/pages/website-setup/campus-downloads')));
@@ -24,7 +25,6 @@ const CampusFeedbacks = Loadable(lazy(() => import('@/pages/website-setup/campus
 const CampusInfo = Loadable(lazy(() => import('@/pages/website-setup/campus-info')));
 const CampusKeyOfficials = Loadable(lazy(() => import('@/pages/website-setup/campus-key-officials')));
 const CampusReports = Loadable(lazy(() => import('@/pages/website-setup/campus-reports')));
-
 // ==============================|| PRIVATE ROUTES ||============================== //
 
 const PrivateRoutes = () => (
