@@ -2,6 +2,7 @@ import { Theme } from '@mui/material/styles';
 import { INoticeItem, NoticeStatus } from '../../redux/types';
 import { BadgeColorMap, ColumnConfig } from '@/components/app-table/columns';
 import { enumToOptions } from '@/utils/functions/formatString';
+import { GridRowId, GridRowParams } from '@mui/x-data-grid';
 
 export interface ITableData extends Omit<INoticeItem, 'isFeatured'> {
   actions?: string;
@@ -23,7 +24,10 @@ const IsFeaturedColorMap: BadgeColorMap = {
 export const getColumnConfig = (
   theme: Theme,
   categoryOptions: ColumnConfig<ITableData>['valueOptions'],
-  departmentOptions: ColumnConfig<ITableData>['valueOptions']
+  departmentOptions: ColumnConfig<ITableData>['valueOptions'],
+  canUpdateStatus: boolean,
+  onStatusChange: (id: GridRowId, value: ITableData[keyof ITableData]) => Promise<void>,
+  customActions: ((params: GridRowParams<ITableData>) => JSX.Element)[]
 ): ColumnConfig<ITableData>[] => [
   { field: 'thumbnail', headerName: 'THUMBNAIL', type: 'image' },
   { field: 'title', headerName: 'TITLE', type: 'text', minWidth: 200 },
@@ -64,7 +68,14 @@ export const getColumnConfig = (
     type: 'select',
     filterable: true,
     valueOptions: [...enumToOptions(NoticeStatus)],
-    colorMap: StatusColorMap
+    colorMap: StatusColorMap,
+    editable: canUpdateStatus,
+    handleChange: (id, value) => onStatusChange(id, value)
   },
-  { field: 'actions', headerName: '', type: 'actions' }
+  {
+    field: 'actions',
+    headerName: 'ACTIONS',
+    type: 'actions',
+    customActions
+  }
 ];

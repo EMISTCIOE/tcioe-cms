@@ -50,6 +50,7 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
     if (noticeData) {
       reset({
         ...noticeData,
+        status: noticeData.status || NoticeStatus.DRAFT,
         category: noticeData.category?.id ?? null,
         department: noticeData.department?.id ?? undefined,
         medias: noticeData.medias ?? undefined,

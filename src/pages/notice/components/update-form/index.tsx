@@ -8,12 +8,13 @@ import AppDialog from '@/components/app-dialog';
 // LOCAL IMPORTS
 import { useRetrieveNoticeQuery } from '../../redux/notice.api';
 import { noticeState } from '../../redux/notice.selector';
-import { clearViewId, setEdit } from '../../redux/notice.slice';
+import { clearNoticeData, setEdit } from '../../redux/notice.slice';
 import NoticeUpdateForm from './Form';
+import NoticeStatusUpdateForm from '../status-update/Form';
 
 const NoticeEditModal = () => {
   const dispatch = useDispatch();
-  const { edit, currentId } = useSelector(noticeState);
+  const { edit, currentId, isStatusModal } = useSelector(noticeState);
 
   // Only fetch when we have a valid ID and are in edit mode
   const { data: noticeData, isLoading } = useRetrieveNoticeQuery(currentId, { skip: !currentId || !edit });
@@ -25,19 +26,21 @@ const NoticeEditModal = () => {
 
   const handleClose = () => {
     dispatch(setEdit(false));
-    dispatch(clearViewId());
+    dispatch(clearNoticeData());
   };
 
   return (
     <AppDialog
       open={edit}
       onClose={handleClose}
-      fullWidth
+      fullWidth={!isStatusModal}
       content={
         isLoading ? (
           <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
             <CircularProgress />
           </div>
+        ) : isStatusModal ? (
+          <NoticeStatusUpdateForm noticeData={noticeData} onClose={handleClose} />
         ) : (
           <NoticeUpdateForm noticeData={noticeData} onClose={handleClose} />
         )

@@ -9,8 +9,10 @@ import {
   INoticeAuthorListResponse,
   INoticeCategoryListResponse,
   INoticeDepartmentListResponse,
-  MediaType
+  MediaType,
+  NoticeStatus
 } from './types';
+import { GridRowId } from '@mui/x-data-grid';
 
 export const noticeAPI = 'cms/notice-mod/notices';
 
@@ -104,13 +106,21 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
 
     patchNotice: builder.mutation<IMutationSuccessResponse, { id: number; values: INoticeUpdatePayload }>({
       query: ({ id, values }) => {
-        const { thumbnail, medias, ...rest } = values;
+        const { thumbnail, medias, status, isDraft, ...rest } = values;
+
+        // to match api format :
+        // status is extracted for not sending it.
+        // and isDraft for not sending it if false.
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
           if (value !== undefined && value !== null) {
             body.append(key, value as string | Blob);
           }
+        }
+
+        if (isDraft) {
+          body.append('isDraft', String(isDraft));
         }
 
         // append department if it's null also
@@ -229,6 +239,16 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
         };
       }
       // invalidatesTags: ['Notice']
+    }),
+    patchNoticeStatus: builder.mutation<IMutationSuccessResponse, { id: GridRowId | number; values: { status: NoticeStatus } }>({
+      query: ({ id, values }) => {
+        return {
+          url: `${noticeAPI}/${id}/update-status`,
+          method: 'PATCH',
+          data: values
+        };
+      },
+      invalidatesTags: ['Notice']
     })
   })
 });
@@ -244,5 +264,6 @@ export const {
   useGetNoticeCategoriesQuery,
   useGetNoticeAuthorsQuery,
   useDeleteNoticeMutation,
-  useDeleteNoticeMediaMutation
+  useDeleteNoticeMediaMutation,
+  usePatchNoticeStatusMutation
 } = noticeAPISlice;

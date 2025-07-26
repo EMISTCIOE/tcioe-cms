@@ -5,6 +5,13 @@ export interface INoticeSliceState {
   edit: boolean;
   currentId: number | null;
   viewId: number | null;
+  isStatusModal: boolean;
+}
+
+export interface INoticeStatusSliceState {
+  edit: boolean;
+  currentId: number | null;
+  viewId: number | null;
 }
 
 export enum NoticeStatus {
