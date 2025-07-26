@@ -33,7 +33,6 @@ import { ErrorForInput, LabelForInput } from './Helpers';
 import { useInputHandlers } from './useInputHandlers';
 import PdfImage from '@/assets/images/pdf.png';
 
-
 // Import RichTextEditor and any required subcomponents or extensions
 import { RichTextEditor, RichTextEditorRef } from 'mui-tiptap';
 import useExtensions from './useExtensions';
@@ -138,13 +137,13 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                           display: 'inline-flex',
                           ...(selectedOption?.sx
                             ? {
-                              backgroundColor: selectedOption.sx['& .MuiBox-root']?.backgroundColor,
-                              color: selectedOption.sx['& .MuiBox-root']?.color,
-                              fontSize: (theme) => theme.typography.body2.fontSize,
-                              borderRadius: '4px',
-                              padding: '2px 10px',
-                              maxWidth: 'fit-content'
-                            }
+                                backgroundColor: selectedOption.sx['& .MuiBox-root']?.backgroundColor,
+                                color: selectedOption.sx['& .MuiBox-root']?.color,
+                                fontSize: (theme) => theme.typography.body2.fontSize,
+                                borderRadius: '4px',
+                                padding: '2px 10px',
+                                maxWidth: 'fit-content'
+                              }
                             : {})
                         }}
                       >
@@ -211,9 +210,9 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                             width: '100%',
                             ...(option?.sx
                               ? {
-                                backgroundColor: option.sx['& .MuiBox-root']?.backgroundColor,
-                                color: option.sx['& .MuiBox-root']?.color
-                              }
+                                  backgroundColor: option.sx['& .MuiBox-root']?.backgroundColor,
+                                  color: option.sx['& .MuiBox-root']?.color
+                                }
                               : {}),
                             maxWidth: 'fit-content',
                             padding: '1px 10px',
