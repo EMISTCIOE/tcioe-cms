@@ -2,19 +2,18 @@ import DOMPurify from 'dompurify';
 import { useState } from 'react';
 
 // MUI Imports
-import { Close, InsertDriveFile, PictureAsPdf } from '@mui/icons-material';
-import { Avatar, Box, CircularProgress, IconButton, Paper, Typography, useTheme } from '@mui/material';
-import Button from '@mui/material/Button';
+import { InsertDriveFile } from '@mui/icons-material';
+import { Avatar, Box, CircularProgress, Paper, Typography, useTheme } from '@mui/material';
 
 // PROJECT IMPORTS
-import DefaultImage from '@/assets/images/users/avatar-1.png';
-import AppDialog from '@/components/app-dialog';
-import MainCard from '@/components/cards/MainCard';
-import DynamicInfoSection from '@/components/detail-section';
-import { INoticeDetails } from '../../redux/types';
-import { viewNoticeConfig } from './config';
-import CloseButton from '@/components/app-dialog/CloseButton';
 import FilePreviewDialog from '@/components/app-dialog/FilePreviewDialog';
+import DefaultImage from '@/assets/images/users/avatar-1.png';
+import DynamicInfoSection from '@/components/detail-section';
+import CloseButton from '@/components/app-dialog/CloseButton';
+import MainCard from '@/components/cards/MainCard';
+import { INoticeDetails } from '../../redux/types';
+import PdfImage from '@/assets/images/pdf.png';
+import { viewNoticeConfig } from './config';
 
 interface IDetailViewProps {
   noticeData: INoticeDetails | undefined;
@@ -165,7 +164,7 @@ const DetailView: React.FC<IDetailViewProps> = ({ noticeData, onClose }) => {
                         style={{ width: 60, maxHeight: 60, objectFit: 'cover' }}
                       />
                     ) : isPdf ? (
-                      <img src="/src/assets/images/pdf.png" alt="PDF Icon" style={{ width: 60, height: 60, objectFit: 'cover' }} />
+                      <img src={PdfImage} alt="PDF Icon" style={{ width: 60, height: 60, objectFit: 'cover' }} />
                     ) : (
                       <InsertDriveFile sx={{ fontSize: 48, color: theme.palette.text.secondary }} />
                     )}

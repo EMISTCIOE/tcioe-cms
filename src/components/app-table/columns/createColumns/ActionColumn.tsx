@@ -95,7 +95,9 @@ export const createActionsColumn = <T extends object>(
         ];
       }
 
-      const defaultActions = [
+      const additionalActions = config.customActions?.map((fn) => fn(params)) ?? [];
+
+      return [
         allowEditing && (
           <GridActionsCellItem
             component="button"
@@ -123,6 +125,9 @@ export const createActionsColumn = <T extends object>(
           label="View Details"
           onClick={() => handlers?.viewDetails?.(params.id)}
         />,
+        // Adding more actions before the delete action
+        ...additionalActions,
+        // Delete action at the end
         allowDeleting && (
           <GridActionsCellItem
             key="delete"
@@ -136,10 +141,6 @@ export const createActionsColumn = <T extends object>(
           />
         )
       ].filter(Boolean) as JSX.Element[];
-
-      const additionalActions = config.customActions?.map((fn) => fn(params)) ?? [];
-
-      return [...defaultActions, ...additionalActions];
     }
   };
 };

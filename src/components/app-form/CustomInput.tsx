@@ -1,6 +1,6 @@
 // MUI imports
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { DeleteOutline, EditOutlined, CloudUploadOutlined, PictureAsPdfOutlined, Close } from '@mui/icons-material';
+import { DeleteOutline, EditOutlined, CloudUploadOutlined } from '@mui/icons-material';
 
 import {
   Box,
@@ -25,20 +25,19 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 // React imports
 import dayjs from 'dayjs';
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useRef } from 'react';
 
 // Project imports
 import { CustomInputProps, SelectOption } from './types';
 import { ErrorForInput, LabelForInput } from './Helpers';
 import { useInputHandlers } from './useInputHandlers';
-import AppDialog from '../app-dialog';
+import PdfImage from '@/assets/images/pdf.png';
+
 
 // Import RichTextEditor and any required subcomponents or extensions
 import { RichTextEditor, RichTextEditorRef } from 'mui-tiptap';
 import useExtensions from './useExtensions';
 import EditorMenuControls from './EditorMenuControls';
-import MainCard from '../cards/MainCard';
-import CloseButton from '../app-dialog/CloseButton';
 import FilePreviewDialog from '../app-dialog/FilePreviewDialog';
 
 /* ------------------------------------------------------------------
@@ -139,13 +138,13 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                           display: 'inline-flex',
                           ...(selectedOption?.sx
                             ? {
-                                backgroundColor: selectedOption.sx['& .MuiBox-root']?.backgroundColor,
-                                color: selectedOption.sx['& .MuiBox-root']?.color,
-                                fontSize: (theme) => theme.typography.body2.fontSize,
-                                borderRadius: '4px',
-                                padding: '2px 10px',
-                                maxWidth: 'fit-content'
-                              }
+                              backgroundColor: selectedOption.sx['& .MuiBox-root']?.backgroundColor,
+                              color: selectedOption.sx['& .MuiBox-root']?.color,
+                              fontSize: (theme) => theme.typography.body2.fontSize,
+                              borderRadius: '4px',
+                              padding: '2px 10px',
+                              maxWidth: 'fit-content'
+                            }
                             : {})
                         }}
                       >
@@ -212,9 +211,9 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                             width: '100%',
                             ...(option?.sx
                               ? {
-                                  backgroundColor: option.sx['& .MuiBox-root']?.backgroundColor,
-                                  color: option.sx['& .MuiBox-root']?.color
-                                }
+                                backgroundColor: option.sx['& .MuiBox-root']?.backgroundColor,
+                                color: option.sx['& .MuiBox-root']?.color
+                              }
                               : {}),
                             maxWidth: 'fit-content',
                             padding: '1px 10px',
@@ -327,7 +326,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                   >
                     {isPdf ? (
                       <>
-                        <img src="/src/assets/images/pdf.png" alt="PDF Icon" style={{ width: 60, height: 60, objectFit: 'cover' }} />
+                        <img src={PdfImage} alt="PDF Icon" style={{ width: 60, height: 60, objectFit: 'cover' }} />
                       </>
                     ) : isImage ? (
                       <>
