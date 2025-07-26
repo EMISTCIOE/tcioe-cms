@@ -1,15 +1,19 @@
+// PACKAGE IMPORTS
 import { lazy } from 'react';
 
 // PROJECT IMPORTS
 import { validatePermissions } from '@/utils/permissions/validatePermissions';
 import { campusInfoPermissions } from './constants/persmissions';
-import { Typography } from '@mui/material';
+import { useGetCampusInfoQuery } from './redux/campusInfo.api';
+
+// LAZY COMPONENT IMPORTS
+const CampusInfoEditModal = lazy(() => import('./components/updateForm'));
 
 const CampusInfo = () => {
+  const { data } = useGetCampusInfoQuery();
   return (
     <>
-      <Typography variant="h4">Campus Info</Typography>
-      <Typography variant="body2">This page is under construction.</Typography>
+      <CampusInfoEditModal campusInfoData={data} />
     </>
   );
 };

@@ -27,14 +27,6 @@ const pages: MenuItem = {
       url: '/notice',
       icon: icons.Campaign,
       breadcrumbs: false
-    },
-    {
-      id: 'college',
-      title: 'College',
-      type: 'item',
-      url: '/college',
-      icon: icons.School,
-      breadcrumbs: false
     }
   ]
 };
