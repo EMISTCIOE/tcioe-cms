@@ -4,15 +4,20 @@ import { lazy } from 'react';
 // PROJECT IMPORTS
 import { validatePermissions } from '@/utils/permissions/validatePermissions';
 import { campusKeyOfficialsPermissions } from './constants/persmissions';
-import { Typography } from '@mui/material';
 
-const CampuskeyOfficials = () => {
+// LAZY COMPONENT IMPORTS
+const CampusKeyOfficialsListing = lazy(() => import('./components/listing'));
+const CampusKeyOfficialsDetailsModal = lazy(() => import('./components/detail'));
+const CampusKeyOfficialsEditModal = lazy(() => import('./components/update-form'));
+
+const CampusKeyOfficials = () => {
   return (
     <>
-      <Typography variant="h4">Campus key Officials</Typography>
-      <Typography variant="body2">This page is under construction.</Typography>
+      <CampusKeyOfficialsListing />
+      <CampusKeyOfficialsEditModal />
+      <CampusKeyOfficialsDetailsModal />
     </>
   );
 };
 
-export default validatePermissions(CampuskeyOfficials, campusKeyOfficialsPermissions);
+export default validatePermissions(CampusKeyOfficials, campusKeyOfficialsPermissions);

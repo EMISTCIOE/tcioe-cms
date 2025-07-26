@@ -49,6 +49,8 @@ export interface CustomInputProps {
   handleToggleVisibility?: (field: keyof CustomInputProps['showPassword']) => void;
   /** Image preview size (for image type) */
   imageSize?: number;
+  /** Accepts the specified files only for type 'file' */
+  accpetFileTypes?: 'image/*' | 'application/*' | 'image/*,application/*';
   /** To show '*' for required fields */
   required?: boolean;
   /** Label for true value of checkbox */
@@ -92,6 +94,7 @@ export type FormField<T extends FieldValues> = {
   defaultValue?: any; // Default value for the field.
   sx?: any; // Style object for the field.
   imageSize?: number; // Size of the image for image inputs.
+  accpetFileTypes?: 'image/*' | 'application/*' | 'image/*,application/*'; // Accepted file types for file inputs. default is 'image/*,application/*'.
   required?: boolean; // Whether the field is required. default is false.
   trueLabel?: string; // Label for the true value of a checkbox.
   multipleChips?: boolean; // Whether the field allows multiple chip selections.

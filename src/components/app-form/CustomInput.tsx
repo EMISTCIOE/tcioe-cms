@@ -51,6 +51,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
       value,
       onChange,
       options,
+      accpetFileTypes = 'image/*,application/*',
       multiline = false,
       rows = 1,
       fullwidth = true,
@@ -337,10 +338,18 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                   </span>
                 </Typography>
               )}
-
               <Button component="label" variant="outlined" size="small" startIcon={<CloudUploadOutlined />} sx={{ mt: 1 }}>
                 {ButtonLabel}
-                <input type="file" name={name} hidden onChange={handleFileChange} ref={setRef} {...inputProps} aria-describedby={errorId} />
+                <input
+                  type="file"
+                  accept={accpetFileTypes}
+                  name={name}
+                  hidden
+                  onChange={handleFileChange}
+                  ref={setRef}
+                  {...inputProps}
+                  aria-describedby={errorId}
+                />
               </Button>
             </Box>
             <ErrorForInput error={error} helperText={helperText} />

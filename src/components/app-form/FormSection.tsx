@@ -68,6 +68,7 @@ export default function FormSection<T extends Record<string, any>>({
                       handleToggleVisibility={handleToggleVisibility}
                       defaultValue={defaultValue}
                       imageSize={field?.imageSize}
+                      accpetFileTypes={field?.accpetFileTypes}
                       required={field?.required}
                       trueLabel={field?.trueLabel}
                       falseLabel={field?.falseLabel}
