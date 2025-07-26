@@ -95,7 +95,7 @@ export const createActionsColumn = <T extends object>(
         ];
       }
 
-      return [
+      const defaultActions = [
         allowEditing && (
           <GridActionsCellItem
             component="button"
@@ -136,6 +136,10 @@ export const createActionsColumn = <T extends object>(
           />
         )
       ].filter(Boolean) as JSX.Element[];
+
+      const additionalActions = config.customActions?.map((fn) => fn(params)) ?? [];
+
+      return [...defaultActions, ...additionalActions];
     }
   };
 };

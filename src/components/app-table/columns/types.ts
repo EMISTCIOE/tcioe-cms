@@ -1,4 +1,4 @@
-import { GridAlignment, GridColDef, GridRowId } from '@mui/x-data-grid';
+import { GridAlignment, GridColDef, GridRowId, GridRowParams } from '@mui/x-data-grid';
 
 /**
  * BadgeColorMap defines color configurations for badge-style columns.
@@ -38,4 +38,6 @@ export interface ColumnConfig<T extends object> {
   handlers?: ColumnHandlers<T>;
   align?: GridAlignment; // left | right | center
   visible?: boolean;
+  handleChange?: (id: GridRowId, value: T[keyof T]) => void;
+  customActions?: ((params: GridRowParams<T>) => JSX.Element)[];
 }

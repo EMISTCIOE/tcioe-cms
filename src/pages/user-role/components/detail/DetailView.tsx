@@ -22,6 +22,7 @@ import MainCard from '@/components/cards/MainCard';
 // LOCAL IMPORTS
 import { useGroupedPermissions } from '../../hooks/useGroupedPermissions';
 import { UserRoleDetailed } from '../../redux/types';
+import CloseButton from '@/components/app-dialog/CloseButton';
 
 interface DetailViewProps {
   userRoleData?: UserRoleDetailed;
@@ -46,9 +47,7 @@ const DetailView: React.FC<DetailViewProps> = ({ userRoleData, onClose }) => {
   return (
     <MainCard sx={{ p: 0, overflow: 'hidden', position: 'relative' }}>
       {/* Close Button */}
-      <IconButton onClick={onClose} aria-label="close" size="small" sx={{ position: 'absolute', top: 5, right: 5, zIndex: 1 }}>
-        <Close />
-      </IconButton>
+      <CloseButton onClose={onClose} />
 
       {/* Header */}
       <Box

@@ -100,10 +100,10 @@ export const noticeCreateFields: FormField<TNoticeCreateFormDataType>[] = [
         label: 'File',
         type: 'file',
         xs: 12,
-        sm: 2,
+        sm: 3,
         required: true
       },
-      { name: 'caption', label: 'Caption', type: 'text', xs: 11, sm: 9 }
+      { name: 'caption', label: 'Caption', type: 'text', xs: 11, sm: 8 }
     ] as FormField<Media>[]
   }
 ];

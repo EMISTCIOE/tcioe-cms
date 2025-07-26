@@ -11,6 +11,7 @@ import { CalendarToday, CancelOutlined, CheckCircleOutline, Close, EmailOutlined
 import InfoCard from '@/components/cards/Infocard';
 import MainCard from '@/components/cards/MainCard';
 import { UserDetails as DetailViewType } from '../../redux/types';
+import CloseButton from '@/components/app-dialog/CloseButton';
 
 // Component Props
 interface DetailViewProps {
@@ -36,9 +37,7 @@ const DetailView: React.FC<DetailViewProps> = ({ userData, onClose }) => {
   return (
     <MainCard sx={{ p: 0, overflow: 'hidden', position: 'relative' }}>
       {/* Close Button */}
-      <IconButton onClick={onClose} aria-label="close" size="small" sx={{ position: 'absolute', top: 5, right: 5, zIndex: 1 }}>
-        <Close />
-      </IconButton>
+      <CloseButton onClose={onClose} />
 
       {/* User Header */}
       <Box

@@ -1,6 +1,6 @@
 // MUI imports
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { DeleteOutline, EditOutlined, CloudUploadOutlined } from '@mui/icons-material';
+import { DeleteOutline, EditOutlined, CloudUploadOutlined, PictureAsPdfOutlined, Close } from '@mui/icons-material';
 
 import {
   Box,
@@ -37,6 +37,9 @@ import AppDialog from '../app-dialog';
 import { RichTextEditor, RichTextEditorRef } from 'mui-tiptap';
 import useExtensions from './useExtensions';
 import EditorMenuControls from './EditorMenuControls';
+import MainCard from '../cards/MainCard';
+import CloseButton from '../app-dialog/CloseButton';
+import FilePreviewDialog from '../app-dialog/FilePreviewDialog';
 
 /* ------------------------------------------------------------------
    CustomInput Component
@@ -291,7 +294,6 @@ const CustomInput = forwardRef<any, CustomInputProps>(
         let currentDisplayedUrl;
         let isImage = false;
         let isPdf = false;
-
         const isCurrentlyAFileObject = value instanceof File;
 
         if (isCurrentlyAFileObject) {
@@ -310,63 +312,44 @@ const CustomInput = forwardRef<any, CustomInputProps>(
           isPdf = currentDisplayedUrl && currentDisplayedUrl.endsWith('.pdf');
         }
 
+        let ButtonLabel = currentDisplayedUrl ? (isPdf ? 'Change PDF' : isImage ? 'Change Image' : 'Change File') : 'Upload File';
+
         return (
           <Box sx={sx} style={style} className={className}>
             <LabelForInput label={label} name={name} required={required} />
             {/* Display existing file or newly selected file preview */}
-            {currentDisplayedUrl && (
-              <Box sx={{ mt: 1, mb: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 1 }}>
-                {isImage && (
-                  <img
-                    src={currentDisplayedUrl}
-                    alt="Existing File"
-                    style={{ maxWidth: '80px', maxHeight: '80px', objectFit: 'contain' }}
-                  />
-                )}
+            <Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-start' }}>
+              {currentDisplayedUrl && (
                 <Typography variant="body2">
                   <span
                     onClick={() => handleOpenFileModal(currentDisplayedUrl, isPdf)}
                     style={{ cursor: 'pointer', color: theme.palette.primary.main, textDecoration: 'underline' }}
                   >
-                    {isPdf ? 'View Existing PDF' : isImage ? 'View Existing Image' : 'View Existing File'}
+                    {isPdf ? (
+                      <>
+                        <img src="/src/assets/images/pdf.png" alt="PDF Icon" style={{ width: 60, height: 60, objectFit: 'cover' }} />
+                      </>
+                    ) : isImage ? (
+                      <>
+                        <img src={currentDisplayedUrl} alt="Existing File" style={{ width: 60, height: 60, objectFit: 'cover' }} />
+                      </>
+                    ) : (
+                      'View Existing File'
+                    )}
                   </span>
                 </Typography>
-              </Box>
-            )}
+              )}
 
-            <Button component="label" variant="outlined" size="small" startIcon={<CloudUploadOutlined />} sx={{ mt: 1 }}>
-              Upload File
-              <input type="file" name={name} hidden onChange={handleFileChange} ref={setRef} {...inputProps} aria-describedby={errorId} />
-            </Button>
+              <Button component="label" variant="outlined" size="small" startIcon={<CloudUploadOutlined />} sx={{ mt: 1 }}>
+                {ButtonLabel}
+                <input type="file" name={name} hidden onChange={handleFileChange} ref={setRef} {...inputProps} aria-describedby={errorId} />
+              </Button>
+            </Box>
             <ErrorForInput error={error} helperText={helperText} />
             {children}
 
-            {/* --- AppDialog for File Preview --- */}
-            <AppDialog
-              open={isFileModalOpen}
-              onClose={handleCloseFileModal}
-              title={isCurrentFilePdf ? 'Document Preview' : 'Image Preview'}
-              fullWidth
-              maxWidth={'lg'}
-              content={
-                <Box sx={{ p: 0, height: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  {fileModalUrl &&
-                    (isCurrentFilePdf ? (
-                      <iframe src={fileModalUrl} style={{ width: '100%', height: '100%', border: 'none' }} title="PDF Preview" />
-                    ) : (
-                      <img src={fileModalUrl} alt="File Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
-                    ))}
-                </Box>
-              }
-              actions={
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-                  <Button variant="outlined" onClick={handleCloseFileModal}>
-                    Close
-                  </Button>
-                </Box>
-              }
-            />
-            {/* --------------------------------- */}
+            {/* --- File Preview Dialog --- */}
+            <FilePreviewDialog open={isFileModalOpen} onClose={handleCloseFileModal} fileUrl={fileModalUrl} isPdf={isCurrentFilePdf} />
           </Box>
         );
 

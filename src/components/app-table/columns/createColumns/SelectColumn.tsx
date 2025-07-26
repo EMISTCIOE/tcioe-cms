@@ -78,13 +78,14 @@ export const createSelectColumn = <T extends object>(config: ColumnConfig<T>, th
             inputStyle={{
               height: '2.4rem'
             }}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
               params.api.setEditCellValue({
                 id: params.id,
                 field: params.field,
                 value: e.target.value
-              })
-            }
+              });
+              config.handleChange?.(params.id, e.target.value as T[keyof T]);
+            }}
           />
         );
       };
