@@ -26,7 +26,7 @@ export interface ColumnConfig<T extends object> {
   headerName: string;
   maxWidth?: number;
   minWidth?: number;
-  type?: 'text' | 'number' | 'select' | 'actions' | 'progress' | 'image' | 'date' | 'link' | 'boolean';
+  type?: 'text' | 'richText' | 'number' | 'select' | 'actions' | 'progress' | 'image' | 'date' | 'link' | 'boolean'; // richText and actions are always non-editable
   editable?: boolean; // default true
   filterable?: boolean; // default false
   sortable?: boolean; // default false

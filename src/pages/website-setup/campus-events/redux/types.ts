@@ -73,6 +73,7 @@ export interface ICampusEventsCreatePayload {
   eventEndDate?: string; // ISO Date string
   thumbnail: File | null;
   gallery?: (Omit<ICampusEventsGallery, 'id' | 'image'> & { image: File | null })[];
+  isActive?: boolean;
 }
 
 /* ------------------------- CampusEvents patch interfaces ------------------------- */
@@ -85,4 +86,5 @@ export interface ICampusEventsUpdatePayload {
   eventEndDate?: string; // ISO Date string
   thumbnail?: File | string | null;
   gallery?: (Omit<ICampusEventsGallery, 'id' | 'image'> & { id?: number; image: File | string })[];
+  isActive?: boolean;
 }

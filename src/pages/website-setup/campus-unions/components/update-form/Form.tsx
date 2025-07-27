@@ -4,25 +4,25 @@ import { Button, Grid } from '@mui/material';
 import FormSection from '@/components/app-form/FormSection';
 import MainCard from '@/components/cards/MainCard';
 
-import useUpdateCampusEvents from '../../hooks/useUpdateCampusEvents';
-import { ICampusEventsDetails } from '../../redux/types';
-import { TCampusEventsUpdateFormDataType } from './config';
+import useUpdateCampusUnions from '../../hooks/useUpdateCampusUnions';
+import { ICampusUnionsDetails } from '../../redux/types';
+import { TCampusUnionsUpdateFormDataType } from './config';
 
-export interface ICampusEventsUpdateFormProps {
-  campusEventsData?: ICampusEventsDetails;
+export interface ICampusUnionsUpdateFormProps {
+  campusUnionsData?: ICampusUnionsDetails;
   onClose?: () => void;
 }
 
-export default function CampusEventsUpdateForm({ campusEventsData, onClose }: ICampusEventsUpdateFormProps) {
-  const { control, errors, watch, formFields, handleSubmit } = useUpdateCampusEvents({ campusEventsData, onClose });
+export default function CampusUnionsUpdateForm({ campusUnionsData, onClose }: ICampusUnionsUpdateFormProps) {
+  const { control, errors, watch, formFields, handleSubmit } = useUpdateCampusUnions({ campusUnionsData, onClose });
   const formValues = watch();
 
   return (
     <form onSubmit={handleSubmit()}>
       <Grid container spacing={3} sx={{ pt: 1 }}>
         <Grid item xs={12}>
-          <MainCard divider title={'Update Campus Event'}>
-            <FormSection<TCampusEventsUpdateFormDataType> fields={formFields} control={control} errors={errors} formValues={formValues} />
+          <MainCard divider title={'Update Campus Official'}>
+            <FormSection<TCampusUnionsUpdateFormDataType> fields={formFields} control={control} errors={errors} formValues={formValues} />
           </MainCard>
         </Grid>
 

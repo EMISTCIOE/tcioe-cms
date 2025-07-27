@@ -9,6 +9,7 @@ import FeedbackIcon from '@mui/icons-material/Feedback';
 import InfoIcon from '@mui/icons-material/Info';
 import LanguageIcon from '@mui/icons-material/Language';
 import CelebrationIcon from '@mui/icons-material/Celebration';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
 
 // project-imports
 import { MenuItem } from './types';
@@ -24,7 +25,8 @@ const icons = {
   FeedbackIcon,
   InfoIcon,
   LanguageIcon,
-  CelebrationIcon
+  CelebrationIcon,
+  Diversity3Icon
 };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
@@ -118,6 +120,14 @@ const modules: MenuItem = {
           type: 'item',
           icon: icons.CelebrationIcon,
           url: '/website-setup/campus-events',
+          breadcrumbs: false
+        },
+        {
+          id: 'campus-unions',
+          title: 'Campus Unions',
+          type: 'item',
+          icon: icons.Diversity3Icon,
+          url: '/website-setup/campus-unions',
           breadcrumbs: false
         }
       ]

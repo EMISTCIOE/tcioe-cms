@@ -33,7 +33,7 @@ export const campusEventsUpdateFormSchema = z.object({
   eventType: z.nativeEnum(ICampusEvent).optional(),
   eventStartDate: z.string().optional(),
   eventEndDate: z.string().optional(),
-  // isActive: z.boolean().default(true),
+  isActive: z.boolean().default(true),
   thumbnail: z
     .union([z.string().min(1, 'File URL cannot be empty.'), z.any()])
     .refine(
@@ -67,8 +67,8 @@ export const defaultValues: Partial<TCampusEventsUpdateFormDataType> = {
   eventStartDate: undefined,
   eventEndDate: undefined,
   thumbnail: null,
-  gallery: [{ image: null, caption: '', isActive: true }]
-  // isActive: true
+  gallery: [{ image: null, caption: '', isActive: true }],
+  isActive: true
 };
 
 // NOTE - Define the form fields
@@ -79,7 +79,8 @@ export const campusEventsUpdateFields: FormField<TCampusEventsUpdateFormDataType
   { name: 'descriptionDetailed', label: 'Detailed Description', type: 'editor', xs: 12, sm: 12 },
   { name: 'eventStartDate', label: 'Event Start Date', type: 'date', xs: 12, sm: 4 },
   { name: 'eventEndDate', label: 'Event End Date', type: 'date', xs: 12, sm: 4 },
-  { name: 'thumbnail', label: 'Thumbnail', type: 'image', imageSize: 120, xs: 12, sm: 4 },
+  { name: 'thumbnail', label: 'Thumbnail', type: 'image', imageSize: 120, xs: 8, sm: 2 },
+  { name: 'isActive', label: 'Active Status', type: 'switch', xs: 4, sm: 2, defaultValue: true },
   {
     name: 'gallery',
     label: 'Gallery',
@@ -89,7 +90,7 @@ export const campusEventsUpdateFields: FormField<TCampusEventsUpdateFormDataType
     itemFields: [
       { name: 'image', label: 'Image', type: 'file', accpetFileTypes: 'image/*', xs: 12, sm: 3, required: true },
       { name: 'caption', label: 'Caption', type: 'text', xs: 6, sm: 6 },
-      { name: 'isActive', label: 'Is Active', type: 'switch', xs: 5, sm: 2, defaultValue: true }
+      { name: 'isActive', label: 'Active Status', type: 'switch', xs: 5, sm: 2, defaultValue: true }
     ] as FormField<EventGallery>[]
   }
 ];

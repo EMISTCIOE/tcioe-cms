@@ -5,7 +5,6 @@ import { ICampusEvent } from '../../redux/types';
 
 // NOTE - Define the schema for the gallery items
 const eventGallerySchema = z.object({
-  id: z.number().optional(),
   image: z.any().refine(
     (file) => {
       const f = file instanceof FileList ? file[0] : file;
@@ -29,7 +28,7 @@ export const campusEventsCreateFormSchema = z.object({
   eventType: z.nativeEnum(ICampusEvent).optional(),
   eventStartDate: z.string().optional(),
   eventEndDate: z.string().optional(),
-  // isActive: z.boolean().default(true),
+  isActive: z.boolean().default(true),
   thumbnail: z
     .any()
     .refine(
@@ -58,8 +57,8 @@ export const defaultValues: Partial<TCampusEventsCreateFormDataType> = {
   eventStartDate: undefined,
   eventEndDate: undefined,
   thumbnail: null,
-  gallery: []
-  // isActive: true
+  gallery: [],
+  isActive: true
 };
 
 // NOTE - Define the form fields
@@ -69,7 +68,8 @@ export const campusEventsCreateFields: FormField<TCampusEventsCreateFormDataType
   { name: 'eventType', label: 'Event Type', type: 'select', xs: 12, sm: 4, options: enumToOptions(ICampusEvent) },
   { name: 'eventStartDate', label: 'Event Start Date', type: 'date', xs: 12, sm: 4 },
   { name: 'eventEndDate', label: 'Event End Date', type: 'date', xs: 12, sm: 4 },
-  { name: 'thumbnail', label: 'Thumbnail', type: 'image', imageSize: 120, xs: 12, sm: 4 },
+  { name: 'thumbnail', label: 'Thumbnail', type: 'image', imageSize: 120, xs: 8, sm: 2 },
+  { name: 'isActive', label: 'Active Status', type: 'switch', xs: 4, sm: 2, defaultValue: true },
   { name: 'descriptionDetailed', label: 'Detailed Description', type: 'editor', xs: 12, sm: 12 },
   {
     name: 'gallery',
@@ -80,7 +80,7 @@ export const campusEventsCreateFields: FormField<TCampusEventsCreateFormDataType
     itemFields: [
       { name: 'image', label: 'Image', type: 'file', accpetFileTypes: 'image/*', xs: 12, sm: 3, required: true },
       { name: 'caption', label: 'Caption', type: 'text', xs: 6, sm: 6 },
-      { name: 'isActive', label: 'Is Active', type: 'switch', xs: 5, sm: 2, defaultValue: true }
+      { name: 'isActive', label: 'Active Status', type: 'switch', xs: 5, sm: 2, defaultValue: true }
     ] as FormField<EventGallery>[]
   }
 ];

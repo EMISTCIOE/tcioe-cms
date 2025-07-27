@@ -4,23 +4,23 @@ import { Button, Grid } from '@mui/material';
 // Project Imports
 import MainCard from '@/components/cards/MainCard';
 import FormSection from '@/components/app-form/FormSection';
-import { TCampusEventsCreateFormDataType } from './config';
-import useCreateCampusEvents from '../../hooks/useCreateCampusEvents';
+import { TCampusUnionsCreateFormDataType } from './config';
+import useCreateCampusUnions from '../../hooks/useCreateCampusUnions';
 
-export interface ICampusEventsCreateFormProps {
+export interface ICampusUnionsCreateFormProps {
   onClose?: () => void;
 }
 
-export default function CampusEventsCreateForm({ onClose }: ICampusEventsCreateFormProps) {
-  const { control, errors, watch, formFields, handleSubmit } = useCreateCampusEvents({ onClose });
+export default function CampusUnionsCreateForm({ onClose }: ICampusUnionsCreateFormProps) {
+  const { control, errors, watch, formFields, handleSubmit } = useCreateCampusUnions({ onClose });
   const formValues = watch();
 
   return (
     <form onSubmit={handleSubmit()} noValidate>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <MainCard divider title="Create New Campus Event">
-            <FormSection<TCampusEventsCreateFormDataType> fields={formFields} control={control} errors={errors} formValues={formValues} />
+          <MainCard divider title="Create New Union">
+            <FormSection<TCampusUnionsCreateFormDataType> fields={formFields} control={control} errors={errors} formValues={formValues} />
           </MainCard>
         </Grid>
 
