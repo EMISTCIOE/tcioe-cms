@@ -10,6 +10,7 @@ import userRoleReducer from '@/pages/user-role/redux/user-role.slice';
 import userReducer from '@/pages/user/redux/user.slice';
 import campusKeyOfficailsReducer from '@/pages/website-setup/campus-key-officials/redux/campusKeyOfficials.slice';
 import campusFeedbacksReducer from '@/pages/website-setup/campus-feedbacks/redux/campusFeedbacks.slice';
+import campusEventsReducer from '@/pages/website-setup/campus-events/redux/campusEvents.slice';
 
 export const rootReducer = combineReducers({
   common: commonReducer,
@@ -20,6 +21,7 @@ export const rootReducer = combineReducers({
   notice: noticeReducer,
   campusKeyOfficials: campusKeyOfficailsReducer,
   campusFeedbacks: campusFeedbacksReducer,
+  campusEvents: campusEventsReducer,
   // add reducers here
   [rootAPI.reducerPath]: rootAPI.reducer
 });

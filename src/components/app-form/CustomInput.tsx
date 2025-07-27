@@ -568,7 +568,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                 }}
                 aria-describedby={errorId}
                 inputRef={setRef}
-                {...(fullwidth ? { fullWidth: true, error } : {})}
+                sx={{ ...(fullwidth ? { width: '100%' } : {}) }}
               />
               <ErrorForInput error={error} helperText={helperText} />
               {children}

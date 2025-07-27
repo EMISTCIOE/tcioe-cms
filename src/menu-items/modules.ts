@@ -8,6 +8,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import InfoIcon from '@mui/icons-material/Info';
 import LanguageIcon from '@mui/icons-material/Language';
+import CelebrationIcon from '@mui/icons-material/Celebration';
 
 // project-imports
 import { MenuItem } from './types';
@@ -22,7 +23,8 @@ const icons = {
   DownloadIcon,
   FeedbackIcon,
   InfoIcon,
-  LanguageIcon
+  LanguageIcon,
+  CelebrationIcon
 };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
@@ -108,6 +110,14 @@ const modules: MenuItem = {
           type: 'item',
           icon: icons.ArticleIcon,
           url: '/website-setup/campus-reports',
+          breadcrumbs: false
+        },
+        {
+          id: 'campus-events',
+          title: 'Campus Events',
+          type: 'item',
+          icon: icons.CelebrationIcon,
+          url: '/website-setup/campus-events',
           breadcrumbs: false
         }
       ]
