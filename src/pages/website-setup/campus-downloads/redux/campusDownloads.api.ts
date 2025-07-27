@@ -1,12 +1,7 @@
 import { IListQueryParams, IMutationSuccessResponse } from '@/globals';
 import { rootAPI } from '@/libs/apiSlice';
 import { getQueryParams } from '@/utils/functions/queryBuilder';
-import {
-  ICampusDownloadsList,
-  ICampusDownloadsDetails,
-  ICampusDownloadsCreatePayload,
-  ICampusDownloadsUpdatePayload
-} from './types';
+import { ICampusDownloadsList, ICampusDownloadsDetails, ICampusDownloadsCreatePayload, ICampusDownloadsUpdatePayload } from './types';
 
 export const campusDownloadsAPI = 'cms/website-mod/campus-downloads';
 

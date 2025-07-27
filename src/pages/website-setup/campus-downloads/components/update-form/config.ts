@@ -40,7 +40,6 @@ export const defaultValues: Partial<TCampusDownloadsUpdateFormDataType> = {
 
 // NOTE - Define the form fields
 export const campusDownloadsUpdateFields: FormField<TCampusDownloadsUpdateFormDataType>[] = [
-
   { name: 'title', label: 'Title', xs: 12, sm: 4, type: 'text', required: true },
   { name: 'description', label: 'Description', xs: 12, sm: 4, type: 'text' },
   { name: 'isActive', label: 'Active Status', xs: 2, sm: 2, type: 'switch' },

@@ -3,7 +3,7 @@ import { ICampusDownloadsDetails } from '../../redux/types';
 
 export const viewCampusDownloadsConfig: Omit<DynamicInfoSectionProps<ICampusDownloadsDetails>, 'data'> = {
   excludeFields: ['id', 'file', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy'],
-  fieldOrder: [ 'title', 'description', 'isActive'],
+  fieldOrder: ['title', 'description', 'isActive'],
   booleanFields: ['isActive'],
   columns: 4,
   customLabels: {
