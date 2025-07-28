@@ -30,6 +30,7 @@ const CampusUnions = Loadable(lazy(() => import('@/pages/website-setup/campus-un
 
 // Student Clubs Setup Pages
 const StudentClubs = Loadable(lazy(() => import('@/pages/student-clubs-setup/student-clubs')));
+const StudentClubEvents = Loadable(lazy(() => import('@/pages/student-clubs-setup/student-club-events')));
 // ==============================|| PRIVATE ROUTES ||============================== //
 
 const PrivateRoutes = () => (
@@ -66,6 +67,7 @@ const PrivateRoutes = () => (
         {/* Student Clubs Setup */}
         <Route path="student-clubs-setup">
           <Route path="student-clubs" element={<StudentClubs />} />
+          <Route path="student-club-events" element={<StudentClubEvents />} />
         </Route>
       </Route>
       <Route path="app-settings" element={<UnderConstruction />} />
