@@ -554,7 +554,13 @@ const CustomInput = forwardRef<any, CustomInputProps>(
             <Box sx={sx} style={style} className={className}>
               <LabelForInput label={label} name={name} required={required} />
               <DatePicker
-                value={value ? dayjs(value) : null} // Convert the value to a dayjs object or null
+                value={
+                  value
+                    ? typeof value === 'number'
+                      ? dayjs().year(value).startOf('year') // handle year like 2025
+                      : dayjs(value)
+                    : null
+                } // Convert the value to a dayjs object or null
                 onChange={(newValue: dayjs.Dayjs | null) => {
                   if (onChange) {
                     const event = {

@@ -67,11 +67,11 @@ const modules: MenuItem = {
       icon: icons.LanguageIcon,
       children: [
         {
-          id: 'academic-calenders',
-          title: 'Academic Calenders',
+          id: 'academic-calendars',
+          title: 'Academic Calendars',
           icon: icons.CalendarMonthIcon,
           type: 'item',
-          url: '/website-setup/academic-calenders',
+          url: '/website-setup/academic-calendars',
           breadcrumbs: false
         },
         {

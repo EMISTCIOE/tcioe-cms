@@ -49,6 +49,7 @@ export const rootAPI = createApi({
     'CampusKeyOfficials',
     'CampusFeedbacks',
     'CampusEvents',
-    'CampusUnions'
+    'CampusUnions',
+    'AcademicCalendars'
   ]
 });

@@ -1,7 +1,5 @@
 import { FormField } from '@/components/app-form/types';
 import * as z from 'zod';
-import { MediaType } from '../../redux/types';
-import { enumToOptions } from '@/utils/functions/formatString';
 
 // NOTE - Schema definition for media item
 export const mediaSchema = z.object({
@@ -10,7 +8,7 @@ export const mediaSchema = z.object({
     (file) => {
       if (!file) return true;
       const f = file instanceof FileList ? file[0] : file;
-      return f instanceof File && (f.type.startsWith('image/') || f.type.startsWith('application/pdf'));
+      return f instanceof File && (f.type.startsWith('image/') || f.type.startsWith('application/'));
     },
     {
       message: 'Only image and document files are allowed'
