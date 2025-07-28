@@ -31,6 +31,7 @@ export const useLogin = () => {
 
   const onSubmit = async (values: LoginFormDataType) => {
     try {
+      console.log(values);
       const response = await login({ values }).unwrap();
 
       if (response?.status === 'verify_email') {

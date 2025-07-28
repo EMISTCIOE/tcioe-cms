@@ -1,7 +1,8 @@
 import { IListQueryParams, IMutationSuccessResponse } from '@/globals';
 import { rootAPI } from '@/libs/apiSlice';
+import { formatReadableDatetime } from '@/utils/functions/date';
 import { getQueryParams } from '@/utils/functions/queryBuilder';
-import { ICampusEventsList, ICampusEventsDetails, ICampusEventsCreatePayload, ICampusEventsUpdatePayload } from './types';
+import { ICampusEventsCreatePayload, ICampusEventsDetails, ICampusEventsList, ICampusEventsUpdatePayload } from './types';
 
 export const campusEventsAPI = 'cms/website-mod/campus-events';
 
@@ -42,13 +43,20 @@ export const campusEventsAPISlice = rootAPI.injectEndpoints({
     // Create CampusEvents
     createCampusEvents: builder.mutation<IMutationSuccessResponse, ICampusEventsCreatePayload>({
       query: (values) => {
-        const { thumbnail, gallery, ...rest } = values;
+        const { thumbnail, gallery, eventStartDate, eventEndDate, ...rest } = values;
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
           if (value !== undefined && value !== null) {
             body.append(key, value as string | Blob);
           }
+        }
+
+        if (eventStartDate) {
+          body.append('eventStartDate', formatReadableDatetime(eventStartDate, 'YYYY-MM-DD'));
+        }
+        if (eventEndDate) {
+          body.append('eventEndDate', formatReadableDatetime(eventEndDate, 'YYYY-MM-DD'));
         }
 
         // Append thumbnail if it's a File
@@ -62,13 +70,13 @@ export const campusEventsAPISlice = rootAPI.injectEndpoints({
             if (!item.image) return; // skip if image is not provided
 
             if (item.image instanceof File) {
-              body.append(`gallery[${index}].image`, item.image);
+              body.append(`gallery[${index}][image]`, item.image);
             }
             if (item.caption) {
-              body.append(`gallery[${index}].caption`, item.caption);
+              body.append(`gallery[${index}][caption]`, item.caption);
             }
             if (item.isActive !== undefined) {
-              body.append(`gallery[${index}].isActive`, String(item.isActive));
+              body.append(`gallery[${index}][isActive]`, String(item.isActive));
             }
           });
         }
@@ -85,13 +93,20 @@ export const campusEventsAPISlice = rootAPI.injectEndpoints({
     // Patch CampusEvents
     patchCampusEvents: builder.mutation<IMutationSuccessResponse, { id: number; values: ICampusEventsUpdatePayload }>({
       query: ({ id, values }) => {
-        const { thumbnail, gallery, ...rest } = values;
+        const { thumbnail, gallery, eventStartDate, eventEndDate, ...rest } = values;
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
           if (value !== undefined && value !== null) {
             body.append(key, value as string | Blob);
           }
+        }
+
+        if (eventStartDate) {
+          body.append('eventStartDate', formatReadableDatetime(eventStartDate, 'YYYY-MM-DD'));
+        }
+        if (eventEndDate) {
+          body.append('eventEndDate', formatReadableDatetime(eventEndDate, 'YYYY-MM-DD'));
         }
 
         // Append thumbnail if it's a File
@@ -105,16 +120,16 @@ export const campusEventsAPISlice = rootAPI.injectEndpoints({
             if (!item.image) return; // skip if image is not provided
 
             if (item.image instanceof File) {
-              body.append(`gallery[${index}].image`, item.image);
+              body.append(`gallery[${index}][image]`, item.image);
             }
             if (item.id !== undefined) {
-              body.append(`medias[${index}][id]`, String(item.id));
+              body.append(`gallery[${index}][id]`, String(item.id));
             }
             if (item.caption) {
-              body.append(`gallery[${index}].caption`, item.caption);
+              body.append(`gallery[${index}][caption]`, item.caption);
             }
             if (item.isActive !== undefined) {
-              body.append(`gallery[${index}].isActive`, String(item.isActive));
+              body.append(`gallery[${index}][isActive]`, String(item.isActive));
             }
           });
         }

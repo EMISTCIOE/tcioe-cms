@@ -75,7 +75,7 @@ export const defaultValues: Partial<TCampusEventsUpdateFormDataType> = {
 export const campusEventsUpdateFields: FormField<TCampusEventsUpdateFormDataType>[] = [
   { name: 'title', label: 'Title', type: 'text', xs: 12, sm: 4, required: true },
   { name: 'descriptionShort', label: 'Short Description', type: 'text', xs: 12, sm: 4, required: true },
-  { name: 'eventType', label: 'Event Type', type: 'select', options: enumToOptions(ICampusEvent) },
+  { name: 'eventType', label: 'Event Type', type: 'select', options: enumToOptions(ICampusEvent), xs: 12, sm: 4 },
   { name: 'descriptionDetailed', label: 'Detailed Description', type: 'editor', xs: 12, sm: 12 },
   { name: 'eventStartDate', label: 'Event Start Date', type: 'date', xs: 12, sm: 4 },
   { name: 'eventEndDate', label: 'Event End Date', type: 'date', xs: 12, sm: 4 },

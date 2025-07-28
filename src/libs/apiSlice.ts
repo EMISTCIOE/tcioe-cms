@@ -5,7 +5,6 @@ const axiosBaseQuery =
   ({ URL } = { URL: '' }) =>
   async (args: any, api: any, extraOptions: any) => {
     const { url, method, data, params, headers, signal } = args;
-
     try {
       const result = await axiosInstance({
         url: URL + url,
@@ -51,6 +50,7 @@ export const rootAPI = createApi({
     'CampusEvents',
     'CampusUnions',
     'AcademicCalendars',
-    'CampusDownloads'
+    'CampusDownloads',
+    'StudentClubs'
   ]
 });

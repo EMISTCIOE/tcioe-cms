@@ -62,7 +62,7 @@ const modules: MenuItem = {
     },
     {
       id: 'website-management',
-      title: 'Manage Website',
+      title: 'Manage Campus',
       type: 'collapse',
       icon: icons.LanguageIcon,
       children: [
@@ -128,6 +128,30 @@ const modules: MenuItem = {
           type: 'item',
           icon: icons.Diversity3Icon,
           url: '/website-setup/campus-unions',
+          breadcrumbs: false
+        }
+      ]
+    },
+    {
+      id: 'website-student-clubs',
+      title: 'Manage Student Clubs',
+      type: 'collapse',
+      icon: icons.Diversity3Icon,
+      children: [
+        {
+          id: 'student-clubs',
+          title: 'Student Clubs',
+          icon: icons.Diversity3Icon,
+          type: 'item',
+          url: '/student-clubs-setup/student-clubs',
+          breadcrumbs: false
+        },
+        {
+          id: 'student-club-events',
+          title: 'Student Club Events',
+          icon: icons.CelebrationIcon,
+          type: 'item',
+          url: '/student-clubs-setup/student-club-events',
           breadcrumbs: false
         }
       ]

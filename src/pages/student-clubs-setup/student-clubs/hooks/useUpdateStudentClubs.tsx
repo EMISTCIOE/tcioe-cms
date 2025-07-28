@@ -11,23 +11,23 @@ import { handleClientError } from '@/utils/functions/handleError';
 
 // LOCAL IMPORTS
 import {
-  campusUnionsUpdateFields,
-  campusUnionsUpdateFormSchema,
+  studentClubsUpdateFields,
+  studentClubsUpdateFormSchema,
   defaultValues,
   Member,
-  TCampusUnionsUpdateFormDataType
+  TStudentClubsUpdateFormDataType
 } from '../components/update-form/config';
-import { ICampusUnionsUpdateFormProps } from '../components/update-form/Form';
-import { useDeletCampusUnionsMemberMutation, usePatchCampusUnionsMutation } from '../redux/campusUnions.api';
-import { ICampusUnionsUpdatePayload } from '../redux/types';
+import { IStudentClubsUpdateFormProps } from '../components/update-form/Form';
+import { useDeletStudentClubsMemberMutation, usePatchStudentClubsMutation } from '../redux/studentClubs.api';
+import { IStudentClubsUpdatePayload } from '../redux/types';
 import { TField } from '@/components/app-form/types';
 
-const useUpdateCampusUnions = ({ campusUnionsData, onClose }: ICampusUnionsUpdateFormProps) => {
+const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const [updateCampusUnions] = usePatchCampusUnionsMutation();
-  const [deleteCampusUnionsMemberItem] = useDeletCampusUnionsMemberMutation();
-  const [formFields, setFormFields] = useState(campusUnionsUpdateFields);
+  const [updateStudentClubs] = usePatchStudentClubsMutation();
+  const [deleteStudentClubsMemberItem] = useDeletStudentClubsMemberMutation();
+  const [formFields, setFormFields] = useState(studentClubsUpdateFields);
 
   const {
     control,
@@ -36,26 +36,26 @@ const useUpdateCampusUnions = ({ campusUnionsData, onClose }: ICampusUnionsUpdat
     watch,
     reset,
     formState: { errors }
-  } = useForm<TCampusUnionsUpdateFormDataType>({
-    resolver: zodResolver(campusUnionsUpdateFormSchema),
+  } = useForm<TStudentClubsUpdateFormDataType>({
+    resolver: zodResolver(studentClubsUpdateFormSchema),
     defaultValues
   });
 
   // Reset form with data when it's available
   useEffect(() => {
-    if (campusUnionsData) {
+    if (studentClubsData) {
       reset({
-        ...campusUnionsData
+        ...studentClubsData
       });
     }
-  }, [campusUnionsData, reset]);
+  }, [studentClubsData, reset]);
 
   // delete handler for member item
   const handleDeleteMemberItem = async (index: number, member_id: number | undefined) => {
-    if (!campusUnionsData?.id || !member_id) return;
+    if (!studentClubsData?.id || !member_id) return;
 
     try {
-      const res = await deleteCampusUnionsMemberItem({ id: campusUnionsData.id, member_id }).unwrap();
+      const res = await deleteStudentClubsMemberItem({ id: studentClubsData.id, member_id }).unwrap();
       dispatch(setMessage({ message: res.message, variant: 'success' }));
     } catch (error) {
       dispatch(setMessage({ message: 'Failed to delete media', variant: 'error' }));
@@ -73,21 +73,21 @@ const useUpdateCampusUnions = ({ campusUnionsData, onClose }: ICampusUnionsUpdat
         : f
     );
     setFormFields(updatedFields);
-  }, [campusUnionsData]);
+  }, [studentClubsData]);
 
   // This is for form update not for inline update
-  const onSubmit = async (data: TCampusUnionsUpdateFormDataType) => {
+  const onSubmit = async (data: TStudentClubsUpdateFormDataType) => {
     const { id, ...values } = data;
     try {
       const payload = {
         id,
-        values: values as ICampusUnionsUpdatePayload
+        values: values as IStudentClubsUpdatePayload
       };
-      const res = await updateCampusUnions(payload).unwrap();
+      const res = await updateStudentClubs(payload).unwrap();
       dispatch(setMessage({ message: res.message, variant: 'success' }));
       onClose?.();
     } catch (error) {
-      handleClientError<TCampusUnionsUpdateFormDataType>({
+      handleClientError<TStudentClubsUpdateFormDataType>({
         error,
         setError,
         enqueueSnackbar
@@ -104,4 +104,4 @@ const useUpdateCampusUnions = ({ campusUnionsData, onClose }: ICampusUnionsUpdat
   };
 };
 
-export default useUpdateCampusUnions;
+export default useUpdateStudentClubs;

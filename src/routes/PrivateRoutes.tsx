@@ -27,6 +27,9 @@ const CampusKeyOfficials = Loadable(lazy(() => import('@/pages/website-setup/cam
 const CampusReports = Loadable(lazy(() => import('@/pages/website-setup/campus-reports')));
 const CampusEvents = Loadable(lazy(() => import('@/pages/website-setup/campus-events')));
 const CampusUnions = Loadable(lazy(() => import('@/pages/website-setup/campus-unions')));
+
+// Student Clubs Setup Pages
+const StudentClubs = Loadable(lazy(() => import('@/pages/student-clubs-setup/student-clubs')));
 // ==============================|| PRIVATE ROUTES ||============================== //
 
 const PrivateRoutes = () => (
@@ -59,6 +62,10 @@ const PrivateRoutes = () => (
           <Route path="campus-reports" element={<CampusReports />} />
           <Route path="campus-events" element={<CampusEvents />} />
           <Route path="campus-unions" element={<CampusUnions />} />
+        </Route>
+        {/* Student Clubs Setup */}
+        <Route path="student-clubs-setup">
+          <Route path="student-clubs" element={<StudentClubs />} />
         </Route>
       </Route>
       <Route path="app-settings" element={<UnderConstruction />} />
