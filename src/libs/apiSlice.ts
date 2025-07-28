@@ -50,6 +50,7 @@ export const rootAPI = createApi({
     'CampusFeedbacks',
     'CampusEvents',
     'CampusUnions',
-    'AcademicCalendars'
+    'AcademicCalendars',
+    'CampusDownloads'
   ]
 });

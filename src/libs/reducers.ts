@@ -13,6 +13,7 @@ import campusFeedbacksReducer from '@/pages/website-setup/campus-feedbacks/redux
 import campusEventsReducer from '@/pages/website-setup/campus-events/redux/campusEvents.slice';
 import CampusUnionsReducer from '@/pages/website-setup/campus-unions/redux/campusUnions.slice';
 import AcademicCalendersReducer from '@/pages/website-setup/academic-calendars/redux/academicCalendars.slice';
+import campusDownloadsReducer from '@/pages/website-setup/campus-downloads/redux/campusDownloads.slice';
 
 export const rootReducer = combineReducers({
   common: commonReducer,
@@ -26,6 +27,7 @@ export const rootReducer = combineReducers({
   campusEvents: campusEventsReducer,
   campusUnions: CampusUnionsReducer,
   academicCalendars: AcademicCalendersReducer,
+  campusDownloads: campusDownloadsReducer,
   // add reducers here
   [rootAPI.reducerPath]: rootAPI.reducer
 });
