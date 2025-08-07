@@ -108,7 +108,7 @@ axiosInstance.interceptors.response.use(
           isTokenRefreshInProgress = true;
 
           try {
-            const response = await refreshInstance.post('/auth/refresh/', { refresh: refreshToken });
+            const response = await refreshInstance.post('/cms/user-mod/auth/token/refresh', { refresh: refreshToken });
             if (response?.status === 200) {
               const newToken = response.data.access;
               Cookies.set('access', newToken, {
