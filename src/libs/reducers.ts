@@ -8,10 +8,13 @@ import commonReducer from '@/pages/common/redux/common.slice';
 import noticeReducer from '@/pages/notice/redux/notice.slice';
 import userRoleReducer from '@/pages/user-role/redux/user-role.slice';
 import userReducer from '@/pages/user/redux/user.slice';
+
+// website setup
 import campusKeyOfficailsReducer from '@/pages/website-setup/campus-key-officials/redux/campusKeyOfficials.slice';
 import campusFeedbacksReducer from '@/pages/website-setup/campus-feedbacks/redux/campusFeedbacks.slice';
 import campusEventsReducer from '@/pages/website-setup/campus-events/redux/campusEvents.slice';
 import CampusUnionsReducer from '@/pages/website-setup/campus-unions/redux/campusUnions.slice';
+import CampusReportsReducer from '@/pages/website-setup/campus-reports/redux/campusReports.slice';
 import AcademicCalendersReducer from '@/pages/website-setup/academic-calendars/redux/academicCalendars.slice';
 import campusDownloadsReducer from '@/pages/website-setup/campus-downloads/redux/campusDownloads.slice';
 import StudentClubsReducer from '@/pages/student-clubs-setup/student-clubs/redux/studentClubs.slice';
@@ -28,6 +31,7 @@ export const rootReducer = combineReducers({
   campusFeedbacks: campusFeedbacksReducer,
   campusEvents: campusEventsReducer,
   campusUnions: CampusUnionsReducer,
+  campusReports: CampusReportsReducer,
   academicCalendars: AcademicCalendersReducer,
   campusDownloads: campusDownloadsReducer,
   studentClubs: StudentClubsReducer,
