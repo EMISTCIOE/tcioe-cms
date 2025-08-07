@@ -78,7 +78,7 @@ const DetailView: React.FC<IDetailViewProps> = ({ studentClubsData, onClose }) =
           borderColor: 'divider'
         }}
       >
-        <Avatar src={undefined} alt={studentClubsData.name || 'union'} sx={{ width: 72, height: 72, mr: 3 }}>
+        <Avatar src={studentClubsData?.thumbnail} alt={studentClubsData.name || 'student club'} sx={{ width: 72, height: 72, mr: 3 }}>
           {studentClubsData?.name?.charAt(0) || 'U'}
         </Avatar>
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>

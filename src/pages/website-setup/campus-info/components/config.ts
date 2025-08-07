@@ -5,7 +5,7 @@ import { SocialPlatform } from '../redux/types';
 
 export const socialLinksSchema = z.object({
   id: z.number().optional(),
-  url: z.string().min(1, 'Url is required'),
+  url: z.string().url('Invalid URL').optional().nullable(),
   platform: z.nativeEnum(SocialPlatform, {
     errorMap: () => ({ message: 'Platform is required' })
   }),

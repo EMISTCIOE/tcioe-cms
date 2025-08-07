@@ -78,6 +78,7 @@ export const createSelectColumn = <T extends object>(config: ColumnConfig<T>, th
             inputStyle={{
               height: '2.4rem'
             }}
+            sx={{ width: '100%' }}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               params.api.setEditCellValue({
                 id: params.id,

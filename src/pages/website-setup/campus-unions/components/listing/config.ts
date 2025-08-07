@@ -1,5 +1,4 @@
 import { Theme } from '@mui/material/styles';
-import { enumToOptions } from '@/utils/functions/formatString';
 import { BadgeColorMap, ColumnConfig } from '@/components/app-table/columns';
 import { ICampusUnionsItem } from '../../redux/types';
 
@@ -13,8 +12,9 @@ const IsActiveColorMap: BadgeColorMap = {
 };
 
 export const getColumnConfig = (theme: Theme): ColumnConfig<ITableData>[] => [
+  { field: 'thumbnail', headerName: 'THUMBNAIL', type: 'image' },
   { field: 'name', headerName: 'NAME', type: 'text', sortable: true },
-  { field: 'description', headerName: 'DESCRIPTION', type: 'richText', minWidth: 500 },
+  { field: 'shortDescription', headerName: 'SHORT DESCRIPTION', type: 'text', minWidth: 500 },
   {
     field: 'isActive',
     headerName: 'ACTIVE STATUS',

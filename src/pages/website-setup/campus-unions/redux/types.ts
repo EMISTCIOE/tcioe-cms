@@ -12,7 +12,8 @@ export interface ICampusUnionsSliceState {
 export interface ICampusUnionsItem {
   id: number;
   name: string;
-  description: string;
+  shortDescription: string;
+  thumbnail?: string;
   isActive: boolean;
 }
 
@@ -31,7 +32,10 @@ export interface ICampusUnionsList extends IListResponse {
 export interface ICampusUnionsDetails {
   id: number;
   name: string;
-  description: string;
+  shortDescription: string;
+  detailedDescription: string;
+  thumbnail: string;
+  websiteUrl: string;
   members: ICampusUnionsMember[];
   createdBy: string;
   updatedBy: string;
@@ -43,7 +47,10 @@ export interface ICampusUnionsDetails {
 /* ------------------------ CampusUnions post interfaces ------------------------ */
 export interface ICampusUnionsCreatePayload {
   name: string;
-  description?: string;
+  shortDescription: string;
+  detailedDescription?: string;
+  thumbnail?: File | null;
+  websiteUrl?: string;
   members: (Omit<ICampusUnionsMember, 'id' | 'photo'> & { photo?: File | null })[];
   isActive: boolean;
 }
@@ -51,7 +58,10 @@ export interface ICampusUnionsCreatePayload {
 /* ------------------------- CampusUnions patch interfaces ------------------------- */
 export interface ICampusUnionsUpdatePayload {
   name: string;
-  description?: string;
+  shortDescription: string;
+  detailedDescription?: string;
+  thumbnail?: File | string | null;
+  websiteUrl?: string;
   members?: (Omit<ICampusUnionsMember, 'id' | 'photo'> & { id?: number; photo?: File | string | null })[];
   isActive: boolean;
 }

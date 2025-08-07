@@ -42,7 +42,7 @@ export const campusUnionsAPISlice = rootAPI.injectEndpoints({
     // Create CampusUnions
     createCampusUnions: builder.mutation<IMutationSuccessResponse, ICampusUnionsCreatePayload>({
       query: (values) => {
-        const { members, ...rest } = values;
+        const { members, thumbnail, ...rest } = values;
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
@@ -69,6 +69,11 @@ export const campusUnionsAPISlice = rootAPI.injectEndpoints({
           });
         }
 
+        // Append thumbnail if it exists
+        if (thumbnail instanceof File) {
+          body.append('thumbnail', thumbnail);
+        }
+
         return {
           url: `${campusUnionsAPI}`,
           method: 'POST',
@@ -81,7 +86,7 @@ export const campusUnionsAPISlice = rootAPI.injectEndpoints({
     // Patch CampusUnions
     patchCampusUnions: builder.mutation<IMutationSuccessResponse, { id: number; values: ICampusUnionsUpdatePayload }>({
       query: ({ id, values }) => {
-        const { members, ...rest } = values;
+        const { members, thumbnail, ...rest } = values;
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
@@ -109,6 +114,11 @@ export const campusUnionsAPISlice = rootAPI.injectEndpoints({
               body.append(`members[${index}][isActive]`, String(member.isActive));
             }
           });
+        }
+
+        // Append thumbnail if it exists
+        if (thumbnail instanceof File) {
+          body.append('thumbnail', thumbnail);
         }
 
         return {

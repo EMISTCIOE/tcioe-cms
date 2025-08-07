@@ -13,6 +13,7 @@ export interface IStudentClubsItem {
   id: number;
   name: string;
   shortDescription: string;
+  thumbnail: string;
   isActive: boolean;
 }
 
@@ -34,6 +35,7 @@ export interface IStudentClubsDetails {
   shortDescription: string;
   detailedDescription: string;
   thumbnail: string;
+  websiteUrl?: string;
   members: IStudentClubsMember[];
   createdBy: string;
   updatedBy: string;
@@ -48,6 +50,7 @@ export interface IStudentClubsCreatePayload {
   shortDescription: string;
   detailedDescription?: string;
   thumbnail?: File | null;
+  websiteUrl?: string;
   members: (Omit<IStudentClubsMember, 'id' | 'photo'> & { photo?: File | null })[];
   isActive: boolean;
 }
@@ -58,6 +61,7 @@ export interface IStudentClubsUpdatePayload {
   shortDescription: string;
   detailedDescription?: string;
   thumbnail?: File | string | null;
+  websiteUrl?: string;
   members: (Omit<IStudentClubsMember, 'id' | 'photo'> & { id?: number; photo?: File | string | null })[];
   isActive: boolean;
 }

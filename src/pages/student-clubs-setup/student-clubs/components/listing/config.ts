@@ -12,6 +12,7 @@ const IsActiveColorMap: BadgeColorMap = {
 };
 
 export const getColumnConfig = (theme: Theme): ColumnConfig<ITableData>[] => [
+  { field: 'thumbnail', headerName: 'THUMBNAIL', type: 'image' },
   { field: 'name', headerName: 'NAME', type: 'text', sortable: true },
   { field: 'shortDescription', headerName: 'SHORT DESCRIPTION', type: 'text', minWidth: 220 },
   {

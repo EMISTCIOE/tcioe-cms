@@ -31,7 +31,7 @@ const DetailView: React.FC<IDetailViewProps> = ({ campusUnionsData, onClose }) =
     return (
       <Paper elevation={3} sx={{ p: 4, textAlign: 'center' }}>
         <Typography variant="h5" mb={3}>
-          Campus Event Details Not Found
+          Campus Unions Details Not Found
         </Typography>
         <CircularProgress />
       </Paper>
@@ -105,7 +105,7 @@ const DetailView: React.FC<IDetailViewProps> = ({ campusUnionsData, onClose }) =
       <Box sx={{ px: { xxs: 0, xs: 2 }, py: 1 }}>
         <DynamicInfoSection {...DynamicInfoSectionProps} />
         {/* --- Detailed Description Section --- */}
-        {campusUnionsData.description && (
+        {campusUnionsData.detailedDescription && (
           <Box sx={{ mt: 3 }}>
             <Typography
               variant="body2"
@@ -117,11 +117,11 @@ const DetailView: React.FC<IDetailViewProps> = ({ campusUnionsData, onClose }) =
                 mb: 2
               }}
             >
-              Description
+              Detailed Description
             </Typography>
             <Box
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(campusUnionsData?.description)
+                __html: DOMPurify.sanitize(campusUnionsData?.detailedDescription)
               }}
             />
           </Box>
