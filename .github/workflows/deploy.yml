@@ -1,11 +1,11 @@
-name: Deploy TCIOE Website to VPS
+name: Deploy TCIOE CMS
 on:
   push:
     branches: [main]
 
 jobs:
   deploy:
-    name: Build & Deploy to VPS
+    name: Build & Deploy
     runs-on: self-hosted
     env:
       VITE_APP_VERSION: ${{ secrets.VITE_APP_VERSION }}
