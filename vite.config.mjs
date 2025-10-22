@@ -3,25 +3,24 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import jsconfigPaths from 'vite-jsconfig-paths';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react(), jsconfigPaths()],
   base: '/',
-  define: {
-    global: 'window'
-  },
+  define: { global: 'window' },
   resolve: {
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
   },
-  server: {
-    open: true,
-    port: 3000
-  },
-  preview: {
-    open: true,
-    port: 3000
-  },
+  server: { open: true, port: 3003 },
+  preview: { open: false, port: 4173 },
   build: {
-    outDir: 'dist'
-  }
-});
+    outDir: 'dist',
+    sourcemap: false,
+    emptyOutDir: true,
+    rollupOptions: {
+      output: { manualChunks: { react: ['react', 'react-dom'] } }
+    },
+    commonjsOptions: { include: [/node_modules/] }
+  },
+  esbuild: { drop: mode === 'production' ? ['console', 'debugger'] : [] }
+}));
