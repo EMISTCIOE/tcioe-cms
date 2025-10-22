@@ -5,5 +5,5 @@
   "port": 3003,
   "domain": "cms-tcioe.edu.np",
   "build": "npm install --legacy-peer-deps && npm run build",
-  "start": "vite --host 0.0.0.0"
+  "start": "npm run start -- --host"
 }
