@@ -1,7 +1,7 @@
 name: Vercel Deploy Hook
 on:
   push:
-    branches: [ "main" ]  
+    branches: ['main']
 jobs:
   trigger:
     runs-on: ubuntu-latest
