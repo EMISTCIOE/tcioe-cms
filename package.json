@@ -2,11 +2,11 @@
   "name": "tcioe-cms",
   "version": "1.0.1",
   "private": true,
-  "homepage": "http://localhost:3000",
+  "homepage": "http://localhost:3003",
   "author": {
-    "name": "Bibek Joshi",
-    "email": "bibekjoshi34@gmail.com",
-    "url": "https://github.com/bibekjoshi01"
+    "name": "EMIS Team",
+    "email": "emis@tcioe.edu.np",
+    "url": "https://github.com/EMISTCIOE"
   },
   "type": "module",
   "scripts": {
