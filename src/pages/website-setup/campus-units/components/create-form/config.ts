@@ -19,37 +19,41 @@ const imageSchema = z
 export const campusUnitsCreateFormSchema = z
   .object({
     name: z.string().min(1, 'Name is required'),
-  slug: z
-    .union([z.string().regex(/^[a-z0-9-]+$/, 'Use lowercase letters, numbers and dashes only'), z.literal('')])
-    .optional()
-    .transform((value) => (value === '' ? undefined : value?.toLowerCase())),
-  shortDescription: z.string().min(1, 'Description is required'),
-  detailedDescription: z.string().optional(),
-  objectives: z.string().optional(),
-  achievements: z.string().optional(),
-  location: z.string().optional(),
-  contactEmail: z
-    .union([z.string().email('Invalid email address'), z.literal('')])
-    .optional()
-    .transform((value) => (value === '' ? undefined : value)),
-  contactPhone: z.string().optional(),
-  displayOrder: z
-    .number({ invalid_type_error: 'Display order must be a number' })
-    .int()
-    .min(1, 'Display order must be at least 1')
-    .default(1),
-  isActive: z.boolean().default(true),
-  thumbnail: imageSchema,
-  heroImage: imageSchema,
-  members: z.array(z.number({ invalid_type_error: 'Select at least one official' })).min(1, 'Select at least one linked official'),
-  departmentHead: z.number().nullable().optional()
-}).refine((data) => {
-  if (data.departmentHead === null || data.departmentHead === undefined) return true;
-  return data.members.includes(data.departmentHead);
-}, {
-  message: 'Selected head must also be part of the unit members list',
-  path: ['departmentHead']
-});
+    slug: z
+      .union([z.string().regex(/^[a-z0-9-]+$/, 'Use lowercase letters, numbers and dashes only'), z.literal('')])
+      .optional()
+      .transform((value) => (value === '' ? undefined : value?.toLowerCase())),
+    shortDescription: z.string().min(1, 'Description is required'),
+    detailedDescription: z.string().optional(),
+    objectives: z.string().optional(),
+    achievements: z.string().optional(),
+    location: z.string().optional(),
+    contactEmail: z
+      .union([z.string().email('Invalid email address'), z.literal('')])
+      .optional()
+      .transform((value) => (value === '' ? undefined : value)),
+    contactPhone: z.string().optional(),
+    displayOrder: z
+      .number({ invalid_type_error: 'Display order must be a number' })
+      .int()
+      .min(1, 'Display order must be at least 1')
+      .default(1),
+    isActive: z.boolean().default(true),
+    thumbnail: imageSchema,
+    heroImage: imageSchema,
+    members: z.array(z.number({ invalid_type_error: 'Select at least one official' })).min(1, 'Select at least one linked official'),
+    departmentHead: z.number().nullable().optional()
+  })
+  .refine(
+    (data) => {
+      if (data.departmentHead === null || data.departmentHead === undefined) return true;
+      return data.members.includes(data.departmentHead);
+    },
+    {
+      message: 'Selected head must also be part of the unit members list',
+      path: ['departmentHead']
+    }
+  );
 
 // NOTE - Generate a type from the schema
 export type TCampusUnitsCreateFormDataType = z.infer<typeof campusUnitsCreateFormSchema>;

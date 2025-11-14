@@ -13,16 +13,10 @@ const CampusKeyOfficialsListingSection = () => {
   const tableHooks = useCampusKeyOfficialsTable();
   const { data: designationData } = useGetCampusStaffDesignationsQuery();
   const designationOptions = useMemo(
-    () =>
-      designationData?.results
-        ?.filter((item) => item.isActive)
-        .map((item) => ({ label: item.title, value: item.code })) ?? [],
+    () => designationData?.results?.filter((item) => item.isActive).map((item) => ({ label: item.title, value: item.code })) ?? [],
     [designationData]
   );
-  const columnConfigBuilder = useCallback(
-    (theme: Theme) => getColumnConfig(theme, designationOptions),
-    [designationOptions]
-  );
+  const columnConfigBuilder = useCallback((theme: Theme) => getColumnConfig(theme, designationOptions), [designationOptions]);
 
   const canCreate = useHasParticularPermissions(campusKeyOfficialsPermissions.add);
   const canEdit = useHasParticularPermissions(campusKeyOfficialsPermissions.edit);

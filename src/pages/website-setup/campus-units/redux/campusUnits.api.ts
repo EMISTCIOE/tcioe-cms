@@ -52,9 +52,7 @@ export const campusUnitsAPISlice = rootAPI.injectEndpoints({
         }
 
         if (designations && designations.length > 0) {
-          designations.forEach((designation, index) =>
-            body.append(`designations[${index}]`, designation)
-          );
+          designations.forEach((designation, index) => body.append(`designations[${index}]`, designation));
         }
         if (members && members.length > 0) {
           members.forEach((memberId, index) => body.append(`members[${index}]`, String(memberId)));
@@ -93,9 +91,7 @@ export const campusUnitsAPISlice = rootAPI.injectEndpoints({
         }
 
         if (designations && designations.length > 0) {
-          designations.forEach((designation, index) =>
-            body.append(`designations[${index}]`, designation)
-          );
+          designations.forEach((designation, index) => body.append(`designations[${index}]`, designation));
         }
         if (members && members.length > 0) {
           members.forEach((memberId, index) => body.append(`members[${index}]`, String(memberId)));

@@ -6,7 +6,7 @@ on:
 jobs:
   deploy:
     name: Build & Deploy
-    runs-on: self-hosted
+    runs-on: [self-hosted, club]
     env:
       VITE_APP_VERSION: ${{ secrets.VITE_APP_VERSION }}
       GENERATE_SOURCEMAP: ${{ secrets.GENERATE_SOURCEMAP }}

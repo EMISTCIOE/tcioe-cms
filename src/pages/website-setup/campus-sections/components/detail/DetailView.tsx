@@ -39,10 +39,7 @@ const DetailView: React.FC<IDetailViewProps> = ({ campusSectionsData, onClose })
     data: campusSectionsData
   };
   const departmentHead = campusSectionsData.departmentHeadDetail;
-  const memberOfficials =
-    campusSectionsData.officials?.filter(
-      (official) => !departmentHead || official.id !== departmentHead.id
-    ) || [];
+  const memberOfficials = campusSectionsData.officials?.filter((official) => !departmentHead || official.id !== departmentHead.id) || [];
 
   return (
     <MainCard sx={{ p: 0, overflow: 'hidden', position: 'relative' }}>

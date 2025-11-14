@@ -1,8 +1,8 @@
 import { IRequiredPermission } from '@/globals';
 
 export const globalGalleryPermissions: IRequiredPermission = {
-  view: ['view_campus_event', 'view_student_club_event', 'view_department_event'],
-  edit: 'view_campus_event',
-  add: 'view_campus_event',
-  delete: 'view_campus_event'
+  view: ['view_campusevent', 'view_studentclubevent', 'view_departmentevent'],
+  edit: 'view_campusevent',
+  add: 'view_campusevent',
+  delete: 'view_campusevent'
 };

@@ -72,21 +72,21 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
 };
 
 export default useCreateCampusKeyOfficials;
-  useEffect(() => {
-    const options =
-      designationData?.results
-        ?.filter((item) => item.isActive)
-        .map((item) => ({
-          value: item.code,
-          label: item.title
-        })) ?? [];
+useEffect(() => {
+  const options =
+    designationData?.results
+      ?.filter((item) => item.isActive)
+      .map((item) => ({
+        value: item.code,
+        label: item.title
+      })) ?? [];
 
-    setFormFields((prev) =>
-      prev.map((field) => {
-        if (field.name === 'designation') {
-          return { ...field, options };
-        }
-        return field;
-      })
-    );
-  }, [designationData]);
+  setFormFields((prev) =>
+    prev.map((field) => {
+      if (field.name === 'designation') {
+        return { ...field, options };
+      }
+      return field;
+    })
+  );
+}, [designationData]);

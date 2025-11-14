@@ -224,93 +224,94 @@ const DetailView: React.FC<IDetailViewProps> = ({ campusUnitsData, onClose }) =>
           </Box>
         )}
 
-        {campusUnitsData.officials && campusUnitsData.officials.filter((official) => official.id !== campusUnitsData.departmentHeadDetail?.id).length > 0 && (
-          <Box sx={{ mt: 4, borderTop: 1, borderColor: 'divider', pt: 4 }}>
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: 500,
-                color: theme.palette.text.secondary,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                mb: 2
-              }}
-            >
-              Linked Staff
-            </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-              {campusUnitsData.officials
-                .filter((official) => official.id !== campusUnitsData.departmentHeadDetail?.id)
-                .map((official) => (
-                <MainCard
-                  key={official.uuid}
-                  elevation={3}
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    borderRadius: 3,
-                    p: 2,
-                    flex: 1,
-                    minWidth: 280
-                  }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
-                    <Avatar
-                      src={official.photo || undefined}
-                      alt={official.fullName || 'official'}
+        {campusUnitsData.officials &&
+          campusUnitsData.officials.filter((official) => official.id !== campusUnitsData.departmentHeadDetail?.id).length > 0 && (
+            <Box sx={{ mt: 4, borderTop: 1, borderColor: 'divider', pt: 4 }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: 500,
+                  color: theme.palette.text.secondary,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  mb: 2
+                }}
+              >
+                Linked Staff
+              </Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                {campusUnitsData.officials
+                  .filter((official) => official.id !== campusUnitsData.departmentHeadDetail?.id)
+                  .map((official) => (
+                    <MainCard
+                      key={official.uuid}
+                      elevation={3}
                       sx={{
-                        width: 100,
-                        height: 100,
-                        borderRadius: '50%'
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderRadius: 3,
+                        p: 2,
+                        flex: 1,
+                        minWidth: 280
                       }}
                     >
-                      {official.fullName?.charAt(0) || 'O'}
-                    </Avatar>
-                    <Box sx={{ flex: 1 }}>
-                      <Typography variant="h5" fontWeight={600}>
-                        {official.fullName || 'Member'}
-                      </Typography>
-                      {official.titlePrefixDisplay && (
-                        <Typography variant="body2" color="text.secondary">
-                          {official.titlePrefixDisplay}
-                        </Typography>
-                      )}
-                      <Typography variant="body1" fontWeight={500} sx={{ mb: 1 }}>
-                        {official.designation || 'Designation'}
-                      </Typography>
-                      {official.email && (
-                        <Typography variant="body2" color="text.secondary">
-                          {official.email}
-                        </Typography>
-                      )}
-                      {official.phoneNumber && (
-                        <Typography variant="body2" color="text.secondary">
-                          {official.phoneNumber}
-                        </Typography>
-                      )}
-                      <Box sx={{ mt: 1 }}>
-                        <Chip
-                          size="small"
-                          variant="outlined"
-                          color="primary"
-                          label={official.isKeyOfficial ? 'Key Staff' : 'Staff'}
-                          icon={<CheckCircleOutline fontSize="small" />}
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+                        <Avatar
+                          src={official.photo || undefined}
+                          alt={official.fullName || 'official'}
                           sx={{
-                            mr: 1,
-                            p: 1.2,
-                            fontWeight: 500,
-                            borderRadius: 1
+                            width: 100,
+                            height: 100,
+                            borderRadius: '50%'
                           }}
-                        />
+                        >
+                          {official.fullName?.charAt(0) || 'O'}
+                        </Avatar>
+                        <Box sx={{ flex: 1 }}>
+                          <Typography variant="h5" fontWeight={600}>
+                            {official.fullName || 'Member'}
+                          </Typography>
+                          {official.titlePrefixDisplay && (
+                            <Typography variant="body2" color="text.secondary">
+                              {official.titlePrefixDisplay}
+                            </Typography>
+                          )}
+                          <Typography variant="body1" fontWeight={500} sx={{ mb: 1 }}>
+                            {official.designation || 'Designation'}
+                          </Typography>
+                          {official.email && (
+                            <Typography variant="body2" color="text.secondary">
+                              {official.email}
+                            </Typography>
+                          )}
+                          {official.phoneNumber && (
+                            <Typography variant="body2" color="text.secondary">
+                              {official.phoneNumber}
+                            </Typography>
+                          )}
+                          <Box sx={{ mt: 1 }}>
+                            <Chip
+                              size="small"
+                              variant="outlined"
+                              color="primary"
+                              label={official.isKeyOfficial ? 'Key Staff' : 'Staff'}
+                              icon={<CheckCircleOutline fontSize="small" />}
+                              sx={{
+                                mr: 1,
+                                p: 1.2,
+                                fontWeight: 500,
+                                borderRadius: 1
+                              }}
+                            />
+                          </Box>
+                        </Box>
                       </Box>
-                    </Box>
-                  </Box>
-                </MainCard>
-                ))}
+                    </MainCard>
+                  ))}
+              </Box>
             </Box>
-          </Box>
-        )}
+          )}
       </Box>
     </MainCard>
   );
