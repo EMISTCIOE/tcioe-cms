@@ -11,6 +11,9 @@ import LanguageIcon from '@mui/icons-material/Language';
 import CelebrationIcon from '@mui/icons-material/Celebration';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
 import PhoneIcon from '@mui/icons-material/Phone';
+import WorkIcon from '@mui/icons-material/Work';
+import ScienceIcon from '@mui/icons-material/Science';
+import LabelIcon from '@mui/icons-material/Label';
 
 // project-imports
 import { MenuItem } from './types';
@@ -28,7 +31,10 @@ const icons = {
   LanguageIcon,
   CelebrationIcon,
   Diversity3Icon,
-  PhoneIcon
+  PhoneIcon,
+  WorkIcon,
+  ScienceIcon,
+  LabelIcon
 };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
@@ -50,6 +56,14 @@ const modules: MenuItem = {
           icon: icons.Person3Icon,
           type: 'item',
           url: '/user-setup/users',
+          breadcrumbs: false
+        },
+        {
+          id: 'global-gallery',
+          title: 'Global Gallery',
+          type: 'item',
+          icon: icons.CelebrationIcon,
+          url: '/website-setup/global-gallery',
           breadcrumbs: false
         },
         {
@@ -102,7 +116,7 @@ const modules: MenuItem = {
         },
         {
           id: 'campus-key-officials',
-          title: 'Campus Key Officials',
+          title: 'Campus Staff',
           type: 'item',
           icon: icons.Person3Icon,
           url: '/website-setup/campus-key-officials',
@@ -162,6 +176,54 @@ const modules: MenuItem = {
           icon: icons.PhoneIcon,
           type: 'item',
           url: '/contact-setup/phone-numbers',
+          breadcrumbs: false
+        }
+      ]
+    },
+    {
+      id: 'projects-management',
+      title: 'Manage Projects',
+      type: 'collapse',
+      icon: icons.WorkIcon,
+      children: [
+        {
+          id: 'projects',
+          title: 'Projects',
+          icon: icons.WorkIcon,
+          type: 'item',
+          url: '/website-setup/projects',
+          breadcrumbs: false
+        },
+        {
+          id: 'project-tags',
+          title: 'Project Tags',
+          icon: icons.LabelIcon,
+          type: 'item',
+          url: '/website-setup/projects/tags',
+          breadcrumbs: false
+        }
+      ]
+    },
+    {
+      id: 'research-management',
+      title: 'Manage Research',
+      type: 'collapse',
+      icon: icons.ScienceIcon,
+      children: [
+        {
+          id: 'research',
+          title: 'Research',
+          icon: icons.ScienceIcon,
+          type: 'item',
+          url: '/website-setup/research',
+          breadcrumbs: false
+        },
+        {
+          id: 'research-tags',
+          title: 'Research Tags',
+          icon: icons.LabelIcon,
+          type: 'item',
+          url: '/website-setup/research/tags',
           breadcrumbs: false
         }
       ]

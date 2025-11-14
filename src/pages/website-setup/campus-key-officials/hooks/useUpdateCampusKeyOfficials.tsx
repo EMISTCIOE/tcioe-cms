@@ -17,14 +17,15 @@ import {
   TCampusKeyOfficialsUpdateFormDataType
 } from '../components/update-form/config';
 import { ICampusKeyOfficialsUpdateFormProps } from '../components/update-form/Form';
-import { usePatchCampusKeyOfficialsMutation } from '../redux/campusKeyOfficials.api';
+import { useGetCampusStaffDesignationsQuery, usePatchCampusKeyOfficialsMutation } from '../redux/campusKeyOfficials.api';
 import { ICampusKeyOfficialsUpdatePayload } from '../redux/types';
 
 const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampusKeyOfficialsUpdateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [updateCampusKeyOfficials] = usePatchCampusKeyOfficialsMutation();
-  const [formFields, _] = useState(campusKeyOfficialsUpdateFields);
+  const { data: designationData } = useGetCampusStaffDesignationsQuery();
+  const [formFields, setFormFields] = useState(campusKeyOfficialsUpdateFields);
 
   const {
     control,
@@ -46,6 +47,25 @@ const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampu
       });
     }
   }, [campusKeyOfficialsData, reset]);
+
+  useEffect(() => {
+    const options =
+      designationData?.results
+        ?.filter((item) => item.isActive)
+        .map((item) => ({
+          value: item.code,
+          label: item.title
+        })) ?? [];
+
+    setFormFields((prev) =>
+      prev.map((field) => {
+        if (field.name === 'designation') {
+          return { ...field, options };
+        }
+        return field;
+      })
+    );
+  }, [designationData]);
 
   // This is for form update not for inline update
   const onSubmit = async (data: TCampusKeyOfficialsUpdateFormDataType) => {
@@ -71,6 +91,7 @@ const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampu
           phoneNumber: 'phoneNumber',
           message: 'message',
           photo: 'photo',
+          isKeyOfficial: 'isKeyOfficial',
           isActive: 'isActive'
         }
       });

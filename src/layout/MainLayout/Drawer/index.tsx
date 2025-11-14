@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { Theme } from '@mui/material/styles';
 
 // project import
 import DrawerContent from './DrawerContent';
@@ -20,8 +21,8 @@ interface MainDrawerProps {
 
 export default function MainDrawer({ window }: MainDrawerProps) {
   const { menuMaster } = useGetMenuMaster();
-  const drawerOpen = menuMaster.isDashboardDrawerOpened;
-  const matchDownMD = useMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const drawerOpen = menuMaster?.isDashboardDrawerOpened ?? false;
+  const matchDownMD = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
   // responsive drawer container
   const container = window !== undefined ? () => window().document.body : undefined;

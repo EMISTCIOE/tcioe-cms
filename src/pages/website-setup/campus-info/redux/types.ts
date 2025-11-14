@@ -11,7 +11,7 @@ export enum SocialPlatform {
 export interface ISocialLink {
   id?: number;
   platform: SocialPlatform;
-  url: string;
+  url?: string | null;
   isActive: boolean;
 }
 

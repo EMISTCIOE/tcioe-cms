@@ -5,10 +5,12 @@ import {
   ICampusKeyOfficialsList,
   ICampusKeyOfficialsDetails,
   ICampusKeyOfficialsCreatePayload,
-  ICampusKeyOfficialsUpdatePayload
+  ICampusKeyOfficialsUpdatePayload,
+  ICampusStaffDesignationList
 } from './types';
 
 export const campusKeyOfficialsAPI = 'cms/website-mod/campus-key-officials';
+export const campusStaffDesignationsAPI = 'cms/website-mod/campus-staff-designations';
 
 export const campusKeyOfficialsAPISlice = rootAPI.injectEndpoints({
   endpoints: (builder) => ({
@@ -22,9 +24,10 @@ export const campusKeyOfficialsAPISlice = rootAPI.injectEndpoints({
           sortModel,
           filterModel
         });
+        const filterQuery = filterString ? `&${filterString}` : '';
 
         return {
-          url: `${campusKeyOfficialsAPI}?offset=${page * pageSize}&limit=${pageSize}&search=${search ?? ''}&ordering=${orderingString}&${filterString}`,
+          url: `${campusKeyOfficialsAPI}?offset=${page * pageSize}&limit=${pageSize}&search=${search ?? ''}&ordering=${orderingString}${filterQuery}`,
           method: 'GET'
         };
       },
@@ -51,7 +54,10 @@ export const campusKeyOfficialsAPISlice = rootAPI.injectEndpoints({
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
-          if (value !== undefined && value !== null) {
+          if (value === undefined || value === null) continue;
+          if (typeof value === 'boolean') {
+            body.append(key, value ? 'true' : 'false');
+          } else {
             body.append(key, value as string | Blob);
           }
         }
@@ -78,7 +84,10 @@ export const campusKeyOfficialsAPISlice = rootAPI.injectEndpoints({
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
-          if (value !== undefined && value !== null) {
+          if (value === undefined || value === null) continue;
+          if (typeof value === 'boolean') {
+            body.append(key, value ? 'true' : 'false');
+          } else {
             body.append(key, value as string | Blob);
           }
         }
@@ -106,6 +115,13 @@ export const campusKeyOfficialsAPISlice = rootAPI.injectEndpoints({
         };
       },
       invalidatesTags: ['CampusKeyOfficials']
+    }),
+
+    getCampusStaffDesignations: builder.query<ICampusStaffDesignationList, void>({
+      query: () => ({
+        url: `${campusStaffDesignationsAPI}?limit=500`,
+        method: 'GET'
+      })
     })
   })
 });
@@ -117,5 +133,6 @@ export const {
   useLazyRetrieveCampusKeyOfficialsQuery,
   useCreateCampusKeyOfficialsMutation,
   usePatchCampusKeyOfficialsMutation,
-  useDeleteCampusKeyOfficialsMutation
+  useDeleteCampusKeyOfficialsMutation,
+  useGetCampusStaffDesignationsQuery
 } = campusKeyOfficialsAPISlice;

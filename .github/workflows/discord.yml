@@ -5,11 +5,6 @@ on:
     types: [opened, closed, reopened, synchronize]
   issues:
     types: [opened, closed, reopened]
-  release:
-    types: [published]
-  workflow_run:
-    workflows: ['*']
-    types: [completed]
 
 jobs:
   notify-discord:

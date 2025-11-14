@@ -26,7 +26,7 @@ const DetailView: React.FC<IDetailViewProps> = ({ campusKeyOfficialsData, onClos
     return (
       <Paper elevation={3} sx={{ p: 4, textAlign: 'center' }}>
         <Typography variant="h5" mb={3}>
-          Campus Key Officials Details
+          Campus Staff Details
         </Typography>
         <CircularProgress />
       </Paper>
@@ -67,6 +67,18 @@ const DetailView: React.FC<IDetailViewProps> = ({ campusKeyOfficialsData, onClos
               color={campusKeyOfficialsData.isActive ? 'success' : 'error'}
               label={campusKeyOfficialsData.isActive ? 'Active' : 'Inactive'}
               icon={campusKeyOfficialsData.isActive ? <CheckCircleOutline fontSize="small" /> : <CancelOutlined fontSize="small" />}
+              sx={{
+                mr: 1,
+                p: 1.5,
+                fontWeight: 500,
+                borderRadius: 1
+              }}
+            />
+            <Chip
+              size="small"
+              variant="outlined"
+              color={campusKeyOfficialsData.isKeyOfficial ? 'primary' : 'default'}
+              label={campusKeyOfficialsData.isKeyOfficial ? 'Key Official' : 'Staff'}
               sx={{
                 mr: 1,
                 p: 1.5,

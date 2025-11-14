@@ -627,7 +627,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                   minHeight: 220,
                   overflowY: 'auto',
                   resize: 'vertical',
-                  border: (theme) => `1px solid ${theme.palette.grey[300]}`,
+                  border: `1px solid ${theme.palette.grey[300]}`,
                   '& .MuiTiptap-FieldContainer-notchedOutline': {
                     border: 'none'
                   },

@@ -27,8 +27,13 @@ const CampusKeyOfficials = Loadable(lazy(() => import('@/pages/website-setup/cam
 const CampusReports = Loadable(lazy(() => import('@/pages/website-setup/campus-reports')));
 const CampusEvents = Loadable(lazy(() => import('@/pages/website-setup/campus-events')));
 const CampusUnions = Loadable(lazy(() => import('@/pages/website-setup/campus-unions')));
+const GlobalGallery = Loadable(lazy(() => import('@/pages/website-setup/global-gallery')));
 const CampusSections = Loadable(lazy(() => import('@/pages/website-setup/campus-sections')));
 const CampusUnits = Loadable(lazy(() => import('@/pages/website-setup/campus-units')));
+const Research = Loadable(lazy(() => import('@/pages/website-setup/research')));
+const ResearchTags = Loadable(lazy(() => import('@/pages/website-setup/research/tags')));
+const Projects = Loadable(lazy(() => import('@/pages/website-setup/projects')));
+const ProjectTags = Loadable(lazy(() => import('@/pages/website-setup/projects/tags')));
 
 // Contact Setup Pages
 const Contact = Loadable(lazy(() => import('@/pages/contact')));
@@ -68,8 +73,13 @@ const PrivateRoutes = () => (
           <Route path="campus-reports" element={<CampusReports />} />
           <Route path="campus-events" element={<CampusEvents />} />
           <Route path="campus-unions" element={<CampusUnions />} />
+          <Route path="global-gallery" element={<GlobalGallery />} />
           <Route path="campus-sections" element={<CampusSections />} />
           <Route path="campus-units" element={<CampusUnits />} />
+          <Route path="research" element={<Research />} />
+          <Route path="research/tags" element={<ResearchTags />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="projects/tags" element={<ProjectTags />} />
         </Route>
         {/* Contact Setup */}
         <Route path="contact-setup">

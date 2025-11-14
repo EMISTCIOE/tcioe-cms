@@ -49,6 +49,7 @@ export const rootAPI = createApi({
     'CampusFeedbacks',
     'CampusEvents',
     'CampusUnions',
+    'GlobalGallery',
     'CampusSections',
     'CampusUnits',
     'CampusReports',
@@ -56,6 +57,10 @@ export const rootAPI = createApi({
     'CampusDownloads',
     'StudentClubs',
     'StudentClubEvents',
-    'PhoneNumber'
+    'PhoneNumber',
+    'Projects',
+    'ProjectTags',
+    'Research',
+    'ResearchTag'
   ]
 });

@@ -5,7 +5,7 @@ import { Button, Grid } from '@mui/material';
 import MainCard from '@/components/cards/MainCard';
 import FormSection from '@/components/app-form/FormSection';
 import { TCampusKeyOfficialsCreateFormDataType } from './config';
-import useCreateCampusKeyOfficials from '../../hooks/useCreateCampusKeyOfficials';
+import useCreateCampusKeyOfficials from '../../../campus-key-officials/hooks/useCreateCampusKeyOfficials';
 
 export interface ICampusKeyOfficialsCreateFormProps {
   onClose?: () => void;

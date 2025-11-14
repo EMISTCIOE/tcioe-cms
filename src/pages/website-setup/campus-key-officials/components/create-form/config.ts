@@ -1,20 +1,19 @@
 import { FormField } from '@/components/app-form/types';
 import * as z from 'zod';
 import { enumToOptions } from '@/utils/functions/formatString';
-import { CampusKeyOfficialsDesignation, CampusKeyOfficialsTitleprefix } from '../../redux/types';
+import { CampusKeyOfficialsTitleprefix } from '../../redux/types';
 
 // NOTE - Define the schema for the form.
 export const campusKeyOfficialsCreateFormSchema = z.object({
   titlePrefix: z.nativeEnum(CampusKeyOfficialsTitleprefix, {
     errorMap: () => ({ message: 'Title Prefix is required' })
   }),
-  designation: z.nativeEnum(CampusKeyOfficialsDesignation, {
-    errorMap: () => ({ message: 'Designation is required' })
-  }),
+  designation: z.string().min(1, 'Designation is required'),
   fullName: z.string().min(1, 'FullName is required'),
   email: z.string().email('Invalid email address').optional(),
   message: z.string().optional(),
   phoneNumber: z.string().min(10, 'Phone Number must be at least 10 characters').optional(),
+  isKeyOfficial: z.boolean().default(true),
   isActive: z.boolean().default(true),
   photo: z
     .any()
@@ -42,6 +41,7 @@ export const defaultValues: Partial<TCampusKeyOfficialsCreateFormDataType> = {
   email: '',
   message: '',
   phoneNumber: '',
+  isKeyOfficial: true,
   isActive: true,
   photo: null
 };
@@ -55,7 +55,7 @@ export const campusKeyOfficialsCreateFields: FormField<TCampusKeyOfficialsCreate
     sm: 4,
     type: 'select',
     required: true,
-    options: [...enumToOptions(CampusKeyOfficialsDesignation)]
+    options: []
   },
   {
     name: 'titlePrefix',
@@ -69,6 +69,7 @@ export const campusKeyOfficialsCreateFields: FormField<TCampusKeyOfficialsCreate
   { name: 'fullName', label: 'Full Name', xs: 12, sm: 4, type: 'text', required: true },
   { name: 'email', label: 'Email', xs: 12, sm: 4, type: 'email' },
   { name: 'phoneNumber', label: 'Phone Number', xs: 12, sm: 4, type: 'text' },
+  { name: 'isKeyOfficial', label: 'Key Official', xs: 2, sm: 2, type: 'switch', defaultValue: true },
   { name: 'isActive', label: 'Active Status', xs: 2, sm: 2, type: 'switch' },
   { name: 'message', label: 'Message', xs: 12, sm: 12, type: 'editor', multiline: true, rows: 5 },
   {

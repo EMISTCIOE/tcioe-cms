@@ -43,7 +43,8 @@ export const useCampusKeyOfficialsTable = () => {
     transformResponseToTableData: (apiData) => {
       return apiData?.results.map((item: ICampusKeyOfficialsItem) => ({
         ...item,
-        isActive: item?.isActive ? 'true' : 'false'
+        isActive: item?.isActive ? 'true' : 'false',
+        isKeyOfficial: item?.isKeyOfficial ? 'true' : 'false'
       }));
     },
 

@@ -20,7 +20,7 @@ export default function CampusKeyOfficialsUpdateForm({ campusKeyOfficialsData, o
     <form onSubmit={handleSubmit()}>
       <Grid container spacing={3} sx={{ pt: 1 }}>
         <Grid item xs={12}>
-          <MainCard divider title={'Update Campus Official'}>
+          <MainCard divider title={'Update Staff Member'}>
             <FormSection<TCampusKeyOfficialsUpdateFormDataType> fields={formFields} control={control} errors={errors} />
           </MainCard>
         </Grid>

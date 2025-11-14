@@ -18,11 +18,14 @@ export const getQueryParams = ({ search, paginationModel, sortModel, filterModel
   const orderingString = ordering ? `${direction}${ordering}` : '';
 
   // Filtering
-  const filterItem = filterModel?.items?.[0];
-  const filterField = filterItem?.field;
-  const filterFieldSnake = filterField ? camelCaseToSnakeCase(filterField) : '';
-  const filterValue = filterItem?.value || '';
-  const filterString = filterField ? `${filterFieldSnake}=${filterValue}` : '';
+  const filterItems =
+    filterModel?.items
+      ?.filter((item) => item.field && item.value !== undefined && item.value !== null && item.value !== '')
+      .map((item) => ({
+        field: camelCaseToSnakeCase(item.field as string),
+        value: item.value
+      })) ?? [];
+  const filterString = filterItems.map((item) => `${item.field}=${item.value}`).join('&');
 
   return {
     page,

@@ -18,7 +18,7 @@ export default function CampusKeyOfficialsCreateForm({ onClose }: ICampusKeyOffi
     <form onSubmit={handleSubmit()} noValidate>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <MainCard divider title="Create New Campus Official">
+          <MainCard divider title="Add Campus Staff">
             <FormSection<TCampusKeyOfficialsCreateFormDataType> fields={formFields} control={control} errors={errors} />
           </MainCard>
         </Grid>

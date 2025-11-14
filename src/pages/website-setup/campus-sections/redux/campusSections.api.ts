@@ -42,7 +42,7 @@ export const campusSectionsAPISlice = rootAPI.injectEndpoints({
     // Create CampusSections
     createCampusSections: builder.mutation<IMutationSuccessResponse, ICampusSectionsCreatePayload>({
       query: (values) => {
-        const { members, thumbnail, heroImage, ...rest } = values;
+        const { designations, members, departmentHead, thumbnail, heroImage, ...rest } = values;
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
@@ -51,37 +51,14 @@ export const campusSectionsAPISlice = rootAPI.injectEndpoints({
           }
         }
 
-        // Append members
+        if (designations && designations.length > 0) {
+          designations.forEach((designation, index) => body.append(`designations[${index}]`, designation));
+        }
         if (members && members.length > 0) {
-          members.forEach((member, index) => {
-            if (member.photo instanceof File) {
-              body.append(`members[${index}][photo]`, member.photo);
-            }
-            if (member.titlePrefix) {
-              body.append(`members[${index}][titlePrefix]`, member.titlePrefix);
-            }
-            if (member.fullName) {
-              body.append(`members[${index}][fullName]`, member.fullName);
-            }
-            if (member.designation) {
-              body.append(`members[${index}][designation]`, member.designation);
-            }
-            if (member.email) {
-              body.append(`members[${index}][email]`, member.email);
-            }
-            if (member.phoneNumber) {
-              body.append(`members[${index}][phoneNumber]`, member.phoneNumber);
-            }
-            if (member.bio) {
-              body.append(`members[${index}][bio]`, member.bio);
-            }
-            if (member.displayOrder !== undefined) {
-              body.append(`members[${index}][displayOrder]`, String(member.displayOrder));
-            }
-            if (member.isActive !== undefined) {
-              body.append(`members[${index}][isActive]`, String(member.isActive));
-            }
-          });
+          members.forEach((memberId, index) => body.append(`members[${index}]`, String(memberId)));
+        }
+        if (departmentHead !== undefined && departmentHead !== null) {
+          body.append('departmentHead', String(departmentHead));
         }
 
         // Append thumbnail if it exists
@@ -104,7 +81,7 @@ export const campusSectionsAPISlice = rootAPI.injectEndpoints({
     // Patch CampusSections
     patchCampusSections: builder.mutation<IMutationSuccessResponse, { id: number; values: ICampusSectionsUpdatePayload }>({
       query: ({ id, values }) => {
-        const { members, thumbnail, heroImage, ...rest } = values;
+        const { designations, members, departmentHead, thumbnail, heroImage, ...rest } = values;
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
@@ -113,40 +90,14 @@ export const campusSectionsAPISlice = rootAPI.injectEndpoints({
           }
         }
 
-        // Append members
+        if (designations && designations.length > 0) {
+          designations.forEach((designation, index) => body.append(`designations[${index}]`, designation));
+        }
         if (members && members.length > 0) {
-          members.forEach((member, index) => {
-            if (member.photo instanceof File) {
-              body.append(`members[${index}][photo]`, member.photo);
-            }
-            if (member.id !== undefined) {
-              body.append(`members[${index}][id]`, String(member.id));
-            }
-            if (member.fullName) {
-              body.append(`members[${index}][fullName]`, member.fullName);
-            }
-            if (member.designation) {
-              body.append(`members[${index}][designation]`, member.designation);
-            }
-            if (member.titlePrefix) {
-              body.append(`members[${index}][titlePrefix]`, member.titlePrefix);
-            }
-            if (member.email) {
-              body.append(`members[${index}][email]`, member.email);
-            }
-            if (member.phoneNumber) {
-              body.append(`members[${index}][phoneNumber]`, member.phoneNumber);
-            }
-            if (member.bio) {
-              body.append(`members[${index}][bio]`, member.bio);
-            }
-            if (member.displayOrder !== undefined) {
-              body.append(`members[${index}][displayOrder]`, String(member.displayOrder));
-            }
-            if (member.isActive !== undefined) {
-              body.append(`members[${index}][isActive]`, String(member.isActive));
-            }
-          });
+          members.forEach((memberId, index) => body.append(`members[${index}]`, String(memberId)));
+        }
+        if (departmentHead !== undefined && departmentHead !== null) {
+          body.append('departmentHead', String(departmentHead));
         }
 
         // Append thumbnail if it exists
@@ -175,15 +126,6 @@ export const campusSectionsAPISlice = rootAPI.injectEndpoints({
         };
       },
       invalidatesTags: ['CampusSections']
-    }),
-    deletCampusSectionsMember: builder.mutation<IMutationSuccessResponse, { id: number; member_id: number }>({
-      query: ({ id, member_id }) => {
-        return {
-          url: `${campusSectionsAPI}/${id}/member/${member_id}`,
-          method: 'DELETE'
-        };
-      }
-      // invalidatesTags: ['CampusSections']
     })
   })
 });
@@ -195,6 +137,5 @@ export const {
   useLazyRetrieveCampusSectionsQuery,
   useCreateCampusSectionsMutation,
   usePatchCampusSectionsMutation,
-  useDeleteCampusSectionsMutation,
-  useDeletCampusSectionsMemberMutation
+  useDeleteCampusSectionsMutation
 } = campusSectionsAPISlice;

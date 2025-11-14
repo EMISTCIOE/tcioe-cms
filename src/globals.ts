@@ -6,10 +6,10 @@ export type BackendError = {
 };
 
 export interface IRequiredPermission {
-  view: string;
-  edit: string;
-  add: string;
-  delete: string;
+  view: string | string[];
+  edit: string | string[];
+  add: string | string[];
+  delete: string | string[];
 }
 
 export interface PaginationParams {

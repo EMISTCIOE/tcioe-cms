@@ -158,7 +158,7 @@ const DetailView: React.FC<IDetailViewProps> = ({ campusUnitsData, onClose }) =>
           </Box>
         )}
 
-        {campusUnitsData.members && campusUnitsData.members.length > 0 && (
+        {campusUnitsData.departmentHeadDetail && (
           <Box sx={{ mt: 4, borderTop: 1, borderColor: 'divider', pt: 4 }}>
             <Typography
               variant="body2"
@@ -170,12 +170,80 @@ const DetailView: React.FC<IDetailViewProps> = ({ campusUnitsData, onClose }) =>
                 mb: 2
               }}
             >
-              Unit Team
+              Department Head
+            </Typography>
+            <MainCard
+              elevation={3}
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                borderRadius: 3,
+                p: 2,
+                flex: 1,
+                minWidth: 280
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+                <Avatar
+                  src={campusUnitsData.departmentHeadDetail.photo || undefined}
+                  alt={campusUnitsData.departmentHeadDetail.fullName || 'Head'}
+                  sx={{
+                    width: 100,
+                    height: 100,
+                    borderRadius: '50%'
+                  }}
+                >
+                  {campusUnitsData.departmentHeadDetail.fullName?.charAt(0) || 'H'}
+                </Avatar>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h5" fontWeight={600}>
+                    {campusUnitsData.departmentHeadDetail.fullName}
+                  </Typography>
+                  {campusUnitsData.departmentHeadDetail.titlePrefixDisplay && (
+                    <Typography variant="body2" color="text.secondary">
+                      {campusUnitsData.departmentHeadDetail.titlePrefixDisplay}
+                    </Typography>
+                  )}
+                  <Typography variant="body1" fontWeight={500} sx={{ mb: 1 }}>
+                    {campusUnitsData.departmentHeadDetail.designation || 'Head'}
+                  </Typography>
+                  {campusUnitsData.departmentHeadDetail.email && (
+                    <Typography variant="body2" color="text.secondary">
+                      {campusUnitsData.departmentHeadDetail.email}
+                    </Typography>
+                  )}
+                  {campusUnitsData.departmentHeadDetail.phoneNumber && (
+                    <Typography variant="body2" color="text.secondary">
+                      {campusUnitsData.departmentHeadDetail.phoneNumber}
+                    </Typography>
+                  )}
+                </Box>
+              </Box>
+            </MainCard>
+          </Box>
+        )}
+
+        {campusUnitsData.officials && campusUnitsData.officials.filter((official) => official.id !== campusUnitsData.departmentHeadDetail?.id).length > 0 && (
+          <Box sx={{ mt: 4, borderTop: 1, borderColor: 'divider', pt: 4 }}>
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 500,
+                color: theme.palette.text.secondary,
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                mb: 2
+              }}
+            >
+              Linked Staff
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-              {campusUnitsData.members.map((member) => (
+              {campusUnitsData.officials
+                .filter((official) => official.id !== campusUnitsData.departmentHeadDetail?.id)
+                .map((official) => (
                 <MainCard
-                  key={member.id}
+                  key={official.uuid}
                   elevation={3}
                   sx={{
                     display: 'flex',
@@ -189,45 +257,45 @@ const DetailView: React.FC<IDetailViewProps> = ({ campusUnitsData, onClose }) =>
                 >
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
                     <Avatar
-                      src={member.photo || undefined}
-                      alt={member.fullName || 'member'}
+                      src={official.photo || undefined}
+                      alt={official.fullName || 'official'}
                       sx={{
                         width: 100,
                         height: 100,
                         borderRadius: '50%'
                       }}
                     >
-                      {member.fullName?.charAt(0) || 'M'}
+                      {official.fullName?.charAt(0) || 'O'}
                     </Avatar>
                     <Box sx={{ flex: 1 }}>
                       <Typography variant="h5" fontWeight={600}>
-                        {member.fullName || 'Member'}
+                        {official.fullName || 'Member'}
                       </Typography>
-                      <Typography variant="body1" fontWeight={400} sx={{ mb: 1 }}>
-                        {member.designation || 'Designation'}
-                      </Typography>
-                      {member.email && (
+                      {official.titlePrefixDisplay && (
                         <Typography variant="body2" color="text.secondary">
-                          {member.email}
+                          {official.titlePrefixDisplay}
                         </Typography>
                       )}
-                      {member.phoneNumber && (
+                      <Typography variant="body1" fontWeight={500} sx={{ mb: 1 }}>
+                        {official.designation || 'Designation'}
+                      </Typography>
+                      {official.email && (
                         <Typography variant="body2" color="text.secondary">
-                          {member.phoneNumber}
+                          {official.email}
                         </Typography>
                       )}
-                      {member.bio && (
-                        <Typography variant="body2" sx={{ mt: 1 }} color="text.secondary">
-                          {member.bio}
+                      {official.phoneNumber && (
+                        <Typography variant="body2" color="text.secondary">
+                          {official.phoneNumber}
                         </Typography>
                       )}
                       <Box sx={{ mt: 1 }}>
                         <Chip
                           size="small"
                           variant="outlined"
-                          color={member.isActive ? 'success' : 'error'}
-                          label={member.isActive ? 'Active' : 'Inactive'}
-                          icon={member.isActive ? <CheckCircleOutline fontSize="small" /> : <CancelOutlined fontSize="small" />}
+                          color="primary"
+                          label={official.isKeyOfficial ? 'Key Staff' : 'Staff'}
+                          icon={<CheckCircleOutline fontSize="small" />}
                           sx={{
                             mr: 1,
                             p: 1.2,
@@ -239,7 +307,7 @@ const DetailView: React.FC<IDetailViewProps> = ({ campusUnitsData, onClose }) =>
                     </Box>
                   </Box>
                 </MainCard>
-              ))}
+                ))}
             </Box>
           </Box>
         )}

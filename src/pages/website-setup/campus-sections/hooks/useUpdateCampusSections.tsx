@@ -14,20 +14,29 @@ import {
   campusSectionsUpdateFields,
   campusSectionsUpdateFormSchema,
   defaultValues,
-  Member,
   TCampusSectionsUpdateFormDataType
 } from '../components/update-form/config';
 import { ICampusSectionsUpdateFormProps } from '../components/update-form/Form';
-import { useDeletCampusSectionsMemberMutation, usePatchCampusSectionsMutation } from '../redux/campusSections.api';
+import { usePatchCampusSectionsMutation } from '../redux/campusSections.api';
 import { ICampusSectionsUpdatePayload } from '../redux/types';
-import { TField } from '@/components/app-form/types';
+import { useGetCampusKeyOfficialsQuery } from '@/pages/website-setup/campus-key-officials/redux/campusKeyOfficials.api';
 
 const useUpdateCampusSections = ({ campusSectionsData, onClose }: ICampusSectionsUpdateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [updateCampusSections] = usePatchCampusSectionsMutation();
-  const [deleteCampusSectionsMemberItem] = useDeletCampusSectionsMemberMutation();
   const [formFields, setFormFields] = useState(campusSectionsUpdateFields);
+  const { data: keyOfficialsData } = useGetCampusKeyOfficialsQuery({
+    search: '',
+    paginationModel: { page: 0, pageSize: 1000 },
+    sortModel: [{ field: 'displayOrder', sort: 'asc' }],
+    filterModel: {
+      items: [
+        { field: 'isActive', operator: 'equals', value: 'true' },
+        { field: 'isKeyOfficial', operator: 'equals', value: 'true' }
+      ]
+    }
+  });
 
   const {
     control,
@@ -45,35 +54,44 @@ const useUpdateCampusSections = ({ campusSectionsData, onClose }: ICampusSection
   useEffect(() => {
     if (campusSectionsData) {
       reset({
-        ...campusSectionsData
+        id: campusSectionsData.id,
+        name: campusSectionsData.name,
+        slug: campusSectionsData.slug ?? '',
+        shortDescription: campusSectionsData.shortDescription,
+        detailedDescription: campusSectionsData.detailedDescription ?? '',
+        objectives: campusSectionsData.objectives ?? '',
+        achievements: campusSectionsData.achievements ?? '',
+        location: campusSectionsData.location ?? '',
+        contactEmail: campusSectionsData.contactEmail ?? '',
+        contactPhone: campusSectionsData.contactPhone ?? '',
+        displayOrder: campusSectionsData.displayOrder,
+        isActive: campusSectionsData.isActive,
+        thumbnail: campusSectionsData.thumbnail ?? null,
+        heroImage: campusSectionsData.heroImage ?? null,
+        members: campusSectionsData.members ?? [],
+        departmentHead: campusSectionsData.departmentHead ?? undefined
       });
     }
   }, [campusSectionsData, reset]);
 
-  // delete handler for member item
-  const handleDeleteMemberItem = async (index: number, member_id: number | undefined) => {
-    if (!campusSectionsData?.id || !member_id) return;
-
-    try {
-      const res = await deleteCampusSectionsMemberItem({ id: campusSectionsData.id, member_id }).unwrap();
-      dispatch(setMessage({ message: res.message, variant: 'success' }));
-    } catch (error) {
-      dispatch(setMessage({ message: 'Failed to delete media', variant: 'error' }));
-      console.error('Delete error:', error);
-    }
-  };
-
   useEffect(() => {
-    const updatedFields = formFields.map((f) =>
-      f.name === 'members'
-        ? {
-            ...f,
-            onDelete: (index: number, field: TField<Member>) => handleDeleteMemberItem(index, field?.id)
-          }
-        : f
+    const options =
+      keyOfficialsData?.results?.map((official) => ({
+        value: official.id,
+        label: `${official.titlePrefixDisplay ? `${official.titlePrefixDisplay} ` : ''}${official.fullName}${
+          official.designationDisplay ? ` (${official.designationDisplay})` : ''
+        }`
+      })) ?? [];
+
+    setFormFields((prev) =>
+      prev.map((field) => {
+        if (field.name === 'departmentHead' || field.name === 'members') {
+          return { ...field, options };
+        }
+        return field;
+      })
     );
-    setFormFields(updatedFields);
-  }, [campusSectionsData]);
+  }, [keyOfficialsData]);
 
   // This is for form update not for inline update
   const onSubmit = async (data: TCampusSectionsUpdateFormDataType) => {

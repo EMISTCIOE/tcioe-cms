@@ -1,6 +1,5 @@
 import { Theme } from '@mui/material';
-import { GridColDef, GridValueGetter } from '@mui/x-data-grid';
-import { IPhoneNumber } from '../../redux/types';
+import { ColumnConfig } from '@/components/app-table/columns';
 
 export interface ITableData {
   id: number;
@@ -13,61 +12,20 @@ export interface ITableData {
   updated_at: string;
 }
 
-export const getColumnConfig = (theme: Theme): GridColDef[] => [
-  {
-    field: 'id',
-    headerName: 'ID',
-    width: 70,
-    type: 'number'
-  },
-  {
-    field: 'department_name',
-    headerName: 'Department/Section',
-    width: 250,
-    editable: true
-  },
-  {
-    field: 'phone_number',
-    headerName: 'Phone Number',
-    width: 150,
-    editable: true
-  },
-  {
-    field: 'description',
-    headerName: 'Description',
-    width: 250,
-    editable: true
-  },
-  {
-    field: 'display_order',
-    headerName: 'Display Order',
-    width: 120,
-    type: 'number',
-    editable: true
-  },
+export const getColumnConfig = (_theme: Theme): ColumnConfig<ITableData>[] => [
+  { field: 'id', headerName: 'ID', type: 'number', editable: false, minWidth: 80, maxWidth: 100 },
+  { field: 'department_name', headerName: 'Department/Section', type: 'text', minWidth: 220 },
+  { field: 'phone_number', headerName: 'Phone Number', type: 'text', minWidth: 150 },
+  { field: 'description', headerName: 'Description', type: 'text', minWidth: 220 },
+  { field: 'display_order', headerName: 'Display Order', type: 'number', minWidth: 140 },
   {
     field: 'is_active',
     headerName: 'Active',
-    width: 100,
     type: 'boolean',
-    editable: true
+    minWidth: 120,
+    trueLabel: 'Active',
+    falseLabel: 'Inactive'
   },
-  {
-    field: 'created_at',
-    headerName: 'Created At',
-    width: 150,
-    type: 'dateTime',
-    valueGetter: (params: any) => {
-      return params.value ? new Date(params.value) : null;
-    }
-  },
-  {
-    field: 'updated_at',
-    headerName: 'Updated At',
-    width: 150,
-    type: 'dateTime',
-    valueGetter: (params: any) => {
-      return params.value ? new Date(params.value) : null;
-    }
-  }
+  { field: 'created_at', headerName: 'Created At', type: 'date', editable: false, minWidth: 180 },
+  { field: 'updated_at', headerName: 'Updated At', type: 'date', editable: false, minWidth: 180 }
 ];

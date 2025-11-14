@@ -2,8 +2,31 @@ import { DynamicInfoSectionProps } from '@/components/detail-section/types';
 import { ICampusUnitsDetails } from '../../redux/types';
 
 export const viewCampusUnitsConfig: Omit<DynamicInfoSectionProps<ICampusUnitsDetails>, 'data'> = {
-  excludeFields: ['id', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'thumbnail', 'heroImage', 'members', 'detailedDescription', 'objectives', 'achievements'],
-  fieldOrder: ['name', 'slug', 'displayOrder', 'location', 'contactEmail', 'contactPhone', 'shortDescription', 'isActive', 'createdAt', 'createdBy'],
+  excludeFields: [
+    'id',
+    'createdAt',
+    'updatedAt',
+    'createdBy',
+    'updatedBy',
+    'thumbnail',
+    'heroImage',
+    'detailedDescription',
+    'objectives',
+    'achievements'
+  ],
+  fieldOrder: [
+    'name',
+    'slug',
+    'displayOrder',
+    'location',
+    'contactEmail',
+    'contactPhone',
+    'shortDescription',
+    'designations',
+    'isActive',
+    'createdAt',
+    'createdBy'
+  ],
   booleanFields: ['isActive'],
   dateTimeFields: ['createdAt'],
   columns: 4,
@@ -15,6 +38,7 @@ export const viewCampusUnitsConfig: Omit<DynamicInfoSectionProps<ICampusUnitsDet
     contactEmail: 'Contact Email',
     contactPhone: 'Contact Phone',
     shortDescription: 'Short Description',
+    designations: 'Linked Designations',
     isActive: 'Active Status',
     createdAt: 'Created At',
     createdBy: 'Created By'

@@ -16,20 +16,27 @@ export interface ICampusSectionsItem {
   shortDescription: string;
   thumbnail?: string | null;
   displayOrder: number;
+  designations: string[];
+  departmentHead?: number | null;
+  departmentHeadDetail?: ICampusSectionOfficial | null;
+  officials?: ICampusSectionOfficial[];
   isActive: boolean;
 }
 
-export interface ICampusSectionsMember {
+export interface ICampusSectionOfficial {
   id: number;
+  uuid: string;
   titlePrefix?: string | null;
+  titlePrefixDisplay?: string | null;
   fullName: string;
   designation: string;
+  designationDisplay?: string;
+  photo?: string | null;
   email?: string | null;
   phoneNumber?: string | null;
   bio?: string | null;
-  photo?: string | null;
-  displayOrder: number;
-  isActive: boolean;
+  isKeyOfficial?: boolean;
+  isActive?: boolean;
 }
 
 export interface ICampusSectionsList extends IListResponse {
@@ -50,7 +57,11 @@ export interface ICampusSectionsDetails {
   contactEmail?: string | null;
   contactPhone?: string | null;
   displayOrder: number;
-  members: ICampusSectionsMember[];
+  designations: string[];
+  officials: ICampusSectionOfficial[];
+  members: number[];
+  departmentHead?: number | null;
+  departmentHeadDetail?: ICampusSectionOfficial | null;
   createdBy: string;
   updatedBy: string;
   createdAt: string; // ISO Date string
@@ -72,7 +83,9 @@ export interface ICampusSectionsCreatePayload {
   contactEmail?: string;
   contactPhone?: string;
   displayOrder?: number;
-  members?: (Omit<ICampusSectionsMember, 'id' | 'photo'> & { photo?: File | null })[];
+  designations?: string[];
+  members?: number[];
+  departmentHead?: number | null;
   isActive: boolean;
 }
 
@@ -90,6 +103,8 @@ export interface ICampusSectionsUpdatePayload {
   contactEmail?: string;
   contactPhone?: string;
   displayOrder?: number;
-  members?: (Omit<ICampusSectionsMember, 'id' | 'photo'> & { id?: number; photo?: File | string | null })[];
+  designations?: string[];
+  members?: number[];
+  departmentHead?: number | null;
   isActive: boolean;
 }

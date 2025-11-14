@@ -1,12 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ICampusKeyOfficialsCreatePayload } from '../redux/types';
 
 import { useAppDispatch } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
-import { useCreateCampusKeyOfficialsMutation } from '../redux/campusKeyOfficials.api';
+import { useCreateCampusKeyOfficialsMutation, useGetCampusStaffDesignationsQuery } from '../redux/campusKeyOfficials.api';
 
 import { handleClientError } from '@/utils/functions/handleError';
 import { ICampusKeyOfficialsCreateFormProps } from '../components/create-form';
@@ -21,7 +21,8 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [createCampusKeyOfficials] = useCreateCampusKeyOfficialsMutation();
-  const [formFields, _] = useState(campusKeyOfficialsCreateFields);
+  const { data: designationData } = useGetCampusStaffDesignationsQuery();
+  const [formFields, setFormFields] = useState(campusKeyOfficialsCreateFields);
 
   const {
     control,
@@ -54,6 +55,7 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
           phoneNumber: 'phoneNumber',
           message: 'message',
           photo: 'photo',
+          isKeyOfficial: 'isKeyOfficial',
           isActive: 'isActive'
         }
       });
@@ -70,3 +72,21 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
 };
 
 export default useCreateCampusKeyOfficials;
+  useEffect(() => {
+    const options =
+      designationData?.results
+        ?.filter((item) => item.isActive)
+        .map((item) => ({
+          value: item.code,
+          label: item.title
+        })) ?? [];
+
+    setFormFields((prev) =>
+      prev.map((field) => {
+        if (field.name === 'designation') {
+          return { ...field, options };
+        }
+        return field;
+      })
+    );
+  }, [designationData]);
