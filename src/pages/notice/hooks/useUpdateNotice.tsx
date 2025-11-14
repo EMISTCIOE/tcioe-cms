@@ -52,7 +52,7 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
         ...noticeData,
         status: noticeData.status || NoticeStatus.DRAFT,
         category: noticeData.category?.id ?? null,
-        department: noticeData.department?.id ?? undefined,
+        department: noticeData.department?.id ?? null,
         medias: noticeData.medias ?? undefined,
         isDraft: noticeData.status === NoticeStatus.DRAFT
       });

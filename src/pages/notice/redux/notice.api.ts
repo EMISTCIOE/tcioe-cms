@@ -53,7 +53,7 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
     // Create Notice
     createNotice: builder.mutation<IMutationSuccessResponse, INoticeCreatePayload>({
       query: (values) => {
-        const { thumbnail, medias, ...rest } = values;
+        const { thumbnail, medias, department, ...rest } = values;
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
@@ -62,12 +62,10 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
           }
         }
 
-        console.log(rest.department, 'department in createNotice');
-
-        // append department if it's null also
-        if (!rest.department) {
-          console.log('rest.department', rest.department);
+        if (department === null || department === '') {
           body.append('department', '');
+        } else if (department !== undefined) {
+          body.append('department', String(department));
         }
 
         // Append thumbnail if it's a File
@@ -106,7 +104,7 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
 
     patchNotice: builder.mutation<IMutationSuccessResponse, { id: number; values: INoticeUpdatePayload }>({
       query: ({ id, values }) => {
-        const { thumbnail, medias, status, isDraft, ...rest } = values;
+        const { thumbnail, medias, status, isDraft, department, ...rest } = values;
 
         // to match api format :
         // status is extracted for not sending it.
@@ -123,9 +121,10 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
           body.append('isDraft', String(isDraft));
         }
 
-        // append department if it's null also
-        if (!rest.department) {
+        if (department === null || department === '') {
           body.append('department', '');
+        } else if (department !== undefined) {
+          body.append('department', String(department));
         }
 
         // Append thumbnail if it's a File

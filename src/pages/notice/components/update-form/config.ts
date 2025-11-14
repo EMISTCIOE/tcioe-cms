@@ -91,7 +91,7 @@ export const noticeUpdateFields: FormField<TNoticeUpdateFormDataType>[] = [
     inputStyle: { fontSize: '1rem' }
   },
   { name: 'description', label: 'Description', xs: 12, sm: 12, type: 'editor', multiline: true, rows: 5 },
-  { name: 'department', label: 'Department', xs: 8, sm: 5, type: 'select', options: [], required: true },
+  { name: 'department', label: 'Department', xs: 8, sm: 5, type: 'select', options: [], required: false },
   { name: 'category', label: 'Category', xs: 4, sm: 4, type: 'select', options: [], required: true },
   { name: 'isDraft', label: 'SaveAs Draft', xs: 2, sm: 2, type: 'switch', showIf: (formData) => formData.status === NoticeStatus.DRAFT },
   { name: 'isFeatured', label: 'SaveAs Featured', xs: 2, sm: 2, type: 'switch' },

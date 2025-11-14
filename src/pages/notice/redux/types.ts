@@ -98,7 +98,7 @@ export interface INoticeMediaCreatePayload {
 
 export interface INoticeCreatePayload {
   title: string;
-  department: number | null;
+  department: number | string | null;
   category: number;
   thumbnail?: File | null;
   isFeatured: boolean;
@@ -117,7 +117,7 @@ export interface INoticeMediaPatchPayload {
 
 export interface INoticeUpdatePayload {
   title: string;
-  department?: number;
+  department?: number | string | null;
   category?: number;
   thumbnail?: File | string | null;
   isFeatured?: boolean;
