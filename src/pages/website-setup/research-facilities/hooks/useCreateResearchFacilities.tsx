@@ -6,7 +6,7 @@ import { IResearchFacilityCreatePayload } from '../redux/types';
 
 import { useAppDispatch } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
-import { useCreateResearchFacilitiesMutation } from '../redux/researchFacilities.api';
+import { useCreateResearchFacilityMutation } from '../redux/researchFacilities.api';
 
 import { handleClientError } from '@/utils/functions/handleError';
 import { IResearchFacilitiesCreateFormProps } from '../components/create-form';
@@ -20,7 +20,7 @@ import {
 const useCreateResearchFacilities = ({ onClose }: IResearchFacilitiesCreateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const [createResearchFacility] = useCreateResearchFacilitiesMutation();
+  const [createResearchFacility] = useCreateResearchFacilityMutation();
   const [formFields] = useState(researchFacilitiesCreateFields);
 
   const {
