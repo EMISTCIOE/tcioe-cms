@@ -30,12 +30,7 @@ export const researchFacilitiesSlice = createSlice({
   }
 });
 
-export const {
-  setEdit,
-  currentResearchFacilitiesId,
-  clearResearchFacilitiesData,
-  setViewId,
-  clearViewId
-} = researchFacilitiesSlice.actions;
+export const { setEdit, currentResearchFacilitiesId, clearResearchFacilitiesData, setViewId, clearViewId } =
+  researchFacilitiesSlice.actions;
 
 export default researchFacilitiesSlice.reducer;

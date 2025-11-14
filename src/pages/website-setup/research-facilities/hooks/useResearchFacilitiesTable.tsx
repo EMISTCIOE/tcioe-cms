@@ -3,9 +3,9 @@ import { useAppDispatch } from '@/libs/hooks';
 
 import { ITableData } from '../components/listing/config';
 import {
-  useDeleteResearchFacilitiesMutation,
+  useDeleteResearchFacilityMutation,
   useGetResearchFacilitiesQuery,
-  usePatchResearchFacilitiesMutation
+  usePatchResearchFacilityMutation
 } from '../redux/researchFacilities.api';
 import { currentResearchFacilitiesId, setEdit, setViewId } from '../redux/researchFacilities.slice';
 import { IResearchFacilityItem } from '../redux/types';
@@ -18,8 +18,8 @@ export const useResearchFacilitiesTable = () => {
 
   return createTableDataHook<ITableData, any>({
     useListQuery: useGetResearchFacilitiesQuery,
-    useUpdateMutation: usePatchResearchFacilitiesMutation,
-    useDeleteMutation: useDeleteResearchFacilitiesMutation,
+    useUpdateMutation: usePatchResearchFacilityMutation,
+    useDeleteMutation: useDeleteResearchFacilityMutation,
     setId: (id) => {
       dispatch(currentResearchFacilitiesId(id));
     },

@@ -70,10 +70,7 @@ export default function DetailView({ researchFacilityData, onClose }: IDetailVie
             >
               Description
             </Typography>
-            <Box
-              sx={{ mt: 1 }}
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(researchFacilityData.description) }}
-            />
+            <Box sx={{ mt: 1 }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(researchFacilityData.description) }} />
           </Box>
         )}
 
@@ -85,10 +82,7 @@ export default function DetailView({ researchFacilityData, onClose }: IDetailVie
             >
               Objectives
             </Typography>
-            <Box
-              sx={{ mt: 1 }}
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(researchFacilityData.objectives) }}
-            />
+            <Box sx={{ mt: 1 }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(researchFacilityData.objectives) }} />
           </Box>
         )}
       </Box>

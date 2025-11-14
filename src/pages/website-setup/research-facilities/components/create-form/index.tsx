@@ -20,7 +20,12 @@ export default function ResearchFacilitiesCreateForm({ onClose }: IResearchFacil
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <MainCard divider title="Create Research Facility">
-            <FormSection<TResearchFacilitiesCreateFormDataType> fields={formFields} control={control} errors={errors} formValues={formValues} />
+            <FormSection<TResearchFacilitiesCreateFormDataType>
+              fields={formFields}
+              control={control}
+              errors={errors}
+              formValues={formValues}
+            />
           </MainCard>
         </Grid>
 

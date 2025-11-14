@@ -22,7 +22,12 @@ export default function ResearchFacilitiesUpdateForm({ researchFacilityData, onC
       <Grid container spacing={3} sx={{ pt: 1 }}>
         <Grid item xs={12}>
           <MainCard divider title="Update Research Facility">
-            <FormSection<TResearchFacilitiesUpdateFormDataType> fields={formFields} control={control} errors={errors} formValues={formValues} />
+            <FormSection<TResearchFacilitiesUpdateFormDataType>
+              fields={formFields}
+              control={control}
+              errors={errors}
+              formValues={formValues}
+            />
           </MainCard>
         </Grid>
 

@@ -225,8 +225,7 @@ const modules: MenuItem = {
           type: 'item',
           url: '/website-setup/research/tags',
           breadcrumbs: false
-        }
-        ,
+        },
         {
           id: 'research-facilities',
           title: 'Research Facilities',

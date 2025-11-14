@@ -1,12 +1,7 @@
 import { IListQueryParams, IMutationSuccessResponse } from '@/globals';
 import { rootAPI } from '@/libs/apiSlice';
 import { getQueryParams } from '@/utils/functions/queryBuilder';
-import {
-  IResearchFacilityCreatePayload,
-  IResearchFacilityDetails,
-  IResearchFacilityUpdatePayload,
-  IResearchFacilitiesList
-} from './types';
+import { IResearchFacilityCreatePayload, IResearchFacilityDetails, IResearchFacilityUpdatePayload, IResearchFacilitiesList } from './types';
 
 export const researchFacilitiesAPI = 'cms/website-mod/research-facilities';
 

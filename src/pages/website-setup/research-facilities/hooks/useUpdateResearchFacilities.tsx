@@ -17,13 +17,13 @@ import {
   TResearchFacilitiesUpdateFormDataType
 } from '../components/update-form/config';
 import { IResearchFacilitiesUpdateFormProps } from '../components/update-form/Form';
-import { usePatchResearchFacilitiesMutation } from '../redux/researchFacilities.api';
+import { usePatchResearchFacilityMutation } from '../redux/researchFacilities.api';
 import { IResearchFacilityUpdatePayload } from '../redux/types';
 
 const useUpdateResearchFacilities = ({ researchFacilityData, onClose }: IResearchFacilitiesUpdateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const [updateResearchFacility] = usePatchResearchFacilitiesMutation();
+  const [updateResearchFacility] = usePatchResearchFacilityMutation();
   const [formFields, setFormFields] = useState(researchFacilitiesUpdateFields);
 
   const {
