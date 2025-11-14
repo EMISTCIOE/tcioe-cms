@@ -49,10 +49,13 @@ export const rootAPI = createApi({
     'CampusFeedbacks',
     'CampusEvents',
     'CampusUnions',
+    'CampusSections',
+    'CampusUnits',
     'CampusReports',
     'AcademicCalendars',
     'CampusDownloads',
     'StudentClubs',
-    'StudentClubEvents'
+    'StudentClubEvents',
+    'PhoneNumber'
   ]
 });

@@ -14,11 +14,16 @@ import campusKeyOfficailsReducer from '@/pages/website-setup/campus-key-official
 import campusFeedbacksReducer from '@/pages/website-setup/campus-feedbacks/redux/campusFeedbacks.slice';
 import campusEventsReducer from '@/pages/website-setup/campus-events/redux/campusEvents.slice';
 import CampusUnionsReducer from '@/pages/website-setup/campus-unions/redux/campusUnions.slice';
+import CampusSectionsReducer from '@/pages/website-setup/campus-sections/redux/campusSections.slice';
+import CampusUnitsReducer from '@/pages/website-setup/campus-units/redux/campusUnits.slice';
 import CampusReportsReducer from '@/pages/website-setup/campus-reports/redux/campusReports.slice';
 import AcademicCalendersReducer from '@/pages/website-setup/academic-calendars/redux/academicCalendars.slice';
 import campusDownloadsReducer from '@/pages/website-setup/campus-downloads/redux/campusDownloads.slice';
 import StudentClubsReducer from '@/pages/student-clubs-setup/student-clubs/redux/studentClubs.slice';
 import StudentClubEventsReducer from '@/pages/student-clubs-setup/student-club-events/redux/studentClubEvents.slice';
+
+// contact management
+import phoneNumberReducer from '@/pages/contact/redux/contact.slice';
 
 export const rootReducer = combineReducers({
   common: commonReducer,
@@ -31,11 +36,14 @@ export const rootReducer = combineReducers({
   campusFeedbacks: campusFeedbacksReducer,
   campusEvents: campusEventsReducer,
   campusUnions: CampusUnionsReducer,
+  campusSections: CampusSectionsReducer,
+  campusUnits: CampusUnitsReducer,
   campusReports: CampusReportsReducer,
   academicCalendars: AcademicCalendersReducer,
   campusDownloads: campusDownloadsReducer,
   studentClubs: StudentClubsReducer,
   studentClubEvents: StudentClubEventsReducer,
+  phoneNumber: phoneNumberReducer,
   // add reducers here
   [rootAPI.reducerPath]: rootAPI.reducer
 });

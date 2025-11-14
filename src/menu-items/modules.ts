@@ -10,6 +10,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import LanguageIcon from '@mui/icons-material/Language';
 import CelebrationIcon from '@mui/icons-material/Celebration';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
+import PhoneIcon from '@mui/icons-material/Phone';
 
 // project-imports
 import { MenuItem } from './types';
@@ -26,7 +27,8 @@ const icons = {
   InfoIcon,
   LanguageIcon,
   CelebrationIcon,
-  Diversity3Icon
+  Diversity3Icon,
+  PhoneIcon
 };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
@@ -128,6 +130,38 @@ const modules: MenuItem = {
           type: 'item',
           icon: icons.Diversity3Icon,
           url: '/website-setup/campus-unions',
+          breadcrumbs: false
+        },
+        {
+          id: 'campus-sections',
+          title: 'Campus Sections',
+          type: 'item',
+          icon: icons.InfoIcon,
+          url: '/website-setup/campus-sections',
+          breadcrumbs: false
+        },
+        {
+          id: 'campus-units',
+          title: 'Campus Units',
+          type: 'item',
+          icon: icons.InfoIcon,
+          url: '/website-setup/campus-units',
+          breadcrumbs: false
+        }
+      ]
+    },
+    {
+      id: 'contact-management',
+      title: 'Manage Contact Information',
+      type: 'collapse',
+      icon: icons.PhoneIcon,
+      children: [
+        {
+          id: 'phone-numbers',
+          title: 'Phone Numbers',
+          icon: icons.PhoneIcon,
+          type: 'item',
+          url: '/contact-setup/phone-numbers',
           breadcrumbs: false
         }
       ]

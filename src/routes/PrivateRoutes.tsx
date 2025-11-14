@@ -27,6 +27,11 @@ const CampusKeyOfficials = Loadable(lazy(() => import('@/pages/website-setup/cam
 const CampusReports = Loadable(lazy(() => import('@/pages/website-setup/campus-reports')));
 const CampusEvents = Loadable(lazy(() => import('@/pages/website-setup/campus-events')));
 const CampusUnions = Loadable(lazy(() => import('@/pages/website-setup/campus-unions')));
+const CampusSections = Loadable(lazy(() => import('@/pages/website-setup/campus-sections')));
+const CampusUnits = Loadable(lazy(() => import('@/pages/website-setup/campus-units')));
+
+// Contact Setup Pages
+const Contact = Loadable(lazy(() => import('@/pages/contact')));
 
 // Student Clubs Setup Pages
 const StudentClubs = Loadable(lazy(() => import('@/pages/student-clubs-setup/student-clubs')));
@@ -63,6 +68,12 @@ const PrivateRoutes = () => (
           <Route path="campus-reports" element={<CampusReports />} />
           <Route path="campus-events" element={<CampusEvents />} />
           <Route path="campus-unions" element={<CampusUnions />} />
+          <Route path="campus-sections" element={<CampusSections />} />
+          <Route path="campus-units" element={<CampusUnits />} />
+        </Route>
+        {/* Contact Setup */}
+        <Route path="contact-setup">
+          <Route path="phone-numbers" element={<Contact />} />
         </Route>
         {/* Student Clubs Setup */}
         <Route path="student-clubs-setup">
