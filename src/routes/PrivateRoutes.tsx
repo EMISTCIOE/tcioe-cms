@@ -32,6 +32,7 @@ const CampusSections = Loadable(lazy(() => import('@/pages/website-setup/campus-
 const CampusUnits = Loadable(lazy(() => import('@/pages/website-setup/campus-units')));
 const Research = Loadable(lazy(() => import('@/pages/website-setup/research')));
 const ResearchTags = Loadable(lazy(() => import('@/pages/website-setup/research/tags')));
+const ResearchFacilities = Loadable(lazy(() => import('@/pages/website-setup/research-facilities')));
 const Projects = Loadable(lazy(() => import('@/pages/website-setup/projects')));
 const ProjectTags = Loadable(lazy(() => import('@/pages/website-setup/projects/tags')));
 
@@ -78,6 +79,7 @@ const PrivateRoutes = () => (
           <Route path="campus-units" element={<CampusUnits />} />
           <Route path="research" element={<Research />} />
           <Route path="research/tags" element={<ResearchTags />} />
+          <Route path="research-facilities" element={<ResearchFacilities />} />
           <Route path="projects" element={<Projects />} />
           <Route path="projects/tags" element={<ProjectTags />} />
         </Route>

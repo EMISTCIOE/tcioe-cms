@@ -226,6 +226,15 @@ const modules: MenuItem = {
           url: '/website-setup/research/tags',
           breadcrumbs: false
         }
+        ,
+        {
+          id: 'research-facilities',
+          title: 'Research Facilities',
+          icon: icons.ScienceIcon,
+          type: 'item',
+          url: '/website-setup/research-facilities',
+          breadcrumbs: false
+        }
       ]
     },
     {
