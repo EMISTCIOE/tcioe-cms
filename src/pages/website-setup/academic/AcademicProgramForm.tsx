@@ -19,10 +19,7 @@ import { LoadingButton } from '@mui/lab';
 import { toast } from 'react-toastify';
 import { FileUpload } from '@/components/FileUpload';
 import { useDepartmentOptions } from '@/hooks/useDepartmentOptions';
-import {
-  useCreateAcademicProgramMutation,
-  useUpdateAcademicProgramMutation
-} from './redux/academic.api';
+import { useCreateAcademicProgramMutation, useUpdateAcademicProgramMutation } from './redux/academic.api';
 import { IAcademicProgram, IAcademicProgramCreatePayload, IAcademicProgramUpdatePayload, ACADEMIC_PROGRAM_TYPE_OPTIONS } from './types';
 
 interface AcademicProgramFormProps {
@@ -107,9 +104,7 @@ export const AcademicProgramForm: React.FC<AcademicProgramFormProps> = ({ progra
                 {program ? 'Edit Academic Program' : 'Create Academic Program'}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {program
-                  ? 'Update the department program details.'
-                  : 'Capture the academic program details for the department.'}
+                {program ? 'Update the department program details.' : 'Capture the academic program details for the department.'}
               </Typography>
             </Box>
 
@@ -171,7 +166,12 @@ export const AcademicProgramForm: React.FC<AcademicProgramFormProps> = ({ progra
                 <Typography variant="caption" color="text.secondary">
                   Current thumbnail
                 </Typography>
-                <Box component="img" src={program.thumbnail} alt="Program thumbnail" sx={{ width: 160, height: 120, objectFit: 'cover', borderRadius: 1, mt: 1 }} />
+                <Box
+                  component="img"
+                  src={program.thumbnail}
+                  alt="Program thumbnail"
+                  sx={{ width: 160, height: 120, objectFit: 'cover', borderRadius: 1, mt: 1 }}
+                />
               </Box>
             )}
 

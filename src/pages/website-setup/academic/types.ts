@@ -126,15 +126,4 @@ export const PROGRAM_OPTIONS = [
   }
 ];
 
-export const SEMESTER_OPTIONS = [
-  'I/I',
-  'I/II',
-  'II/I',
-  'II/II',
-  'III/I',
-  'III/II',
-  'IV/I',
-  'IV/II',
-  'V/I',
-  'V/II'
-];
+export const SEMESTER_OPTIONS = ['I/I', 'I/II', 'II/I', 'II/II', 'III/I', 'III/II', 'IV/I', 'IV/II', 'V/I', 'V/II'];

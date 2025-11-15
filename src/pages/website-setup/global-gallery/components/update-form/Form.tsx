@@ -1,18 +1,18 @@
 import { Button, Grid } from '@mui/material';
 import MainCard from '@/components/cards/MainCard';
 import FormSection from '@/components/app-form/FormSection';
-import useUpdateGlobalGalleryCollection from '@/pages/website-setup/global-gallery/hooks/useUpdateGlobalGalleryCollection';
-import { IGlobalGalleryCollection } from '../../redux/globalGalleryCollections.types';
+import useUpdateGlobalGalleryImage from '@/pages/website-setup/global-gallery/hooks/useUpdateGlobalGalleryImage';
+import { IGlobalGalleryImage } from '../../redux/globalGalleryImages.types';
 import { TGlobalGalleryUpdateFormDataType } from './config';
 
 export interface IGlobalGalleryUpdateFormProps {
-  collectionData?: IGlobalGalleryCollection;
+  imageData?: IGlobalGalleryImage;
   onClose?: () => void;
 }
 
-export default function GlobalGalleryUpdateForm({ collectionData, onClose }: IGlobalGalleryUpdateFormProps) {
-  const { control, errors, watch, formFields, handleSubmit } = useUpdateGlobalGalleryCollection({
-    collectionData,
+export default function GlobalGalleryUpdateForm({ imageData, onClose }: IGlobalGalleryUpdateFormProps) {
+  const { control, errors, watch, formFields, handleSubmit } = useUpdateGlobalGalleryImage({
+    imageData,
     onClose
   });
   const formValues = watch();

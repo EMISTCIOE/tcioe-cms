@@ -66,8 +66,8 @@ const PrivateRoutes = () => (
           <Route path="user-roles" element={<UserRole />} />
         </Route>
         <Route path="website-setup">
-        <Route path="academic-calendars" element={<AcademicCalendars />} />
-        <Route path="academic" element={<Academic />} />
+          <Route path="academic-calendars" element={<AcademicCalendars />} />
+          <Route path="academic" element={<Academic />} />
           <Route path="campus-downloads" element={<CampusDownloads />} />
           <Route path="campus-feedbacks" element={<CampusFeedbacks />} />
           <Route path="campus-info" element={<CampusInfo />} />

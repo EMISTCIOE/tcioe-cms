@@ -22,10 +22,7 @@ import {
 } from '@mui/material';
 import { Delete, Edit, Search } from '@mui/icons-material';
 import { toast } from 'react-toastify';
-import {
-  useDeleteAcademicProgramMutation,
-  useGetAcademicProgramsQuery
-} from './redux/academic.api';
+import { useDeleteAcademicProgramMutation, useGetAcademicProgramsQuery } from './redux/academic.api';
 import { IAcademicProgram, ACADEMIC_PROGRAM_TYPE_OPTIONS } from './types';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 
@@ -79,8 +76,7 @@ export const ProgramsListing: React.FC<ProgramsListingProps> = ({ onEdit }) => {
 
   const programs = data?.results ?? [];
 
-  const getProgramTypeLabel = (value: string) =>
-    ACADEMIC_PROGRAM_TYPE_OPTIONS.find((option) => option.value === value)?.label ?? value;
+  const getProgramTypeLabel = (value: string) => ACADEMIC_PROGRAM_TYPE_OPTIONS.find((option) => option.value === value)?.label ?? value;
 
   if (isLoading && !data) {
     return (
@@ -92,7 +88,14 @@ export const ProgramsListing: React.FC<ProgramsListingProps> = ({ onEdit }) => {
 
   if (error) {
     return (
-      <Alert severity="error" action={<Button color="inherit" size="small" onClick={refetch}>Retry</Button>}>
+      <Alert
+        severity="error"
+        action={
+          <Button color="inherit" size="small" onClick={refetch}>
+            Retry
+          </Button>
+        }
+      >
         Unable to load programs. Please try again.
       </Alert>
     );
@@ -105,12 +108,7 @@ export const ProgramsListing: React.FC<ProgramsListingProps> = ({ onEdit }) => {
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Search color="action" />
-              <TextField
-                size="small"
-                placeholder="Search programs"
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
+              <TextField size="small" placeholder="Search programs" value={searchTerm} onChange={handleSearchChange} />
             </Box>
             <Typography variant="body2" color="text.secondary">
               Showing {programs.length} of {data?.count ?? 0} programs

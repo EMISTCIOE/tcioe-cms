@@ -13,7 +13,7 @@ import { useCampusUnionOptions } from '@/hooks/useCampusUnionOptions';
 import { useDepartmentOptions } from '@/hooks/useDepartmentOptions';
 import { useStudentClubs } from '@/pages/student-clubs-setup/student-clubs/hooks/useStudentClubs';
 
-import { useCreateGlobalGalleryCollectionMutation } from '../redux/globalGalleryCollections.api';
+import { useCreateGlobalGalleryImagesMutation } from '../redux/globalGalleryImages.api';
 import {
   TGlobalGalleryCreateFormDataType,
   defaultValues,
@@ -21,7 +21,7 @@ import {
   TGalleryImage,
   globalGalleryCreateFormSchema
 } from '../components/create-form/config';
-import { IGlobalGalleryCollectionCreatePayload } from '../redux/globalGalleryCollections.types';
+import { IGlobalGalleryImageCreatePayload } from '../redux/globalGalleryImages.types';
 
 const normalizeFile = (input: File | FileList | null | undefined) => {
   if (input instanceof FileList) {
@@ -41,12 +41,12 @@ const mapImagesPayload = (images: TGalleryImage[]) =>
         displayOrder: image.displayOrder
       };
     })
-    .filter(Boolean) as IGlobalGalleryCollectionCreatePayload['images'];
+    .filter(Boolean) as IGlobalGalleryImageCreatePayload['images'];
 
-const useCreateGlobalGalleryCollection = ({ onClose }: { onClose?: () => void }) => {
+const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const [createCollection] = useCreateGlobalGalleryCollectionMutation();
+  const [createCollection] = useCreateGlobalGalleryImagesMutation();
   const [formFields, setFormFields] = useState(globalGalleryCreateFields);
   const { options: campusEventOptions } = useCampusEventOptions();
   const { options: studentClubEventOptions } = useStudentClubEventOptions();
@@ -94,9 +94,9 @@ const useCreateGlobalGalleryCollection = ({ onClose }: { onClose?: () => void })
 
   const onSubmit = async (data: TGlobalGalleryCreateFormDataType) => {
     try {
-      const payload: IGlobalGalleryCollectionCreatePayload = {
-        title: data.title?.trim(),
-        description: data.description?.trim(),
+      const payload: IGlobalGalleryImageCreatePayload = {
+        sourceTitle: data.sourceTitle?.trim(),
+        sourceContext: data.sourceContext?.trim(),
         campusEvent: data.campusEvent,
         studentClubEvent: data.studentClubEvent,
         departmentEvent: data.departmentEvent,
@@ -124,4 +124,4 @@ const useCreateGlobalGalleryCollection = ({ onClose }: { onClose?: () => void })
   };
 };
 
-export default useCreateGlobalGalleryCollection;
+export default useCreateGlobalGalleryImages;

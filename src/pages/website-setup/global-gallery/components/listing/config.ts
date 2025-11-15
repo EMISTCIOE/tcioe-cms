@@ -2,9 +2,9 @@ import { ColumnConfig } from '@/components/app-table/columns';
 import { Theme } from '@mui/material/styles';
 import dayjs from 'dayjs';
 
-export interface IGlobalGalleryCollectionTableRow {
+export interface IGlobalGalleryImageTableRow {
   id: number;
-  title: string;
+  caption: string;
   sourceType: string;
   sourceName: string;
   sourceContext?: string;
@@ -15,16 +15,19 @@ export interface IGlobalGalleryCollectionTableRow {
 
 export const sourceTypeLabels: Record<string, string> = {
   campus_event: 'Campus Event',
+  union_event: 'Union Event',
   club_event: 'Student Club Event',
   department_event: 'Department Event',
   union_gallery: 'Union Gallery',
   club_gallery: 'Club Gallery',
   department_gallery: 'Department Gallery',
-  gallery_collection: 'Custom Collection'
+  global_event: 'Global Event',
+  college: 'College Gallery',
+  custom: 'Custom'
 };
 
-export const getColumnConfig = (_theme: Theme): ColumnConfig<IGlobalGalleryCollectionTableRow>[] => [
-  { field: 'title', headerName: 'TITLE', type: 'text', minWidth: 220, editable: false },
+export const getColumnConfig = (_theme: Theme): ColumnConfig<IGlobalGalleryImageTableRow>[] => [
+  { field: 'caption', headerName: 'CAPTION', type: 'text', minWidth: 220, editable: false },
   {
     field: 'sourceType',
     headerName: 'SOURCE',
@@ -35,6 +38,13 @@ export const getColumnConfig = (_theme: Theme): ColumnConfig<IGlobalGalleryColle
     renderCell: ({ value }) => sourceTypeLabels[value] || value
   },
   { field: 'sourceName', headerName: 'SOURCE NAME', type: 'text', minWidth: 200, editable: false },
+  {
+    field: 'sourceContext',
+    headerName: 'SOURCE CONTEXT',
+    type: 'text',
+    minWidth: 220,
+    editable: false
+  },
   {
     field: 'isActive',
     headerName: 'STATUS',

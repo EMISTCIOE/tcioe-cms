@@ -1,32 +1,11 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-  Typography
-} from '@mui/material';
+import { Box, Button, Card, CardContent, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { toast } from 'react-toastify';
 import { RichTextEditor } from '@/components/RichTextEditor';
 import { useAcademicProgramOptions } from '@/hooks/useAcademicProgramOptions';
-import {
-  useCreateSubjectMutation,
-  useUpdateSubjectMutation
-} from './redux/academic.api';
-import {
-  ISubject,
-  ISubjectCreatePayload,
-  ISubjectUpdatePayload,
-  PROGRAM_OPTIONS,
-  SEMESTER_OPTIONS
-} from './types';
+import { useCreateSubjectMutation, useUpdateSubjectMutation } from './redux/academic.api';
+import { ISubject, ISubjectCreatePayload, ISubjectUpdatePayload, PROGRAM_OPTIONS, SEMESTER_OPTIONS } from './types';
 
 interface SubjectFormProps {
   subject?: ISubject;

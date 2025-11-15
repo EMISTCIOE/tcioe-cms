@@ -32,7 +32,10 @@ export const academicAPISlice = rootAPI.injectEndpoints({
       },
       providesTags: (result) =>
         result
-          ? [...result.results.map((program) => ({ type: 'AcademicProgram' as const, id: program.id })), { type: 'AcademicProgram', id: 'LIST' }]
+          ? [
+              ...result.results.map((program) => ({ type: 'AcademicProgram' as const, id: program.id })),
+              { type: 'AcademicProgram', id: 'LIST' }
+            ]
           : [{ type: 'AcademicProgram', id: 'LIST' }]
     }),
 

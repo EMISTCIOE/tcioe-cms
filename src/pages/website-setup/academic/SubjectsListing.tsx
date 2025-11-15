@@ -22,10 +22,7 @@ import {
 } from '@mui/material';
 import { Delete, Edit, Search } from '@mui/icons-material';
 import { toast } from 'react-toastify';
-import {
-  useDeleteSubjectMutation,
-  useGetSubjectsQuery
-} from './redux/academic.api';
+import { useDeleteSubjectMutation, useGetSubjectsQuery } from './redux/academic.api';
 import { ISubject, PROGRAM_OPTIONS } from './types';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
 
@@ -94,7 +91,14 @@ export const SubjectsListing: React.FC<SubjectsListingProps> = ({ onEdit }) => {
 
   if (error) {
     return (
-      <Alert severity="error" action={<Button color="inherit" size="small" onClick={refetch}>Retry</Button>}>
+      <Alert
+        severity="error"
+        action={
+          <Button color="inherit" size="small" onClick={refetch}>
+            Retry
+          </Button>
+        }
+      >
         Unable to load subjects.
       </Alert>
     );
@@ -107,12 +111,7 @@ export const SubjectsListing: React.FC<SubjectsListingProps> = ({ onEdit }) => {
           <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="center" justifyContent="space-between">
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center">
               <Search color="action" />
-              <TextField
-                size="small"
-                placeholder="Search subjects"
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
+              <TextField size="small" placeholder="Search subjects" value={searchTerm} onChange={handleSearchChange} />
             </Stack>
             <TextField
               size="small"

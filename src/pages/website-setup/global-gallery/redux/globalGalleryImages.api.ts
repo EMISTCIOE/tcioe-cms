@@ -2,17 +2,17 @@ import { IListQueryParams, IMutationSuccessResponse } from '@/globals';
 import { rootAPI } from '@/libs/apiSlice';
 import { getQueryParams } from '@/utils/functions/queryBuilder';
 import {
-  IGlobalGalleryCollection,
-  IGlobalGalleryCollectionCreatePayload,
-  IGlobalGalleryCollectionList,
-  IGlobalGalleryCollectionUpdatePayload
-} from './globalGalleryCollections.types';
+  IGlobalGalleryImage,
+  IGlobalGalleryImageCreatePayload,
+  IGlobalGalleryImageList,
+  IGlobalGalleryImageUpdatePayload
+} from './globalGalleryImages.types';
 
-export const globalGalleryCollectionsAPI = 'cms/website-mod/gallery-collections';
+export const globalGalleryImagesAPI = 'cms/website-mod/gallery-images';
 
-export const globalGalleryCollectionsAPISlice = rootAPI.injectEndpoints({
+export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
   endpoints: (builder) => ({
-    getGlobalGalleryCollections: builder.query<IGlobalGalleryCollectionList, IListQueryParams>({
+    getGlobalGalleryImages: builder.query<IGlobalGalleryImageList, IListQueryParams>({
       query: ({ search, paginationModel, sortModel, filterModel }) => {
         const { page, pageSize, orderingString, filterString } = getQueryParams({
           search,
@@ -32,29 +32,38 @@ export const globalGalleryCollectionsAPISlice = rootAPI.injectEndpoints({
           .join('&');
 
         return {
-          url: `${globalGalleryCollectionsAPI}?${params}`,
+          url: `${globalGalleryImagesAPI}?${params}`,
           method: 'GET'
         };
       },
       keepUnusedDataFor: 0.1,
-      providesTags: ['GlobalGalleryCollections']
+      providesTags: ['GlobalGalleryImages']
     }),
 
-    retrieveGlobalGalleryCollection: builder.query<IGlobalGalleryCollection, number | null>({
+    retrieveGlobalGalleryImage: builder.query<IGlobalGalleryImage, number | null>({
       query: (id) => ({
-        url: `${globalGalleryCollectionsAPI}/${id}`,
+        url: `${globalGalleryImagesAPI}/${id}`,
         method: 'GET'
       }),
-      providesTags: ['GlobalGalleryCollections']
+      providesTags: ['GlobalGalleryImages']
     }),
 
-    createGlobalGalleryCollection: builder.mutation<IMutationSuccessResponse, IGlobalGalleryCollectionCreatePayload>({
+    createGlobalGalleryImages: builder.mutation<IMutationSuccessResponse, IGlobalGalleryImageCreatePayload>({
       query: (values) => {
-        const { images, campusEvent, studentClubEvent, departmentEvent, union, club, department, title, description, isActive } = values;
+        const {
+          images,
+          campusEvent,
+          studentClubEvent,
+          departmentEvent,
+          union,
+          club,
+          department,
+          globalEvent,
+          sourceTitle,
+          sourceContext,
+          isActive
+        } = values;
         const body = new FormData();
-
-        if (title) body.append('title', title);
-        if (description) body.append('description', description);
         if (typeof isActive === 'boolean') body.append('is_active', String(isActive));
         if (campusEvent !== undefined && campusEvent !== null) body.append('campus_event', String(campusEvent));
         if (studentClubEvent !== undefined && studentClubEvent !== null) body.append('student_club_event', String(studentClubEvent));
@@ -62,6 +71,9 @@ export const globalGalleryCollectionsAPISlice = rootAPI.injectEndpoints({
         if (union !== undefined && union !== null) body.append('union', String(union));
         if (club !== undefined && club !== null) body.append('club', String(club));
         if (department !== undefined && department !== null) body.append('department', String(department));
+        if (globalEvent !== undefined && globalEvent !== null) body.append('global_event', String(globalEvent));
+        if (sourceTitle) body.append('source_title', sourceTitle);
+        if (sourceContext) body.append('source_context', sourceContext);
 
         (images || []).forEach((item, index) => {
           if (item.image instanceof File) {
@@ -76,23 +88,37 @@ export const globalGalleryCollectionsAPISlice = rootAPI.injectEndpoints({
         });
 
         return {
-          url: `${globalGalleryCollectionsAPI}`,
+          url: `${globalGalleryImagesAPI}`,
           method: 'POST',
           data: body
         };
       },
-      invalidatesTags: ['GlobalGalleryCollections']
+      invalidatesTags: ['GlobalGalleryImages']
     }),
 
-    patchGlobalGalleryCollection: builder.mutation<IMutationSuccessResponse, { id: number; values: IGlobalGalleryCollectionUpdatePayload }>(
+    patchGlobalGalleryImage: builder.mutation<IMutationSuccessResponse, { id: number; values: IGlobalGalleryImageUpdatePayload }>(
       {
         query: ({ id, values }) => {
-          const { images, campusEvent, studentClubEvent, departmentEvent, union, club, department, title, description, isActive } = values;
+          const {
+            campusEvent,
+            studentClubEvent,
+            departmentEvent,
+            union,
+            club,
+            department,
+            globalEvent,
+            sourceTitle,
+            sourceContext,
+            isActive,
+            image,
+            caption,
+            displayOrder
+          } = values;
           const body = new FormData();
 
-          if (title !== undefined) body.append('title', title);
-          if (description !== undefined) body.append('description', description);
-          if (typeof isActive === 'boolean') body.append('is_active', String(isActive));
+          if (typeof isActive === 'boolean') {
+            body.append('is_active', String(isActive));
+          }
           if (campusEvent !== undefined) {
             if (campusEvent === null) body.append('campus_event', '');
             else body.append('campus_event', String(campusEvent));
@@ -117,48 +143,50 @@ export const globalGalleryCollectionsAPISlice = rootAPI.injectEndpoints({
             if (department === null) body.append('department', '');
             else body.append('department', String(department));
           }
-
-          (images || []).forEach((item, index) => {
-            if (item.image instanceof File) {
-              body.append(`images[${index}][image]`, item.image);
-            }
-            if (item.id !== undefined) {
-              body.append(`images[${index}][id]`, String(item.id));
-            }
-            if (item.caption) {
-              body.append(`images[${index}][caption]`, item.caption);
-            }
-            if (item.displayOrder !== undefined) {
-              body.append(`images[${index}][display_order]`, String(item.displayOrder));
-            }
-          });
+          if (globalEvent !== undefined) {
+            if (globalEvent === null) body.append('global_event', '');
+            else body.append('global_event', String(globalEvent));
+          }
+          if (sourceTitle !== undefined) {
+            if (sourceTitle === null) body.append('source_title', '');
+            else body.append('source_title', sourceTitle);
+          }
+          if (sourceContext !== undefined) {
+            if (sourceContext === null) body.append('source_context', '');
+            else body.append('source_context', sourceContext);
+          }
+          if (image instanceof File) {
+            body.append('image', image);
+          }
+          if (caption !== undefined) body.append('caption', caption || '');
+          if (displayOrder !== undefined) body.append('display_order', String(displayOrder));
 
           return {
-            url: `${globalGalleryCollectionsAPI}/${id}`,
+            url: `${globalGalleryImagesAPI}/${id}`,
             method: 'PATCH',
             data: body
           };
         },
-        invalidatesTags: ['GlobalGalleryCollections']
+        invalidatesTags: ['GlobalGalleryImages']
       }
     ),
 
-    deleteGlobalGalleryCollection: builder.mutation<IMutationSuccessResponse, number>({
+    deleteGlobalGalleryImage: builder.mutation<IMutationSuccessResponse, number>({
       query: (id) => ({
-        url: `${globalGalleryCollectionsAPI}/${id}`,
+        url: `${globalGalleryImagesAPI}/${id}`,
         method: 'DELETE'
       }),
-      invalidatesTags: ['GlobalGalleryCollections']
+      invalidatesTags: ['GlobalGalleryImages']
     })
   })
 });
 
 export const {
-  useGetGlobalGalleryCollectionsQuery,
-  useLazyGetGlobalGalleryCollectionsQuery,
-  useRetrieveGlobalGalleryCollectionQuery,
-  useLazyRetrieveGlobalGalleryCollectionQuery,
-  useCreateGlobalGalleryCollectionMutation,
-  usePatchGlobalGalleryCollectionMutation,
-  useDeleteGlobalGalleryCollectionMutation
-} = globalGalleryCollectionsAPISlice;
+  useGetGlobalGalleryImagesQuery,
+  useLazyGetGlobalGalleryImagesQuery,
+  useRetrieveGlobalGalleryImageQuery,
+  useLazyRetrieveGlobalGalleryImageQuery,
+  useCreateGlobalGalleryImagesMutation,
+  usePatchGlobalGalleryImageMutation,
+  useDeleteGlobalGalleryImageMutation
+} = globalGalleryImagesAPISlice;

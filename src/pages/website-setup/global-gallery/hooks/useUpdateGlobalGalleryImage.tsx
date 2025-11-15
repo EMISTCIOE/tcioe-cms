@@ -11,15 +11,14 @@ import { useDepartmentEventOptions } from '@/hooks/useDepartmentEventOptions';
 import { useCampusUnionOptions } from '@/hooks/useCampusUnionOptions';
 import { useDepartmentOptions } from '@/hooks/useDepartmentOptions';
 import { useStudentClubs } from '@/pages/student-clubs-setup/student-clubs/hooks/useStudentClubs';
-import { usePatchGlobalGalleryCollectionMutation } from '../redux/globalGalleryCollections.api';
+import { usePatchGlobalGalleryImageMutation } from '../redux/globalGalleryImages.api';
 import {
   globalGalleryUpdateFields,
   globalGalleryUpdateFormSchema,
   galleryUpdateDefaultValues,
-  TGlobalGalleryUpdateFormDataType,
-  TUpdateGalleryImage
+  TGlobalGalleryUpdateFormDataType
 } from '../components/update-form/config';
-import { IGlobalGalleryCollection, IGlobalGalleryCollectionUpdatePayload } from '../redux/globalGalleryCollections.types';
+import { IGlobalGalleryImage, IGlobalGalleryImageUpdatePayload } from '../redux/globalGalleryImages.types';
 
 const normalizeFile = (input: File | FileList | null | undefined) => {
   if (input instanceof FileList) {
@@ -28,33 +27,16 @@ const normalizeFile = (input: File | FileList | null | undefined) => {
   return input ?? null;
 };
 
-const mapImagesPayload = (images: TUpdateGalleryImage[]) =>
-  images.map((image) => {
-    const file = normalizeFile(image.image);
-    const payload: IGlobalGalleryCollectionUpdatePayload['images'][number] = {
-      id: image.id,
-      caption: image.caption?.trim() || undefined,
-      displayOrder: image.displayOrder
-    };
-
-    if (file) {
-      payload.image = file;
-    } else if (typeof image.image === 'string') {
-      payload.image = image.image;
-    }
-    return payload;
-  });
-
-const useUpdateGlobalGalleryCollection = ({
-  collectionData,
+const useUpdateGlobalGalleryImage = ({
+  imageData,
   onClose
 }: {
-  collectionData?: IGlobalGalleryCollection;
+  imageData?: IGlobalGalleryImage;
   onClose?: () => void;
 }) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const [updateCollection] = usePatchGlobalGalleryCollectionMutation();
+  const [updateImage] = usePatchGlobalGalleryImageMutation();
   const [formFields, setFormFields] = useState(globalGalleryUpdateFields);
   const { options: campusEventOptions } = useCampusEventOptions();
   const { options: studentClubEventOptions } = useStudentClubEventOptions();
@@ -99,40 +81,41 @@ const useUpdateGlobalGalleryCollection = ({
         return field;
       })
     );
-  }, [campusEventOptions, studentClubEventOptions, departmentEventOptions, unionOptions, studentClubsOptions, departmentOptions]);
+  }, [
+    campusEventOptions,
+    studentClubEventOptions,
+    departmentEventOptions,
+    unionOptions,
+    studentClubsOptions,
+    departmentOptions
+  ]);
 
   useEffect(() => {
-    if (collectionData) {
+    if (imageData) {
       reset({
-        id: collectionData.id,
-        title: collectionData.title ?? '',
-        description: collectionData.description ?? '',
-        campusEvent: collectionData.campusEvent?.id ?? null,
-        studentClubEvent: collectionData.studentClubEvent?.id ?? null,
-        departmentEvent: collectionData.departmentEvent?.id ?? null,
-        union: collectionData.union?.id ?? null,
-        club: collectionData.club?.id ?? null,
-        department: collectionData.department?.id ?? null,
-        isActive: collectionData.isActive,
-        images:
-          collectionData.images?.map((image) => ({
-            id: image.id,
-            image: image.image,
-            caption: image.caption ?? '',
-            displayOrder: image.displayOrder
-          })) ?? []
+        id: imageData.id,
+        sourceTitle: imageData.sourceTitle ?? '',
+        sourceContext: imageData.sourceContext ?? '',
+        campusEvent: imageData.campusEvent ?? null,
+        studentClubEvent: imageData.studentClubEvent ?? null,
+        departmentEvent: imageData.departmentEvent ?? null,
+        union: imageData.union ?? null,
+        club: imageData.club ?? null,
+        department: imageData.department ?? null,
+        isActive: imageData.isActive,
+        caption: imageData.caption ?? '',
+        displayOrder: imageData.displayOrder,
+        image: undefined
       });
     } else {
       reset(galleryUpdateDefaultValues);
     }
-  }, [collectionData, reset]);
+  }, [imageData, reset]);
 
   const onSubmit = async (data: TGlobalGalleryUpdateFormDataType) => {
-    if (!collectionData) return;
+    if (!imageData) return;
     try {
-      const payload: IGlobalGalleryCollectionUpdatePayload = {
-        title: data.title?.trim(),
-        description: data.description?.trim(),
+      const payload: IGlobalGalleryImageUpdatePayload = {
         campusEvent: data.campusEvent,
         studentClubEvent: data.studentClubEvent,
         departmentEvent: data.departmentEvent,
@@ -140,14 +123,26 @@ const useUpdateGlobalGalleryCollection = ({
         club: data.club,
         department: data.department,
         isActive: data.isActive,
-        images: mapImagesPayload(data.images)
+        caption: data.caption?.trim(),
+        displayOrder: data.displayOrder,
+        sourceTitle: data.sourceTitle?.trim(),
+        sourceContext: data.sourceContext?.trim()
       };
 
-      const res = await updateCollection({ id: collectionData.id, values: payload }).unwrap();
+      const file = normalizeFile(data.image);
+      if (file) {
+        payload.image = file;
+      }
+
+      const res = await updateImage({ id: imageData.id, values: payload }).unwrap();
       dispatch(setMessage({ message: res.message, variant: 'success' }));
       onClose?.();
     } catch (error) {
-      handleClientError<TGlobalGalleryUpdateFormDataType>({ error, setError, enqueueSnackbar });
+      handleClientError<TGlobalGalleryUpdateFormDataType>({
+        error,
+        setError,
+        enqueueSnackbar
+      });
     }
   };
 
@@ -160,4 +155,4 @@ const useUpdateGlobalGalleryCollection = ({
   };
 };
 
-export default useUpdateGlobalGalleryCollection;
+export default useUpdateGlobalGalleryImage;

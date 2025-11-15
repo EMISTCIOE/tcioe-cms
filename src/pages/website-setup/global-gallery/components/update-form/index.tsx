@@ -1,16 +1,16 @@
 import { CircularProgress } from '@mui/material';
 import AppDialog from '@/components/app-dialog';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRetrieveGlobalGalleryCollectionQuery } from '../../redux/globalGalleryCollections.api';
-import { globalGalleryCollectionsState } from '../../redux/globalGalleryCollections.selector';
-import { clearGlobalGalleryCollectionsData, setEdit } from '../../redux/globalGalleryCollections.slice';
+import { useRetrieveGlobalGalleryImageQuery } from '../../redux/globalGalleryImages.api';
+import { globalGalleryImagesState } from '../../redux/globalGalleryImages.selector';
+import { clearImageData, setEdit } from '../../redux/globalGalleryImages.slice';
 import GlobalGalleryUpdateForm from './Form';
 
 const GlobalGalleryEditModal = () => {
   const dispatch = useDispatch();
-  const { edit, currentId } = useSelector(globalGalleryCollectionsState);
+  const { edit, currentId } = useSelector(globalGalleryImagesState);
 
-  const { data, isLoading } = useRetrieveGlobalGalleryCollectionQuery(currentId, {
+  const { data, isLoading } = useRetrieveGlobalGalleryImageQuery(currentId, {
     skip: !currentId || !edit
   });
 
@@ -20,7 +20,7 @@ const GlobalGalleryEditModal = () => {
 
   const handleClose = () => {
     dispatch(setEdit(false));
-    dispatch(clearGlobalGalleryCollectionsData());
+    dispatch(clearImageData());
   };
 
   return (
@@ -35,7 +35,7 @@ const GlobalGalleryEditModal = () => {
             <CircularProgress />
           </div>
         ) : (
-          <GlobalGalleryUpdateForm collectionData={data} onClose={handleClose} />
+          <GlobalGalleryUpdateForm imageData={data} onClose={handleClose} />
         )
       }
     />

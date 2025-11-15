@@ -5,21 +5,21 @@ import { Button, Grid } from '@mui/material';
 import MainCard from '@/components/cards/MainCard';
 import FormSection from '@/components/app-form/FormSection';
 import { TGlobalGalleryCreateFormDataType } from './config';
-import useCreateGlobalGalleryCollection from '@/pages/website-setup/global-gallery/hooks/useCreateGlobalGalleryCollection';
+import useCreateGlobalGalleryImages from '@/pages/website-setup/global-gallery/hooks/useCreateGlobalGalleryImages';
 
 export interface IGlobalGalleryCreateFormProps {
   onClose?: () => void;
 }
 
 export default function GlobalGalleryCreateForm({ onClose }: IGlobalGalleryCreateFormProps) {
-  const { control, errors, watch, formFields, handleSubmit } = useCreateGlobalGalleryCollection({ onClose });
+  const { control, errors, watch, formFields, handleSubmit } = useCreateGlobalGalleryImages({ onClose });
   const formValues = watch();
 
   return (
     <form onSubmit={handleSubmit()} noValidate>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <MainCard divider title="Add Gallery Collection">
+          <MainCard divider title="Add Gallery Images">
             <FormSection<TGlobalGalleryCreateFormDataType> fields={formFields} control={control} errors={errors} formValues={formValues} />
           </MainCard>
         </Grid>

@@ -85,7 +85,9 @@ const AcademicPage: React.FC = () => {
   };
 
   if (activeTab === 0 && showProgramForm) {
-    return <AcademicProgramForm program={editingProgram ?? undefined} onCancel={handleProgramFormCancel} onSuccess={handleProgramFormSuccess} />;
+    return (
+      <AcademicProgramForm program={editingProgram ?? undefined} onCancel={handleProgramFormCancel} onSuccess={handleProgramFormSuccess} />
+    );
   }
 
   if (activeTab === 1 && showSubjectForm) {
