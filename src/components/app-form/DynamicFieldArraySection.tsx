@@ -39,10 +39,13 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
   const fileInputRef = useRef<HTMLInputElement>(null);
   const displayOrderFieldName = itemFields.find((item) => item.name === 'displayOrder')?.name as string | undefined;
   const createNewItem = (overrides: Record<string, any> = {}) => {
-    const base = itemFields.reduce((acc, field) => {
-      acc[field.name as string] = field.defaultValue ?? '';
-      return acc;
-    }, {} as Record<string, any>);
+    const base = itemFields.reduce(
+      (acc, field) => {
+        acc[field.name as string] = field.defaultValue ?? '';
+        return acc;
+      },
+      {} as Record<string, any>
+    );
     return { ...base, ...overrides };
   };
   const handleBulkFiles = (event: ChangeEvent<HTMLInputElement>) => {
@@ -52,9 +55,7 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
       return;
     }
 
-    const availableSlots = Number.isFinite(resolvedMaxSelectable)
-      ? Math.max(resolvedMaxSelectable - currentNoOfFileds, 0)
-      : files.length;
+    const availableSlots = Number.isFinite(resolvedMaxSelectable) ? Math.max(resolvedMaxSelectable - currentNoOfFileds, 0) : files.length;
 
     if (availableSlots <= 0) {
       event.target.value = '';
@@ -149,20 +150,14 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
       )}
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, my: 4 }}>
         {fileField && (
-          <Button
-            variant="outlined"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={currentNoOfFileds >= resolvedMaxSelectable}
-          >
+          <Button variant="outlined" onClick={() => fileInputRef.current?.click()} disabled={currentNoOfFileds >= resolvedMaxSelectable}>
             Bulk Add
           </Button>
         )}
         <Button
           variant="outlined"
           disabled={currentNoOfFileds >= resolvedMaxSelectable}
-          onClick={() =>
-            append(createNewItem() as FieldArray<T, ArrayPath<T>>)
-          }
+          onClick={() => append(createNewItem() as FieldArray<T, ArrayPath<T>>)}
         >
           Add More
         </Button>
