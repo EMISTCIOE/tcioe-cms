@@ -96,80 +96,78 @@ export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
       invalidatesTags: ['GlobalGalleryImages']
     }),
 
-    patchGlobalGalleryImage: builder.mutation<IMutationSuccessResponse, { id: number; values: IGlobalGalleryImageUpdatePayload }>(
-      {
-        query: ({ id, values }) => {
-          const {
-            campusEvent,
-            studentClubEvent,
-            departmentEvent,
-            union,
-            club,
-            department,
-            globalEvent,
-            sourceTitle,
-            sourceContext,
-            isActive,
-            image,
-            caption,
-            displayOrder
-          } = values;
-          const body = new FormData();
+    patchGlobalGalleryImage: builder.mutation<IMutationSuccessResponse, { id: number; values: IGlobalGalleryImageUpdatePayload }>({
+      query: ({ id, values }) => {
+        const {
+          campusEvent,
+          studentClubEvent,
+          departmentEvent,
+          union,
+          club,
+          department,
+          globalEvent,
+          sourceTitle,
+          sourceContext,
+          isActive,
+          image,
+          caption,
+          displayOrder
+        } = values;
+        const body = new FormData();
 
-          if (typeof isActive === 'boolean') {
-            body.append('is_active', String(isActive));
-          }
-          if (campusEvent !== undefined) {
-            if (campusEvent === null) body.append('campus_event', '');
-            else body.append('campus_event', String(campusEvent));
-          }
-          if (studentClubEvent !== undefined) {
-            if (studentClubEvent === null) body.append('student_club_event', '');
-            else body.append('student_club_event', String(studentClubEvent));
-          }
-          if (departmentEvent !== undefined) {
-            if (departmentEvent === null) body.append('department_event', '');
-            else body.append('department_event', String(departmentEvent));
-          }
-          if (union !== undefined) {
-            if (union === null) body.append('union', '');
-            else body.append('union', String(union));
-          }
-          if (club !== undefined) {
-            if (club === null) body.append('club', '');
-            else body.append('club', String(club));
-          }
-          if (department !== undefined) {
-            if (department === null) body.append('department', '');
-            else body.append('department', String(department));
-          }
-          if (globalEvent !== undefined) {
-            if (globalEvent === null) body.append('global_event', '');
-            else body.append('global_event', String(globalEvent));
-          }
-          if (sourceTitle !== undefined) {
-            if (sourceTitle === null) body.append('source_title', '');
-            else body.append('source_title', sourceTitle);
-          }
-          if (sourceContext !== undefined) {
-            if (sourceContext === null) body.append('source_context', '');
-            else body.append('source_context', sourceContext);
-          }
-          if (image instanceof File) {
-            body.append('image', image);
-          }
-          if (caption !== undefined) body.append('caption', caption || '');
-          if (displayOrder !== undefined) body.append('display_order', String(displayOrder));
+        if (typeof isActive === 'boolean') {
+          body.append('is_active', String(isActive));
+        }
+        if (campusEvent !== undefined) {
+          if (campusEvent === null) body.append('campus_event', '');
+          else body.append('campus_event', String(campusEvent));
+        }
+        if (studentClubEvent !== undefined) {
+          if (studentClubEvent === null) body.append('student_club_event', '');
+          else body.append('student_club_event', String(studentClubEvent));
+        }
+        if (departmentEvent !== undefined) {
+          if (departmentEvent === null) body.append('department_event', '');
+          else body.append('department_event', String(departmentEvent));
+        }
+        if (union !== undefined) {
+          if (union === null) body.append('union', '');
+          else body.append('union', String(union));
+        }
+        if (club !== undefined) {
+          if (club === null) body.append('club', '');
+          else body.append('club', String(club));
+        }
+        if (department !== undefined) {
+          if (department === null) body.append('department', '');
+          else body.append('department', String(department));
+        }
+        if (globalEvent !== undefined) {
+          if (globalEvent === null) body.append('global_event', '');
+          else body.append('global_event', String(globalEvent));
+        }
+        if (sourceTitle !== undefined) {
+          if (sourceTitle === null) body.append('source_title', '');
+          else body.append('source_title', sourceTitle);
+        }
+        if (sourceContext !== undefined) {
+          if (sourceContext === null) body.append('source_context', '');
+          else body.append('source_context', sourceContext);
+        }
+        if (image instanceof File) {
+          body.append('image', image);
+        }
+        if (caption !== undefined) body.append('caption', caption || '');
+        if (displayOrder !== undefined) body.append('display_order', String(displayOrder));
 
-          return {
-            url: `${globalGalleryImagesAPI}/${id}`,
-            method: 'PATCH',
-            data: body
-          };
-        },
-        invalidatesTags: ['GlobalGalleryImages']
-      }
-    ),
+        return {
+          url: `${globalGalleryImagesAPI}/${id}`,
+          method: 'PATCH',
+          data: body
+        };
+      },
+      invalidatesTags: ['GlobalGalleryImages']
+    }),
 
     deleteGlobalGalleryImage: builder.mutation<IMutationSuccessResponse, number>({
       query: (id) => ({

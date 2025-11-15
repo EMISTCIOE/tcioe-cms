@@ -27,13 +27,7 @@ const normalizeFile = (input: File | FileList | null | undefined) => {
   return input ?? null;
 };
 
-const useUpdateGlobalGalleryImage = ({
-  imageData,
-  onClose
-}: {
-  imageData?: IGlobalGalleryImage;
-  onClose?: () => void;
-}) => {
+const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlobalGalleryImage; onClose?: () => void }) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [updateImage] = usePatchGlobalGalleryImageMutation();
@@ -81,14 +75,7 @@ const useUpdateGlobalGalleryImage = ({
         return field;
       })
     );
-  }, [
-    campusEventOptions,
-    studentClubEventOptions,
-    departmentEventOptions,
-    unionOptions,
-    studentClubsOptions,
-    departmentOptions
-  ]);
+  }, [campusEventOptions, studentClubEventOptions, departmentEventOptions, unionOptions, studentClubsOptions, departmentOptions]);
 
   useEffect(() => {
     if (imageData) {

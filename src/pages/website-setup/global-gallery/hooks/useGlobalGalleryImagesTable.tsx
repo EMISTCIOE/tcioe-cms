@@ -1,11 +1,7 @@
 import { createTableDataHook } from '@/hooks/createTableDataHook';
 import { useAppDispatch } from '@/libs/hooks';
 import { useDeleteGlobalGalleryImageMutation, useGetGlobalGalleryImagesQuery } from '../redux/globalGalleryImages.api';
-import {
-  setCurrentImageId,
-  setEdit,
-  setViewId
-} from '../redux/globalGalleryImages.slice';
+import { setCurrentImageId, setEdit, setViewId } from '../redux/globalGalleryImages.slice';
 import { IGlobalGalleryImage, IGlobalGalleryImageList } from '../redux/globalGalleryImages.types';
 import { IGlobalGalleryImageTableRow } from '../components/listing/config';
 

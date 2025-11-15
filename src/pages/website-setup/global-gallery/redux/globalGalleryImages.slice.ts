@@ -30,7 +30,6 @@ export const globalGalleryImagesSlice = createSlice({
   }
 });
 
-export const { setEdit, setCurrentImageId, clearImageData, setViewId, clearViewId } =
-  globalGalleryImagesSlice.actions;
+export const { setEdit, setCurrentImageId, clearImageData, setViewId, clearViewId } = globalGalleryImagesSlice.actions;
 
 export default globalGalleryImagesSlice.reducer;
