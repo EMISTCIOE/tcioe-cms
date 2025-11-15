@@ -18,19 +18,10 @@ export default function GlobalEventsUpdateForm({ eventData, onClose }: IGlobalEv
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <MainCard divider title="Edit Global Event">
-            <FormSection
-              fields={formFields}
-              control={control}
-              errors={errors}
-              formValues={formValues}
-            />
+            <FormSection fields={formFields} control={control} errors={errors} formValues={formValues} />
           </MainCard>
         </Grid>
-        <Grid
-          item
-          xs={12}
-          sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, flexWrap: 'wrap' }}
-        >
+        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, flexWrap: 'wrap' }}>
           <Button variant="outlined" color="error" onClick={onClose}>
             Cancel
           </Button>

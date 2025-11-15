@@ -1,17 +1,16 @@
 import { useState } from 'react';
 
 // Mui imports
-import { Box, Drawer, IconButton, Typography, useTheme } from '@mui/material';
+import { Box, Drawer, IconButton, Typography, useTheme, Backdrop } from '@mui/material';
 
-import { SettingOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { FormatColorFillOutlined, StyleOutlined } from '@mui/icons-material';
+import { CloseCircleOutlined } from '@ant-design/icons';
+import { FormatColorFillOutlined, StyleOutlined, PaletteOutlined } from '@mui/icons-material';
 
 // Project imports
 import TABS from '@/components/CustomTab';
 import { TabItem } from '@/menu-items/types';
 import ColorsTab from './ColorsTab';
 import ThemesTab from './ThemesTab';
-import { fontSize } from '@mui/system';
 
 const TabItems: TabItem[] = [
   {
@@ -48,10 +47,15 @@ export default function ThemeSettings() {
           title="Theme Settings"
           sx={{
             bgcolor: openDrawer ? 'action.hover' : 'transparent',
-            mr: 0.25
+            mr: 0.25,
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              transform: 'rotate(90deg)',
+              bgcolor: 'action.hover'
+            }
           }}
         >
-          <SettingOutlined className="rotateIcon" />
+          <PaletteOutlined className="rotateIcon" />
         </IconButton>
       </Box>
 
@@ -60,56 +64,105 @@ export default function ThemeSettings() {
         anchor="right"
         open={openDrawer}
         onClose={toggleDrawer}
+        SlideProps={{
+          timeout: 400
+        }}
         PaperProps={{
           sx: {
-            width: 320,
-            bgcolor: 'background.paper',
-            boxShadow: theme.shadows[16]
+            width: 360,
+            bgcolor: 'background.default',
+            boxShadow: theme.shadows[24],
+            backgroundImage: 'none'
+          }
+        }}
+        ModalProps={{
+          BackdropComponent: Backdrop,
+          BackdropProps: {
+            sx: {
+              bgcolor: 'rgba(0, 0, 0, 0.5)',
+              backdropFilter: 'blur(4px)'
+            }
           }
         }}
       >
         {/* Drawer Header */}
         <Box
           sx={{
-            backgroundColor: 'primary.main'
+            background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'radial-gradient(circle at 100% 0%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+              pointerEvents: 'none'
+            }
           }}
         >
           <Box
             sx={{
-              px: 2,
-              py: 2.5,
+              px: 3,
+              py: 3,
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center'
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 1
             }}
           >
-            <Typography variant="h5" fontWeight={600} color={'primary.contrastText'}>
-              Theme Customization
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <Box
+                sx={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '10px',
+                  bgcolor: 'rgba(255, 255, 255, 0.15)',
+                  backdropFilter: 'blur(10px)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '1px solid rgba(255, 255, 255, 0.2)'
+                }}
+              >
+                <StyleOutlined sx={{ color: 'white', fontSize: '1.3rem' }} />
+              </Box>
+              <Box>
+                <Typography variant="h5" fontWeight={700} color="white" sx={{ letterSpacing: '-0.5px' }}>
+                  Theme Studio
+                </Typography>
+                <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.85)', fontSize: '0.75rem' }}>
+                  Customize your experience
+                </Typography>
+              </Box>
+            </Box>
             <IconButton
               onClick={toggleDrawer}
               size="small"
               sx={{
-                borderRadius: '50%',
-                color: 'common.white',
+                borderRadius: '8px',
+                color: 'white',
+                bgcolor: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                transition: 'all 0.2s ease',
                 '&:hover': {
+                  bgcolor: 'white',
                   color: 'primary.main',
-                  bgcolor: 'common.white',
-                  transition: 'all 0.1s ease-in-out'
+                  transform: 'rotate(90deg)'
                 }
               }}
             >
-              <CloseCircleOutlined
-                style={{
-                  fontSize: '1.2rem'
-                }}
-              />
+              <CloseCircleOutlined style={{ fontSize: '1.1rem' }} />
             </IconButton>
           </Box>
         </Box>
 
         {/* Tabs */}
-        <Box sx={{ p: 2 }}>
+        <Box sx={{ px: 3, pt: 3, pb: 2 }}>
           <TABS variant="fullWidth" handleChange={handleTabChange} value={activeTab} tabItems={TabItems} />
         </Box>
       </Drawer>

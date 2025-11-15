@@ -47,7 +47,8 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
   useEffect(() => {
     if (studentClubsData) {
       reset({
-        ...studentClubsData
+        ...studentClubsData,
+        department: studentClubsData.department?.id || null
       });
     }
   }, [studentClubsData, reset]);

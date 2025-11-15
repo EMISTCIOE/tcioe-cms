@@ -5,9 +5,7 @@ import { currentGlobalGalleryCollectionsId, setEdit, setViewId } from '../redux/
 import { IGlobalGalleryCollection, IGlobalGalleryCollectionList } from '../redux/globalGalleryCollections.types';
 import { IGlobalGalleryCollectionTableRow } from '../components/listing/config';
 
-const deriveSource = (
-  item: IGlobalGalleryCollection
-): { type: string; name: string; context?: string } => {
+const deriveSource = (item: IGlobalGalleryCollection): { type: string; name: string; context?: string } => {
   if (item.campusEvent) {
     return { type: 'campus_event', name: item.campusEvent.name, context: item.campusEvent.name };
   }

@@ -22,12 +22,7 @@ export default function GlobalGalleryUpdateForm({ collectionData, onClose }: IGl
       <Grid container spacing={3} sx={{ pt: 1 }}>
         <Grid item xs={12}>
           <MainCard divider title="Update Gallery Collection">
-            <FormSection<TGlobalGalleryUpdateFormDataType>
-              fields={formFields}
-              control={control}
-              errors={errors}
-              formValues={formValues}
-            />
+            <FormSection<TGlobalGalleryUpdateFormDataType> fields={formFields} control={control} errors={errors} formValues={formValues} />
           </MainCard>
         </Grid>
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, flexWrap: 'wrap' }}>

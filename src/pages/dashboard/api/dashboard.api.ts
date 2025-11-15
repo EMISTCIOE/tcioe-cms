@@ -54,6 +54,14 @@ export interface ContactStatistics {
   pending_inquiries: number;
 }
 
+export interface PendingItems {
+  notices: number;
+  research: number;
+  events: number;
+  projects: number;
+  feedback: number;
+}
+
 export interface TrendData {
   month: string;
   count: number;
@@ -63,6 +71,8 @@ export interface ChartData {
   notices_trend: TrendData[];
   users_growth: TrendData[];
   research_publications_trend: TrendData[];
+  events_trend: TrendData[];
+  projects_trend: TrendData[];
 }
 
 export interface DashboardStatsResponse {
@@ -78,6 +88,7 @@ export interface DashboardStatsResponse {
     journal_statistics: JournalStatistics;
     curriculum_statistics: CurriculumStatistics;
     contact_statistics: ContactStatistics;
+    pending_items: PendingItems;
     chart_data: ChartData;
   };
 }
@@ -87,7 +98,7 @@ export const dashboardAPI = rootAPI.injectEndpoints({
   endpoints: (builder) => ({
     getDashboardStats: builder.query<DashboardStatsResponse, { refresh?: boolean }>({
       query: ({ refresh = false } = {}) => ({
-        url: '/core/dashboard-stats',
+        url: 'cms/core/dashboard-stats',
         method: 'GET',
         params: refresh ? { refresh: 'true' } : undefined
       }),

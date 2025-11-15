@@ -2,17 +2,15 @@ import { FormField } from '@/components/app-form/types';
 import * as z from 'zod';
 
 const imageSchema = z.object({
-  image: z
-    .any()
-    .refine(
-      (file) => {
-        const target = file instanceof FileList ? file[0] : file;
-        return target instanceof File && target.type.startsWith('image/');
-      },
-      {
-        message: 'Image file is required'
-      }
-    ),
+  image: z.any().refine(
+    (file) => {
+      const target = file instanceof FileList ? file[0] : file;
+      return target instanceof File && target.type.startsWith('image/');
+    },
+    {
+      message: 'Image file is required'
+    }
+  ),
   caption: z.string().optional(),
   displayOrder: z.number().int().positive().optional()
 });

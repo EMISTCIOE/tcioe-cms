@@ -17,19 +17,10 @@ export default function GlobalEventsCreateForm({ onClose }: IGlobalEventsCreateF
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <MainCard divider title="Add Global Event">
-            <FormSection<TGlobalEventsCreateFormDataType>
-              fields={formFields}
-              control={control}
-              errors={errors}
-              formValues={formValues}
-            />
+            <FormSection<TGlobalEventsCreateFormDataType> fields={formFields} control={control} errors={errors} formValues={formValues} />
           </MainCard>
         </Grid>
-        <Grid
-          item
-          xs={12}
-          sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, flexWrap: 'wrap' }}
-        >
+        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, flexWrap: 'wrap' }}>
           <Button variant="outlined" color="error" onClick={onClose}>
             Cancel
           </Button>

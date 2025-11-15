@@ -5,7 +5,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 // project import
 import MobileSection from './components/MobileSection';
-import Notification from './components/Notification';
+
 import Profile from './components/profile';
 
 import FullScreenButton from './components/FullScreen';
@@ -21,7 +21,6 @@ export default function HeaderContent() {
       {!downLG && <Box sx={{ width: '100%' }} />} {/* Spacer */}
       {downLG && <Box sx={{ width: '100%', ml: 1 }} />}
       <FullScreenButton />
-      <Notification />
       <ThemeSettings />
       {!downLG && <Profile />}
       {downLG && <MobileSection />}

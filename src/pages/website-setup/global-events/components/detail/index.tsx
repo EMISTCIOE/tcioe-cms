@@ -42,9 +42,7 @@ const GlobalEventsDetailModal = () => {
           <div className="space-y-4">
             <div>
               <h2 className="text-xl font-semibold">{data.title}</h2>
-              {data.eventType && (
-                <Chip label={data.eventType} size="small" sx={{ mt: 1 }} />
-              )}
+              {data.eventType && <Chip label={data.eventType} size="small" sx={{ mt: 1 }} />}
             </div>
             <p className="text-sm text-gray-600">{data.description || 'No description provided.'}</p>
             <div className="grid grid-cols-2 gap-4 text-sm">

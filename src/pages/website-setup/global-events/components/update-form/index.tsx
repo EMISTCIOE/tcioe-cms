@@ -1,9 +1,7 @@
 import { CircularProgress } from '@mui/material';
 import AppDialog from '@/components/app-dialog';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  useRetrieveGlobalEventsQuery
-} from '../../redux/globalEvents.api';
+import { useRetrieveGlobalEventsQuery } from '../../redux/globalEvents.api';
 import { globalEventsState } from '../../redux/globalEvents.selector';
 import { clearGlobalEventsData, setEdit } from '../../redux/globalEvents.slice';
 import GlobalEventsUpdateForm from './Form';

@@ -1,12 +1,8 @@
 import { IListQueryParams, IMutationSuccessResponse } from '@/globals';
 import { rootAPI } from '@/libs/apiSlice';
 import { getQueryParams } from '@/utils/functions/queryBuilder';
-import {
-  IGlobalEventsCreatePayload,
-  IGlobalEventsDetails,
-  IGlobalEventsList,
-  IGlobalEventsUpdatePayload
-} from './globalEvents.types';
+import { formatReadableDatetime } from '@/utils/functions/date';
+import { IGlobalEventsCreatePayload, IGlobalEventsDetails, IGlobalEventsList, IGlobalEventsUpdatePayload } from './globalEvents.types';
 
 export const globalEventsAPI = 'cms/website-mod/global-events';
 
@@ -41,13 +37,7 @@ export const globalEventsAPISlice = rootAPI.injectEndpoints({
 
     createGlobalEvents: builder.mutation<IMutationSuccessResponse, IGlobalEventsCreatePayload>({
       query: (values) => {
-        const {
-          unions,
-          clubs,
-          departments,
-          thumbnail,
-          ...rest
-        } = values;
+        const { unions, clubs, departments, thumbnail, eventStartDate, eventEndDate, ...rest } = values;
         const body = new FormData();
 
         Object.entries(rest).forEach(([key, value]) => {
@@ -55,6 +45,13 @@ export const globalEventsAPISlice = rootAPI.injectEndpoints({
             body.append(key, value as string);
           }
         });
+
+        if (eventStartDate) {
+          body.append('eventStartDate', formatReadableDatetime(eventStartDate, 'YYYY-MM-DD'));
+        }
+        if (eventEndDate) {
+          body.append('eventEndDate', formatReadableDatetime(eventEndDate, 'YYYY-MM-DD'));
+        }
 
         if (thumbnail instanceof File) {
           body.append('thumbnail', thumbnail);
@@ -73,18 +70,9 @@ export const globalEventsAPISlice = rootAPI.injectEndpoints({
       invalidatesTags: ['GlobalEvents']
     }),
 
-    patchGlobalEvents: builder.mutation<
-      IMutationSuccessResponse,
-      { id: number; values: IGlobalEventsUpdatePayload }
-    >({
+    patchGlobalEvents: builder.mutation<IMutationSuccessResponse, { id: number; values: IGlobalEventsUpdatePayload }>({
       query: ({ id, values }) => {
-        const {
-          unions,
-          clubs,
-          departments,
-          thumbnail,
-          ...rest
-        } = values;
+        const { unions, clubs, departments, thumbnail, eventStartDate, eventEndDate, ...rest } = values;
         const body = new FormData();
 
         Object.entries(rest).forEach(([key, value]) => {
@@ -92,6 +80,13 @@ export const globalEventsAPISlice = rootAPI.injectEndpoints({
             body.append(key, value as string);
           }
         });
+
+        if (eventStartDate) {
+          body.append('eventStartDate', formatReadableDatetime(eventStartDate, 'YYYY-MM-DD'));
+        }
+        if (eventEndDate) {
+          body.append('eventEndDate', formatReadableDatetime(eventEndDate, 'YYYY-MM-DD'));
+        }
 
         if (thumbnail instanceof File) {
           body.append('thumbnail', thumbnail);

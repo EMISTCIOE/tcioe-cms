@@ -12,6 +12,10 @@ import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 
 // third party
 import Cookies from 'js-cookie';
@@ -30,28 +34,8 @@ import { authState } from '@/pages/authentication/redux/selector';
 // assets
 import avatar1 from '@/assets/images/users/avatar-1.png';
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
-import { PersonOutline, SettingsOutlined } from '@mui/icons-material';
-
-// tabs
-import TABS from '@/components/CustomTab';
-import { TabItem } from '@/menu-items/types';
-import ProfileTab from './ProfileTab';
-import SettingTab from './SettingTab';
-
-const TabItems: TabItem[] = [
-  {
-    id: 'profile',
-    title: 'Profile',
-    icon: PersonOutline,
-    tabPanel: ProfileTab
-  },
-  {
-    id: 'setting',
-    title: 'Setting',
-    icon: SettingsOutlined,
-    tabPanel: SettingTab
-  }
-];
+import EditOutlined from '@ant-design/icons/EditOutlined';
+import UserOutlined from '@ant-design/icons/UserOutlined';
 
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //
 
@@ -64,7 +48,7 @@ export default function Profile() {
 
   const anchorRef: React.Ref<any> = useRef(null);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -77,8 +61,9 @@ export default function Profile() {
     setOpen(false);
   };
 
-  const handleChange = (event: React.SyntheticEvent, newValue: any): void => {
-    setValue(newValue);
+  const handleClick = (index: number, routePath: string) => {
+    setSelectedIndex(index);
+    navigate(routePath);
   };
 
   const [logout] = useLogoutMutation();
@@ -166,7 +151,29 @@ export default function Profile() {
                       </Grid>
                     </Grid>
                   </CardContent>
-                  <TABS variant="fullWidth" handleChange={handleChange} value={value} tabItems={TabItems} />
+                  {/* Profile Menu Items */}
+                  <Box sx={{ borderTop: 1, borderColor: 'divider' }}>
+                    <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
+                      <ListItemButton selected={selectedIndex === 0} onClick={() => handleClick(0, '/account/profile')}>
+                        <ListItemIcon>
+                          <EditOutlined />
+                        </ListItemIcon>
+                        <ListItemText primary="View Profile" />
+                      </ListItemButton>
+                      <ListItemButton selected={selectedIndex === 1} onClick={() => handleClick(1, '/account/change-password')}>
+                        <ListItemIcon>
+                          <UserOutlined />
+                        </ListItemIcon>
+                        <ListItemText primary="Change Password" />
+                      </ListItemButton>
+                      <ListItemButton selected={selectedIndex === 2} onClick={() => handleLogOut()}>
+                        <ListItemIcon>
+                          <LogoutOutlined />
+                        </ListItemIcon>
+                        <ListItemText primary="Logout" />
+                      </ListItemButton>
+                    </List>
+                  </Box>
                 </MainCard>
               </ClickAwayListener>
             </Paper>

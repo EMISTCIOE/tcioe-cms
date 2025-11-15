@@ -30,12 +30,6 @@ export const globalEventsSlice = createSlice({
   }
 });
 
-export const {
-  setEdit,
-  currentGlobalEventsId,
-  clearGlobalEventsData,
-  setViewId,
-  clearViewId
-} = globalEventsSlice.actions;
+export const { setEdit, currentGlobalEventsId, clearGlobalEventsData, setViewId, clearViewId } = globalEventsSlice.actions;
 
 export default globalEventsSlice.reducer;

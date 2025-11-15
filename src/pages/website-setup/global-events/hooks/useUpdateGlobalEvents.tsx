@@ -9,11 +9,7 @@ import { useCampusUnionOptions } from '@/hooks/useCampusUnionOptions';
 import { useDepartmentOptions } from '@/hooks/useDepartmentOptions';
 import { useStudentClubs } from '@/pages/student-clubs-setup/student-clubs/hooks/useStudentClubs';
 import { usePatchGlobalEventsMutation } from '../redux/globalEvents.api';
-import {
-  globalEventsUpdateFields,
-  globalEventsUpdateFormSchema,
-  TGlobalEventsUpdateFormDataType
-} from '../components/update-form/config';
+import { globalEventsUpdateFields, globalEventsUpdateFormSchema, TGlobalEventsUpdateFormDataType } from '../components/update-form/config';
 import { IGlobalEventsDetails, IGlobalEventsUpdatePayload } from '../redux/globalEvents.types';
 
 const normalizeFile = (input: File | FileList | string | null | undefined) => {

@@ -6,4 +6,5 @@ export const globalEventsUpdateFormSchema = globalEventsCreateFormSchema.partial
 
 export type TGlobalEventsUpdateFormDataType = z.infer<typeof globalEventsUpdateFormSchema>;
 
-export const globalEventsUpdateFields: FormField<TGlobalEventsUpdateFormDataType>[] = globalEventsCreateFields;
+export const globalEventsUpdateFields: FormField<TGlobalEventsUpdateFormDataType>[] =
+  globalEventsCreateFields as FormField<TGlobalEventsUpdateFormDataType>[];

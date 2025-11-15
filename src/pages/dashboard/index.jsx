@@ -1,6 +1,9 @@
 // material-ui
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
 
 // material-ui icons
 import ScienceIcon from '@mui/icons-material/Science';
@@ -20,10 +23,32 @@ import InfoIcon from '@mui/icons-material/Info';
 import ActionCard from './components/ActionCard';
 import QuickStatsCard from './components/QuickStatsCard';
 import WelcomeBanner from './components/WelcomeBanner';
+import { useGetDashboardStatsQuery } from './api/dashboard.api';
+import DashboardCharts from './components/DashboardCharts';
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 export default function DashboardDefault() {
+  const { data: statsResponse, isLoading, error } = useGetDashboardStatsQuery({});
+
+  const stats = statsResponse?.data;
+
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <Alert severity="error">Failed to load dashboard statistics. Please try again later.</Alert>
+      </Box>
+    );
+  }
+
   return (
     <Grid container rowSpacing={3} columnSpacing={2.75} sx={{ p: { xxs: 1, xs: 0 } }}>
       {/* Welcome Banner */}
@@ -34,39 +59,61 @@ export default function DashboardDefault() {
       {/* Quick Stats Row */}
       <Grid item xs={12}>
         <Typography variant="h5" sx={{ mb: 2 }}>
-          Quick Overview
+          Pending Items & Actions
         </Typography>
       </Grid>
-      <Grid item xs={12} sm={6} md={3}>
-        <QuickStatsCard title="Total Staff" value="—" icon={<PersonIcon sx={{ fontSize: 28 }} />} color="primary" subtitle="Active users" />
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid item xs={12} sm={6} md={2.4}>
         <QuickStatsCard
-          title="Active Notices"
-          value="—"
+          title="Pending Notices"
+          value={stats?.pendingItems?.notices?.toString() || '0'}
           icon={<NotificationsActiveIcon sx={{ fontSize: 28 }} />}
-          color="success"
-          subtitle="Published"
+          color="warning"
+          subtitle="Draft notices"
         />
       </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid item xs={12} sm={6} md={2.4}>
         <QuickStatsCard
-          title="Research Papers"
-          value="—"
+          title="Pending Research"
+          value={stats?.pendingItems?.research?.toString() || '0'}
           icon={<ScienceIcon sx={{ fontSize: 28 }} />}
           color="info"
-          subtitle="Total publications"
+          subtitle="Under review"
         />
       </Grid>
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid item xs={12} sm={6} md={2.4}>
         <QuickStatsCard
-          title="Student Clubs"
-          value="—"
-          icon={<Diversity3Icon sx={{ fontSize: 28 }} />}
-          color="warning"
-          subtitle="Active clubs"
+          title="Pending Events"
+          value={stats?.pendingItems?.events?.toString() || '0'}
+          icon={<CalendarMonthIcon sx={{ fontSize: 28 }} />}
+          color="primary"
+          subtitle="Upcoming events"
         />
       </Grid>
+      <Grid item xs={12} sm={6} md={2.4}>
+        <QuickStatsCard
+          title="Pending Projects"
+          value={stats?.pendingItems?.projects?.toString() || '0'}
+          icon={<WorkIcon sx={{ fontSize: 28 }} />}
+          color="secondary"
+          subtitle="In progress"
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} md={2.4}>
+        <QuickStatsCard
+          title="Unresolved Feedback"
+          value={stats?.pendingItems?.feedback?.toString() || '0'}
+          icon={<FeedbackIcon sx={{ fontSize: 28 }} />}
+          color="error"
+          subtitle="Needs attention"
+        />
+      </Grid>
+
+      {/* Charts Section */}
+      {stats?.chartData && (
+        <Grid item xs={12} sx={{ mt: 2 }}>
+          <DashboardCharts chartData={stats.chartData} />
+        </Grid>
+      )}
 
       {/* Management Actions */}
       <Grid item xs={12} sx={{ mt: 2 }}>
@@ -91,7 +138,7 @@ export default function DashboardDefault() {
           description="Publish announcements, notifications, and important updates"
           icon={<NotificationsActiveIcon sx={{ fontSize: 32 }} />}
           color="success"
-          url="/notice-setup/notices"
+          url="/notice"
         />
       </Grid>
 

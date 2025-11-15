@@ -20,12 +20,7 @@ export default function GlobalGalleryCreateForm({ onClose }: IGlobalGalleryCreat
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <MainCard divider title="Add Gallery Collection">
-            <FormSection<TGlobalGalleryCreateFormDataType>
-              fields={formFields}
-              control={control}
-              errors={errors}
-              formValues={formValues}
-            />
+            <FormSection<TGlobalGalleryCreateFormDataType> fields={formFields} control={control} errors={errors} formValues={formValues} />
           </MainCard>
         </Grid>
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, flexWrap: 'wrap' }}>

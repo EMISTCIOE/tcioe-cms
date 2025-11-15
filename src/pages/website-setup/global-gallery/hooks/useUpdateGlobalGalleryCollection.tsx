@@ -45,7 +45,13 @@ const mapImagesPayload = (images: TUpdateGalleryImage[]) =>
     return payload;
   });
 
-const useUpdateGlobalGalleryCollection = ({ collectionData, onClose }: { collectionData?: IGlobalGalleryCollection; onClose?: () => void }) => {
+const useUpdateGlobalGalleryCollection = ({
+  collectionData,
+  onClose
+}: {
+  collectionData?: IGlobalGalleryCollection;
+  onClose?: () => void;
+}) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [updateCollection] = usePatchGlobalGalleryCollectionMutation();
@@ -108,12 +114,13 @@ const useUpdateGlobalGalleryCollection = ({ collectionData, onClose }: { collect
         club: collectionData.club?.id ?? null,
         department: collectionData.department?.id ?? null,
         isActive: collectionData.isActive,
-        images: collectionData.images?.map((image) => ({
-          id: image.id,
-          image: image.image,
-          caption: image.caption ?? '',
-          displayOrder: image.displayOrder
-        })) ?? []
+        images:
+          collectionData.images?.map((image) => ({
+            id: image.id,
+            image: image.image,
+            caption: image.caption ?? '',
+            displayOrder: image.displayOrder
+          })) ?? []
       });
     } else {
       reset(galleryUpdateDefaultValues);
