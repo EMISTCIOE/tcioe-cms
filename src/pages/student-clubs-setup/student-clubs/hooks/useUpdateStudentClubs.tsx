@@ -78,11 +78,7 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
   }, [studentClubsData]);
 
   useEffect(() => {
-    setFormFields((prev) =>
-      prev.map((field) =>
-        field.name === 'department' ? { ...field, options: departmentOptions } : field
-      )
-    );
+    setFormFields((prev) => prev.map((field) => (field.name === 'department' ? { ...field, options: departmentOptions } : field)));
   }, [departmentOptions]);
 
   // This is for form update not for inline update

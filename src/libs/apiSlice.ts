@@ -61,6 +61,7 @@ export const rootAPI = createApi({
     'Projects',
     'ProjectTags',
     'Research',
-    'ResearchTag'
+    'ResearchTag',
+    'DashboardStats'
   ]
 });

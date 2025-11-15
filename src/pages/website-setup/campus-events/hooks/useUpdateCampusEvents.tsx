@@ -78,11 +78,7 @@ const useUpdateCampusEvents = ({ campusEventsData, onClose }: ICampusEventsUpdat
   }, [campusEventsData]);
 
   useEffect(() => {
-    setFormFields((prev) =>
-      prev.map((field) =>
-        field.name === 'union' ? { ...field, options: unionOptions } : field
-      )
-    );
+    setFormFields((prev) => prev.map((field) => (field.name === 'union' ? { ...field, options: unionOptions } : field)));
   }, [unionOptions]);
 
   // This is for form update not for inline update

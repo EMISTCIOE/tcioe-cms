@@ -1,10 +1,10 @@
-// project import
-import SiteLogo from '@/assets/images/logo.png';
-
-// ==============================|| LOGO SVG ||============================== //
+// ==============================|| LOGO - TCIOE ||============================== //
 
 const Logo = () => {
-  return <img src={SiteLogo} alt="Logo Main" width="80" />;
+  // Use the logo from public folder - using .jpg extension
+  const logoPath = '/logo_dark.jpg';
+
+  return <img src={logoPath} alt="Thapathali Campus Logo" width="50" height="50" style={{ objectFit: 'contain' }} />;
 };
 
 export default Logo;

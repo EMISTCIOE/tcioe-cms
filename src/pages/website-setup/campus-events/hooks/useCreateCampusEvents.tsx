@@ -37,11 +37,7 @@ const useCreateCampusEvents = ({ onClose }: ICampusEventsCreateFormProps) => {
   });
 
   useEffect(() => {
-    setFormFields((prev) =>
-      prev.map((field) =>
-        field.name === 'union' ? { ...field, options: unionOptions } : field
-      )
-    );
+    setFormFields((prev) => prev.map((field) => (field.name === 'union' ? { ...field, options: unionOptions } : field)));
   }, [unionOptions]);
 
   // NOTE - Form submit handler

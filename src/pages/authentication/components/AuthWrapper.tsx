@@ -4,8 +4,6 @@ import { ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
-// project import
-import AuthFooter from '@/components/cards/AuthFooter';
 import Logo from '@/components/logo';
 import AuthCard from './AuthCard';
 
@@ -37,9 +35,6 @@ export default function AuthWrapper({ children }: AuthWrapperProps) {
               <AuthCard>{children}</AuthCard>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
-          <AuthFooter />
         </Grid>
       </Grid>
     </Box>

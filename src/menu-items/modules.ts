@@ -131,19 +131,19 @@ const modules: MenuItem = {
           breadcrumbs: false
         },
         {
-          id: 'campus-events',
-          title: 'Campus Events',
-          type: 'item',
-          icon: icons.CelebrationIcon,
-          url: '/website-setup/campus-events',
-          breadcrumbs: false
-        },
-        {
           id: 'campus-unions',
           title: 'Campus Unions',
           type: 'item',
           icon: icons.Diversity3Icon,
           url: '/website-setup/campus-unions',
+          breadcrumbs: false
+        },
+        {
+          id: 'global-events',
+          title: 'Global Events',
+          type: 'item',
+          icon: icons.CelebrationIcon,
+          url: '/website-setup/global-events',
           breadcrumbs: false
         },
         {
@@ -250,14 +250,6 @@ const modules: MenuItem = {
           url: '/student-clubs-setup/student-clubs',
           breadcrumbs: false
         },
-        {
-          id: 'student-club-events',
-          title: 'Student Club Events',
-          icon: icons.CelebrationIcon,
-          type: 'item',
-          url: '/student-clubs-setup/student-club-events',
-          breadcrumbs: false
-        }
       ]
     }
   ]

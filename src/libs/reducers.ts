@@ -22,6 +22,8 @@ import campusDownloadsReducer from '@/pages/website-setup/campus-downloads/redux
 import StudentClubsReducer from '@/pages/student-clubs-setup/student-clubs/redux/studentClubs.slice';
 import StudentClubEventsReducer from '@/pages/student-clubs-setup/student-club-events/redux/studentClubEvents.slice';
 import researchFacilitiesReducer from '@/pages/website-setup/research-facilities/redux/researchFacilities.slice';
+import globalGalleryCollectionsReducer from '@/pages/website-setup/global-gallery/redux/globalGalleryCollections.slice';
+import globalEventsReducer from '@/pages/website-setup/global-events/redux/globalEvents.slice';
 
 // contact management
 import phoneNumberReducer from '@/pages/contact/redux/contact.slice';
@@ -45,6 +47,8 @@ export const rootReducer = combineReducers({
   campusDownloads: campusDownloadsReducer,
   studentClubs: StudentClubsReducer,
   studentClubEvents: StudentClubEventsReducer,
+  globalGalleryCollections: globalGalleryCollectionsReducer,
+  globalEvents: globalEventsReducer,
   phoneNumber: phoneNumberReducer,
   // add reducers here
   [rootAPI.reducerPath]: rootAPI.reducer

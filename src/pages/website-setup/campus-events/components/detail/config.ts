@@ -3,7 +3,17 @@ import { ICampusEventsDetails } from '../../redux/types';
 
 export const viewCampusEventsConfig: Omit<DynamicInfoSectionProps<ICampusEventsDetails>, 'data'> = {
   excludeFields: ['id', 'thumbnail', 'createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'descriptionDetailed'],
-  fieldOrder: ['title', 'union.name', 'eventStartDate', 'eventEndDate', 'eventType', 'descriptionShort', 'isActive', 'createdAt', 'createdBy'],
+  fieldOrder: [
+    'title',
+    'union.name',
+    'eventStartDate',
+    'eventEndDate',
+    'eventType',
+    'descriptionShort',
+    'isActive',
+    'createdAt',
+    'createdBy'
+  ],
   booleanFields: ['isActive'],
   dateTimeFields: ['eventStartDate', 'eventEndDate', 'createdAt'],
   columns: 4,

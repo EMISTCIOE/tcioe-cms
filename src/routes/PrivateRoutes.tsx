@@ -25,9 +25,9 @@ const CampusFeedbacks = Loadable(lazy(() => import('@/pages/website-setup/campus
 const CampusInfo = Loadable(lazy(() => import('@/pages/website-setup/campus-info')));
 const CampusKeyOfficials = Loadable(lazy(() => import('@/pages/website-setup/campus-key-officials')));
 const CampusReports = Loadable(lazy(() => import('@/pages/website-setup/campus-reports')));
-const CampusEvents = Loadable(lazy(() => import('@/pages/website-setup/campus-events')));
 const CampusUnions = Loadable(lazy(() => import('@/pages/website-setup/campus-unions')));
 const GlobalGallery = Loadable(lazy(() => import('@/pages/website-setup/global-gallery')));
+const GlobalEvents = Loadable(lazy(() => import('@/pages/website-setup/global-events')));
 const CampusSections = Loadable(lazy(() => import('@/pages/website-setup/campus-sections')));
 const CampusUnits = Loadable(lazy(() => import('@/pages/website-setup/campus-units')));
 const Research = Loadable(lazy(() => import('@/pages/website-setup/research')));
@@ -41,7 +41,6 @@ const Contact = Loadable(lazy(() => import('@/pages/contact')));
 
 // Student Clubs Setup Pages
 const StudentClubs = Loadable(lazy(() => import('@/pages/student-clubs-setup/student-clubs')));
-const StudentClubEvents = Loadable(lazy(() => import('@/pages/student-clubs-setup/student-club-events')));
 // ==============================|| PRIVATE ROUTES ||============================== //
 
 const PrivateRoutes = () => (
@@ -72,9 +71,9 @@ const PrivateRoutes = () => (
           <Route path="campus-info" element={<CampusInfo />} />
           <Route path="campus-key-officials" element={<CampusKeyOfficials />} />
           <Route path="campus-reports" element={<CampusReports />} />
-          <Route path="campus-events" element={<CampusEvents />} />
           <Route path="campus-unions" element={<CampusUnions />} />
           <Route path="global-gallery" element={<GlobalGallery />} />
+          <Route path="global-events" element={<GlobalEvents />} />
           <Route path="campus-sections" element={<CampusSections />} />
           <Route path="campus-units" element={<CampusUnits />} />
           <Route path="research" element={<Research />} />
@@ -90,7 +89,6 @@ const PrivateRoutes = () => (
         {/* Student Clubs Setup */}
         <Route path="student-clubs-setup">
           <Route path="student-clubs" element={<StudentClubs />} />
-          <Route path="student-club-events" element={<StudentClubEvents />} />
         </Route>
       </Route>
       <Route path="app-settings" element={<UnderConstruction />} />

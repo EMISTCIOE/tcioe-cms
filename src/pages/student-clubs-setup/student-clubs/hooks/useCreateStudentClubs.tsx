@@ -26,11 +26,7 @@ const useCreateStudentClubs = ({ onClose }: IStudentClubsCreateFormProps) => {
   const { options: departmentOptions } = useDepartmentOptions();
 
   useEffect(() => {
-    setFormFields((prev) =>
-      prev.map((field) =>
-        field.name === 'department' ? { ...field, options: departmentOptions } : field
-      )
-    );
+    setFormFields((prev) => prev.map((field) => (field.name === 'department' ? { ...field, options: departmentOptions } : field)));
   }, [departmentOptions]);
 
   const {

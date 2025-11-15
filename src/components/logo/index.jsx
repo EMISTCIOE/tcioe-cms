@@ -5,26 +5,59 @@ import { Link } from 'react-router-dom';
 import { ButtonBase } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 // project import
 import config from '@/config';
 import Logo from './LogoMain';
 
-// ==============================|| MAIN LOGO ||============================== //
+// ==============================|| MAIN LOGO - TCIOE ||============================== //
 
 const LogoSection = ({ sx, to }) => {
+  // Check if this is being used in the drawer (small size)
+  const isSmall = sx?.width && (sx.width === 35 || sx.width === 'auto');
+
   return (
     <ButtonBase disableRipple component={Link} to={!to ? config.defaultPath : to} sx={sx}>
-      <Stack direction="row" spacing={1} alignItems="center">
+      {isSmall ? (
+        // Just show logo when drawer is collapsed
         <Logo />
-        <Chip
-          label={import.meta.env.VITE_APP_VERSION}
-          variant="outlined"
-          size="small"
-          color="secondary"
-          sx={{ mt: 0.5, ml: 1, fontSize: '0.725rem', height: 20, '& .MuiChip-label': { px: 0.5 } }}
-        />
-      </Stack>
+      ) : (
+        // Show full branding when drawer is open or in header
+        <Stack direction="row" spacing={1.5} alignItems="center">
+          <Logo />
+          <Box>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 700,
+                lineHeight: 1.2,
+                color: 'text.primary'
+              }}
+            >
+              Thapathali Campus
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                color: 'text.secondary',
+                fontSize: '0.7rem',
+                lineHeight: 1
+              }}
+            >
+              Content Management System
+            </Typography>
+          </Box>
+          <Chip
+            label={import.meta.env.VITE_APP_VERSION}
+            variant="outlined"
+            size="small"
+            color="secondary"
+            sx={{ mt: 0.5, ml: 1, fontSize: '0.725rem', height: 20, '& .MuiChip-label': { px: 0.5 } }}
+          />
+        </Stack>
+      )}
     </ButtonBase>
   );
 };
