@@ -55,6 +55,22 @@ const GlobalEventsDetailModal = () => {
                 <p className="font-medium">{data.eventEndDate || '—'}</p>
               </div>
               <div>
+                <p className="text-xs uppercase text-gray-500">Registration Link</p>
+                <p className="font-medium">
+                  {data.registrationLink ? (
+                    <a href={data.registrationLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                      {data.registrationLink}
+                    </a>
+                  ) : (
+                    '—'
+                  )}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs uppercase text-gray-500">Location</p>
+                <p className="font-medium">{data.location || '—'}</p>
+              </div>
+              <div>
                 <p className="text-xs uppercase text-gray-500">Unions</p>
                 <p className="font-medium">{formatList(data.unions)}</p>
               </div>

@@ -13,14 +13,21 @@ interface AuthCardProps {
 export default function AuthCard({ children }: AuthCardProps) {
   return (
     <MainCard
-      sx={{ maxWidth: { xs: 400, lg: 475 }, margin: { xs: 2.5, md: 3 }, '& > *': { flexGrow: 1, flexBasis: '50%' } }}
+      sx={{
+        maxWidth: { xs: 400, lg: 475 },
+        margin: 'auto',
+        backdrop: 'blur(10px)',
+        background: 'rgba(255, 255, 255, 0.95)',
+        borderRadius: 3,
+        '& > *': { flexGrow: 1, flexBasis: '50%' }
+      }}
       content={false}
       border={false}
       boxShadow
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       shadow={(theme: any) => theme.customShadows.z1}
     >
-      <Box sx={{ p: { xs: 2, sm: 3, md: 4, xl: 5 } }}>{children}</Box>
+      <Box sx={{ p: { xs: 3, sm: 4, md: 5 } }}>{children}</Box>
     </MainCard>
   );
 }

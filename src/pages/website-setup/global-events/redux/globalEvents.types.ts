@@ -16,6 +16,8 @@ export interface IGlobalEvent {
   eventStartDate: string;
   eventEndDate?: string | null;
   thumbnail?: string | null;
+  registrationLink?: string | null;
+  location?: string | null;
   isActive: boolean;
 }
 
@@ -38,6 +40,8 @@ export interface IGlobalEventsCreatePayload {
   eventStartDate?: string;
   eventEndDate?: string;
   thumbnail?: File | null;
+  registrationLink?: string;
+  location?: string;
   isActive?: boolean;
   unions?: number[];
   clubs?: number[];
@@ -51,6 +55,8 @@ export interface IGlobalEventsUpdatePayload {
   eventStartDate?: string;
   eventEndDate?: string;
   thumbnail?: File | string | null;
+  registrationLink?: string;
+  location?: string;
   isActive?: boolean;
   unions?: number[];
   clubs?: number[];

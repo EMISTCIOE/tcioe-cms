@@ -4,7 +4,7 @@ import { formatReadableDatetime } from '@/utils/functions/date';
 import { getQueryParams } from '@/utils/functions/queryBuilder';
 import { ICampusEventsCreatePayload, ICampusEventsDetails, ICampusEventsList, ICampusEventsUpdatePayload } from './types';
 
-export const campusEventsAPI = 'cms/website-mod/campus-events';
+export const campusEventsAPI = 'cms/website-mod/global-events';
 
 export const campusEventsAPISlice = rootAPI.injectEndpoints({
   endpoints: (builder) => ({

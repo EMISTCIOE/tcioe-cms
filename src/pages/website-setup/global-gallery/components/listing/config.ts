@@ -17,7 +17,7 @@ export const sourceTypeLabels: Record<string, string> = {
   campus_event: 'Campus Event',
   union_event: 'Union Event',
   club_event: 'Student Club Event',
-  department_event: 'Department Event',
+
   union_gallery: 'Union Gallery',
   club_gallery: 'Club Gallery',
   department_gallery: 'Department Gallery',

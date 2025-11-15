@@ -10,7 +10,7 @@ export const useDepartmentEventOptions = () => {
 
     const fetchOptions = async () => {
       try {
-        const response = await axiosInstance.get('cms/department-mod/department-events', {
+        const response = await axiosInstance.get('cms/department-mod/global-events', {
           params: { limit: 200 }
         });
         if (!isMounted) return;

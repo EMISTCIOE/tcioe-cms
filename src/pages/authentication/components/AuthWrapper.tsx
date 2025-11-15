@@ -16,25 +16,19 @@ interface AuthWrapperProps {
 
 export default function AuthWrapper({ children }: AuthWrapperProps) {
   return (
-    <Box sx={{ minHeight: '100vh' }}>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 2
+      }}
+    >
       <AuthBackground />
-      <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
-        <Grid item xs={12} sx={{ ml: 3, mt: 3 }}>
-          <Logo />
-        </Grid>
-        <Grid item xs={12}>
-          <Grid
-            item
-            xs={12}
-            container
-            justifyContent="center"
-            alignItems="center"
-            sx={{ minHeight: { xs: 'calc(100vh - 210px)', sm: 'calc(100vh - 134px)', md: 'calc(100vh - 112px)' } }}
-          >
-            <Grid item>
-              <AuthCard>{children}</AuthCard>
-            </Grid>
-          </Grid>
+      <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: '100vh' }}>
+        <Grid item xs={12} sm={8} md={6} lg={4} xl={3}>
+          <AuthCard>{children}</AuthCard>
         </Grid>
       </Grid>
     </Box>

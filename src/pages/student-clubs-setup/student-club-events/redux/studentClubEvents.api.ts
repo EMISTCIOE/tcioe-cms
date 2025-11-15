@@ -9,7 +9,7 @@ import {
 } from './types';
 import { formatReadableDatetime } from '@/utils/functions/date';
 
-export const studentClubEventsAPI = 'cms/website-mod/student-club-events';
+export const studentClubEventsAPI = 'cms/website-mod/global-events';
 
 export const studentClubEventsAPISlice = rootAPI.injectEndpoints({
   endpoints: (builder) => ({

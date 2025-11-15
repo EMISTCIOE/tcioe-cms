@@ -17,7 +17,7 @@ export const useGlobalGalleryImagesTable = () => {
         caption: item.caption || '',
         sourceType: item.sourceType,
         sourceName: item.sourceName,
-        sourceContext: item.sourceContext,
+        sourceContext: item.sourceContext || undefined,
         isActive: item.isActive,
         createdAt: item.createdAt
       })) ?? [],
@@ -30,5 +30,5 @@ export const useGlobalGalleryImagesTable = () => {
     setViewId: (id) => {
       dispatch(setViewId(Number(id)));
     }
-  })();
+  });
 };
