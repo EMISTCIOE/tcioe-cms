@@ -1,5 +1,6 @@
 // MUI IMPORTS
-import { Button, Grid, IconButton, Typography } from '@mui/material';
+import { Box, Button, Grid, IconButton, Typography } from '@mui/material';
+import { ChangeEvent, useRef } from 'react';
 import { DeleteOutlined } from '@ant-design/icons';
 
 // REACT HOOK FORM IMPORTS
@@ -33,6 +34,46 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
   };
 
   const currentValues = Array.isArray(formValues?.[name]) ? (formValues?.[name] as any[]) || [] : [];
+
+  const fileField = itemFields.find((item) => item.type === 'file');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const displayOrderFieldName = itemFields.find((item) => item.name === 'displayOrder')?.name as string | undefined;
+  const createNewItem = (overrides: Record<string, any> = {}) => {
+    const base = itemFields.reduce((acc, field) => {
+      acc[field.name as string] = field.defaultValue ?? '';
+      return acc;
+    }, {} as Record<string, any>);
+    return { ...base, ...overrides };
+  };
+  const handleBulkFiles = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files?.length || !fileField) {
+      event.target.value = '';
+      return;
+    }
+
+    const availableSlots = Number.isFinite(resolvedMaxSelectable)
+      ? Math.max(resolvedMaxSelectable - currentNoOfFileds, 0)
+      : files.length;
+
+    if (availableSlots <= 0) {
+      event.target.value = '';
+      return;
+    }
+
+    const selectedFiles = Array.from(files).slice(0, availableSlots);
+    selectedFiles.forEach((file, index) => {
+      const overrides: Record<string, any> = {
+        [fileField.name as string]: file
+      };
+      if (displayOrderFieldName) {
+        overrides[displayOrderFieldName] = currentNoOfFileds + index + 1;
+      }
+      append(createNewItem(overrides) as FieldArray<T, ArrayPath<T>>);
+    });
+
+    event.target.value = '';
+  };
 
   const getFilteredOptions = (item: FormField<T>, index: number) => {
     if (item.type !== 'select') return item.options;
@@ -96,25 +137,36 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
         <Typography sx={{ mb: 2, color: 'text.secondary' }}>No {label?.toLowerCase() ?? 'fields'} added yet. Click "Add More".</Typography>
       )}
 
-      {/* Add More Button */}
-      <Button
-        variant="outlined"
-        disabled={currentNoOfFileds >= resolvedMaxSelectable}
-        onClick={() =>
-          append(
-            itemFields.reduce(
-              (acc, field) => {
-                acc[field.name as string] = field.defaultValue ?? '';
-                return acc;
-              },
-              {} as Record<string, any>
-            ) as FieldArray<T, ArrayPath<T>>
-          )
-        }
-        sx={{ my: 4 }}
-      >
-        Add More
-      </Button>
+      {fileField && (
+        <input
+          type="file"
+          ref={fileInputRef}
+          accept={fileField.accpetFileTypes ?? 'image/*'}
+          multiple
+          onChange={handleBulkFiles}
+          style={{ display: 'none' }}
+        />
+      )}
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, my: 4 }}>
+        {fileField && (
+          <Button
+            variant="outlined"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={currentNoOfFileds >= resolvedMaxSelectable}
+          >
+            Bulk Add
+          </Button>
+        )}
+        <Button
+          variant="outlined"
+          disabled={currentNoOfFileds >= resolvedMaxSelectable}
+          onClick={() =>
+            append(createNewItem() as FieldArray<T, ArrayPath<T>>)
+          }
+        >
+          Add More
+        </Button>
+      </Box>
     </>
   );
 }

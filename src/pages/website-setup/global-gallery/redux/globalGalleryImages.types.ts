@@ -12,9 +12,6 @@ export interface IGlobalGalleryImage {
   sourceName: string;
   sourceContext?: string | null;
   sourceTitle?: string | null;
-  campusEvent?: number | null;
-  studentClubEvent?: number | null;
-  departmentEvent?: number | null;
   union?: number | null;
   club?: number | null;
   department?: number | null;
@@ -33,9 +30,6 @@ export interface IGlobalGalleryImageUploadPayload {
 }
 
 export interface IGlobalGalleryImageCreatePayload {
-  campusEvent?: number | null;
-  studentClubEvent?: number | null;
-  departmentEvent?: number | null;
   union?: number | null;
   club?: number | null;
   department?: number | null;
@@ -52,9 +46,6 @@ export interface IGlobalGalleryImageUpdatePayload {
   isActive?: boolean;
   sourceTitle?: string;
   sourceContext?: string;
-  campusEvent?: number | null;
-  studentClubEvent?: number | null;
-  departmentEvent?: number | null;
   union?: number | null;
   club?: number | null;
   department?: number | null;

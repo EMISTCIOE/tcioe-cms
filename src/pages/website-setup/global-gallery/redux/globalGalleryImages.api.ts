@@ -37,7 +37,7 @@ export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
         };
       },
       keepUnusedDataFor: 0.1,
-      providesTags: ['GlobalGalleryImages']
+      providesTags: ['GlobalGallery']
     }),
 
     retrieveGlobalGalleryImage: builder.query<IGlobalGalleryImage, number | null>({
@@ -45,29 +45,14 @@ export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
         url: `${globalGalleryImagesAPI}/${id}`,
         method: 'GET'
       }),
-      providesTags: ['GlobalGalleryImages']
+      providesTags: ['GlobalGallery']
     }),
 
     createGlobalGalleryImages: builder.mutation<IMutationSuccessResponse, IGlobalGalleryImageCreatePayload>({
       query: (values) => {
-        const {
-          images,
-          campusEvent,
-          studentClubEvent,
-          departmentEvent,
-          union,
-          club,
-          department,
-          globalEvent,
-          sourceTitle,
-          sourceContext,
-          isActive
-        } = values;
+        const { images, union, club, department, globalEvent, sourceTitle, sourceContext, isActive } = values;
         const body = new FormData();
         if (typeof isActive === 'boolean') body.append('is_active', String(isActive));
-        if (campusEvent !== undefined && campusEvent !== null) body.append('campus_event', String(campusEvent));
-        if (studentClubEvent !== undefined && studentClubEvent !== null) body.append('student_club_event', String(studentClubEvent));
-        if (departmentEvent !== undefined && departmentEvent !== null) body.append('department_event', String(departmentEvent));
         if (union !== undefined && union !== null) body.append('union', String(union));
         if (club !== undefined && club !== null) body.append('club', String(club));
         if (department !== undefined && department !== null) body.append('department', String(department));
@@ -93,42 +78,16 @@ export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
           data: body
         };
       },
-      invalidatesTags: ['GlobalGalleryImages']
+      invalidatesTags: ['GlobalGallery']
     }),
 
     patchGlobalGalleryImage: builder.mutation<IMutationSuccessResponse, { id: number; values: IGlobalGalleryImageUpdatePayload }>({
       query: ({ id, values }) => {
-        const {
-          campusEvent,
-          studentClubEvent,
-          departmentEvent,
-          union,
-          club,
-          department,
-          globalEvent,
-          sourceTitle,
-          sourceContext,
-          isActive,
-          image,
-          caption,
-          displayOrder
-        } = values;
+        const { union, club, department, globalEvent, sourceTitle, sourceContext, isActive, image, caption, displayOrder } = values;
         const body = new FormData();
 
         if (typeof isActive === 'boolean') {
           body.append('is_active', String(isActive));
-        }
-        if (campusEvent !== undefined) {
-          if (campusEvent === null) body.append('campus_event', '');
-          else body.append('campus_event', String(campusEvent));
-        }
-        if (studentClubEvent !== undefined) {
-          if (studentClubEvent === null) body.append('student_club_event', '');
-          else body.append('student_club_event', String(studentClubEvent));
-        }
-        if (departmentEvent !== undefined) {
-          if (departmentEvent === null) body.append('department_event', '');
-          else body.append('department_event', String(departmentEvent));
         }
         if (union !== undefined) {
           if (union === null) body.append('union', '');
@@ -166,7 +125,7 @@ export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
           data: body
         };
       },
-      invalidatesTags: ['GlobalGalleryImages']
+      invalidatesTags: ['GlobalGallery']
     }),
 
     deleteGlobalGalleryImage: builder.mutation<IMutationSuccessResponse, number>({
@@ -174,7 +133,7 @@ export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
         url: `${globalGalleryImagesAPI}/${id}`,
         method: 'DELETE'
       }),
-      invalidatesTags: ['GlobalGalleryImages']
+      invalidatesTags: ['GlobalGallery']
     })
   })
 });

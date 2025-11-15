@@ -20,9 +20,7 @@ export type TGalleryImage = z.infer<typeof imageSchema>;
 export const globalGalleryCreateFormSchema = z.object({
   sourceTitle: z.string().optional(),
   sourceContext: z.string().optional(),
-  campusEvent: z.number().nullable().optional(),
-  studentClubEvent: z.number().nullable().optional(),
-  departmentEvent: z.number().nullable().optional(),
+  globalEvent: z.number().nullable().optional(),
   union: z.number().nullable().optional(),
   club: z.number().nullable().optional(),
   department: z.number().nullable().optional(),
@@ -35,9 +33,7 @@ export type TGlobalGalleryCreateFormDataType = z.infer<typeof globalGalleryCreat
 export const defaultValues: Partial<TGlobalGalleryCreateFormDataType> = {
   sourceTitle: '',
   sourceContext: '',
-  campusEvent: null,
-  studentClubEvent: null,
-  departmentEvent: null,
+  globalEvent: null,
   union: null,
   club: null,
   department: null,
@@ -48,9 +44,7 @@ export const defaultValues: Partial<TGlobalGalleryCreateFormDataType> = {
 export const globalGalleryCreateFields: FormField<TGlobalGalleryCreateFormDataType>[] = [
   { name: 'sourceTitle', label: 'Source Title', type: 'text', xs: 12, sm: 6 },
   { name: 'sourceContext', label: 'Source Context', type: 'text', xs: 12, sm: 6 },
-  { name: 'campusEvent', label: 'Campus Event', type: 'select', xs: 12, sm: 4, options: [] },
-  { name: 'studentClubEvent', label: 'Student Club Event', type: 'select', xs: 12, sm: 4, options: [] },
-  { name: 'departmentEvent', label: 'Department Event', type: 'select', xs: 12, sm: 4, options: [] },
+  { name: 'globalEvent', label: 'Global Event', type: 'select', xs: 12, sm: 4, options: [] },
   { name: 'union', label: 'Union', type: 'select', xs: 12, sm: 4, options: [] },
   { name: 'club', label: 'Club', type: 'select', xs: 12, sm: 4, options: [] },
   { name: 'department', label: 'Department', type: 'select', xs: 12, sm: 4, options: [] },

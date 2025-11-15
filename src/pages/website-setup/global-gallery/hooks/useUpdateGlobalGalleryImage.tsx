@@ -5,9 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
 import { handleClientError } from '@/utils/functions/handleError';
-import { useCampusEventOptions } from '@/hooks/useCampusEventOptions';
-import { useStudentClubEventOptions } from '@/hooks/useStudentClubEventOptions';
-import { useDepartmentEventOptions } from '@/hooks/useDepartmentEventOptions';
+import { useGlobalEventOptions } from '@/hooks/useGlobalEventOptions';
 import { useCampusUnionOptions } from '@/hooks/useCampusUnionOptions';
 import { useDepartmentOptions } from '@/hooks/useDepartmentOptions';
 import { useStudentClubs } from '@/pages/student-clubs-setup/student-clubs/hooks/useStudentClubs';
@@ -32,9 +30,7 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
   const { enqueueSnackbar } = useSnackbar();
   const [updateImage] = usePatchGlobalGalleryImageMutation();
   const [formFields, setFormFields] = useState(globalGalleryUpdateFields);
-  const { options: campusEventOptions } = useCampusEventOptions();
-  const { options: studentClubEventOptions } = useStudentClubEventOptions();
-  const { options: departmentEventOptions } = useDepartmentEventOptions();
+  const { options: globalEventOptions } = useGlobalEventOptions();
   const { options: unionOptions } = useCampusUnionOptions();
   const { options: departmentOptions } = useDepartmentOptions();
   const { studentClubsOptions } = useStudentClubs();
@@ -54,14 +50,8 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
   useEffect(() => {
     setFormFields((prev) =>
       prev.map((field) => {
-        if (field.name === 'campusEvent') {
-          return { ...field, options: campusEventOptions };
-        }
-        if (field.name === 'studentClubEvent') {
-          return { ...field, options: studentClubEventOptions };
-        }
-        if (field.name === 'departmentEvent') {
-          return { ...field, options: departmentEventOptions };
+        if (field.name === 'globalEvent') {
+          return { ...field, options: globalEventOptions };
         }
         if (field.name === 'union') {
           return { ...field, options: unionOptions };
@@ -75,7 +65,7 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
         return field;
       })
     );
-  }, [campusEventOptions, studentClubEventOptions, departmentEventOptions, unionOptions, studentClubsOptions, departmentOptions]);
+  }, [globalEventOptions, unionOptions, studentClubsOptions, departmentOptions]);
 
   useEffect(() => {
     if (imageData) {
@@ -83,9 +73,7 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
         id: imageData.id,
         sourceTitle: imageData.sourceTitle ?? '',
         sourceContext: imageData.sourceContext ?? '',
-        campusEvent: imageData.campusEvent ?? null,
-        studentClubEvent: imageData.studentClubEvent ?? null,
-        departmentEvent: imageData.departmentEvent ?? null,
+        globalEvent: imageData.globalEvent ?? null,
         union: imageData.union ?? null,
         club: imageData.club ?? null,
         department: imageData.department ?? null,
@@ -103,9 +91,7 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
     if (!imageData) return;
     try {
       const payload: IGlobalGalleryImageUpdatePayload = {
-        campusEvent: data.campusEvent,
-        studentClubEvent: data.studentClubEvent,
-        departmentEvent: data.departmentEvent,
+        globalEvent: data.globalEvent,
         union: data.union,
         club: data.club,
         department: data.department,

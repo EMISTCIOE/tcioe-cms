@@ -6,12 +6,10 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
 import { handleClientError } from '@/utils/functions/handleError';
-import { useCampusEventOptions } from '@/hooks/useCampusEventOptions';
-import { useStudentClubEventOptions } from '@/hooks/useStudentClubEventOptions';
-import { useDepartmentEventOptions } from '@/hooks/useDepartmentEventOptions';
 import { useCampusUnionOptions } from '@/hooks/useCampusUnionOptions';
 import { useDepartmentOptions } from '@/hooks/useDepartmentOptions';
 import { useStudentClubs } from '@/pages/student-clubs-setup/student-clubs/hooks/useStudentClubs';
+import { useGlobalEventOptions } from '@/hooks/useGlobalEventOptions';
 
 import { useCreateGlobalGalleryImagesMutation } from '../redux/globalGalleryImages.api';
 import {
@@ -48,12 +46,10 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
   const { enqueueSnackbar } = useSnackbar();
   const [createCollection] = useCreateGlobalGalleryImagesMutation();
   const [formFields, setFormFields] = useState(globalGalleryCreateFields);
-  const { options: campusEventOptions } = useCampusEventOptions();
-  const { options: studentClubEventOptions } = useStudentClubEventOptions();
-  const { options: departmentEventOptions } = useDepartmentEventOptions();
   const { options: unionOptions } = useCampusUnionOptions();
   const { options: departmentOptions } = useDepartmentOptions();
   const { studentClubsOptions } = useStudentClubs();
+  const { options: globalEventOptions } = useGlobalEventOptions();
 
   const {
     control,
@@ -69,15 +65,6 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
   useEffect(() => {
     setFormFields((prev) =>
       prev.map((field) => {
-        if (field.name === 'campusEvent') {
-          return { ...field, options: campusEventOptions };
-        }
-        if (field.name === 'studentClubEvent') {
-          return { ...field, options: studentClubEventOptions };
-        }
-        if (field.name === 'departmentEvent') {
-          return { ...field, options: departmentEventOptions };
-        }
         if (field.name === 'union') {
           return { ...field, options: unionOptions };
         }
@@ -87,19 +74,20 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
         if (field.name === 'department') {
           return { ...field, options: departmentOptions };
         }
+        if (field.name === 'globalEvent') {
+          return { ...field, options: globalEventOptions };
+        }
         return field;
       })
     );
-  }, [campusEventOptions, studentClubEventOptions, departmentEventOptions, unionOptions, studentClubsOptions, departmentOptions]);
+  }, [globalEventOptions, unionOptions, studentClubsOptions, departmentOptions]);
 
   const onSubmit = async (data: TGlobalGalleryCreateFormDataType) => {
     try {
       const payload: IGlobalGalleryImageCreatePayload = {
         sourceTitle: data.sourceTitle?.trim(),
         sourceContext: data.sourceContext?.trim(),
-        campusEvent: data.campusEvent,
-        studentClubEvent: data.studentClubEvent,
-        departmentEvent: data.departmentEvent,
+        globalEvent: data.globalEvent,
         union: data.union,
         club: data.club,
         department: data.department,
