@@ -26,6 +26,7 @@ export const campusEventsCreateFormSchema = z.object({
   descriptionShort: z.string().min(1, 'Short Description is required'),
   descriptionDetailed: z.string().optional(),
   eventType: z.nativeEnum(ICampusEvent).optional(),
+  union: z.number().nullable().optional(),
   eventStartDate: z.string().optional(),
   eventEndDate: z.string().optional(),
   isActive: z.boolean().default(true),
@@ -54,6 +55,7 @@ export const defaultValues: Partial<TCampusEventsCreateFormDataType> = {
   descriptionShort: '',
   descriptionDetailed: '',
   eventType: undefined,
+  union: null,
   eventStartDate: undefined,
   eventEndDate: undefined,
   thumbnail: null,
@@ -65,6 +67,7 @@ export const defaultValues: Partial<TCampusEventsCreateFormDataType> = {
 export const campusEventsCreateFields: FormField<TCampusEventsCreateFormDataType>[] = [
   { name: 'title', label: 'Title', type: 'text', xs: 12, sm: 4, required: true },
   { name: 'descriptionShort', label: 'Short Description', type: 'text', xs: 12, sm: 4, required: true },
+  { name: 'union', label: 'Union', type: 'select', xs: 12, sm: 4, options: [] },
   { name: 'eventType', label: 'Event Type', type: 'select', xs: 12, sm: 4, options: enumToOptions(ICampusEvent) },
   { name: 'eventStartDate', label: 'Event Start Date', type: 'date', xs: 12, sm: 4 },
   { name: 'eventEndDate', label: 'Event End Date', type: 'date', xs: 12, sm: 4 },

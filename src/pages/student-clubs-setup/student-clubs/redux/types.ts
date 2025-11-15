@@ -37,6 +37,11 @@ export interface IStudentClubsDetails {
   thumbnail: string;
   websiteUrl?: string;
   members: IStudentClubsMember[];
+  department?: {
+    id: number;
+    uuid: string;
+    name: string;
+  } | null;
   createdBy: string;
   updatedBy: string;
   createdAt: string; // ISO Date string
@@ -52,6 +57,7 @@ export interface IStudentClubsCreatePayload {
   thumbnail?: File | null;
   websiteUrl?: string;
   members: (Omit<IStudentClubsMember, 'id' | 'photo'> & { photo?: File | null })[];
+  department?: number | null;
   isActive: boolean;
 }
 
@@ -63,5 +69,6 @@ export interface IStudentClubsUpdatePayload {
   thumbnail?: File | string | null;
   websiteUrl?: string;
   members: (Omit<IStudentClubsMember, 'id' | 'photo'> & { id?: number; photo?: File | string | null })[];
+  department?: number | null;
   isActive: boolean;
 }

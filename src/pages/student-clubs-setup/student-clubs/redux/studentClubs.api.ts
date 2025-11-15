@@ -42,13 +42,19 @@ export const studentClubsAPISlice = rootAPI.injectEndpoints({
     // Create StudentClubs
     createStudentClubs: builder.mutation<IMutationSuccessResponse, IStudentClubsCreatePayload>({
       query: (values) => {
-        const { members, thumbnail, ...rest } = values;
+        const { members, thumbnail, department, ...rest } = values;
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
           if (value !== undefined && value !== null) {
             body.append(key, value as string | Blob);
           }
+        }
+
+        if (department === null) {
+          body.append('department', '');
+        } else if (department !== undefined) {
+          body.append('department', String(department));
         }
 
         // Append thumbnail if it's a File
@@ -86,13 +92,19 @@ export const studentClubsAPISlice = rootAPI.injectEndpoints({
     // Patch StudentClubs
     patchStudentClubs: builder.mutation<IMutationSuccessResponse, { id: number; values: IStudentClubsUpdatePayload }>({
       query: ({ id, values }) => {
-        const { members, thumbnail, ...rest } = values;
+        const { members, thumbnail, department, ...rest } = values;
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
           if (value !== undefined && value !== null) {
             body.append(key, value as string | Blob);
           }
+        }
+
+        if (department === null) {
+          body.append('department', '');
+        } else if (department !== undefined) {
+          body.append('department', String(department));
         }
 
         // Append thumbnail if it's a File

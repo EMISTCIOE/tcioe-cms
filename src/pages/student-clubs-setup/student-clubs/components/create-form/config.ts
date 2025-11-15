@@ -28,6 +28,7 @@ export const studentClubsCreateFormSchema = z.object({
   shortDescription: z.string().min(1, 'Short Description is required'),
   detailedDescription: z.string().optional(),
   websiteUrl: z.string().url('Invalid URL').optional().nullable(),
+  department: z.number().nullable().optional(),
   isActive: z.boolean().default(true),
   thumbnail: z
     .any()
@@ -53,6 +54,7 @@ export const defaultValues: Partial<TStudentClubsCreateFormDataType> = {
   shortDescription: '',
   detailedDescription: '',
   websiteUrl: '',
+  department: null,
   thumbnail: null,
   isActive: true,
   members: []
@@ -61,6 +63,7 @@ export const defaultValues: Partial<TStudentClubsCreateFormDataType> = {
 // NOTE - Define the form fields
 export const studentClubsCreateFields: FormField<TStudentClubsCreateFormDataType>[] = [
   { name: 'name', label: 'Name', type: 'text', xs: 12, sm: 4, required: true },
+  { name: 'department', label: 'Department', type: 'select', xs: 12, sm: 4, options: [] },
   { name: 'websiteUrl', label: 'Website URL', type: 'text', xs: 12, sm: 3 },
   { name: 'thumbnail', label: 'Thumbnail', type: 'file', accpetFileTypes: 'image/*', xs: 12, sm: 3 },
   { name: 'isActive', label: 'Active Status', type: 'switch', xs: 12, sm: 2, defaultValue: true },

@@ -1,12 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IStudentClubsCreatePayload } from '../redux/types';
 
 import { useAppDispatch } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
 import { useCreateStudentClubsMutation } from '../redux/studentClubs.api';
+import { useDepartmentOptions } from '@/hooks/useDepartmentOptions';
 
 import { handleClientError } from '@/utils/functions/handleError';
 import { IStudentClubsCreateFormProps } from '../components/create-form';
@@ -21,7 +22,16 @@ const useCreateStudentClubs = ({ onClose }: IStudentClubsCreateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [createStudentClubs] = useCreateStudentClubsMutation();
-  const [formFields, _] = useState(studentClubsCreateFields);
+  const [formFields, setFormFields] = useState(studentClubsCreateFields);
+  const { options: departmentOptions } = useDepartmentOptions();
+
+  useEffect(() => {
+    setFormFields((prev) =>
+      prev.map((field) =>
+        field.name === 'department' ? { ...field, options: departmentOptions } : field
+      )
+    );
+  }, [departmentOptions]);
 
   const {
     control,

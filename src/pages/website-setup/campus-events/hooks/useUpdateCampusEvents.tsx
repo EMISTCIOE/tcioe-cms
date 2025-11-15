@@ -21,6 +21,7 @@ import { ICampusEventsUpdateFormProps } from '../components/update-form/Form';
 import { useDeletCampusEventsgalleryMutation, usePatchCampusEventsMutation } from '../redux/campusEvents.api';
 import { ICampusEventsUpdatePayload } from '../redux/types';
 import { TField } from '@/components/app-form/types';
+import { useCampusUnionOptions } from '@/hooks/useCampusUnionOptions';
 
 const useUpdateCampusEvents = ({ campusEventsData, onClose }: ICampusEventsUpdateFormProps) => {
   const dispatch = useAppDispatch();
@@ -28,6 +29,7 @@ const useUpdateCampusEvents = ({ campusEventsData, onClose }: ICampusEventsUpdat
   const [updateCampusEvents] = usePatchCampusEventsMutation();
   const [deleteCampusEventsGalleryItem] = useDeletCampusEventsgalleryMutation();
   const [formFields, setFormFields] = useState(campusEventsUpdateFields);
+  const { options: unionOptions } = useCampusUnionOptions();
 
   const {
     control,
@@ -74,6 +76,14 @@ const useUpdateCampusEvents = ({ campusEventsData, onClose }: ICampusEventsUpdat
     );
     setFormFields(updatedFields);
   }, [campusEventsData]);
+
+  useEffect(() => {
+    setFormFields((prev) =>
+      prev.map((field) =>
+        field.name === 'union' ? { ...field, options: unionOptions } : field
+      )
+    );
+  }, [unionOptions]);
 
   // This is for form update not for inline update
   const onSubmit = async (data: TCampusEventsUpdateFormDataType) => {

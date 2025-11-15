@@ -43,13 +43,19 @@ export const campusEventsAPISlice = rootAPI.injectEndpoints({
     // Create CampusEvents
     createCampusEvents: builder.mutation<IMutationSuccessResponse, ICampusEventsCreatePayload>({
       query: (values) => {
-        const { thumbnail, gallery, eventStartDate, eventEndDate, ...rest } = values;
+        const { thumbnail, gallery, eventStartDate, eventEndDate, union, ...rest } = values;
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
           if (value !== undefined && value !== null) {
             body.append(key, value as string | Blob);
           }
+        }
+
+        if (union === null) {
+          body.append('union', '');
+        } else if (union !== undefined) {
+          body.append('union', String(union));
         }
 
         if (eventStartDate) {
@@ -93,13 +99,19 @@ export const campusEventsAPISlice = rootAPI.injectEndpoints({
     // Patch CampusEvents
     patchCampusEvents: builder.mutation<IMutationSuccessResponse, { id: number; values: ICampusEventsUpdatePayload }>({
       query: ({ id, values }) => {
-        const { thumbnail, gallery, eventStartDate, eventEndDate, ...rest } = values;
+        const { thumbnail, gallery, eventStartDate, eventEndDate, union, ...rest } = values;
         const body = new FormData();
 
         for (const [key, value] of Object.entries(rest)) {
           if (value !== undefined && value !== null) {
             body.append(key, value as string | Blob);
           }
+        }
+
+        if (union === null) {
+          body.append('union', '');
+        } else if (union !== undefined) {
+          body.append('union', String(union));
         }
 
         if (eventStartDate) {

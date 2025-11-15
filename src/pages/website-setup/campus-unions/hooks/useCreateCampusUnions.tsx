@@ -21,7 +21,7 @@ const useCreateCampusUnions = ({ onClose }: ICampusUnionsCreateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [createCampusUnions] = useCreateCampusUnionsMutation();
-  const [formFields, _] = useState(campusUnionsCreateFields);
+  const [formFields, setFormFields] = useState(campusUnionsCreateFields);
 
   const {
     control,

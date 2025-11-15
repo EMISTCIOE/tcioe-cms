@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ICampusEventsCreatePayload } from '../redux/types';
 
@@ -16,12 +16,14 @@ import {
   defaultValues,
   TCampusEventsCreateFormDataType
 } from '../components/create-form/config';
+import { useCampusUnionOptions } from '@/hooks/useCampusUnionOptions';
 
 const useCreateCampusEvents = ({ onClose }: ICampusEventsCreateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [createCampusEvents] = useCreateCampusEventsMutation();
-  const [formFields, _] = useState(campusEventsCreateFields);
+  const [formFields, setFormFields] = useState(campusEventsCreateFields);
+  const { options: unionOptions } = useCampusUnionOptions();
 
   const {
     control,
@@ -33,6 +35,14 @@ const useCreateCampusEvents = ({ onClose }: ICampusEventsCreateFormProps) => {
     resolver: zodResolver(campusEventsCreateFormSchema),
     defaultValues
   });
+
+  useEffect(() => {
+    setFormFields((prev) =>
+      prev.map((field) =>
+        field.name === 'union' ? { ...field, options: unionOptions } : field
+      )
+    );
+  }, [unionOptions]);
 
   // NOTE - Form submit handler
   const onSubmit = async (data: TCampusEventsCreateFormDataType) => {

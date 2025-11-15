@@ -3,10 +3,11 @@ import { IStudentClubsDetails } from '../../redux/types';
 
 export const viewStudentClubsConfig: Omit<DynamicInfoSectionProps<IStudentClubsDetails>, 'data'> = {
   excludeFields: ['id', 'isActive', 'updatedAt', 'updatedBy', 'name', 'thumbnail', 'detailedDescription'],
-  fieldOrder: ['websiteUrl', 'shortDescription', 'createdAt', 'createdBy'],
+  fieldOrder: ['department.name', 'websiteUrl', 'shortDescription', 'createdAt', 'createdBy'],
   dateTimeFields: ['createdAt'],
   columns: 4,
   customLabels: {
+    'department.name': 'Department',
     websiteUrl: 'Website URL',
     shortDescription: 'Short Description',
     createdAt: 'Created At',

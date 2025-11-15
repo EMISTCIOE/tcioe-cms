@@ -56,6 +56,11 @@ export interface ICampusEventsDetails {
   eventEndDate: string; // ISO Date string
   thumbnail: string;
   gallery: ICampusEventsGallery[];
+  union?: {
+    id: number;
+    uuid: string;
+    name: string;
+  } | null;
   createdBy: string;
   updatedBy: string;
   createdAt: string; // ISO Date string
@@ -69,6 +74,7 @@ export interface ICampusEventsCreatePayload {
   descriptionShort: string;
   descriptionDetailed?: string;
   eventType?: ICampusEvent;
+  union?: number | null;
   eventStartDate?: string; // ISO Date string
   eventEndDate?: string; // ISO Date string
   thumbnail: File | null;
@@ -82,6 +88,7 @@ export interface ICampusEventsUpdatePayload {
   descriptionShort: string;
   descriptionDetailed?: string;
   eventType?: ICampusEvent;
+  union?: number | null;
   eventStartDate?: string; // ISO Date string
   eventEndDate?: string; // ISO Date string
   thumbnail?: File | string | null;
