@@ -2,7 +2,7 @@
 
 [![License: Private](https://img.shields.io/badge/license-private-lightgrey.svg)](#license)
 
-# 🏫 Thapathali Campus CMS
+#   Thapathali Campus CMS
 
 This repository contains the **official Content Management System (CMS)** for **Thapathali Campus**, developed and maintained by the **EMIS Unit**.
 It is a fully functional, production-ready system designed to manage institutional data, departments, announcements, users, and more.
@@ -17,7 +17,7 @@ Built using modern frontend technologies, this system ensures smooth performance
 
 <br/>
 
-# 🤝 Contributing to the Project
+#   Contributing to the Project
 
 > **"A good pull request reflects a good contributor!"**
 
@@ -48,18 +48,18 @@ PRs that don’t follow the structure or appear spammy may be declined or flagge
 
 ---
 
-## ✨ Features
+## Features
 
-- 🧱 Custom-built UI using Material UI v5
+- Custom-built UI using Material UI v5
 - ⚛️ Developed using React 19 and the modern Hooks API
-- 🔁 Global state via Context API + Redux Toolkit
-- 📡 Efficient data fetching with SWR
-- 🚦 Route handling via React Router v7
-- ⚡ Fast development with Vite
-- 🎨 CSS-in-JS with Emotion
-- 📅 Integrated charts, calendars, tables, and more
-- 💾 Persistent state using Redux Persist
-- 📚 Robust form validation using `react-hook-form` and `zod`
+- Global state via Context API + Redux Toolkit
+- Efficient data fetching with SWR
+- Route handling via React Router v7
+- Fast development with Vite
+- CSS-in-JS with Emotion
+- Integrated charts, calendars, tables, and more
+- Persistent state using Redux Persist
+- Robust form validation using `react-hook-form` and `zod`
 
 ---
 
@@ -81,22 +81,22 @@ PRs that don’t follow the structure or appear spammy may be declined or flagge
 
 ---
 
-## 📌 Contribution Guidelines
+## Contribution Guidelines
 
 Please check the [CONTRIBUTING.md](/CONTRIBUTING.md) file for detailed steps before contributing.
 
 ---
 
-## 📜 License
+## License
 
 This project is protected under a [Private License](./LICENSE).
 Ensure you understand the license terms before using or modifying the source.
 
 ---
 
-## 🌟 Support the Project
+## Support the Project
 
-If you find this project helpful or use it internally, **consider dropping a star ⭐** on the repository.
+If you find this project helpful or use it internally, **consider dropping a star ** on the repository.
 Big thanks to everyone from the **Thapathali Campus EMIS Unit** and contributors who are building and improving this system.
 
 ---

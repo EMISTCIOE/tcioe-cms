@@ -1,12 +1,12 @@
-# 🙌 Contributing Guidelines
+# Contributing Guidelines
 
 Thank you for your interest in contributing! Please review these guidelines before you begin.
 
 ---
 
-## 🧾 Commit Guidelines
+## Commit Guidelines
 
-### 🔐 Commit Message Format
+### Commit Message Format
 
 Use: `type(scope): message`
 
@@ -32,7 +32,7 @@ Use: `type(scope): message`
 
 ---
 
-### ✨ Linting, Formatting & Type Safety
+### Linting, Formatting & Type Safety
 
 We use `eslint`, `prettier`, and `typescript` to ensure quality and consistency.
 
@@ -50,9 +50,9 @@ Fix all issues before committing.
 
 ---
 
-## 🐛 Issues
+## Issues
 
-### 📝 Creating an Issue
+### Creating an Issue
 
 - Search existing issues before creating a new one.
 - Use issue templates and fill required fields.
@@ -64,45 +64,45 @@ Fix all issues before committing.
 - Request assignment by commenting if unassigned.
 - One issue at a time unless approved otherwise.
 
-### 📌 Closing an Issue
+### Closing an Issue
 
 - Reference issues in PRs with `Closes #123` to auto-close.
 
 ---
 
-## 🔁 Pull Requests
+## Pull Requests
 
-### 📝 Creating a PR
+### Creating a PR
 
 - Target the `dev` branch.
 - Only create a PR if assigned to the issue.
 - Ensure PR passes linting, type-check, and build steps.
 
-### 🔐 PR Title Format
+### PR Title Format
 
 - PR titles follow the same format as commit messages to keep things consistent and readable.
 
 ---
 
-## 📋 PR Review Etiquette
+## PR Review Etiquette
 
-### ✅ DOs
+### DOs
 
 - Be kind, clear, and constructive.
 - Use inline suggestions when possible.
 
-### 🚫 DON'Ts
+### DON'Ts
 
 - Don’t duplicate feedback.
 - Avoid rude or aggressive comments.
 
 ---
 
-## ✅ Final Checklist
+## Final Checklist
 
 - [ ] Code builds and runs properly.
 - [ ] PR title is clear and follows the format and links related issue(s).
 
-Thank you for contributing! Let’s build something awesome 🚀
+Thank you for contributing! Let’s build something awesome
 
 ---

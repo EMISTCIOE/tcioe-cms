@@ -6,7 +6,7 @@ We are committed to creating a respectful and inclusive environment for everyone
 
 ---
 
-## 📌 Our Values
+## Our Values
 
 - Assume good intentions.
 - Provide constructive feedback.
@@ -22,7 +22,7 @@ We are committed to creating a respectful and inclusive environment for everyone
 
 ---
 
-## 🚫 Unacceptable Behavior
+## Unacceptable Behavior
 
 - Harassment, abuse, or intimidation.
 - Discrimination based on race, gender, age, religion, or identity.
@@ -30,13 +30,13 @@ We are committed to creating a respectful and inclusive environment for everyone
 
 ---
 
-## 📩 Reporting Issues
+## Reporting Issues
 
 If you observe unacceptable behavior or have concerns, please report it confidentially to the project maintainers via email or GitHub issues.
 
 ---
 
-## 🤝 Enforcement
+## Enforcement
 
 Violations of this code may result in warnings, removal from discussions, or banning from the project, depending on severity.
 
