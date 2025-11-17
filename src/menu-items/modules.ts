@@ -135,6 +135,14 @@ const modules: MenuItem = {
           icon: icons.InfoIcon,
           url: '/website-setup/campus-units',
           breadcrumbs: false
+        },
+        {
+          id: 'campus-sections',
+          title: 'Campus Sections',
+          type: 'item',
+          icon: icons.BusinessIcon,
+          url: '/website-setup/campus-sections',
+          breadcrumbs: false
         }
       ]
     },

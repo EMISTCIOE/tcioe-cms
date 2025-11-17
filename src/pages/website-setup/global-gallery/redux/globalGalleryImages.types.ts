@@ -15,6 +15,8 @@ export interface IGlobalGalleryImage {
   union?: number | null;
   club?: number | null;
   department?: number | null;
+  unit?: number | null;
+  section?: number | null;
   globalEvent?: number | null;
   createdAt: string;
 }
@@ -33,6 +35,8 @@ export interface IGlobalGalleryImageCreatePayload {
   union?: number | null;
   club?: number | null;
   department?: number | null;
+  unit?: number | null;
+  section?: number | null;
   globalEvent?: number | null;
   sourceTitle?: string;
   sourceContext?: string;
@@ -49,6 +53,8 @@ export interface IGlobalGalleryImageUpdatePayload {
   union?: number | null;
   club?: number | null;
   department?: number | null;
+  unit?: number | null;
+  section?: number | null;
   globalEvent?: number | null;
   image?: File;
 }

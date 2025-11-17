@@ -10,6 +10,8 @@ import { useCampusUnionOptions } from '@/hooks/useCampusUnionOptions';
 import { useDepartmentOptions } from '@/hooks/useDepartmentOptions';
 import { useStudentClubs } from '@/pages/student-clubs-setup/student-clubs/hooks/useStudentClubs';
 import { useGlobalEventOptions } from '@/hooks/useGlobalEventOptions';
+import { useCampusUnitOptions } from '@/hooks/useCampusUnitOptions';
+import { useCampusSectionOptions } from '@/hooks/useCampusSectionOptions';
 
 import { useCreateGlobalGalleryImagesMutation } from '../redux/globalGalleryImages.api';
 import {
@@ -50,6 +52,8 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
   const { options: departmentOptions } = useDepartmentOptions();
   const { studentClubsOptions } = useStudentClubs();
   const { options: globalEventOptions } = useGlobalEventOptions();
+  const { options: unitOptions } = useCampusUnitOptions();
+  const { options: sectionOptions } = useCampusSectionOptions();
 
   const {
     control,
@@ -74,13 +78,19 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
         if (field.name === 'department') {
           return { ...field, options: departmentOptions };
         }
+        if (field.name === 'unit') {
+          return { ...field, options: unitOptions };
+        }
+        if (field.name === 'section') {
+          return { ...field, options: sectionOptions };
+        }
         if (field.name === 'globalEvent') {
           return { ...field, options: globalEventOptions };
         }
         return field;
       })
     );
-  }, [globalEventOptions, unionOptions, studentClubsOptions, departmentOptions]);
+  }, [globalEventOptions, unionOptions, studentClubsOptions, departmentOptions, unitOptions, sectionOptions]);
 
   const onSubmit = async (data: TGlobalGalleryCreateFormDataType) => {
     try {
@@ -91,6 +101,8 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
         union: data.union,
         club: data.club,
         department: data.department,
+        unit: data.unit,
+        section: data.section,
         isActive: data.isActive,
         images: mapImagesPayload(data.images)
       };

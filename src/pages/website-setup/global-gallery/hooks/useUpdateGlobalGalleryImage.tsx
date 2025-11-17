@@ -9,6 +9,8 @@ import { useGlobalEventOptions } from '@/hooks/useGlobalEventOptions';
 import { useCampusUnionOptions } from '@/hooks/useCampusUnionOptions';
 import { useDepartmentOptions } from '@/hooks/useDepartmentOptions';
 import { useStudentClubs } from '@/pages/student-clubs-setup/student-clubs/hooks/useStudentClubs';
+import { useCampusUnitOptions } from '@/hooks/useCampusUnitOptions';
+import { useCampusSectionOptions } from '@/hooks/useCampusSectionOptions';
 import { usePatchGlobalGalleryImageMutation } from '../redux/globalGalleryImages.api';
 import {
   globalGalleryUpdateFields,
@@ -34,6 +36,8 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
   const { options: unionOptions } = useCampusUnionOptions();
   const { options: departmentOptions } = useDepartmentOptions();
   const { studentClubsOptions } = useStudentClubs();
+  const { options: unitOptions } = useCampusUnitOptions();
+  const { options: sectionOptions } = useCampusSectionOptions();
 
   const {
     control,
@@ -62,10 +66,16 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
         if (field.name === 'department') {
           return { ...field, options: departmentOptions };
         }
+        if (field.name === 'unit') {
+          return { ...field, options: unitOptions };
+        }
+        if (field.name === 'section') {
+          return { ...field, options: sectionOptions };
+        }
         return field;
       })
     );
-  }, [globalEventOptions, unionOptions, studentClubsOptions, departmentOptions]);
+  }, [globalEventOptions, unionOptions, studentClubsOptions, departmentOptions, unitOptions, sectionOptions]);
 
   useEffect(() => {
     if (imageData) {
@@ -77,6 +87,8 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
         union: imageData.union ?? null,
         club: imageData.club ?? null,
         department: imageData.department ?? null,
+        unit: imageData.unit ?? null,
+        section: imageData.section ?? null,
         isActive: imageData.isActive,
         caption: imageData.caption ?? '',
         displayOrder: imageData.displayOrder,
@@ -95,6 +107,8 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
         union: data.union,
         club: data.club,
         department: data.department,
+        unit: data.unit,
+        section: data.section,
         isActive: data.isActive,
         caption: data.caption?.trim(),
         displayOrder: data.displayOrder,

@@ -24,6 +24,8 @@ export const globalGalleryCreateFormSchema = z.object({
   union: z.number().nullable().optional(),
   club: z.number().nullable().optional(),
   department: z.number().nullable().optional(),
+  unit: z.number().nullable().optional(),
+  section: z.number().nullable().optional(),
   isActive: z.boolean().default(true),
   images: z.array(imageSchema).min(1, 'Add at least one gallery image')
 });
@@ -37,6 +39,8 @@ export const defaultValues: Partial<TGlobalGalleryCreateFormDataType> = {
   union: null,
   club: null,
   department: null,
+  unit: null,
+  section: null,
   isActive: true,
   images: []
 };
@@ -48,6 +52,8 @@ export const globalGalleryCreateFields: FormField<TGlobalGalleryCreateFormDataTy
   { name: 'union', label: 'Union', type: 'select', xs: 12, sm: 4, options: [] },
   { name: 'club', label: 'Club', type: 'select', xs: 12, sm: 4, options: [] },
   { name: 'department', label: 'Department', type: 'select', xs: 12, sm: 4, options: [] },
+  { name: 'unit', label: 'Campus Unit', type: 'select', xs: 12, sm: 4, options: [] },
+  { name: 'section', label: 'Campus Section', type: 'select', xs: 12, sm: 4, options: [] },
   { name: 'isActive', label: 'Active Status', type: 'switch', xs: 12, sm: 2 },
   {
     name: 'images',
