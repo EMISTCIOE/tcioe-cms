@@ -64,6 +64,7 @@ export const rootAPI = createApi({
     'ResearchTag',
     'AcademicProgram',
     'Subject',
+    'Departments',
     'DashboardStats'
   ]
 });

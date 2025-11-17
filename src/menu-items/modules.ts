@@ -172,32 +172,16 @@ const modules: MenuItem = {
           id: 'departments',
           title: 'Departments',
           type: 'item',
-          icon: icons.MenuBookIcon,
+          icon: icons.BusinessIcon,
           url: '/website-setup/departments',
           breadcrumbs: false
         },
         {
-          id: 'curriculum',
-          title: 'Curriculum',
+          id: 'academic',
+          title: 'Programs & Subjects',
           type: 'item',
           icon: icons.ClassIcon,
-          url: '/website-setup/curriculum',
-          breadcrumbs: false
-        },
-        {
-          id: 'subjects',
-          title: 'Subjects',
-          type: 'item',
-          icon: icons.SubjectIcon,
-          url: '/website-setup/subjects',
-          breadcrumbs: false
-        },
-        {
-          id: 'programs',
-          title: 'Programs',
-          type: 'item',
-          icon: icons.LibraryBooksIcon,
-          url: '/website-setup/programs',
+          url: '/website-setup/academic',
           breadcrumbs: false
         }
       ]

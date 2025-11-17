@@ -4,9 +4,11 @@ import { IGlobalEvent } from '../../redux/globalEvents.types';
 import { enumToOptions } from '@/utils/functions/formatString';
 import { ICampusEvent } from '@/pages/website-setup/campus-events/redux/types';
 
-export interface ITableData extends Omit<IGlobalEvent, 'isActive'> {
+export interface ITableData extends Omit<IGlobalEvent, 'isActive' | 'isApprovedByDepartment' | 'isApprovedByCampus'> {
   actions?: string;
   isActive: 'true' | 'false';
+  isApprovedByDepartment?: 'true' | 'false';
+  isApprovedByCampus?: 'true' | 'false';
 }
 
 const IsActiveColorMap: BadgeColorMap = {
@@ -14,7 +16,20 @@ const IsActiveColorMap: BadgeColorMap = {
   INACTIVE: { backgroundColor: 'error.lighter', color: 'error.main' }
 };
 
-export const getColumnConfig = (theme: Theme): ColumnConfig<ITableData>[] => [
+const IsApprovedColorMap: BadgeColorMap = {
+  YES: { backgroundColor: 'primary.lighter', color: 'primary.main' },
+  NO: { backgroundColor: 'error.lighter', color: 'error.main' }
+};
+
+export const getColumnConfig = (
+  theme: Theme,
+  canEdit: boolean,
+  onApprovalChange?: (
+    id: number | string,
+    field: 'isApprovedByDepartment' | 'isApprovedByCampus',
+    value: ITableData[keyof ITableData]
+  ) => Promise<void>
+): ColumnConfig<ITableData>[] => [
   { field: 'thumbnail', headerName: 'THUMBNAIL', type: 'image' },
   { field: 'title', headerName: 'TITLE', type: 'text' },
   {
@@ -37,6 +52,32 @@ export const getColumnConfig = (theme: Theme): ColumnConfig<ITableData>[] => [
       { label: 'InActive', value: 'false' }
     ],
     colorMap: IsActiveColorMap
+  },
+  {
+    field: 'isApprovedByDepartment',
+    headerName: 'APPROVED (DEPT)',
+    type: 'select',
+    filterable: true,
+    valueOptions: [
+      { label: 'Yes', value: 'true' },
+      { label: 'No', value: 'false' }
+    ],
+    colorMap: IsApprovedColorMap,
+    editable: canEdit,
+    handleChange: (id, value) => onApprovalChange && onApprovalChange(id as any, 'isApprovedByDepartment', value)
+  },
+  {
+    field: 'isApprovedByCampus',
+    headerName: 'APPROVED (CAMPUS)',
+    type: 'select',
+    filterable: true,
+    valueOptions: [
+      { label: 'Yes', value: 'true' },
+      { label: 'No', value: 'false' }
+    ],
+    colorMap: IsApprovedColorMap,
+    editable: canEdit,
+    handleChange: (id, value) => onApprovalChange && onApprovalChange(id as any, 'isApprovedByCampus', value)
   },
   { field: 'actions', headerName: '', type: 'actions' }
 ];

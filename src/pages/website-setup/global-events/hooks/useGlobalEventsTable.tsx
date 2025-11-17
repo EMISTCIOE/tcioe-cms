@@ -25,8 +25,15 @@ export const useGlobalEventsTable = () => {
     transformResponseToTableData: (apiData) =>
       apiData?.results?.map((item) => ({
         ...item,
-        isActive: item?.isActive ? 'true' : 'false'
+        isActive: item?.isActive ? 'true' : 'false',
+        isApprovedByDepartment: item?.isApprovedByDepartment ? 'true' : 'false',
+        isApprovedByCampus: item?.isApprovedByCampus ? 'true' : 'false'
       })) ?? [],
-    transformTableDataToUpdateInput: (rowData) => rowData
+    transformTableDataToUpdateInput: (rowData) => ({
+      ...rowData,
+      isActive: (rowData as any).isActive === 'true',
+      isApprovedByDepartment: (rowData as any).isApprovedByDepartment === 'true',
+      isApprovedByCampus: (rowData as any).isApprovedByCampus === 'true'
+    })
   });
 };

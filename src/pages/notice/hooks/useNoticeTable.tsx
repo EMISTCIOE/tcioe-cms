@@ -44,11 +44,32 @@ export const useNoticeTable = () => {
     transformResponseToTableData: (apiData) => {
       return apiData.results.map((item) => ({
         ...item,
-        isFeatured: item.isFeatured ? 'true' : 'false'
+        isFeatured: item.isFeatured ? 'true' : 'false',
+        isApprovedByDepartment: item.isApprovedByDepartment ? 'true' : 'false',
+        isApprovedByCampus: item.isApprovedByCampus ? 'true' : 'false'
       })) as ITableData[];
     },
     transformTableDataToUpdateInput: (rowData) => {
-      return rowData as unknown as INoticeCreatePayload;
+      // Map the table row back to the API patch payload
+      const mapped: any = {
+        title: (rowData as any).title,
+        department: (rowData as any).department,
+        category: (rowData as any).category,
+        thumbnail: (rowData as any).thumbnail,
+        isFeatured: (rowData as any).isFeatured === 'true',
+        status: (rowData as any).status,
+        description: (rowData as any).description
+      };
+
+      if ((rowData as any).isApprovedByDepartment !== undefined) {
+        mapped.isApprovedByDepartment = (rowData as any).isApprovedByDepartment === 'true';
+      }
+
+      if ((rowData as any).isApprovedByCampus !== undefined) {
+        mapped.isApprovedByCampus = (rowData as any).isApprovedByCampus === 'true';
+      }
+
+      return mapped as INoticeCreatePayload;
     }
   });
 

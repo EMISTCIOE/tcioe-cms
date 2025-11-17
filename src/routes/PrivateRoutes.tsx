@@ -30,6 +30,7 @@ const GlobalGallery = Loadable(lazy(() => import('@/pages/website-setup/global-g
 const GlobalEvents = Loadable(lazy(() => import('@/pages/website-setup/global-events')));
 const CampusSections = Loadable(lazy(() => import('@/pages/website-setup/campus-sections')));
 const CampusUnits = Loadable(lazy(() => import('@/pages/website-setup/campus-units')));
+const Departments = Loadable(lazy(() => import('@/pages/website-setup/departments')));
 const Research = Loadable(lazy(() => import('@/pages/website-setup/research')));
 const ResearchTags = Loadable(lazy(() => import('@/pages/website-setup/research/tags')));
 const ResearchFacilities = Loadable(lazy(() => import('@/pages/website-setup/research-facilities')));
@@ -78,6 +79,7 @@ const PrivateRoutes = () => (
           <Route path="global-events" element={<GlobalEvents />} />
           <Route path="campus-sections" element={<CampusSections />} />
           <Route path="campus-units" element={<CampusUnits />} />
+          <Route path="departments" element={<Departments />} />
           <Route path="research" element={<Research />} />
           <Route path="research/tags" element={<ResearchTags />} />
           <Route path="research-facilities" element={<ResearchFacilities />} />

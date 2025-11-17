@@ -19,6 +19,8 @@ export interface IGlobalEvent {
   registrationLink?: string | null;
   location?: string | null;
   isActive: boolean;
+  isApprovedByDepartment?: boolean;
+  isApprovedByCampus?: boolean;
 }
 
 export interface IGlobalEventsList extends IListResponse {

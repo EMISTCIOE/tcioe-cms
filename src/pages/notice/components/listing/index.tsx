@@ -11,6 +11,7 @@ import { useHasParticularPermissions } from '@/utils/permissions/helpers';
 import { noticePermissions, noticeStatusPermission } from '../../constants/permissions';
 import { useCustomActions } from '../../hooks/useCustomActions';
 import { useNoticeStatusChange } from '../../hooks/useNoticeStatusChange';
+import { useNoticeApprovalChange } from '../../hooks/useNoticeApprovalChange';
 import { useNoticeTable } from '../../hooks/useNoticeTable';
 import { ITableData, getColumnConfig } from './config';
 
@@ -26,6 +27,7 @@ const NoticeListingSection = () => {
   const canDelete = useHasParticularPermissions(noticePermissions.delete);
   const canUpdateStatus = useHasParticularPermissions(noticeStatusPermission.edit);
   const { onStatusChange } = useNoticeStatusChange();
+  const { onApprovalChange } = useNoticeApprovalChange();
 
   if (!isOptionsLoaded) {
     return null;
@@ -42,6 +44,7 @@ const NoticeListingSection = () => {
           noticeDepartmentsOptions.map((option) => ({ label: option.label, value: option.value })),
           canUpdateStatus,
           onStatusChange,
+          onApprovalChange,
           customActions
         )
       }

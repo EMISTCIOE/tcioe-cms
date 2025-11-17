@@ -56,6 +56,8 @@ export interface INoticeItem {
   slug: string;
   thumbnail: string;
   isFeatured: boolean;
+  isApprovedByDepartment?: boolean;
+  isApprovedByCampus?: boolean;
   department: number | null;
   category: number;
   status: NoticeStatus;
@@ -76,6 +78,8 @@ export interface INoticeDetails {
   description: string;
   thumbnail: string;
   isFeatured: boolean;
+  isApprovedByDepartment?: boolean;
+  isApprovedByCampus?: boolean;
   department: INoticeDepartmentItem | null;
   category: INoticeCategoryItem;
   medias: INoticeMediaItem[] | null;
@@ -123,6 +127,8 @@ export interface INoticeUpdatePayload {
   isFeatured?: boolean;
   isDraft?: boolean;
   status?: NoticeStatus;
+  isApprovedByDepartment?: boolean;
+  isApprovedByCampus?: boolean;
   description?: string;
   medias?: INoticeMediaPatchPayload[];
 }

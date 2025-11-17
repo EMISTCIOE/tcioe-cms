@@ -4,9 +4,11 @@ import { BadgeColorMap, ColumnConfig } from '@/components/app-table/columns';
 import { enumToOptions } from '@/utils/functions/formatString';
 import { GridRowId, GridRowParams } from '@mui/x-data-grid';
 
-export interface ITableData extends Omit<INoticeItem, 'isFeatured'> {
+export interface ITableData extends Omit<INoticeItem, 'isFeatured' | 'isApprovedByDepartment' | 'isApprovedByCampus'> {
   actions?: string;
   isFeatured: 'true' | 'false'; // Convert boolean to string for select options
+  isApprovedByDepartment?: 'true' | 'false';
+  isApprovedByCampus?: 'true' | 'false';
 }
 
 const StatusColorMap: BadgeColorMap = {
@@ -21,12 +23,22 @@ const IsFeaturedColorMap: BadgeColorMap = {
   NO: { backgroundColor: 'error.lighter', color: 'error.main' }
 };
 
+const IsApprovedColorMap: BadgeColorMap = {
+  YES: { backgroundColor: 'primary.lighter', color: 'primary.main' },
+  NO: { backgroundColor: 'error.lighter', color: 'error.main' }
+};
+
 export const getColumnConfig = (
   theme: Theme,
   categoryOptions: ColumnConfig<ITableData>['valueOptions'],
   departmentOptions: ColumnConfig<ITableData>['valueOptions'],
   canUpdateStatus: boolean,
   onStatusChange: (id: GridRowId, value: ITableData[keyof ITableData]) => Promise<void>,
+  onApprovalChange: (
+    id: GridRowId,
+    field: 'isApprovedByDepartment' | 'isApprovedByCampus',
+    value: ITableData[keyof ITableData]
+  ) => Promise<void>,
   customActions: ((params: GridRowParams<ITableData>) => JSX.Element)[]
 ): ColumnConfig<ITableData>[] => [
   { field: 'thumbnail', headerName: 'THUMBNAIL', type: 'image' },
@@ -61,6 +73,32 @@ export const getColumnConfig = (
       { label: 'No', value: 'false' }
     ],
     colorMap: IsFeaturedColorMap
+  },
+  {
+    field: 'isApprovedByDepartment',
+    headerName: 'APPROVED (DEPT)',
+    type: 'select',
+    filterable: true,
+    valueOptions: [
+      { label: 'Yes', value: 'true' },
+      { label: 'No', value: 'false' }
+    ],
+    colorMap: IsApprovedColorMap,
+    editable: true,
+    handleChange: (id, value) => onApprovalChange(id, 'isApprovedByDepartment', value)
+  },
+  {
+    field: 'isApprovedByCampus',
+    headerName: 'APPROVED (CAMPUS)',
+    type: 'select',
+    filterable: true,
+    valueOptions: [
+      { label: 'Yes', value: 'true' },
+      { label: 'No', value: 'false' }
+    ],
+    colorMap: IsApprovedColorMap,
+    editable: true,
+    handleChange: (id, value) => onApprovalChange(id, 'isApprovedByCampus', value)
   },
   {
     field: 'status',
