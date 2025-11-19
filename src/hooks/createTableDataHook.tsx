@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { GridFilterModel, GridPaginationModel, GridSortModel, GridRowId } from '@mui/x-data-grid';
 import { setMessage } from '@/pages/common/redux/common.slice';
 import { useAppDispatch } from '@/libs/hooks';
@@ -102,21 +102,61 @@ export function createTableDataHook<TData extends object, TApiResponse, TUpdateI
    * @param initialQueryParams - Optional initial query parameters
    * @returns An object with table state and handler functions
    */
-  return function useTableData(initialQueryParams = {}) {
+  return function useTableData(
+    initialQueryParams: {
+      search?: string;
+      paginationModel?: GridPaginationModel;
+      sortModel?: GridSortModel;
+      filterModel?: GridFilterModel;
+      filters?: Record<string, string | number | boolean | undefined>;
+    } = {}
+  ) {
     // Query parameter state
-    const [queryParams, setQueryParams] = useState({
-      ...initialQueryParams,
-      search: '',
-      paginationModel: {
-        page: 0,
-        pageSize: defaultPageSize
-      } as GridPaginationModel,
-      sortModel: [] as GridSortModel,
-      filterModel: {
-        items: [],
-        quickFilterValues: []
-      } as GridFilterModel
-    });
+    const initialStateRef = useRef(initialQueryParams);
+    const [queryParams, setQueryParams] = useState(() => ({
+      search: initialQueryParams.search ?? '',
+      paginationModel:
+        initialQueryParams.paginationModel ??
+        ({
+          page: 0,
+          pageSize: defaultPageSize
+        } as GridPaginationModel),
+      sortModel: initialQueryParams.sortModel ?? ([] as GridSortModel),
+      filterModel:
+        initialQueryParams.filterModel ??
+        ({
+          items: [],
+          quickFilterValues: []
+        } as GridFilterModel),
+      filters: initialQueryParams.filters ?? {}
+    }));
+
+    // Reset query params when the provided initial query changes
+    useEffect(() => {
+      const prev = initialStateRef.current || {};
+      const hasChanged = JSON.stringify(prev) !== JSON.stringify(initialQueryParams);
+
+      if (hasChanged) {
+        initialStateRef.current = initialQueryParams;
+        setQueryParams({
+          search: initialQueryParams.search ?? '',
+          paginationModel:
+            initialQueryParams.paginationModel ??
+            ({
+              page: 0,
+              pageSize: defaultPageSize
+            } as GridPaginationModel),
+          sortModel: initialQueryParams.sortModel ?? ([] as GridSortModel),
+          filterModel:
+            initialQueryParams.filterModel ??
+            ({
+              items: [],
+              quickFilterValues: []
+            } as GridFilterModel),
+          filters: initialQueryParams.filters ?? {}
+        });
+      }
+    }, [initialQueryParams, defaultPageSize]);
 
     // Get API hooks
     const { data, error, isFetching, refetch } = useListQuery(queryParams);

@@ -3,7 +3,7 @@ import * as z from 'zod';
 
 // NOTE - Schema definition for media item
 export const mediaSchema = z.object({
-  id: z.number().optional(),
+  id: z.union([z.number(), z.string()]).optional(),
   file: z.any().refine(
     (file) => {
       if (!file) return true;
@@ -23,7 +23,7 @@ export type Media = z.infer<typeof mediaSchema>;
 export const noticeCreateFormSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   department: z.union([z.number(), z.string()]).nullable(),
-  category: z.number().min(1, 'Category is required'),
+  category: z.union([z.number(), z.string()]),
   description: z.string().optional(),
   isFeatured: z.boolean().default(true),
   isDraft: z.boolean().default(false),
@@ -40,6 +40,8 @@ export const noticeCreateFormSchema = z.object({
       }
     )
     .optional(),
+  isApprovedByDepartment: z.boolean().optional(),
+  isApprovedByCampus: z.boolean().optional(),
   medias: z.array(mediaSchema).optional()
 });
 
@@ -55,7 +57,9 @@ export const defaultValues: Partial<TNoticeCreateFormDataType> = {
   isFeatured: true,
   isDraft: false,
   thumbnail: null,
-  medias: [{ file: null, caption: '' }]
+  medias: [{ file: null, caption: '' }],
+  isApprovedByDepartment: false,
+  isApprovedByCampus: false
 };
 
 // NOTE - Define the form fields with improved layout
@@ -102,5 +106,7 @@ export const noticeCreateFields: FormField<TNoticeCreateFormDataType>[] = [
     ] as FormField<Media>[]
   },
   { name: 'isFeatured', label: 'Featured', xs: 6, sm: 3, type: 'switch' },
-  { name: 'isDraft', label: 'Draft', xs: 6, sm: 3, type: 'switch' }
+  { name: 'isDraft', label: 'Draft', xs: 6, sm: 3, type: 'switch' },
+  { name: 'isApprovedByDepartment', label: 'Approved by Dept', xs: 6, sm: 3, type: 'switch' },
+  { name: 'isApprovedByCampus', label: 'Approved by Campus', xs: 6, sm: 3, type: 'switch' }
 ];

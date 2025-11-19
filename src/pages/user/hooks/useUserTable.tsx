@@ -4,6 +4,10 @@ import { combineName, splitName } from '@/utils/functions/splitCombineName';
 
 import { TableData } from '../components/listing/config';
 import { UserItem } from '../redux/types';
+
+interface UseUserTableOptions {
+  filters?: Record<string, string | number | boolean | undefined>;
+}
 import { useArchiveUserMutation, useGetUsersQuery, usePatchUserMutation } from '../redux/user.api';
 import { currentUserId, setEdit, setViewId } from '../redux/user.slice';
 
@@ -12,10 +16,26 @@ import { currentUserId, setEdit, setViewId } from '../redux/user.slice';
  *
  * Handles Table data fetching and inline updating through API's and data transformations for the User table
  */
-export const useUserTable = () => {
+const getLinkedEntityLabel = (user: UserItem) => {
+  switch (user.role) {
+    case 'EMIS-STAFF':
+    case 'ADMIN':
+      return user.designationTitle ? `Designation: ${user.designationTitle}` : 'Designation: Not Assigned';
+    case 'DEPARTMENT-ADMIN':
+      return user.departmentName ? `Department: ${user.departmentName}` : 'Department: Not Assigned';
+    case 'CLUB':
+      return user.clubName ? `Club: ${user.clubName}` : 'Club: Not Assigned';
+    case 'UNION':
+      return user.unionName ? `Union: ${user.unionName}` : 'Union: Not Assigned';
+    default:
+      return 'Not Assigned';
+  }
+};
+
+export const useUserTable = (options: UseUserTableOptions = {}) => {
   const dispatch = useAppDispatch();
 
-  return createTableDataHook<TableData, any>({
+  const useTableData = createTableDataHook<TableData, any>({
     // RTK Query hooks
     useListQuery: useGetUsersQuery,
     useUpdateMutation: usePatchUserMutation,
@@ -40,8 +60,10 @@ export const useUserTable = () => {
     transformResponseToTableData: (apiData) => {
       return apiData?.results.map((item: UserItem) => ({
         ...item,
+        roleDisplay: item.roleDisplay || item.role,
         firstName: combineName(item?.firstName, item?.middleName, item?.lastName),
-        isActive: item?.isActive ? 'true' : 'false'
+        isActive: item?.isActive ? 'true' : 'false',
+        linkedEntity: getLinkedEntityLabel(item)
       }));
     },
 
@@ -58,4 +80,6 @@ export const useUserTable = () => {
       };
     }
   });
+
+  return () => useTableData({ filters: options.filters });
 };

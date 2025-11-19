@@ -120,6 +120,8 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
           thumbnail: 'thumbnail',
           isFeatured: 'isFeatured',
           isDraft: 'isDraft',
+          isApprovedByDepartment: 'isApprovedByDepartment',
+          isApprovedByCampus: 'isApprovedByCampus',
           description: 'description',
           medias: 'medias'
         }

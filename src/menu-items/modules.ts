@@ -365,44 +365,49 @@ const modules: MenuItem = {
       allowedRoles: ['EMIS-STAFF', 'ADMIN'],
       children: [
         {
-          id: 'teachers',
-          title: 'Teachers',
-          icon: icons.SchoolIcon,
+          id: 'users-emis-staff',
+          title: 'EMIS Staff',
+          icon: icons.BadgeIcon,
           type: 'item',
-          url: '/user-setup/teachers',
-          breadcrumbs: false
+          url: '/user-setup/users?role=EMIS-STAFF',
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN']
         },
         {
-          id: 'students',
-          title: 'Students',
-          icon: icons.Person3Icon,
-          type: 'item',
-          url: '/user-setup/students',
-          breadcrumbs: false
-        },
-        {
-          id: 'admin',
+          id: 'users-admin',
           title: 'Admin',
           icon: icons.ManageAccountsIcon,
           type: 'item',
-          url: '/user-setup/admin',
-          breadcrumbs: false
+          url: '/user-setup/users?role=ADMIN',
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN']
         },
         {
-          id: 'department-admin',
+          id: 'users-department-admin',
           title: 'Department Admin',
           icon: icons.AdminPanelSettingsIcon,
           type: 'item',
-          url: '/user-setup/department-admin',
-          breadcrumbs: false
+          url: '/user-setup/users?role=DEPARTMENT-ADMIN',
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN']
         },
         {
-          id: 'staff',
-          title: 'Staff',
-          icon: icons.SupervisedUserCircleIcon,
+          id: 'users-club',
+          title: 'Club Users',
+          icon: icons.GroupsIcon,
           type: 'item',
-          url: '/user-setup/staff',
-          breadcrumbs: false
+          url: '/user-setup/users?role=CLUB',
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN']
+        },
+        {
+          id: 'users-union',
+          title: 'Union Users',
+          icon: icons.Diversity3Icon,
+          type: 'item',
+          url: '/user-setup/users?role=UNION',
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN']
         }
       ]
     }

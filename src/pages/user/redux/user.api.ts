@@ -16,17 +16,29 @@ export const userAPISlice = rootAPI.injectEndpoints({
   endpoints: (builder) => ({
     //Get Users
     getUsers: builder.query<UserList, UserListQueryParams>({
-      query: ({ search, paginationModel, sortModel, filterModel }) => {
+      query: ({ search, paginationModel, sortModel, filterModel, filters }) => {
         // build query params
         const { page, pageSize, orderingString, filterString } = getQueryParams({
           search,
           paginationModel,
           sortModel,
-          filterModel
+          filterModel,
+          filters
         });
 
+        const queryParams = [
+          `offset=${page * pageSize}`,
+          `limit=${pageSize}`,
+          `search=${encodeURIComponent(search ?? '')}`,
+          `ordering=${orderingString}`
+        ];
+
+        if (filterString) {
+          queryParams.push(filterString);
+        }
+
         return {
-          url: `${userAPI}?offset=${page * pageSize}&limit=${pageSize}&search=${search ?? ''}&ordering=${orderingString}&${filterString}`,
+          url: `${userAPI}?${queryParams.filter(Boolean).join('&')}`,
           method: 'GET'
         };
       },

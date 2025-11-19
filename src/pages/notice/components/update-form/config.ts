@@ -4,7 +4,7 @@ import { MediaType, NoticeStatus } from '../../redux/types';
 
 // NOTE - Schema definition for media item
 export const mediaSchema = z.object({
-  id: z.number().optional(),
+  id: z.union([z.number(), z.string()]).optional(),
   file: z.union([z.string().min(1, 'File URL cannot be empty.'), z.any()]).refine(
     (file) => {
       if (typeof file === 'string') {
@@ -32,12 +32,14 @@ export type Media = z.infer<typeof mediaSchema>;
 
 // NOTE - Define the schema for the form.
 export const noticeUpdateFormSchema = z.object({
-  id: z.number().min(1, 'Notice ID is required'),
+  id: z.string().min(1, 'Notice ID is required'),
   title: z.string().min(1, 'Title is required'),
   department: z.union([z.number(), z.string()]).nullable(),
-  category: z.number().min(1, 'Category is required').optional(),
+  category: z.union([z.number(), z.string()]).optional(),
   description: z.string().optional(),
   isFeatured: z.boolean().default(true).optional(),
+  isApprovedByDepartment: z.boolean().optional(),
+  isApprovedByCampus: z.boolean().optional(),
   isDraft: z.boolean().default(false).optional(),
   status: z.nativeEnum(NoticeStatus).default(NoticeStatus.PENDING).optional(),
   thumbnail: z
@@ -71,6 +73,8 @@ export const defaultValues: Partial<TNoticeUpdateFormDataType> = {
   category: undefined,
   description: '',
   isFeatured: true,
+  isApprovedByDepartment: false,
+  isApprovedByCampus: false,
   status: NoticeStatus.PENDING,
   isDraft: false,
   thumbnail: null,
@@ -121,5 +125,7 @@ export const noticeUpdateFields: FormField<TNoticeUpdateFormDataType>[] = [
     ] as FormField<Media>[]
   },
   { name: 'isFeatured', label: 'Featured', xs: 6, sm: 3, type: 'switch' },
-  { name: 'isDraft', label: 'Draft', xs: 6, sm: 3, type: 'switch', showIf: (formData) => formData.status === NoticeStatus.DRAFT }
+  { name: 'isDraft', label: 'Draft', xs: 6, sm: 3, type: 'switch', showIf: (formData) => formData.status === NoticeStatus.DRAFT },
+  { name: 'isApprovedByDepartment', label: 'Approved by Dept', xs: 6, sm: 3, type: 'switch' },
+  { name: 'isApprovedByCampus', label: 'Approved by Campus', xs: 6, sm: 3, type: 'switch' }
 ];

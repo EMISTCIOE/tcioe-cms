@@ -66,6 +66,8 @@ const useCreateNotice = ({ onClose }: INoticeCreateFormProps) => {
           thumbnail: 'thumbnail',
           isFeatured: 'isFeatured',
           isDraft: 'isDraft',
+          isApprovedByDepartment: 'isApprovedByDepartment',
+          isApprovedByCampus: 'isApprovedByCampus',
           description: 'description',
           medias: 'medias'
         }

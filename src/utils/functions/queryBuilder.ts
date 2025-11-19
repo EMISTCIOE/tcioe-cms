@@ -6,9 +6,10 @@ export interface IQueryParams {
   paginationModel?: GridPaginationModel;
   sortModel?: GridSortModel;
   filterModel?: GridFilterModel;
+  filters?: Record<string, string | number | boolean | undefined | null>;
 }
 
-export const getQueryParams = ({ search, paginationModel, sortModel, filterModel }: IQueryParams) => {
+export const getQueryParams = ({ search, paginationModel, sortModel, filterModel, filters }: IQueryParams) => {
   const { page, pageSize } = paginationModel!;
 
   // Ordering
@@ -18,14 +19,26 @@ export const getQueryParams = ({ search, paginationModel, sortModel, filterModel
   const orderingString = ordering ? `${direction}${ordering}` : '';
 
   // Filtering
-  const filterItems =
+  const dataGridFilters =
     filterModel?.items
       ?.filter((item) => item.field && item.value !== undefined && item.value !== null && item.value !== '')
       .map((item) => ({
         field: camelCaseToSnakeCase(item.field as string),
         value: item.value
       })) ?? [];
-  const filterString = filterItems.map((item) => `${item.field}=${item.value}`).join('&');
+
+  const staticFilters = filters
+    ? Object.entries(filters)
+        .filter(([, value]) => value !== undefined && value !== null && value !== '')
+        .map(([field, value]) => ({
+          field: camelCaseToSnakeCase(field),
+          value
+        }))
+    : [];
+
+  const filterString = [...dataGridFilters, ...staticFilters]
+    .map((item) => `${item.field}=${encodeURIComponent(String(item.value))}`)
+    .join('&');
 
   return {
     page,

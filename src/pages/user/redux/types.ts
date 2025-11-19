@@ -24,6 +24,12 @@ export interface IUser {
   isActive: boolean;
   dateJoined: string;
   updatedAt: string;
+  role: string;
+  roleDisplay: string;
+  designationTitle?: string | null;
+  departmentName?: string | null;
+  clubName?: string | null;
+  unionName?: string | null;
 }
 
 export interface UserList {
@@ -31,17 +37,25 @@ export interface UserList {
   results: IUser[];
 }
 
+export type UserItem = IUser;
+
 export interface UserCreatePayload {
   firstName: string;
   middleName: string;
   lastName: string;
   username?: string;
   email: string;
-  password: string;
+  password?: string;
   roles: string[];
   phoneNo?: string;
   isActive?: boolean;
   photo?: File | null | undefined;
+  // New optional fields to support backend `role` and relations
+  role?: string;
+  designation?: string;
+  department?: string;
+  club?: string;
+  union?: string;
 }
 
 export interface UserUpdatePayload {
@@ -74,6 +88,7 @@ export interface UserListQueryParams {
   paginationModel?: GridPaginationModel;
   sortModel?: GridSortModel;
   filterModel?: GridFilterModel;
+  filters?: Record<string, string | number | boolean | undefined>;
 }
 
 export interface UserRolesListQueryParams {

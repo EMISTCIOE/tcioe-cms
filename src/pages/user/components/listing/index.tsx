@@ -1,4 +1,5 @@
-import { lazy, useMemo, useRef } from 'react';
+import { lazy, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import TableContainer from '@/components/app-table/TableContainer';
 import { useHasParticularPermissions } from '@/utils/permissions/helpers';
 import { userPermissions } from '../../constants/permissions';
@@ -7,20 +8,60 @@ import { TableData, getColumnConfig } from './config';
 
 const UserCreateForm = lazy(() => import('../create-form'));
 
+const ROLE_CONFIG = {
+  'EMIS-STAFF': {
+    title: 'EMIS Staff',
+    createButtonTitle: 'Add EMIS Staff'
+  },
+  ADMIN: {
+    title: 'Admin',
+    createButtonTitle: 'Add Admin'
+  },
+  'DEPARTMENT-ADMIN': {
+    title: 'Department Admin',
+    createButtonTitle: 'Add Department Admin'
+  },
+  CLUB: {
+    title: 'Club Users',
+    createButtonTitle: 'Add Club User'
+  },
+  UNION: {
+    title: 'Union Users',
+    createButtonTitle: 'Add Union User'
+  }
+} as const;
+
+type RoleKey = keyof typeof ROLE_CONFIG;
+const DEFAULT_ROLE: RoleKey = 'EMIS-STAFF';
+
 const UserListingSection = () => {
-  const tableHooks = useUserTable();
+  const location = useLocation();
+
+  const roleParam = useMemo(
+    () => new URLSearchParams(location.search).get('role')?.toUpperCase() as RoleKey | undefined,
+    [location.search]
+  );
+  const role: RoleKey = roleParam && Object.prototype.hasOwnProperty.call(ROLE_CONFIG, roleParam) ? roleParam : DEFAULT_ROLE;
+
+  const staticFilters = useMemo(() => ({ role }), [role]);
+  const tableHooks = useUserTable({ filters: staticFilters });
 
   const canCreate = useHasParticularPermissions(userPermissions.add);
   const canEdit = useHasParticularPermissions(userPermissions.edit);
   const canDelete = useHasParticularPermissions(userPermissions.delete);
 
+  const createForm = canCreate ? (onClose: () => void) => <UserCreateForm onClose={onClose} fixedRole={role} /> : undefined;
+  const createButtonTitle = ROLE_CONFIG[role].createButtonTitle;
+  const title = `${ROLE_CONFIG[role].title}`;
+
   return (
     <TableContainer<TableData>
-      title="Users"
+      key={role}
+      title={`${title} Users`}
       useTableHook={tableHooks}
       getColumnConfig={getColumnConfig}
-      createButtonTitle="Add"
-      createNewForm={canCreate ? (onClose) => <UserCreateForm onClose={onClose} /> : undefined}
+      createButtonTitle={createForm ? createButtonTitle : undefined}
+      createNewForm={createForm}
       allowEditing={canEdit}
       allowDeleting={canDelete}
     />

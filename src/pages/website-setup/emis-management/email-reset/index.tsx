@@ -141,8 +141,10 @@ const EmailResetManagement = () => {
     }
   };
 
+  const allRequests = requestsData?.results || [];
+
   const filteredRequests =
-    requestsData?.results?.filter((request) => {
+    allRequests.filter((request) => {
       const matchesSearch =
         (request.fullName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
         (request.rollNumber?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
@@ -178,10 +180,11 @@ const EmailResetManagement = () => {
     }
   };
 
+  // Calculate counts from ALL requests, not filtered ones
   const groupedRequests = {
-    pending: filteredRequests.filter((r) => r.status === 'pending'),
-    approved: filteredRequests.filter((r) => r.status === 'approved'),
-    rejected: filteredRequests.filter((r) => r.status === 'rejected')
+    pending: allRequests.filter((r) => r.status === 'pending'),
+    approved: allRequests.filter((r) => r.status === 'approved'),
+    rejected: allRequests.filter((r) => r.status === 'rejected')
   };
 
   const RequestCard = ({ request }: { request: IEmailResetRequest }) => (

@@ -5,10 +5,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import FormSection from '@/components/app-form/FormSection';
-import MatchIndicator from '@/components/app-form/PasswordMatchIndicator';
-import PasswordStrengthCapsules from '@/components/app-form/PasswordStrengthCapsules';
 import MainCard from '@/components/cards/MainCard';
 
+import { useGetCampusStaffDesignationsQuery } from '@/pages/website-setup/campus-key-officials/redux/campusKeyOfficials.api';
+import { useGetDepartmentsQuery } from '@/pages/website-setup/departments/redux/departments.api';
+import { useGetStudentClubsQuery } from '@/pages/student-clubs-setup/student-clubs/redux/studentClubs.api';
+import { useGetCampusUnionsQuery } from '@/pages/website-setup/campus-unions/redux/campusUnions.api';
 import { useAppDispatch } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
 import { splitName } from '@/utils/functions/splitCombineName';
@@ -20,14 +22,21 @@ import { handleClientError } from '@/utils/functions/handleError';
 import { UserCreatePayload, UserRole } from '../../redux/types';
 import { defaultValues, uniqueFieldNames, userInfoFields, UserInfoFormDataType, userInfoFormSchema } from './config';
 
+type FixedRoleType = 'EMIS-STAFF' | 'ADMIN' | 'DEPARTMENT-ADMIN' | 'CLUB' | 'UNION';
+
 interface UserCreateFormProps {
   onClose?: () => void;
+  fixedRole?: FixedRoleType;
 }
 
-export default function UserCreateForm({ onClose }: UserCreateFormProps) {
+export default function UserCreateForm({ onClose, fixedRole }: UserCreateFormProps) {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [createUser] = useCreateUserMutation();
+  const { data: designationData } = useGetCampusStaffDesignationsQuery();
+  const { data: departmentData } = useGetDepartmentsQuery({ search: '', paginationModel: { page: 0, pageSize: 500 }, sortModel: [] });
+  const { data: studentClubsData } = useGetStudentClubsQuery({ search: '', paginationModel: { page: 0, pageSize: 500 }, sortModel: [] });
+  const { data: campusUnionsData } = useGetCampusUnionsQuery({ search: '', paginationModel: { page: 0, pageSize: 500 }, sortModel: [] });
   const [triggerGetUsers] = useLazyGetUsersQuery();
   const { data: rolesData } = useGetUserRolesQuery({
     search: '',
@@ -35,10 +44,6 @@ export default function UserCreateForm({ onClose }: UserCreateFormProps) {
     sortModel: []
   });
   const [formFields, setFormFields] = useState(userInfoFields);
-  const [showPassword, setShowPassword] = useState({
-    password: false,
-    confirmPassword: false
-  });
 
   const {
     control,
@@ -46,15 +51,18 @@ export default function UserCreateForm({ onClose }: UserCreateFormProps) {
     setError,
     clearErrors,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setValue
   } = useForm<UserInfoFormDataType>({
     resolver: zodResolver(userInfoFormSchema),
-    defaultValues
+    defaultValues: {
+      ...defaultValues,
+      role: fixedRole ?? defaultValues.role
+    }
   });
 
   // NOTE - For Unique field validation
   const uniqueFieldValues = {
-    username: watch('username'),
     email: watch('email'),
     phoneNo: watch('phoneNo')
   };
@@ -71,13 +79,25 @@ export default function UserCreateForm({ onClose }: UserCreateFormProps) {
     },
     debounceDelay: 300
   });
-
   // NOTE - Form submit handler
   const onSubmit = async (data: UserInfoFormDataType) => {
     try {
-      const { confirmPassword, name, ...rest } = data;
+      const { name, ...rest } = data;
       const { firstName, middleName, lastName } = splitName(name);
-      const payload: UserCreatePayload = { firstName, middleName, lastName, ...rest };
+
+      // Build payload; cast numeric select values to strings where backend expects IDs
+      const payload: UserCreatePayload = {
+        firstName,
+        middleName,
+        lastName,
+        ...rest,
+        role: ((rest as any).role as unknown as string) || fixedRole,
+        designation: (rest as any).designation as unknown as string,
+        department: (rest as any).department as unknown as string,
+        club: (rest as any).club as unknown as string,
+        union: (rest as any).union as unknown as string
+      };
+
       const res = await createUser(payload).unwrap();
       dispatch(setMessage({ message: res.message, variant: 'success' }));
       onClose?.();
@@ -89,8 +109,6 @@ export default function UserCreateForm({ onClose }: UserCreateFormProps) {
         fieldKeyMap: {
           firstName: 'name',
           lastName: 'name',
-          username: 'username',
-          password: 'password',
           email: 'email',
           photo: 'photo',
           phoneNo: 'phoneNo',
@@ -113,18 +131,64 @@ export default function UserCreateForm({ onClose }: UserCreateFormProps) {
     }
   }, [rolesData]);
 
-  // NOTE - Password and Confirm Password validation
-  const password = watch('password');
-  const confirmPassword = watch('confirmPassword');
-  const extraComponents = {
-    password: password && <PasswordStrengthCapsules password={password} />,
-    confirmPassword: confirmPassword && <MatchIndicator confirmPassword={confirmPassword} newPasswordValue={password} errors={errors} />
-  };
+  // Lock the account type selector when a fixed role is provided
+  useEffect(() => {
+    const baseRoleField = userInfoFields.find((field) => field.name === 'role');
 
-  // NOTE - Toggle password visibility
-  const handleToggleVisibility = (field: keyof typeof showPassword) => {
-    setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
-  };
+    setFormFields((prev) =>
+      prev.map((field) => {
+        if (field.name !== 'role') {
+          return field;
+        }
+
+        const filteredOptions = fixedRole
+          ? (baseRoleField?.options || []).filter((option) => option.value === fixedRole)
+          : baseRoleField?.options || field.options;
+
+        return {
+          ...field,
+          options: filteredOptions,
+          disabled: Boolean(fixedRole)
+        };
+      })
+    );
+  }, [fixedRole]);
+
+  useEffect(() => {
+    setValue('role', (fixedRole ?? defaultValues.role) as any, { shouldValidate: true, shouldDirty: false });
+  }, [fixedRole, setValue]);
+
+  // Populate designation/department/club/union options when data available
+  useEffect(() => {
+    if (designationData?.results) {
+      const options: SelectOption[] = designationData.results.map((d: any) => ({ label: d.title, value: d.id }));
+      setFormFields((prev) => prev.map((field) => (field.name === 'designation' ? { ...field, options } : field)));
+    }
+  }, [designationData]);
+
+  useEffect(() => {
+    if (departmentData?.results) {
+      const options: SelectOption[] = departmentData.results.map((d: any) => ({ label: d.name, value: d.id }));
+      setFormFields((prev) => prev.map((field) => (field.name === 'department' ? { ...field, options } : field)));
+    }
+  }, [departmentData]);
+
+  useEffect(() => {
+    if (studentClubsData?.results) {
+      const options: SelectOption[] = studentClubsData.results.map((d: any) => ({ label: d.name, value: d.id }));
+      setFormFields((prev) => prev.map((field) => (field.name === 'club' ? { ...field, options } : field)));
+    }
+  }, [studentClubsData]);
+
+  useEffect(() => {
+    if (campusUnionsData?.results) {
+      const options: SelectOption[] = campusUnionsData.results.map((d: any) => ({ label: d.name, value: d.id }));
+      setFormFields((prev) => prev.map((field) => (field.name === 'union' ? { ...field, options } : field)));
+    }
+  }, [campusUnionsData]);
+
+  // extraComponents left empty; no password fields on frontend
+  const extraComponents = {};
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -135,9 +199,8 @@ export default function UserCreateForm({ onClose }: UserCreateFormProps) {
               fields={formFields}
               control={control}
               errors={errors}
+              formValues={watch()}
               childrenForInput={extraComponents}
-              showPassword={showPassword}
-              handleToggleVisibility={handleToggleVisibility}
             />
           </MainCard>
         </Grid>

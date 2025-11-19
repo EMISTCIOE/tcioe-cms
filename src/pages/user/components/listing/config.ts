@@ -6,6 +6,7 @@ export interface TableData extends Omit<UserItem, 'middleName' | 'lastName' | 'i
   firstName: string;
   actions?: string;
   isActive: 'true' | 'false'; // Convert boolean to string for select options,
+  linkedEntity: string;
 }
 const IsActiveColorMap: BadgeColorMap = {
   ACTIVE: { backgroundColor: 'primary.lighter', color: 'primary.main' },
@@ -18,6 +19,16 @@ export const getColumnConfig = (theme: Theme): ColumnConfig<TableData>[] => [
   { field: 'firstName', headerName: 'NAME', type: 'text', sortable: true },
   { field: 'phoneNo', headerName: 'PHONE NO.', type: 'text', filterable: true },
   { field: 'email', headerName: 'EMAIL', type: 'text', editable: false, minWidth: 180, filterable: true },
+  { field: 'roleDisplay', headerName: 'ACCOUNT TYPE', type: 'text', editable: false, filterable: true, minWidth: 150 },
+  {
+    field: 'linkedEntity',
+    headerName: 'LINKED TO',
+    type: 'text',
+    editable: false,
+    sortable: false,
+    minWidth: 200,
+    renderCell: (params) => params.row.linkedEntity || '—'
+  },
   {
     field: 'isActive',
     headerName: 'ACTIVE STATUS',

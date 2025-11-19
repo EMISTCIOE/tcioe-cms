@@ -108,6 +108,9 @@ export interface INoticeCreatePayload {
   isDraft: boolean;
   description?: string;
   medias?: INoticeMediaCreatePayload[];
+  // Optional approvals that may be set during creation
+  isApprovedByDepartment?: boolean;
+  isApprovedByCampus?: boolean;
 }
 
 /* ------------------------- Notice patch interfaces ------------------------- */
