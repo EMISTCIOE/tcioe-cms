@@ -2,7 +2,7 @@
   "name": "tcioe-cms",
   "version": "1.0.1",
   "private": true,
-  "homepage": "http://localhost:3003",
+  "homepage": "http://localhost:3000",
   "author": {
     "name": "EMIS Team",
     "email": "emis@tcioe.edu.np",
