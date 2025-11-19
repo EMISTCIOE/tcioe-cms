@@ -75,11 +75,14 @@ const UnionMembersPage = () => {
             <List>
               {unionDetail?.members?.length ? (
                 unionDetail.members.map((member) => (
-                  <ListItem key={member.id} secondaryAction={
-                    <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(member.id)}>
-                      <DeleteIcon />
-                    </IconButton>
-                  }>
+                  <ListItem
+                    key={member.id}
+                    secondaryAction={
+                      <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(member.id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    }
+                  >
                     <ListItemText primary={member.full_name} secondary={member.designation} />
                   </ListItem>
                 ))
@@ -99,13 +102,7 @@ const UnionMembersPage = () => {
                   control={control}
                   rules={{ required: 'Name is required' }}
                   render={({ field, fieldState }) => (
-                    <TextField
-                      label="Full Name"
-                      fullWidth
-                      error={!!fieldState.error}
-                      helperText={fieldState.error?.message}
-                      {...field}
-                    />
+                    <TextField label="Full Name" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} {...field} />
                   )}
                 />
                 <Controller
@@ -113,13 +110,7 @@ const UnionMembersPage = () => {
                   control={control}
                   rules={{ required: 'Designation is required' }}
                   render={({ field, fieldState }) => (
-                    <TextField
-                      label="Designation"
-                      fullWidth
-                      error={!!fieldState.error}
-                      helperText={fieldState.error?.message}
-                      {...field}
-                    />
+                    <TextField label="Designation" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} {...field} />
                   )}
                 />
                 <Button variant="contained" type="submit" disabled={isPatching}>

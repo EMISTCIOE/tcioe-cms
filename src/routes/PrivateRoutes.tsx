@@ -112,9 +112,7 @@ const PrivateRoutes = () => {
             <Route path="phone-numbers" element={<Contact />} />
           </Route>
           {/* Student Clubs Setup (fallback for non EMIS/admin) */}
-          {!isEmisStaff && !isAdmin && (
-            <Route path="student-clubs-setup" element={<StudentClubs />} />
-          )}
+          {!isEmisStaff && !isAdmin && <Route path="student-clubs-setup" element={<StudentClubs />} />}
         </Route>
         <Route path="app-settings" element={<UnderConstruction />} />
         <Route path="help" element={<UnderConstruction />} />

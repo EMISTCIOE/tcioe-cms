@@ -53,4 +53,3 @@ export interface IEmailResetRequestCreatePayload {
   primary_email: string;
   secondary_email: string;
 }
-

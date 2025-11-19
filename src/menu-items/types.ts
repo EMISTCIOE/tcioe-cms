@@ -22,6 +22,7 @@ export interface MenuItem {
   disabled?: boolean;
   children?: MenuItem[];
   chip?: ChipData;
+  allowedRoles?: string[];
 }
 
 export interface MenuItems {

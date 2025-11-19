@@ -3,21 +3,30 @@ import Typography from '@mui/material/Typography';
 
 // project import
 import { useMenuSearch } from '@/contexts/search-context';
+import { useAppSelector } from '@/libs/hooks';
 import menuItems from '@/menu-items';
 import { MenuItem } from '@/menu-items/types';
+import { authState } from '@/pages/authentication/redux/selector';
 import NavGroup from './NavGroup';
 
 // ==============================|| DRAWER CONTENT - NAVIGATION ||============================== //
 
 export default function Navigation() {
   const { searchTerm } = useMenuSearch();
+  const { roleType } = useAppSelector(authState);
 
   const isSearching = !!searchTerm.trim();
 
-  // Filter groups here before rendering
-  const filteredGroups = menuItems?.items.map((group) => searchMenu(group, searchTerm)).filter((group): group is MenuItem => !!group);
+  const roleFilteredMenu = menuItems?.items
+    .map((group) => filterByRole(group, roleType))
+    .filter((group): group is MenuItem => Boolean(group));
 
-  if (filteredGroups.length === 0) {
+  // Filter groups here before rendering
+  const filteredGroups = roleFilteredMenu
+    ?.map((group) => searchMenu(group, searchTerm))
+    .filter((group): group is MenuItem => Boolean(group));
+
+  if (!filteredGroups?.length) {
     return (
       <Typography variant="h6" color="error" align="center" sx={{ mt: 2 }}>
         No Results Found!
@@ -63,4 +72,27 @@ export function searchMenu(item: MenuItem, searchTerm: string): MenuItem | null 
   }
 
   return null;
+}
+
+function filterByRole(item: MenuItem, roleType?: string): MenuItem | null {
+  if (item.allowedRoles && (!roleType || !item.allowedRoles.includes(roleType))) {
+    return null;
+  }
+
+  if (!item.children || !item.children.length) {
+    return { ...item };
+  }
+
+  const children = item.children
+    .map((child) => filterByRole(child, roleType))
+    .filter((child): child is MenuItem => Boolean(child));
+
+  if (!children.length) {
+    return null;
+  }
+
+  return {
+    ...item,
+    children
+  };
 }

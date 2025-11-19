@@ -79,6 +79,7 @@ const modules: MenuItem = {
       title: 'Manage Events',
       type: 'collapse',
       icon: icons.EventIcon,
+      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION'],
       children: [
         {
           id: 'global-events',
@@ -87,6 +88,50 @@ const modules: MenuItem = {
           icon: icons.CelebrationIcon,
           url: '/website-setup/global-events',
           breadcrumbs: false
+        },
+        {
+          id: 'global-gallery',
+          title: 'Global Gallery',
+          type: 'item',
+          icon: icons.PhotoLibraryIcon,
+          url: '/website-setup/global-gallery',
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION']
+        }
+      ]
+    },
+    {
+      id: 'manage-emis',
+      title: 'Manage EMIS',
+      type: 'collapse',
+      icon: icons.AccountBalanceIcon,
+      allowedRoles: ['EMIS-STAFF'],
+      children: [
+        {
+          id: 'emis-management',
+          title: 'EMIS Management',
+          type: 'item',
+          icon: icons.WorkIcon,
+          url: '/website-setup/emis-management',
+          breadcrumbs: false
+        }
+      ]
+    },
+    {
+      id: 'union-portal',
+      title: 'My Union',
+      type: 'collapse',
+      icon: icons.PeopleIcon,
+      allowedRoles: ['UNION'],
+      children: [
+        {
+          id: 'union-members',
+          title: 'Union Members',
+          type: 'item',
+          icon: icons.GroupsIcon,
+          url: '/website-setup/union-members',
+          breadcrumbs: false,
+          allowedRoles: ['UNION']
         }
       ]
     },
@@ -95,6 +140,7 @@ const modules: MenuItem = {
       title: 'Manage Staff',
       type: 'collapse',
       icon: icons.BadgeIcon,
+      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
       children: [
         {
           id: 'campus-staff',
@@ -111,6 +157,7 @@ const modules: MenuItem = {
       title: 'Manage Unions',
       type: 'collapse',
       icon: icons.AccountBalanceIcon,
+      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
       children: [
         {
           id: 'campus-unions',
@@ -127,6 +174,7 @@ const modules: MenuItem = {
       title: 'Manage Units',
       type: 'collapse',
       icon: icons.BusinessIcon,
+      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
       children: [
         {
           id: 'campus-units',
@@ -151,6 +199,7 @@ const modules: MenuItem = {
       title: 'Manage Clubs',
       type: 'collapse',
       icon: icons.GroupsIcon,
+      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
       children: [
         {
           id: 'student-clubs',
@@ -167,6 +216,7 @@ const modules: MenuItem = {
       title: 'Manage Academic',
       type: 'collapse',
       icon: icons.SchoolIcon,
+      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
       children: [
         {
           id: 'departments',
@@ -191,6 +241,7 @@ const modules: MenuItem = {
       title: 'Manage Resources',
       type: 'collapse',
       icon: icons.FolderIcon,
+      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
       children: [
         {
           id: 'academic-downloads',
@@ -206,14 +257,6 @@ const modules: MenuItem = {
           type: 'item',
           icon: icons.DownloadIcon,
           url: '/website-setup/campus-downloads',
-          breadcrumbs: false
-        },
-        {
-          id: 'global-gallery',
-          title: 'Global Gallery',
-          type: 'item',
-          icon: icons.PhotoLibraryIcon,
-          url: '/website-setup/global-gallery',
           breadcrumbs: false
         },
         {
@@ -239,6 +282,7 @@ const modules: MenuItem = {
       title: 'Manage Projects',
       type: 'collapse',
       icon: icons.WorkIcon,
+      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
       children: [
         {
           id: 'projects',
@@ -263,6 +307,7 @@ const modules: MenuItem = {
       title: 'Manage Research',
       type: 'collapse',
       icon: icons.ScienceIcon,
+      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
       children: [
         {
           id: 'research',
@@ -295,6 +340,7 @@ const modules: MenuItem = {
       title: 'Manage Users',
       type: 'collapse',
       icon: icons.PeopleIcon,
+      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
       children: [
         {
           id: 'teachers',

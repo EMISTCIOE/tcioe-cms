@@ -101,16 +101,7 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
         return field;
       })
     );
-  }, [
-    globalEventOptions,
-    unionOptions,
-    studentClubsOptions,
-    departmentOptions,
-    unitOptions,
-    sectionOptions,
-    roleType,
-    unionId
-  ]);
+  }, [globalEventOptions, unionOptions, studentClubsOptions, departmentOptions, unitOptions, sectionOptions, roleType, unionId]);
 
   useEffect(() => {
     if (roleType === 'UNION' && unionId) {
