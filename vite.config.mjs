@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => ({
     alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
   },
-  server: { open: true, port: 3000, allowedHosts: ['app.tcioe.edu.np'] },
+  server: { open: true, port: 3003, allowedHosts: ['app.tcioe.edu.np'] },
   preview: { open: false, port: 4173 },
   build: {
     outDir: 'dist',
