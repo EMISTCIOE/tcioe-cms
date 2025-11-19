@@ -32,7 +32,12 @@ export const useLogin = () => {
   const onSubmit = async (values: LoginFormDataType) => {
     try {
       console.log(values);
-      const response = await login({ values }).unwrap();
+      const payload = {
+        persona: values.persona,
+        password: values.password,
+        app_context: values.appContext ?? 'cms'
+      };
+      const response = await login({ values: payload }).unwrap();
 
       if (response?.status === 'verify_email') {
         dispatch(setAuthVerificationEmailSent());

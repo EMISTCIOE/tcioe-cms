@@ -1,11 +1,16 @@
 import { rootAPI } from '../../../libs/apiSlice';
-import { ForgetPasswordRequestFormDataType, IAuthState, LoginFormDataType, ResetPasswordRequestFormDataType } from './types';
+import {
+  ForgetPasswordRequestFormDataType,
+  IAuthState,
+  LoginRequestPayload,
+  ResetPasswordRequestFormDataType,
+} from './types';
 
 export const authAPI = 'cms/user-mod/auth';
 
 export const authAPISlice = rootAPI.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<IAuthState, { values: LoginFormDataType }>({
+    login: builder.mutation<IAuthState, { values: LoginRequestPayload }>({
       query: ({ values }) => {
         return {
           url: `${authAPI}/login`,

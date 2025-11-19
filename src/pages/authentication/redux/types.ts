@@ -39,6 +39,13 @@ export interface UnverifiedLoginState {
 export interface LoginFormDataType {
   persona: string;
   password: string;
+  appContext?: string;
+}
+
+export interface LoginRequestPayload {
+  persona: string;
+  password: string;
+  app_context?: string;
 }
 
 export interface ForgetPasswordRequestFormDataType {

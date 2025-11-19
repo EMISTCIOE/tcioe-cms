@@ -4,10 +4,11 @@ import { LoginFormDataType } from '../redux/types';
 
 export const loginSchema = z.object({
   persona: z.string().min(1, 'Persona is required'),
-  password: z.string().min(1, 'Password is required')
+  password: z.string().min(1, 'Password is required'),
+  appContext: z.string().optional()
 });
 
-export const defaultValues: LoginFormDataType = { persona: '', password: '' };
+export const defaultValues: LoginFormDataType = { persona: '', password: '', appContext: 'cms' };
 
 export const loginFields: FormField<LoginFormDataType>[] = [
   { name: 'persona', label: 'Email or Username', xs: 12, type: 'text', placeholder: 'Enter email or username' },
