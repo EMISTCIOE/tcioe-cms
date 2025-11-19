@@ -42,8 +42,21 @@ const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampu
   // Reset form with data when it's available
   useEffect(() => {
     if (campusKeyOfficialsData) {
+      // Map values from API response into the form. Use `any` to allow both
+      // snake_case (server) and camelCase (typed) shapes.
+      const dataAny: any = campusKeyOfficialsData as any;
       reset({
-        ...campusKeyOfficialsData
+        id: Number(dataAny.id),
+        titlePrefix: dataAny.title_prefix ?? dataAny.titlePrefix,
+        designation: dataAny.designation ?? dataAny.designation,
+        fullName: dataAny.full_name ?? dataAny.fullName ?? '',
+        message: dataAny.message ?? '',
+        photo: dataAny.photo ?? null,
+        email: dataAny.email ?? null,
+        phoneNumber: dataAny.phone_number ?? dataAny.phoneNumber ?? '',
+        isKeyOfficial: dataAny.is_key_official ?? dataAny.isKeyOfficial ?? true,
+        isActive: dataAny.is_active ?? dataAny.isActive ?? true,
+        displayOrder: dataAny.display_order ?? dataAny.displayOrder ?? 1
       });
     }
   }, [campusKeyOfficialsData, reset]);
@@ -71,9 +84,16 @@ const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampu
   const onSubmit = async (data: TCampusKeyOfficialsUpdateFormDataType) => {
     const { id, ...values } = data;
     try {
+      // Transform displayOrder (camelCase) to display_order for backend
+      const apiValues: any = { ...values };
+      if (apiValues.displayOrder !== undefined) {
+        apiValues.display_order = apiValues.displayOrder;
+        delete apiValues.displayOrder;
+      }
+
       const payload = {
-        id,
-        values: values as ICampusKeyOfficialsUpdatePayload
+        id: String(id), // API expects id as string
+        values: apiValues as ICampusKeyOfficialsUpdatePayload
       };
       const res = await updateCampusKeyOfficials(payload).unwrap();
       dispatch(setMessage({ message: res.message, variant: 'success' }));

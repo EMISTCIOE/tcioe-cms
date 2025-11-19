@@ -104,4 +104,5 @@ export interface ICampusKeyOfficialsUpdatePayload {
   message?: string;
   isKeyOfficial?: boolean;
   isActive?: boolean;
+  displayOrder?: number;
 }

@@ -12,6 +12,7 @@ export const campusKeyOfficialsUpdateFormSchema = z.object({
     })
     .optional(),
   designation: z.string().min(1, 'Designation is required').optional(),
+  displayOrder: z.number().min(1, 'Display Order must be at least 1').optional(),
   fullName: z.string().min(1, 'FullName is required').optional(),
   email: z.string().email('Invalid email address').optional(),
   message: z.string().optional(),
@@ -45,6 +46,7 @@ export type TCampusKeyOfficialsUpdateFormDataType = z.infer<typeof campusKeyOffi
 export const defaultValues: Partial<TCampusKeyOfficialsUpdateFormDataType> = {
   titlePrefix: undefined,
   designation: undefined,
+  displayOrder: 1,
   fullName: '',
   email: '',
   message: '',
@@ -65,6 +67,7 @@ export const campusKeyOfficialsUpdateFields: FormField<TCampusKeyOfficialsUpdate
     required: true,
     options: []
   },
+  { name: 'displayOrder', label: 'Display Order', xs: 12, sm: 4, type: 'number' },
   {
     name: 'titlePrefix',
     label: 'Title Prefix',
