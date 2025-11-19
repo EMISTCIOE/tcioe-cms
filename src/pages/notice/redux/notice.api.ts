@@ -102,7 +102,7 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
       invalidatesTags: ['Notice']
     }),
 
-    patchNotice: builder.mutation<IMutationSuccessResponse, { id: number; values: INoticeUpdatePayload }>({
+    patchNotice: builder.mutation<IMutationSuccessResponse, { id: string; values: INoticeUpdatePayload }>({
       query: ({ id, values }) => {
         const { thumbnail, medias, status, isDraft, department, ...rest } = values;
 
@@ -230,7 +230,7 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
       },
       invalidatesTags: ['Notice']
     }),
-    deleteNoticeMedia: builder.mutation<IMutationSuccessResponse, { id: number; media_id: number }>({
+    deleteNoticeMedia: builder.mutation<IMutationSuccessResponse, { id: string; media_id: string }>({
       query: ({ id, media_id }) => {
         return {
           url: `${noticeAPI}/${id}/media/${media_id}`,

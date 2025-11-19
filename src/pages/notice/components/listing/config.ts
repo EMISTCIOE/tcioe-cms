@@ -41,33 +41,35 @@ export const getColumnConfig = (
   ) => Promise<void>,
   customActions: ((params: GridRowParams<ITableData>) => JSX.Element)[]
 ): ColumnConfig<ITableData>[] => [
-  { field: 'thumbnail', headerName: 'THUMBNAIL', type: 'image' },
-  { field: 'title', headerName: 'TITLE', type: 'text', minWidth: 200 },
-  {
-    field: 'department',
-    headerName: 'DEPARTMENT',
-    type: 'select',
-    editable: true,
-    minWidth: 380,
-    valueOptions: departmentOptions,
-    filterable: true
-  },
+  { field: 'thumbnail', headerName: 'THUMBNAIL', type: 'image', minWidth: 80 },
+  { field: 'title', headerName: 'TITLE', type: 'text', minWidth: 250 },
   {
     field: 'category',
     headerName: 'CATEGORY',
     type: 'select',
     editable: true,
-    minWidth: 200,
+    minWidth: 150,
     valueOptions: categoryOptions,
     filterable: true
   },
-  { field: 'authorName', headerName: 'AUTHOR', type: 'text', editable: false },
-  { field: 'publishedAt', headerName: 'PUBLISHED AT', type: 'date', sortable: true, editable: false },
+  {
+    field: 'department',
+    headerName: 'DEPARTMENT',
+    type: 'select',
+    editable: true,
+    minWidth: 200,
+    valueOptions: departmentOptions,
+    filterable: true,
+    visible: false
+  },
+  { field: 'authorName', headerName: 'AUTHOR', type: 'text', editable: false, minWidth: 150 },
+  { field: 'publishedAt', headerName: 'PUBLISHED', type: 'date', sortable: true, editable: false, minWidth: 120 },
   {
     field: 'isFeatured',
     headerName: 'FEATURED',
     type: 'select',
     filterable: true,
+    minWidth: 100,
     valueOptions: [
       { label: 'Yes', value: 'true' },
       { label: 'No', value: 'false' }
@@ -76,9 +78,10 @@ export const getColumnConfig = (
   },
   {
     field: 'isApprovedByDepartment',
-    headerName: 'APPROVED (DEPT)',
+    headerName: 'DEPT',
     type: 'select',
     filterable: true,
+    minWidth: 90,
     valueOptions: [
       { label: 'Yes', value: 'true' },
       { label: 'No', value: 'false' }
@@ -89,9 +92,10 @@ export const getColumnConfig = (
   },
   {
     field: 'isApprovedByCampus',
-    headerName: 'APPROVED (CAMPUS)',
+    headerName: 'CAMPUS',
     type: 'select',
     filterable: true,
+    minWidth: 100,
     valueOptions: [
       { label: 'Yes', value: 'true' },
       { label: 'No', value: 'false' }
@@ -105,6 +109,7 @@ export const getColumnConfig = (
     headerName: 'STATUS',
     type: 'select',
     filterable: true,
+    minWidth: 120,
     valueOptions: [...enumToOptions(NoticeStatus)],
     colorMap: StatusColorMap,
     editable: canUpdateStatus,
@@ -114,6 +119,7 @@ export const getColumnConfig = (
     field: 'actions',
     headerName: 'ACTIONS',
     type: 'actions',
+    minWidth: 120,
     customActions
   }
 ];

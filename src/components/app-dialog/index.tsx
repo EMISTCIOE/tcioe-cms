@@ -39,7 +39,7 @@ export default function AppDialog({
   open,
   keepMounted = true,
   fullWidth = false,
-  maxWidth = false,
+  maxWidth = 'lg',
 
   // Callbacks
   onClose = () => {},
@@ -70,14 +70,21 @@ export default function AppDialog({
         TransitionComponent={CustomTransition}
         keepMounted={keepMounted}
         fullScreen={fullWidth}
+        fullWidth={maxWidth !== false}
         maxWidth={maxWidth}
+        sx={{
+          '& .MuiDialog-paper': {
+            maxHeight: '90vh',
+            height: fullWidth ? '100vh' : 'auto'
+          }
+        }}
       >
-        {title && <DialogTitle>{title}</DialogTitle>}
-        <DialogContent>
+        {title && <DialogTitle sx={{ pb: 1 }}>{title}</DialogTitle>}
+        <DialogContent sx={{ pt: 2 }}>
           {contentText && <DialogContentText>{contentText}</DialogContentText>}
           {content}
         </DialogContent>
-        {actions && <DialogActions>{actions}</DialogActions>}
+        {actions && <DialogActions sx={{ px: 3, pb: 2 }}>{actions}</DialogActions>}
       </Dialog>
     </React.Fragment>
   );

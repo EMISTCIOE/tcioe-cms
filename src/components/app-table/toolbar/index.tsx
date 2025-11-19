@@ -81,7 +81,14 @@ const CombinedToolbar = React.forwardRef<HTMLDivElement, ToolbarProps>((props, r
               <Button onClick={handleOpenForm} variant="contained" sx={{ mx: 1 }}>
                 {createButtonTitle ?? 'Create New'}
               </Button>
-              <AppDialog open={showForm} onClose={handleCloseForm} content={createNewForm(handleCloseForm)} fullWidth maxWidth="lg" />
+              <AppDialog
+                open={showForm}
+                onClose={handleCloseForm}
+                title={`Create New ${title || 'Entry'}`}
+                content={createNewForm(handleCloseForm)}
+                fullWidth={false}
+                maxWidth="lg"
+              />
             </>
           )}
 

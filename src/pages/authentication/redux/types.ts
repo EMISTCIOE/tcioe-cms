@@ -1,17 +1,17 @@
 export interface IPermission {
-  id: number;
+  id: string;
   name: string;
   codename: string;
 }
 
 export interface IRole {
-  id: number;
+  id: string;
   name: string;
   codename: string;
 }
 
 export interface IAuthState {
-  id: number;
+  id: string;
   fullName: string;
   email: string;
   phoneNo: string;

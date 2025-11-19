@@ -1,5 +1,5 @@
 export interface IDepartment {
-  id: number;
+  id: string;
   name: string;
   short_name: string;
   slug?: string;
@@ -42,6 +42,6 @@ export interface IDepartmentUpdatePayload {
 
 export interface IDepartmentSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }

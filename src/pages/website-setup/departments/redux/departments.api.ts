@@ -27,7 +27,7 @@ export const departmentApi = rootAPI.injectEndpoints({
     }),
 
     // Get department by ID
-    getDepartmentById: builder.query<IDepartment, number | null>({
+    getDepartmentById: builder.query<IDepartment, string | null>({
       query: (id) => ({
         url: `${departmentAPI}/${id}`,
         method: 'GET'
@@ -62,7 +62,7 @@ export const departmentApi = rootAPI.injectEndpoints({
     }),
 
     // Update department
-    patchDepartment: builder.mutation<{ message: string }, { id: number; values: IDepartmentUpdatePayload }>({
+    patchDepartment: builder.mutation<{ message: string }, { id: string; values: IDepartmentUpdatePayload }>({
       query: ({ id, values }) => {
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
@@ -87,7 +87,7 @@ export const departmentApi = rootAPI.injectEndpoints({
     }),
 
     // Delete department (soft delete - set is_archived=true)
-    deleteDepartment: builder.mutation<{ message: string }, number>({
+    deleteDepartment: builder.mutation<{ message: string }, string>({
       query: (id) => ({
         url: `${departmentAPI}/${id}`,
         method: 'DELETE'

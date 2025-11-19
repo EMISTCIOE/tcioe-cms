@@ -16,23 +16,23 @@ export default function NoticeCreateForm({ onClose }: INoticeCreateFormProps) {
   const formValues = watch();
 
   return (
-    <form onSubmit={handleSubmit()} noValidate>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <MainCard divider title="Create New Notice">
+    <Box sx={{ width: '100%' }}>
+      <form onSubmit={handleSubmit()} noValidate>
+        <Grid container spacing={2.5}>
+          <Grid item xs={12}>
             <FormSection<TNoticeCreateFormDataType> fields={formFields} control={control} errors={errors} formValues={formValues} />
-          </MainCard>
-        </Grid>
+          </Grid>
 
-        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, flexWrap: 'wrap' }}>
-          <Button variant="outlined" color="error" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variant="contained" type="submit" disabled={Object.keys(errors).length > 0}>
-            Create
-          </Button>
+          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 1 }}>
+            <Button variant="outlined" color="error" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button variant="contained" type="submit" disabled={Object.keys(errors).length > 0}>
+              Create
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
-    </form>
+      </form>
+    </Box>
   );
 }

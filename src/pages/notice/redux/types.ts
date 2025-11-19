@@ -3,15 +3,14 @@ import { IListResponse } from '@/globals';
 /* ------------------------- Notice slice interface ------------------------- */
 export interface INoticeSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
   isStatusModal: boolean;
 }
 
 export interface INoticeStatusSliceState {
-  edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  isApproved: boolean;
+  currentId: string | null;
 }
 
 export enum NoticeStatus {
@@ -28,38 +27,38 @@ export enum MediaType {
 
 /* -------------------------- Notice get interfaces ------------------------- */
 export interface INoticeCategoryItem {
-  id: number;
+  id: string;
   name: string;
 }
 
 export interface INoticeDepartmentItem {
-  id: number;
+  id: string;
   name: string;
 }
 
 export interface INoticeMediaItem {
-  id: number;
+  id: string;
   file: string;
   caption?: string;
   mediaType: MediaType;
 }
 
 export interface INoticeAuthorItem {
-  id: number;
+  id: string;
   fullName: string;
   photo: string;
 }
 
 export interface INoticeItem {
-  id: number;
+  id: string;
   title: string;
   slug: string;
   thumbnail: string;
   isFeatured: boolean;
   isApprovedByDepartment?: boolean;
   isApprovedByCampus?: boolean;
-  department: number | null;
-  category: number;
+  department: string | null;
+  category: string;
   status: NoticeStatus;
   departmentName: string | null;
   categoryName: string;
@@ -72,7 +71,7 @@ export interface INoticeList extends IListResponse {
 }
 
 export interface INoticeDetails {
-  id: number;
+  id: string;
   title: string;
   slug: string;
   description: string;
@@ -102,8 +101,8 @@ export interface INoticeMediaCreatePayload {
 
 export interface INoticeCreatePayload {
   title: string;
-  department: number | string | null;
-  category: number;
+  department: string | null;
+  category: string;
   thumbnail?: File | null;
   isFeatured: boolean;
   isDraft: boolean;
@@ -113,7 +112,7 @@ export interface INoticeCreatePayload {
 
 /* ------------------------- Notice patch interfaces ------------------------- */
 export interface INoticeMediaPatchPayload {
-  id?: number;
+  id?: string;
   file: File | string | null;
   caption?: string;
   mediaType: MediaType;
@@ -121,8 +120,8 @@ export interface INoticeMediaPatchPayload {
 
 export interface INoticeUpdatePayload {
   title: string;
-  department?: number | string | null;
-  category?: number;
+  department?: string | null;
+  category?: string;
   thumbnail?: File | string | null;
   isFeatured?: boolean;
   isDraft?: boolean;

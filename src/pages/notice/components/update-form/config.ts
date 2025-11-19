@@ -77,7 +77,7 @@ export const defaultValues: Partial<TNoticeUpdateFormDataType> = {
   medias: [{ file: null, caption: '', mediaType: MediaType.DOCUMENT }]
 };
 
-// NOTE - Define the form fields
+// NOTE - Define the form fields with improved layout
 export const noticeUpdateFields: FormField<TNoticeUpdateFormDataType>[] = [
   {
     name: 'title',
@@ -86,22 +86,20 @@ export const noticeUpdateFields: FormField<TNoticeUpdateFormDataType>[] = [
     sm: 12,
     type: 'text',
     multiline: true,
-    rows: 3,
+    rows: 2,
     required: true,
     inputStyle: { fontSize: '1rem' }
   },
-  { name: 'description', label: 'Description', xs: 12, sm: 12, type: 'editor', multiline: true, rows: 5 },
-  { name: 'department', label: 'Department', xs: 8, sm: 5, type: 'select', options: [], required: false },
-  { name: 'category', label: 'Category', xs: 4, sm: 4, type: 'select', options: [], required: true },
-  { name: 'isDraft', label: 'SaveAs Draft', xs: 2, sm: 2, type: 'switch', showIf: (formData) => formData.status === NoticeStatus.DRAFT },
-  { name: 'isFeatured', label: 'SaveAs Featured', xs: 2, sm: 2, type: 'switch' },
+  { name: 'department', label: 'Department', xs: 12, sm: 6, type: 'select', options: [], required: false },
+  { name: 'category', label: 'Category', xs: 12, sm: 6, type: 'select', options: [], required: true },
+  { name: 'description', label: 'Description', xs: 12, sm: 12, type: 'editor', multiline: true, rows: 4 },
   {
     name: 'thumbnail',
     label: 'Thumbnail',
     xs: 12,
-    sm: 12,
+    sm: 6,
     type: 'image',
-    imageSize: 120
+    imageSize: 100
   },
   {
     name: 'medias',
@@ -109,17 +107,19 @@ export const noticeUpdateFields: FormField<TNoticeUpdateFormDataType>[] = [
     type: 'array',
     required: false,
     xs: 12,
-    sm: 12,
+    sm: 6,
     itemFields: [
       {
         name: 'file',
         label: 'File',
         type: 'file',
         xs: 12,
-        sm: 3,
+        sm: 5,
         required: true
       },
-      { name: 'caption', label: 'Caption', type: 'text', xs: 11, sm: 8 }
+      { name: 'caption', label: 'Caption', type: 'text', xs: 12, sm: 7 }
     ] as FormField<Media>[]
-  }
+  },
+  { name: 'isFeatured', label: 'Featured', xs: 6, sm: 3, type: 'switch' },
+  { name: 'isDraft', label: 'Draft', xs: 6, sm: 3, type: 'switch', showIf: (formData) => formData.status === NoticeStatus.DRAFT }
 ];

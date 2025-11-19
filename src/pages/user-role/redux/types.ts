@@ -3,16 +3,16 @@ import { Dispatch, SetStateAction } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
 export interface Permission {
-  id?: number;
+  id?: string;
   name: string;
   codename: string;
   isActive: boolean;
 }
 
 export interface UserPermissionItem extends Permission {
-  mainModule: number;
+  mainModule: string;
   mainModuleName: string;
-  permissionCategory: number;
+  permissionCategory: string;
   permissionCategoryName: string;
 }
 
@@ -22,19 +22,19 @@ export interface UserRole extends Permission {
 
 export interface MainModule extends Permission {}
 export interface SubModule extends Omit<MainModule, 'codename'> {
-  mainModule: number;
+  mainModule: string;
   mainModuleName: string;
 }
 
 interface detaiPermission extends Omit<MainModule, 'isActive'> {
-  id: number;
-  permissionCategory: number;
+  id: string;
+  permissionCategory: string;
 }
 
 export interface UserRoleDetailed extends Permission {
-  id: number;
+  id: string;
   permissions: detaiPermission[];
-  createdBy: number;
+  createdBy: string;
   createdByUsername: string;
   createdByFullName: string;
   createdAt: string;
@@ -43,15 +43,15 @@ export interface UserRoleDetailed extends Permission {
 
 export interface CreateUserRole {
   name: string;
-  permissions?: number[];
+  permissions?: string[];
   isActive?: boolean;
 }
 
 export interface UpdateUserRole {
-  id: number;
+  id: string;
   values: {
     name?: string;
-    permissions?: number[];
+    permissions?: string[];
     isActive?: boolean;
     remarks?: string;
   };
@@ -78,8 +78,8 @@ export interface PermissionsProps {
 
 export interface UserRoleSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 export interface UserRoleListQueryParams {

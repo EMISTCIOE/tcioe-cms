@@ -48,7 +48,7 @@ export const userRoleAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Create User Role
-    createUserRole: builder.mutation<{ id: number; message: string }, CreateUserRole>({
+    createUserRole: builder.mutation<{ id: string; message: string }, CreateUserRole>({
       query: (values) => {
         const body = JSON.stringify(values);
         return {
@@ -61,7 +61,7 @@ export const userRoleAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Patch User Role
-    patchUserRole: builder.mutation<{ id: number; message: string }, UpdateUserRole>({
+    patchUserRole: builder.mutation<{ id: string; message: string }, UpdateUserRole>({
       query: ({ id, values }) => {
         return {
           url: `${userRoleAPI}/${id}`,
@@ -107,7 +107,7 @@ export const userRoleAPISlice = rootAPI.injectEndpoints({
       keepUnusedDataFor: 0.01
     }),
     // Archive User Role
-    archiveUserRole: builder.mutation<{ id: number; message: string }, number>({
+    archiveUserRole: builder.mutation<{ id: string; message: string }, string>({
       query: (id) => {
         return {
           url: `${userRoleAPI}/${id}/archive`,

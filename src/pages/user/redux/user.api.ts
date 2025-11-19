@@ -76,7 +76,7 @@ export const userAPISlice = rootAPI.injectEndpoints({
 
     // Update User
     patchUser: builder.mutation({
-      query: ({ id, values }: { id: number; values: UserUpdatePayload }) => {
+      query: ({ id, values }: { id: string; values: UserUpdatePayload }) => {
         const { roles, photo, ...rest } = values;
         const body = new FormData();
 
@@ -118,7 +118,7 @@ export const userAPISlice = rootAPI.injectEndpoints({
       keepUnusedDataFor: 0.1
     }),
     // Archive User
-    archiveUser: builder.mutation<{ id: number; message: string }, number>({
+    archiveUser: builder.mutation<{ id: string; message: string }, string>({
       query: (id) => {
         return {
           url: `${userAPI}/${id}/archive`,

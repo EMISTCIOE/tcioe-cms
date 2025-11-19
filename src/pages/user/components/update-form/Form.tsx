@@ -58,7 +58,7 @@ export default function UserUpdateForm({ userData, onClose }: UserFormProps) {
         id: userData.id,
         name: `${userData.firstName} ${userData.lastName}`,
         phoneNo: userData.phoneNo || '',
-        roles: userData.roles.map((role: { id: number; name: string; codename: string }) => role.id),
+        roles: userData.roles.map((role: { id: string; name: string; codename: string }) => role.id),
         isActive: userData.isActive,
         photo: userData.photo || undefined
       };

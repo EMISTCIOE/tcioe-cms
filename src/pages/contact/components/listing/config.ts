@@ -2,7 +2,7 @@ import { Theme } from '@mui/material';
 import { ColumnConfig } from '@/components/app-table/columns';
 
 export interface ITableData {
-  id: number;
+  id: string;
   department_name: string;
   phone_number: string;
   description: string;

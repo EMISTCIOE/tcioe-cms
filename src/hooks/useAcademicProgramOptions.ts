@@ -3,7 +3,7 @@ import { axiosInstance } from '@/libs/axios';
 import { SelectOption } from '@/components/app-form/types';
 
 interface AcademicProgramFetch {
-  id: number;
+  id: string;
   name: string;
   short_name?: string | null;
 }

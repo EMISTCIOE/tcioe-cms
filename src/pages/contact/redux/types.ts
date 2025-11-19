@@ -1,5 +1,5 @@
 export interface IPhoneNumber {
-  id: number;
+  id: string;
   department_name: string;
   phone_number: string;
   description?: string;

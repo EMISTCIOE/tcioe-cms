@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export interface IPhoneNumberState {
-  selectedPhoneNumberId: number | null;
+  selectedPhoneNumberId: string | null;
   isEditModalOpen: boolean;
   isDetailModalOpen: boolean;
   isCreateModalOpen: boolean;

@@ -16,8 +16,11 @@ const NoticeEditModal = () => {
   const dispatch = useDispatch();
   const { edit, currentId, isStatusModal } = useSelector(noticeState);
 
+  // Convert currentId to number for the query
+  const numericId = currentId ? Number(currentId) : null;
+
   // Only fetch when we have a valid ID and are in edit mode
-  const { data: noticeData, isLoading } = useRetrieveNoticeQuery(currentId, { skip: !currentId || !edit });
+  const { data: noticeData, isLoading } = useRetrieveNoticeQuery(numericId, { skip: !numericId || !edit });
 
   // If the either of value is not set, we don't need to show the modal
   if (!currentId || !edit) {
@@ -33,7 +36,9 @@ const NoticeEditModal = () => {
     <AppDialog
       open={edit}
       onClose={handleClose}
-      fullWidth={!isStatusModal}
+      fullWidth={false}
+      maxWidth={isStatusModal ? 'sm' : 'lg'}
+      title={isStatusModal ? 'Update Status' : 'Update Notice'}
       content={
         isLoading ? (
           <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>

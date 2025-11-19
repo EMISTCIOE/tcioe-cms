@@ -18,23 +18,23 @@ export default function NoticeUpdateForm({ noticeData, onClose }: INoticeUpdateF
   const formValues = watch();
 
   return (
-    <form onSubmit={handleSubmit()}>
-      <Grid container spacing={3} sx={{ pt: 1 }}>
-        <Grid item xs={12}>
-          <MainCard divider title={'Update Notice'}>
+    <Box sx={{ width: '100%' }}>
+      <form onSubmit={handleSubmit()}>
+        <Grid container spacing={2.5}>
+          <Grid item xs={12}>
             <FormSection<TNoticeUpdateFormDataType> fields={formFields} formValues={formValues} control={control} errors={errors} />
-          </MainCard>
-        </Grid>
+          </Grid>
 
-        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, flexWrap: 'wrap' }}>
-          <Button variant="outlined" color="error" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variant="contained" type="submit">
-            Update
-          </Button>
+          <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 1 }}>
+            <Button variant="outlined" color="error" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button variant="contained" type="submit">
+              Update
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
-    </form>
+      </form>
+    </Box>
   );
 }

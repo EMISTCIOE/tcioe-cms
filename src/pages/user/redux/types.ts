@@ -1,7 +1,7 @@
 import { GridFilterModel, GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
 
 export interface UserRole {
-  id: number;
+  id: string;
   name: string;
   codename: string;
   isActive?: boolean;
@@ -12,8 +12,8 @@ export interface UseRoleList {
   results: UserRole[];
 }
 
-export interface UserItem {
-  id: number;
+export interface IUser {
+  id: string;
   username: string;
   firstName: string;
   middleName: string;
@@ -28,7 +28,7 @@ export interface UserItem {
 
 export interface UserList {
   count: number;
-  results: UserItem[];
+  results: IUser[];
 }
 
 export interface UserCreatePayload {
@@ -38,7 +38,7 @@ export interface UserCreatePayload {
   username?: string;
   email: string;
   password: string;
-  roles: number[];
+  roles: string[];
   phoneNo?: string;
   isActive?: boolean;
   photo?: File | null | undefined;
@@ -47,26 +47,26 @@ export interface UserCreatePayload {
 export interface UserUpdatePayload {
   firstName?: string;
   lastName?: string;
-  roles?: number[];
+  roles?: string[];
   phoneNo?: string;
   isActive?: boolean;
   photo?: File | null | undefined;
 }
 
-export interface UserDetails extends UserItem {
+export interface UserDetails extends IUser {
   isEmailVerified: boolean;
   isPhoneVerified: boolean;
   lastLogin: string;
   createdByUsername: string;
-  createdBy: number;
-  roles: { id: number; name: string }[];
-  permissions: number[];
+  createdBy: string;
+  roles: { id: string; name: string }[];
+  permissions: string[];
 }
 
 export interface UserSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 export interface UserListQueryParams {
