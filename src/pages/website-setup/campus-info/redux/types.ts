@@ -9,7 +9,7 @@ export enum SocialPlatform {
 }
 
 export interface ISocialLink {
-  id?: number;
+  id?: string;
   platform: SocialPlatform;
   url?: string | null;
   isActive: boolean;

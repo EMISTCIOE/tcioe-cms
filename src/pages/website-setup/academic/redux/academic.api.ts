@@ -78,7 +78,7 @@ export const academicAPISlice = rootAPI.injectEndpoints({
       ]
     }),
 
-    deleteAcademicProgram: builder.mutation<IMutationSuccessResponse, number>({
+    deleteAcademicProgram: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => ({
         url: `${academicProgramsAPI}/${id}`,
         method: 'DELETE'

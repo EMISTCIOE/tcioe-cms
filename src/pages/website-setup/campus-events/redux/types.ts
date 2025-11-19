@@ -3,14 +3,14 @@ import { IListResponse } from '@/globals';
 /* ------------------------- CampusEvents slice interface ------------------------- */
 export interface ICampusEventsSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 export interface ICampusEventsStatusSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 /* ------------------------- CampusEvents Enums ------------------------ */
@@ -26,7 +26,7 @@ export enum ICampusEvent {
 /* -------------------------- CampusEvents get interfaces ------------------------- */
 
 export interface ICampusEventsItem {
-  id: number;
+  id: string;
   title: string;
   eventType: ICampusEvent;
   eventStartDate: string; // ISO Date string
@@ -36,7 +36,7 @@ export interface ICampusEventsItem {
 }
 
 export interface ICampusEventsGallery {
-  id: number;
+  id: string;
   image: string;
   caption?: string;
   isActive?: boolean;
@@ -47,7 +47,7 @@ export interface ICampusEventsList extends IListResponse {
 }
 
 export interface ICampusEventsDetails {
-  id: number;
+  id: string;
   title: string;
   descriptionShort: string;
   descriptionDetailed: string;
@@ -57,7 +57,7 @@ export interface ICampusEventsDetails {
   thumbnail: string;
   gallery: ICampusEventsGallery[];
   union?: {
-    id: number;
+    id: string;
     uuid: string;
     name: string;
   } | null;
@@ -74,7 +74,7 @@ export interface ICampusEventsCreatePayload {
   descriptionShort: string;
   descriptionDetailed?: string;
   eventType?: ICampusEvent;
-  union?: number | null;
+  union?: string | null;
   eventStartDate?: string; // ISO Date string
   eventEndDate?: string; // ISO Date string
   thumbnail: File | null;
@@ -88,10 +88,10 @@ export interface ICampusEventsUpdatePayload {
   descriptionShort: string;
   descriptionDetailed?: string;
   eventType?: ICampusEvent;
-  union?: number | null;
+  union?: string | null;
   eventStartDate?: string; // ISO Date string
   eventEndDate?: string; // ISO Date string
   thumbnail?: File | string | null;
-  gallery?: (Omit<ICampusEventsGallery, 'id' | 'image'> & { id?: number; image: File | string })[];
+  gallery?: (Omit<ICampusEventsGallery, 'id' | 'image'> & { id?: string; image: File | string })[];
   isActive?: boolean;
 }

@@ -31,7 +31,7 @@ export interface IListQueryParams {
 }
 
 export interface IMutationSuccessResponse {
-  id?: number;
+  id?: string;
   message?: string;
   is_internal?: boolean;
 }

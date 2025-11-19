@@ -53,7 +53,7 @@ const useUpdateCampusEvents = ({ campusEventsData, onClose }: ICampusEventsUpdat
   }, [campusEventsData, reset]);
 
   // delete handler for gallery item
-  const handleDeleteGalleryItem = async (index: number, gallery_id: number | undefined) => {
+  const handleDeleteGalleryItem = async (index: number, gallery_id?: string) => {
     if (!campusEventsData?.id || !gallery_id) return;
 
     try {

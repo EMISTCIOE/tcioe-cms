@@ -5,7 +5,7 @@ import { ICampusEvent } from '../../redux/types';
 
 // NOTE - Define the schema for the gallery items
 const eventGallerySchema = z.object({
-  id: z.number().optional(),
+  id: z.string().optional(),
   image: z.union([z.string().min(1, 'File URL cannot be empty.'), z.any()]).refine(
     (file) => {
       if (typeof file === 'string') {
@@ -26,12 +26,12 @@ export type EventGallery = z.infer<typeof eventGallerySchema>;
 
 // NOTE - Define the schema for the form.
 export const campusEventsUpdateFormSchema = z.object({
-  id: z.number().min(1, 'Event ID is required'),
+  id: z.string().min(1, 'Event ID is required'),
   title: z.string().min(1, 'Title is required'),
   descriptionShort: z.string().min(1, 'Short Description is required'),
   descriptionDetailed: z.string().optional(),
   eventType: z.nativeEnum(ICampusEvent).optional(),
-  union: z.number().nullable().optional(),
+  union: z.string().min(1, 'Union is required').nullable().optional(),
   eventStartDate: z.string().optional(),
   eventEndDate: z.string().optional(),
   isActive: z.boolean().default(true),

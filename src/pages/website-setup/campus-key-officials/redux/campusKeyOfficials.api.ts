@@ -36,7 +36,7 @@ export const campusKeyOfficialsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Retrieve CampusKeyOfficials
-    retrieveCampusKeyOfficials: builder.query<ICampusKeyOfficialsDetails, number | null>({
+    retrieveCampusKeyOfficials: builder.query<ICampusKeyOfficialsDetails, string | null>({
       query: (id) => {
         return {
           url: `${campusKeyOfficialsAPI}/${id}`,
@@ -77,7 +77,7 @@ export const campusKeyOfficialsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Patch CampusKeyOfficials
-    patchCampusKeyOfficials: builder.mutation<IMutationSuccessResponse, { id: number; values: ICampusKeyOfficialsUpdatePayload }>({
+    patchCampusKeyOfficials: builder.mutation<IMutationSuccessResponse, { id: string; values: ICampusKeyOfficialsUpdatePayload }>({
       query: ({ id, values }) => {
         const { photo, ...rest } = values;
 
@@ -107,7 +107,7 @@ export const campusKeyOfficialsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Delete CampusKeyOfficials
-    deleteCampusKeyOfficials: builder.mutation<IMutationSuccessResponse, number>({
+    deleteCampusKeyOfficials: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => {
         return {
           url: `${campusKeyOfficialsAPI}/${id}`,

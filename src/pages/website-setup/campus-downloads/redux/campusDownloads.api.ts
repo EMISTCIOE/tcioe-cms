@@ -28,7 +28,7 @@ export const campusDownloadsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Retrieve CampusDownloads
-    retrieveCampusDownloads: builder.query<ICampusDownloadsDetails, number | null>({
+    retrieveCampusDownloads: builder.query<ICampusDownloadsDetails, string | null>({
       query: (id) => {
         return {
           url: `${campusDownloadsAPI}/${id}`,
@@ -66,7 +66,7 @@ export const campusDownloadsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Patch CampusDownloads
-    patchCampusDownloads: builder.mutation<IMutationSuccessResponse, { id: number; values: ICampusDownloadsUpdatePayload }>({
+    patchCampusDownloads: builder.mutation<IMutationSuccessResponse, { id: string; values: ICampusDownloadsUpdatePayload }>({
       query: ({ id, values }) => {
         const { file, ...rest } = values;
 
@@ -93,7 +93,7 @@ export const campusDownloadsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Delete CampusDownloads
-    deleteCampusDownloads: builder.mutation<IMutationSuccessResponse, number>({
+    deleteCampusDownloads: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => {
         return {
           url: `${campusDownloadsAPI}/${id}`,

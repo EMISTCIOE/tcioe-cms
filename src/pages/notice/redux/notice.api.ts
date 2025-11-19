@@ -39,7 +39,7 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Retrieve Notice
-    retrieveNotice: builder.query<INoticeDetails, number | null>({
+    retrieveNotice: builder.query<INoticeDetails, string | null>({
       query: (id) => {
         return {
           url: `${noticeAPI}/${id}`,
@@ -221,7 +221,7 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
       providesTags: ['Notice']
     }),
     // Archive Notice
-    deleteNotice: builder.mutation<IMutationSuccessResponse, number>({
+    deleteNotice: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => {
         return {
           url: `${noticeAPI}/${id}`,

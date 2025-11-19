@@ -37,7 +37,7 @@ export const projectsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Retrieve Project
-    retrieveProject: builder.query<IProjectDetails, number | null>({
+    retrieveProject: builder.query<IProjectDetails, string | null>({
       query: (id) => {
         return {
           url: `${projectsAPI}/${id}`,
@@ -123,7 +123,7 @@ export const projectsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Delete Project
-    deleteProject: builder.mutation<IMutationSuccessResponse, number>({
+    deleteProject: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => {
         return {
           url: `${projectsAPI}/${id}`,
@@ -171,7 +171,7 @@ export const projectsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Delete Project Tag
-    deleteProjectTag: builder.mutation<IMutationSuccessResponse, number>({
+    deleteProjectTag: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => {
         return {
           url: `${projectTagsAPI}/${id}`,

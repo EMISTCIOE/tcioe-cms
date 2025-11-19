@@ -28,7 +28,7 @@ export const studentClubsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Retrieve StudentClubs
-    retrieveStudentClubs: builder.query<IStudentClubsDetails, number | null>({
+    retrieveStudentClubs: builder.query<IStudentClubsDetails, string | null>({
       query: (id) => {
         return {
           url: `${studentClubsAPI}/${id}`,
@@ -90,7 +90,7 @@ export const studentClubsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Patch StudentClubs
-    patchStudentClubs: builder.mutation<IMutationSuccessResponse, { id: number; values: IStudentClubsUpdatePayload }>({
+    patchStudentClubs: builder.mutation<IMutationSuccessResponse, { id: string; values: IStudentClubsUpdatePayload }>({
       query: ({ id, values }) => {
         const { members, thumbnail, department, ...rest } = values;
         const body = new FormData();
@@ -143,7 +143,7 @@ export const studentClubsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Delete StudentClubs
-    deleteStudentClubs: builder.mutation<IMutationSuccessResponse, number>({
+    deleteStudentClubs: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => {
         return {
           url: `${studentClubsAPI}/${id}`,
@@ -152,7 +152,7 @@ export const studentClubsAPISlice = rootAPI.injectEndpoints({
       },
       invalidatesTags: ['StudentClubs']
     }),
-    deletStudentClubsMember: builder.mutation<IMutationSuccessResponse, { id: number; member_id: number }>({
+    deletStudentClubsMember: builder.mutation<IMutationSuccessResponse, { id: string; member_id: string }>({
       query: ({ id, member_id }) => {
         return {
           url: `${studentClubsAPI}/${id}/member/${member_id}`,

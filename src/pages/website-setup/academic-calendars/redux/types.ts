@@ -3,8 +3,8 @@ import { IListResponse } from '@/globals';
 /* ------------------------- AcademicCalendars slice interface ------------------------- */
 export interface IAcademicCalendarsSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 /* ------------------------- AcademicCalendars Enums ------------------------ */
@@ -17,7 +17,7 @@ export enum IProgramType {
 /* -------------------------- AcademicCalendars get interfaces ------------------------- */
 
 export interface IAcademicCalendarsItem {
-  id: number;
+  id: string;
   programType: IProgramType;
   startYear: string; // ISO Date string
   endYear: string; // ISO Date string
@@ -30,7 +30,7 @@ export interface IAcademicCalendarsList extends IListResponse {
 }
 
 export interface IAcademicCalendarsDetails {
-  id: number;
+  id: string;
   programType: IProgramType;
   startYear: string; // ISO Date string
   endYear: string; // ISO Date string

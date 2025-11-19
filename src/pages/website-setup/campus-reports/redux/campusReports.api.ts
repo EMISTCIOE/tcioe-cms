@@ -36,7 +36,7 @@ export const campusReportsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Retrieve CampusReports
-    retrieveCampusReports: builder.query<ICampusReportsDetails, number | null>({
+    retrieveCampusReports: builder.query<ICampusReportsDetails, string | null>({
       query: (id) => {
         return {
           url: `${campusReportsAPI}/${id}`,
@@ -78,7 +78,7 @@ export const campusReportsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Patch CampusReports
-    patchCampusReports: builder.mutation<IMutationSuccessResponse, { id: number; values: ICampusReportsUpdatePayload }>({
+    patchCampusReports: builder.mutation<IMutationSuccessResponse, { id: string; values: ICampusReportsUpdatePayload }>({
       query: ({ id, values }) => {
         const { file, publishedDate, ...rest } = values;
         const body = new FormData();
@@ -108,7 +108,7 @@ export const campusReportsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Delete CampusReports
-    deleteCampusReports: builder.mutation<IMutationSuccessResponse, number>({
+    deleteCampusReports: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => {
         return {
           url: `${campusReportsAPI}/${id}`,

@@ -51,7 +51,7 @@ export const studentClubEventsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Retrieve StudentClubEvents
-    retrieveStudentClubEvents: builder.query<IStudentClubEventsDetails, number | null>({
+    retrieveStudentClubEvents: builder.query<IStudentClubEventsDetails, string | null>({
       query: (id) => {
         return {
           url: `${studentClubEventsAPI}/${id}`,
@@ -110,7 +110,7 @@ export const studentClubEventsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Patch StudentClubEvents
-    patchStudentClubEvents: builder.mutation<IMutationSuccessResponse, { id: number; values: IStudentClubEventsUpdatePayload }>({
+    patchStudentClubEvents: builder.mutation<IMutationSuccessResponse, { id: string; values: IStudentClubEventsUpdatePayload }>({
       query: ({ id, values }) => {
         const { thumbnail, gallery, date, ...rest } = values;
         const body = new FormData();
@@ -160,7 +160,7 @@ export const studentClubEventsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Delete StudentClubEvents
-    deleteStudentClubEvents: builder.mutation<IMutationSuccessResponse, number>({
+    deleteStudentClubEvents: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => {
         return {
           url: `${studentClubEventsAPI}/${id}`,
@@ -169,7 +169,7 @@ export const studentClubEventsAPISlice = rootAPI.injectEndpoints({
       },
       invalidatesTags: ['StudentClubEvents']
     }),
-    deletStudentClubEventsgallery: builder.mutation<IMutationSuccessResponse, { id: number; gallery_id: number }>({
+    deletStudentClubEventsgallery: builder.mutation<IMutationSuccessResponse, { id: string; gallery_id: string }>({
       query: ({ id, gallery_id }) => {
         return {
           url: `${studentClubEventsAPI}/${id}/gallery/${gallery_id}`,

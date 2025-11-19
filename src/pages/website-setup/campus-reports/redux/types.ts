@@ -3,8 +3,8 @@ import { IListResponse } from '@/globals';
 /* ------------------------- CampusReports slice interface ------------------------- */
 export interface ICampusReportsSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 /* ------------------------- CampusReports Enums ------------------------ */
@@ -16,7 +16,7 @@ export enum IReportType {
 }
 
 export interface IFiscalSession {
-  id: number;
+  id: string;
   sessionFull: string;
   sessionShort: string;
 }
@@ -24,7 +24,7 @@ export interface IFiscalSession {
 /* -------------------------- CampusReports get interfaces ------------------------- */
 
 export interface ICampusReportsItem {
-  id: number;
+  id: string;
   reportType: IReportType;
   fiscalSession: IFiscalSession;
   publishedDate: string; // ISO Date string
@@ -40,7 +40,7 @@ export interface IFiscalSessionsList extends IListResponse {
 }
 
 export interface ICampusReportsDetails {
-  id: number;
+  id: string;
   reportType: IReportType;
   fiscalSession: IFiscalSession;
   publishedDate: string; // ISO Date string
@@ -55,7 +55,7 @@ export interface ICampusReportsDetails {
 /* ------------------------ CampusReports post interfaces ------------------------ */
 export interface ICampusReportsCreatePayload {
   reportType: IReportType;
-  fiscalSession: number;
+  fiscalSession: string;
   publishedDate?: Date | string;
   file?: File | null;
   isActive?: boolean;
@@ -64,7 +64,7 @@ export interface ICampusReportsCreatePayload {
 /* ------------------------- CampusReports patch interfaces ------------------------- */
 export interface ICampusReportsUpdatePayload {
   reportType: IReportType;
-  fiscalSession: number;
+  fiscalSession: string;
   publishedDate?: Date | string;
   file?: File | string | null;
   isActive?: boolean;

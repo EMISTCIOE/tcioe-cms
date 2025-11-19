@@ -1,7 +1,7 @@
 import { IListResponse } from '@/globals';
 
 export interface IDepartmentSummary {
-  id: number;
+  id: string;
   name: string;
   short_name?: string;
 }
@@ -14,7 +14,7 @@ export interface IAcademicProgramLite {
 }
 
 export interface IAcademicProgram {
-  id: number;
+  id: string;
   name: string;
   short_name: string;
   description: string;
@@ -32,7 +32,7 @@ export interface IAcademicProgramFilters {
   limit: number;
   offset: number;
   search?: string;
-  department?: number;
+  department?: string;
 }
 
 export interface IAcademicProgramCreatePayload {
@@ -40,12 +40,12 @@ export interface IAcademicProgramCreatePayload {
   short_name: string;
   description: string;
   program_type: string;
-  department: number;
+  department: string;
   thumbnail?: File | null;
 }
 
 export interface IAcademicProgramUpdatePayload extends IAcademicProgramCreatePayload {
-  id: number;
+  id: string;
   is_active?: boolean;
 }
 
@@ -79,7 +79,7 @@ export interface ISubjectFilters {
   offset: number;
   search?: string;
   program?: string;
-  academic_program_id?: number;
+  academic_program_id?: string;
 }
 
 export interface ISubjectCreatePayload {
@@ -88,7 +88,7 @@ export interface ISubjectCreatePayload {
   semester: string;
   program: string;
   topics_covered: string;
-  academic_program_id?: number | null;
+  academic_program_id?: string | null;
 }
 
 export interface ISubjectUpdatePayload extends ISubjectCreatePayload {

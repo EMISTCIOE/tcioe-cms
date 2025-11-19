@@ -3,7 +3,7 @@ import { axiosInstance } from '@/libs/axios';
 import { SelectOption } from '@/components/app-form/types';
 
 interface CampusUnitOption {
-  id: number;
+  id: string;
   name: string;
 }
 

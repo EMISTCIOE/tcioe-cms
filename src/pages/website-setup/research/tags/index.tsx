@@ -24,7 +24,7 @@ import {
 import { Add, Edit, Delete } from '@mui/icons-material';
 
 interface IResearchTag {
-  id: number;
+  id: string;
   name: string;
   color: string;
   description?: string;
@@ -33,11 +33,11 @@ interface IResearchTag {
 
 const ResearchTags: React.FC = () => {
   const [tags, setTags] = useState<IResearchTag[]>([
-    { id: 1, name: 'Machine Learning', color: '#2196F3', description: 'ML and AI research projects', research_count: 8 },
-    { id: 2, name: 'Computer Vision', color: '#4CAF50', description: 'Image and video processing research', research_count: 4 },
-    { id: 3, name: 'Natural Language Processing', color: '#FF9800', description: 'NLP and text analysis research', research_count: 6 },
-    { id: 4, name: 'Robotics', color: '#9C27B0', description: 'Robotics and automation research', research_count: 3 },
-    { id: 5, name: 'Cybersecurity', color: '#F44336', description: 'Security and privacy research', research_count: 5 }
+    { id: '1', name: 'Machine Learning', color: '#2196F3', description: 'ML and AI research projects', research_count: 8 },
+    { id: '2', name: 'Computer Vision', color: '#4CAF50', description: 'Image and video processing research', research_count: 4 },
+    { id: '3', name: 'Natural Language Processing', color: '#FF9800', description: 'NLP and text analysis research', research_count: 6 },
+    { id: '4', name: 'Robotics', color: '#9C27B0', description: 'Robotics and automation research', research_count: 3 },
+    { id: '5', name: 'Cybersecurity', color: '#F44336', description: 'Security and privacy research', research_count: 5 }
   ]);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingTag, setEditingTag] = useState<IResearchTag | null>(null);
@@ -55,7 +55,7 @@ const ResearchTags: React.FC = () => {
     setOpenDialog(true);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     setTags((prev) => prev.filter((tag) => tag.id !== id));
   };
 
@@ -64,7 +64,7 @@ const ResearchTags: React.FC = () => {
       setTags((prev) => prev.map((tag) => (tag.id === editingTag.id ? { ...tag, ...formData } : tag)));
     } else {
       const newTag: IResearchTag = {
-        id: Date.now(),
+        id: Date.now().toString(),
         ...formData,
         research_count: 0
       };

@@ -2,13 +2,13 @@ import { IListResponse } from '@/globals';
 import { ICampusEvent } from '@/pages/website-setup/campus-events/redux/types';
 
 export interface IGlobalEventReference {
-  id: number;
+  id: string;
   uuid: string;
   name: string;
 }
 
 export interface IGlobalEvent {
-  id: number;
+  id: string;
   uuid: string;
   title: string;
   description?: string | null;
@@ -45,9 +45,9 @@ export interface IGlobalEventsCreatePayload {
   registrationLink?: string;
   location?: string;
   isActive?: boolean;
-  unions?: number[];
-  clubs?: number[];
-  departments?: number[];
+  unions?: string[];
+  clubs?: string[];
+  departments?: string[];
 }
 
 export interface IGlobalEventsUpdatePayload {
@@ -60,13 +60,13 @@ export interface IGlobalEventsUpdatePayload {
   registrationLink?: string;
   location?: string;
   isActive?: boolean;
-  unions?: number[];
-  clubs?: number[];
-  departments?: number[];
+  unions?: string[];
+  clubs?: string[];
+  departments?: string[];
 }
 
 export interface IGlobalEventsSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }

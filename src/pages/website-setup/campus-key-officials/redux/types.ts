@@ -3,14 +3,14 @@ import { IListResponse } from '@/globals';
 /* ------------------------- CampusKeyOfficials slice interface ------------------------- */
 export interface ICampusKeyOfficialsSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 export interface ICampusKeyOfficialsStatusSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 /* ------------------------- CampuskeyOfficials Enums ------------------------ */
@@ -30,7 +30,7 @@ export enum CampusKeyOfficialsTitleprefix {
 }
 
 export interface ICampusStaffDesignation {
-  id: number;
+  id: string;
   code: string;
   title: string;
   description?: string | null;
@@ -45,7 +45,7 @@ export interface ICampusStaffDesignationList extends IListResponse {
 /* -------------------------- CampusKeyOfficials get interfaces ------------------------- */
 
 export interface ICampusKeyOfficialsItem {
-  id: number;
+  id: string;
   titlePrefix: CampusKeyOfficialsTitleprefix;
   titlePrefixDisplay?: string | null;
   designation: string;
@@ -63,7 +63,7 @@ export interface ICampusKeyOfficialsList extends IListResponse {
 }
 
 export interface ICampusKeyOfficialsDetails {
-  id: number;
+  id: string;
   titlePrefix: CampusKeyOfficialsTitleprefix;
   designation: string;
   designationDisplay?: string | null;

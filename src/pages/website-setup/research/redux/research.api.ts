@@ -26,7 +26,7 @@ export const researchApi = rootAPI.injectEndpoints({
           : [{ type: 'Research', id: 'LIST' }]
     }),
 
-    getResearchById: builder.query<IResearch, number>({
+    getResearchById: builder.query<IResearch, string>({
       query: (id) => `${researchAPI}/${id}`,
       providesTags: (result, error, id) => [{ type: 'Research', id }]
     }),
@@ -40,7 +40,7 @@ export const researchApi = rootAPI.injectEndpoints({
       invalidatesTags: [{ type: 'Research', id: 'LIST' }]
     }),
 
-    updateResearch: builder.mutation<IResearch, Partial<IResearchCreatePayload> & { id: number }>({
+    updateResearch: builder.mutation<IResearch, Partial<IResearchCreatePayload> & { id: string }>({
       query: ({ id, ...research }) => ({
         url: `${researchAPI}/${id}`,
         method: 'PATCH',
@@ -52,7 +52,7 @@ export const researchApi = rootAPI.injectEndpoints({
       ]
     }),
 
-    deleteResearch: builder.mutation<void, number>({
+    deleteResearch: builder.mutation<void, string>({
       query: (id) => ({
         url: `${researchAPI}/${id}`,
         method: 'DELETE'
@@ -84,7 +84,7 @@ export const researchApi = rootAPI.injectEndpoints({
       invalidatesTags: [{ type: 'ResearchTag', id: 'LIST' }]
     }),
 
-    updateResearchTag: builder.mutation<IResearchTag, Partial<IResearchTagCreatePayload> & { id: number }>({
+    updateResearchTag: builder.mutation<IResearchTag, Partial<IResearchTagCreatePayload> & { id: string }>({
       query: ({ id, ...tag }) => ({
         url: `${researchCategoriesAPI}/${id}`,
         method: 'PATCH',
@@ -96,7 +96,7 @@ export const researchApi = rootAPI.injectEndpoints({
       ]
     }),
 
-    deleteResearchTag: builder.mutation<void, number>({
+    deleteResearchTag: builder.mutation<void, string>({
       query: (id) => ({
         url: `${researchCategoriesAPI}/${id}`,
         method: 'DELETE'
@@ -108,7 +108,7 @@ export const researchApi = rootAPI.injectEndpoints({
     }),
 
     // Bulk operations
-    bulkDeleteResearch: builder.mutation<void, number[]>({
+    bulkDeleteResearch: builder.mutation<void, string[]>({
       query: (ids) => ({
         url: `${researchAPI}/bulk_delete`,
         method: 'POST',

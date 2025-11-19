@@ -37,7 +37,7 @@ export const useTableHandlers = <T extends TableDataBase>(
   onSave?: (updatedRow: T) => Promise<void> | undefined,
   onDelete?: (id: GridRowId) => Promise<void> | undefined,
   onViewDetailsClick?: (id: GridRowId) => Promise<void> | undefined,
-  handleEditClick?: (id: number | GridRowId | string) => void | undefined
+  handleEditClick?: (id: GridRowId) => void | undefined
 ) => {
   // ========================= State =========================
   const [rows, setRows] = useState<T[]>(initialData);

@@ -150,7 +150,7 @@ export interface FormSectionProps<T extends FieldValues> {
    Dynamic Field Array Section Props
 ------------------------------------------------------------------ */
 
-export type TField<T extends FieldValues> = FieldArrayWithId<T, ArrayPath<T>, 'uid'> & { id?: number };
+export type TField<T extends FieldValues> = FieldArrayWithId<T, ArrayPath<T>, 'uid'> & { id?: string };
 
 export interface DynamicFieldArraySectionProps<T extends FieldValues> {
   name: ArrayPath<T>;

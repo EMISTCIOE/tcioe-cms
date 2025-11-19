@@ -39,7 +39,7 @@ const ResearchListing: React.FC<ResearchListingProps> = ({ onEdit }) => {
     page_size: 25,
     ordering: '-created_at'
   });
-  const [deleteResearchId, setDeleteResearchId] = useState<number | null>(null);
+  const [deleteResearchId, setDeleteResearchId] = useState<string | null>(null);
 
   const {
     data: researchData,
@@ -54,7 +54,7 @@ const ResearchListing: React.FC<ResearchListingProps> = ({ onEdit }) => {
 
   const [deleteResearch, { isLoading: isDeleting }] = useDeleteResearchMutation();
 
-  const handleDelete = async (id: number, title: string) => {
+  const handleDelete = async (id: string, title: string) => {
     setDeleteResearchId(id);
   };
 

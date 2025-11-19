@@ -3,28 +3,28 @@ import { IListResponse } from '@/globals';
 /* ------------------------- CampusSections slice interface ------------------------- */
 export interface ICampusSectionsSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 /* -------------------------- CampusSections get interfaces ------------------------- */
 
 export interface ICampusSectionsItem {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   shortDescription: string;
   thumbnail?: string | null;
   displayOrder: number;
   designations: string[];
-  departmentHead?: number | null;
+  departmentHead?: string | null;
   departmentHeadDetail?: ICampusSectionOfficial | null;
   officials?: ICampusSectionOfficial[];
   isActive: boolean;
 }
 
 export interface ICampusSectionOfficial {
-  id: number;
+  id: string;
   uuid: string;
   titlePrefix?: string | null;
   titlePrefixDisplay?: string | null;
@@ -44,7 +44,7 @@ export interface ICampusSectionsList extends IListResponse {
 }
 
 export interface ICampusSectionsDetails {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   shortDescription: string;
@@ -59,8 +59,8 @@ export interface ICampusSectionsDetails {
   displayOrder: number;
   designations: string[];
   officials: ICampusSectionOfficial[];
-  members: number[];
-  departmentHead?: number | null;
+  members: string[];
+  departmentHead?: string | null;
   departmentHeadDetail?: ICampusSectionOfficial | null;
   createdBy: string;
   updatedBy: string;
@@ -84,8 +84,8 @@ export interface ICampusSectionsCreatePayload {
   contactPhone?: string;
   displayOrder?: number;
   designations?: string[];
-  members?: number[];
-  departmentHead?: number | null;
+  members?: string[];
+  departmentHead?: string | null;
   isActive: boolean;
 }
 
@@ -104,7 +104,7 @@ export interface ICampusSectionsUpdatePayload {
   contactPhone?: string;
   displayOrder?: number;
   designations?: string[];
-  members?: number[];
-  departmentHead?: number | null;
+  members?: string[];
+  departmentHead?: string | null;
   isActive: boolean;
 }

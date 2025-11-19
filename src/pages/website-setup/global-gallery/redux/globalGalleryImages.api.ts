@@ -40,7 +40,7 @@ export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
       providesTags: ['GlobalGallery']
     }),
 
-    retrieveGlobalGalleryImage: builder.query<IGlobalGalleryImage, number | null>({
+    retrieveGlobalGalleryImage: builder.query<IGlobalGalleryImage, string | null>({
       query: (id) => ({
         url: `${globalGalleryImagesAPI}/${id}`,
         method: 'GET'
@@ -81,7 +81,7 @@ export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
       invalidatesTags: ['GlobalGallery']
     }),
 
-    patchGlobalGalleryImage: builder.mutation<IMutationSuccessResponse, { id: number; values: IGlobalGalleryImageUpdatePayload }>({
+    patchGlobalGalleryImage: builder.mutation<IMutationSuccessResponse, { id: string; values: IGlobalGalleryImageUpdatePayload }>({
       query: ({ id, values }) => {
         const { union, club, department, globalEvent, sourceTitle, sourceContext, isActive, image, caption, displayOrder } = values;
         const body = new FormData();
@@ -128,7 +128,7 @@ export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
       invalidatesTags: ['GlobalGallery']
     }),
 
-    deleteGlobalGalleryImage: builder.mutation<IMutationSuccessResponse, number>({
+    deleteGlobalGalleryImage: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => ({
         url: `${globalGalleryImagesAPI}/${id}`,
         method: 'DELETE'

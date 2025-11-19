@@ -3,28 +3,28 @@ import { IListResponse } from '@/globals';
 /* ------------------------- CampusUnits slice interface ------------------------- */
 export interface ICampusUnitsSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 /* -------------------------- CampusUnits get interfaces ------------------------- */
 
 export interface ICampusUnitsItem {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   shortDescription: string;
   thumbnail?: string | null;
   displayOrder: number;
   designations: string[];
-  departmentHead?: number | null;
+  departmentHead?: string | null;
   departmentHeadDetail?: ICampusUnitOfficial | null;
   officials?: ICampusUnitOfficial[];
   isActive: boolean;
 }
 
 export interface ICampusUnitOfficial {
-  id: number;
+  id: string;
   uuid: string;
   titlePrefix?: string | null;
   titlePrefixDisplay?: string | null;
@@ -44,7 +44,7 @@ export interface ICampusUnitsList extends IListResponse {
 }
 
 export interface ICampusUnitsDetails {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   shortDescription: string;
@@ -59,8 +59,8 @@ export interface ICampusUnitsDetails {
   displayOrder: number;
   designations: string[];
   officials: ICampusUnitOfficial[];
-  members: number[];
-  departmentHead?: number | null;
+  members: string[];
+  departmentHead?: string | null;
   departmentHeadDetail?: ICampusUnitOfficial | null;
   createdBy: string;
   updatedBy: string;
@@ -84,8 +84,8 @@ export interface ICampusUnitsCreatePayload {
   contactPhone?: string;
   displayOrder?: number;
   designations?: string[];
-  members?: number[];
-  departmentHead?: number | null;
+  members?: string[];
+  departmentHead?: string | null;
   isActive: boolean;
 }
 
@@ -104,7 +104,7 @@ export interface ICampusUnitsUpdatePayload {
   contactPhone?: string;
   displayOrder?: number;
   designations?: string[];
-  members?: number[];
-  departmentHead?: number | null;
+  members?: string[];
+  departmentHead?: string | null;
   isActive: boolean;
 }

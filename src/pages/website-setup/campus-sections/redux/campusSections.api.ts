@@ -28,7 +28,7 @@ export const campusSectionsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Retrieve CampusSections
-    retrieveCampusSections: builder.query<ICampusSectionsDetails, number | null>({
+    retrieveCampusSections: builder.query<ICampusSectionsDetails, string | null>({
       query: (id) => {
         return {
           url: `${campusSectionsAPI}/${id}`,
@@ -79,7 +79,7 @@ export const campusSectionsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Patch CampusSections
-    patchCampusSections: builder.mutation<IMutationSuccessResponse, { id: number; values: ICampusSectionsUpdatePayload }>({
+    patchCampusSections: builder.mutation<IMutationSuccessResponse, { id: string; values: ICampusSectionsUpdatePayload }>({
       query: ({ id, values }) => {
         const { designations, members, departmentHead, thumbnail, heroImage, ...rest } = values;
         const body = new FormData();
@@ -118,7 +118,7 @@ export const campusSectionsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Delete CampusSections
-    deleteCampusSections: builder.mutation<IMutationSuccessResponse, number>({
+    deleteCampusSections: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => {
         return {
           url: `${campusSectionsAPI}/${id}`,

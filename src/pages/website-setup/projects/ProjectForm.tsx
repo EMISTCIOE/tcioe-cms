@@ -150,9 +150,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onSuccess, onCancel 
     formik.setFieldValue('members', newMembers);
   };
 
-  const toggleTag = (tagId: number) => {
+  const toggleTag = (tagId: string) => {
     const currentTags = formik.values.tag_ids;
-    const newTags = currentTags.includes(tagId) ? currentTags.filter((id: number) => id !== tagId) : [...currentTags, tagId];
+    const newTags = currentTags.includes(tagId) ? currentTags.filter((id) => id !== tagId) : [...currentTags, tagId];
     formik.setFieldValue('tag_ids', newTags);
   };
 

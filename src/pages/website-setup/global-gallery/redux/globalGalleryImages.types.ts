@@ -1,7 +1,7 @@
 import { IListResponse } from '@/globals';
 
 export interface IGlobalGalleryImage {
-  id: number;
+  id: string;
   uuid: string;
   image: string;
   caption?: string | null;
@@ -12,12 +12,12 @@ export interface IGlobalGalleryImage {
   sourceName: string;
   sourceContext?: string | null;
   sourceTitle?: string | null;
-  union?: number | null;
-  club?: number | null;
-  department?: number | null;
-  unit?: number | null;
-  section?: number | null;
-  globalEvent?: number | null;
+  union?: string | null;
+  club?: string | null;
+  department?: string | null;
+  unit?: string | null;
+  section?: string | null;
+  globalEvent?: string | null;
   createdAt: string;
 }
 
@@ -32,12 +32,12 @@ export interface IGlobalGalleryImageUploadPayload {
 }
 
 export interface IGlobalGalleryImageCreatePayload {
-  union?: number | null;
-  club?: number | null;
-  department?: number | null;
-  unit?: number | null;
-  section?: number | null;
-  globalEvent?: number | null;
+  union?: string | null;
+  club?: string | null;
+  department?: string | null;
+  unit?: string | null;
+  section?: string | null;
+  globalEvent?: string | null;
   sourceTitle?: string;
   sourceContext?: string;
   isActive?: boolean;
@@ -50,17 +50,17 @@ export interface IGlobalGalleryImageUpdatePayload {
   isActive?: boolean;
   sourceTitle?: string;
   sourceContext?: string;
-  union?: number | null;
-  club?: number | null;
-  department?: number | null;
-  unit?: number | null;
-  section?: number | null;
-  globalEvent?: number | null;
+  union?: string | null;
+  club?: string | null;
+  department?: string | null;
+  unit?: string | null;
+  section?: string | null;
+  globalEvent?: string | null;
   image?: File;
 }
 
 export interface IGlobalGalleryImagesSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }

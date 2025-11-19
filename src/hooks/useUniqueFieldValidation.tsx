@@ -4,14 +4,14 @@ import { useEffect, useRef, useCallback } from 'react';
 import { camelCaseToNormal } from '@/utils/functions/formatString';
 
 interface Results {
-  id?: number;
+  id?: string;
   [key: string]: any;
 }
 
 interface UseUniqueFieldValidationProps<T> {
   fields: (keyof T)[];
   values: Partial<T>;
-  id?: number | null;
+  id?: string | null;
   triggerFunc: (args: any) => Promise<{ count: number; results: Results[] }>;
   setError: (field: keyof T, message: string) => void;
   debounceDelay?: number;
@@ -48,7 +48,7 @@ export default function useUniqueFieldValidation<T>({
 
         // If response.count is 1, check if the id matches the current id
         if (response.count === 1 && id) {
-          isValid = response.results[0]?.id == id;
+          isValid = response.results[0]?.id === id;
         }
 
         const errorMsg = isValid ? '' : `${camelCaseToNormal(String(field))} already exists`;

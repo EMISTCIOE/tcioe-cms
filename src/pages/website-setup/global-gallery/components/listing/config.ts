@@ -3,7 +3,7 @@ import { Theme } from '@mui/material/styles';
 import dayjs from 'dayjs';
 
 export interface IGlobalGalleryImageTableRow {
-  id: number;
+  id: string;
   caption: string;
   sourceType: string;
   sourceName: string;

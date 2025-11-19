@@ -25,7 +25,7 @@ export const getColumnConfig = (
   theme: Theme,
   canEdit: boolean,
   onApprovalChange?: (
-    id: number | string,
+    id: string,
     field: 'isApprovedByDepartment' | 'isApprovedByCampus',
     value: ITableData[keyof ITableData]
   ) => Promise<void>
@@ -64,7 +64,7 @@ export const getColumnConfig = (
     ],
     colorMap: IsApprovedColorMap,
     editable: canEdit,
-    handleChange: (id, value) => onApprovalChange && onApprovalChange(id as any, 'isApprovedByDepartment', value)
+    handleChange: (id, value) => onApprovalChange && onApprovalChange(id as string, 'isApprovedByDepartment', value)
   },
   {
     field: 'isApprovedByCampus',
@@ -77,7 +77,7 @@ export const getColumnConfig = (
     ],
     colorMap: IsApprovedColorMap,
     editable: canEdit,
-    handleChange: (id, value) => onApprovalChange && onApprovalChange(id as any, 'isApprovedByCampus', value)
+    handleChange: (id, value) => onApprovalChange && onApprovalChange(id as string, 'isApprovedByCampus', value)
   },
   { field: 'actions', headerName: '', type: 'actions' }
 ];

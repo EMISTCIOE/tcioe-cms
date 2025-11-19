@@ -1,5 +1,5 @@
 export interface IResearchParticipant {
-  id: number;
+  id: string;
   full_name: string;
   email?: string;
   participant_type: 'faculty' | 'staff' | 'student' | 'external';
@@ -8,7 +8,7 @@ export interface IResearchParticipant {
   linkedin_url?: string;
   orcid_id?: string;
   google_scholar_url?: string;
-  research: number;
+  research: string;
 }
 
 export interface IResearchParticipantCreatePayload {
@@ -23,7 +23,7 @@ export interface IResearchParticipantCreatePayload {
 }
 
 export interface IResearchPublication {
-  id: number;
+  id: string;
   title: string;
   authors: string;
   journal_name?: string;
@@ -32,7 +32,7 @@ export interface IResearchPublication {
   doi?: string;
   url?: string;
   citation_count?: number;
-  research: number;
+  research: string;
 }
 
 export interface IResearchPublicationCreatePayload {
@@ -47,7 +47,7 @@ export interface IResearchPublicationCreatePayload {
 }
 
 export interface IResearchTag {
-  id: number;
+  id: string;
   name: string;
   description?: string;
   color: string;
@@ -63,7 +63,7 @@ export interface IResearchTagCreatePayload {
 }
 
 export interface IResearch {
-  id: number;
+  id: string;
   title: string;
   description?: string;
   abstract?: string;
@@ -95,9 +95,9 @@ export interface IResearch {
   citation_count: number;
   created_at: string;
   updated_at: string;
-  created_by: number;
-  updated_by?: number;
-  department?: number;
+  created_by: string;
+  updated_by?: string;
+  department?: string;
   participants: IResearchParticipant[];
   publications: IResearchPublication[];
   tags: IResearchTag[];
@@ -129,10 +129,10 @@ export interface IResearchCreatePayload {
   website_url?: string;
   is_featured: boolean;
   is_published: boolean;
-  department?: number;
+  department?: string;
   participants: IResearchParticipantCreatePayload[];
   publications: IResearchPublicationCreatePayload[];
-  tag_ids: number[];
+  tag_ids: string[];
 }
 
 export interface IResearchListResponse {
@@ -160,8 +160,8 @@ export interface IResearchFilters {
   funding_agency?: string;
   start_date_from?: string;
   start_date_to?: string;
-  tag_ids?: number[];
-  department?: number;
+  tag_ids?: string[];
+  department?: string;
   ordering?: string;
   page?: number;
   page_size?: number;

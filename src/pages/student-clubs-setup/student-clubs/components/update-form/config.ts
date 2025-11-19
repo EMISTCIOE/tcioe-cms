@@ -3,7 +3,7 @@ import * as z from 'zod';
 
 // NOTE - Define the schema for the members of the campus union.
 const memberSchema = z.object({
-  id: z.number().optional(),
+  id: z.string().uuid().optional(),
   fullName: z.string().min(1, 'Full Name is required'),
   designation: z.string().min(1, 'Designation is required'),
   photo: z
@@ -29,12 +29,12 @@ export type Member = z.infer<typeof memberSchema>;
 
 // NOTE - Define the schema for the form.
 export const studentClubsUpdateFormSchema = z.object({
-  id: z.number().min(1, 'Student Club ID is required'),
+  id: z.string().min(1, 'Student Club ID is required'),
   name: z.string().min(1, 'Name is required'),
   shortDescription: z.string().min(1, 'Short Description is required'),
   detailedDescription: z.string().optional(),
   websiteUrl: z.string().url('Invalid URL').optional().nullable(),
-  department: z.number().nullable().optional(),
+  department: z.string().min(1, 'Department is required').nullable().optional(),
   isActive: z.boolean().default(true),
   thumbnail: z
     .union([z.string().min(1, 'File URL cannot be empty.'), z.any()])

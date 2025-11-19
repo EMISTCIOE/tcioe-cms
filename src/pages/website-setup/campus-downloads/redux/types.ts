@@ -3,13 +3,13 @@ import { IListResponse } from '@/globals';
 /* ------------------------- CampusDownloads slice interface ------------------------- */
 export interface ICampusDownloadsSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 /* -------------------------- CampusDownloads get interfaces ------------------------- */
 
 export interface ICampusDownloadsItem {
-  id: number;
+  id: string;
   title: string;
   file: string;
   description: string;
@@ -21,7 +21,7 @@ export interface ICampusDownloadsList extends IListResponse {
 }
 
 export interface ICampusDownloadsDetails {
-  id: number;
+  id: string;
   title: string;
   file: string;
   description: string;

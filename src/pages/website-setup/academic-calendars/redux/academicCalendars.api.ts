@@ -52,7 +52,7 @@ export const academicCalendarsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Retrieve AcademicCalendars
-    retrieveAcademicCalendars: builder.query<IAcademicCalendarsDetails, number | null>({
+    retrieveAcademicCalendars: builder.query<IAcademicCalendarsDetails, string | null>({
       query: (id) => {
         return {
           url: `${academicCalendarsAPI}/${id}`,
@@ -94,7 +94,7 @@ export const academicCalendarsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Patch AcademicCalendars
-    patchAcademicCalendars: builder.mutation<IMutationSuccessResponse, { id: number; values: IAcademicCalendarsUpdatePayload }>({
+    patchAcademicCalendars: builder.mutation<IMutationSuccessResponse, { id: string; values: IAcademicCalendarsUpdatePayload }>({
       query: ({ id, values }) => {
         const { file, startYear, endYear, ...rest } = values;
         const body = new FormData();
@@ -124,7 +124,7 @@ export const academicCalendarsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Delete AcademicCalendars
-    deleteAcademicCalendars: builder.mutation<IMutationSuccessResponse, number>({
+    deleteAcademicCalendars: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => {
         return {
           url: `${academicCalendarsAPI}/${id}`,

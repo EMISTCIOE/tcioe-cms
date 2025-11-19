@@ -3,14 +3,14 @@ import { IListResponse } from '@/globals';
 /* ------------------------- StudentClubs slice interface ------------------------- */
 export interface IStudentClubsSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 /* -------------------------- StudentClubs get interfaces ------------------------- */
 
 export interface IStudentClubsItem {
-  id: number;
+  id: string;
   name: string;
   shortDescription: string;
   thumbnail: string;
@@ -18,7 +18,7 @@ export interface IStudentClubsItem {
 }
 
 export interface IStudentClubsMember {
-  id: number;
+  id: string;
   fullName: string;
   designation: string;
   photo?: string;
@@ -30,7 +30,7 @@ export interface IStudentClubsList extends IListResponse {
 }
 
 export interface IStudentClubsDetails {
-  id: number;
+  id: string;
   name: string;
   shortDescription: string;
   detailedDescription: string;
@@ -38,7 +38,7 @@ export interface IStudentClubsDetails {
   websiteUrl?: string;
   members: IStudentClubsMember[];
   department?: {
-    id: number;
+    id: string;
     uuid: string;
     name: string;
   } | null;
@@ -57,7 +57,7 @@ export interface IStudentClubsCreatePayload {
   thumbnail?: File | null;
   websiteUrl?: string;
   members: (Omit<IStudentClubsMember, 'id' | 'photo'> & { photo?: File | null })[];
-  department?: number | null;
+  department?: string | null;
   isActive: boolean;
 }
 
@@ -68,7 +68,7 @@ export interface IStudentClubsUpdatePayload {
   detailedDescription?: string;
   thumbnail?: File | string | null;
   websiteUrl?: string;
-  members: (Omit<IStudentClubsMember, 'id' | 'photo'> & { id?: number; photo?: File | string | null })[];
-  department?: number | null;
+  members: (Omit<IStudentClubsMember, 'id' | 'photo'> & { id?: string; photo?: File | string | null })[];
+  department?: string | null;
   isActive: boolean;
 }

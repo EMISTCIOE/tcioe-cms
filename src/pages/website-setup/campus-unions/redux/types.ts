@@ -3,14 +3,14 @@ import { IListResponse } from '@/globals';
 /* ------------------------- CampusUnions slice interface ------------------------- */
 export interface ICampusUnionsSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 /* -------------------------- CampusUnions get interfaces ------------------------- */
 
 export interface ICampusUnionsItem {
-  id: number;
+  id: string;
   name: string;
   shortDescription: string;
   thumbnail?: string;
@@ -18,7 +18,7 @@ export interface ICampusUnionsItem {
 }
 
 export interface ICampusUnionsMember {
-  id: number;
+  id: string;
   fullName: string;
   designation: string;
   photo?: string;
@@ -30,7 +30,7 @@ export interface ICampusUnionsList extends IListResponse {
 }
 
 export interface ICampusUnionsDetails {
-  id: number;
+  id: string;
   name: string;
   shortDescription: string;
   detailedDescription: string;
@@ -62,6 +62,6 @@ export interface ICampusUnionsUpdatePayload {
   detailedDescription?: string;
   thumbnail?: File | string | null;
   websiteUrl?: string;
-  members?: (Omit<ICampusUnionsMember, 'id' | 'photo'> & { id?: number; photo?: File | string | null })[];
+  members?: (Omit<ICampusUnionsMember, 'id' | 'photo'> & { id?: string; photo?: File | string | null })[];
   isActive: boolean;
 }

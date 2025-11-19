@@ -3,18 +3,18 @@ import { IListResponse } from '@/globals';
 /* ------------------------- StudentClubEvents slice interface ------------------------- */
 export interface IStudentClubEventsSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 /* -------------------------- StudentClubEvents get interfaces ------------------------- */
 export interface IClub {
-  id: number;
+  id: string;
   name: string;
 }
 
 export interface IStudentClubEventsItem {
-  id: number;
+  id: string;
   title: string;
   date: string; // ISO Date string
   thumbnail: string;
@@ -23,7 +23,7 @@ export interface IStudentClubEventsItem {
 }
 
 export interface IStudentClubEventsGallery {
-  id: number;
+  id: string;
   image: string;
   caption?: string;
   isActive?: boolean;
@@ -34,7 +34,7 @@ export interface IStudentClubEventsList extends IListResponse {
 }
 
 export interface IStudentClubEventsDetails {
-  id: number;
+  id: string;
   title: string;
   description: string;
   date: string; // ISO Date string
@@ -54,8 +54,8 @@ export interface IStudentClubEventsCreatePayload {
   description?: string;
   date?: string; // ISO Date string
   thumbnail: File | null;
-  club: number; // Club ID
-  gallery?: (Omit<IStudentClubEventsGallery, 'id' | 'image'> & { image: File | null })[];
+  club: string; // Club ID
+  gallery?: (Omit<IStudentClubEventsGallery, 'id' | 'image'> & { id?: string; image: File | null })[];
   isActive?: boolean;
 }
 
@@ -64,8 +64,8 @@ export interface IStudentClubEventsUpdatePayload {
   title?: string;
   description?: string;
   date?: string; // ISO Date string
-  club: number; // Club ID
+  club: string; // Club ID
   thumbnail?: File | string | null;
-  gallery?: (Omit<IStudentClubEventsGallery, 'id' | 'image'> & { id?: number; image: File | string })[];
+  gallery?: (Omit<IStudentClubEventsGallery, 'id' | 'image'> & { id?: string; image: File | string })[];
   isActive?: boolean;
 }

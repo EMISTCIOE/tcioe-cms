@@ -41,7 +41,7 @@ const ProjectListing: React.FC<ProjectListingProps> = ({ onEdit }) => {
     sortModel: [{ field: 'created_at', sort: 'desc' }],
     filterModel: { items: [] }
   });
-  const [deleteProjectId, setDeleteProjectId] = useState<number | null>(null);
+  const [deleteProjectId, setDeleteProjectId] = useState<string | null>(null);
 
   const {
     data: projectsData,
@@ -55,7 +55,7 @@ const ProjectListing: React.FC<ProjectListingProps> = ({ onEdit }) => {
 
   const [deleteProject, { isLoading: isDeleting }] = useDeleteProjectMutation();
 
-  const handleDelete = async (id: number, title: string) => {
+  const handleDelete = async (id: string, title: string) => {
     setDeleteProjectId(id);
   };
 

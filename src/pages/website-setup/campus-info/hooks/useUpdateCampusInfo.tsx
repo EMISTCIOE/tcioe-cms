@@ -50,7 +50,7 @@ const useUpdateCampusInfo = ({ campusInfoData }: ICampusInfoUpdateFormProps) => 
   }, [campusInfoData, reset]);
 
   // delete handler for social links
-  const handleDeleteSocialLink = async (id: number | undefined) => {
+  const handleDeleteSocialLink = async (id?: string) => {
     if (!id) return;
 
     try {

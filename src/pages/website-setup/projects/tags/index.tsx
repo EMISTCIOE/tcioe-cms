@@ -24,7 +24,7 @@ import {
 import { Add, Edit, Delete } from '@mui/icons-material';
 
 interface IProjectTag {
-  id: number;
+  id: string;
   name: string;
   color: string;
   description?: string;
@@ -33,10 +33,10 @@ interface IProjectTag {
 
 const ProjectTags: React.FC = () => {
   const [tags, setTags] = useState<IProjectTag[]>([
-    { id: 1, name: 'Web Development', color: '#2196F3', description: 'Web-based projects', projects_count: 5 },
-    { id: 2, name: 'Mobile App', color: '#4CAF50', description: 'Mobile application projects', projects_count: 3 },
-    { id: 3, name: 'AI/ML', color: '#FF9800', description: 'Artificial Intelligence and Machine Learning', projects_count: 7 },
-    { id: 4, name: 'IoT', color: '#9C27B0', description: 'Internet of Things projects', projects_count: 2 }
+    { id: '1', name: 'Web Development', color: '#2196F3', description: 'Web-based projects', projects_count: 5 },
+    { id: '2', name: 'Mobile App', color: '#4CAF50', description: 'Mobile application projects', projects_count: 3 },
+    { id: '3', name: 'AI/ML', color: '#FF9800', description: 'Artificial Intelligence and Machine Learning', projects_count: 7 },
+    { id: '4', name: 'IoT', color: '#9C27B0', description: 'Internet of Things projects', projects_count: 2 }
   ]);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingTag, setEditingTag] = useState<IProjectTag | null>(null);
@@ -54,7 +54,7 @@ const ProjectTags: React.FC = () => {
     setOpenDialog(true);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     setTags((prev) => prev.filter((tag) => tag.id !== id));
   };
 
@@ -63,7 +63,7 @@ const ProjectTags: React.FC = () => {
       setTags((prev) => prev.map((tag) => (tag.id === editingTag.id ? { ...tag, ...formData } : tag)));
     } else {
       const newTag: IProjectTag = {
-        id: Date.now(),
+        id: Date.now().toString(),
         ...formData,
         projects_count: 0
       };

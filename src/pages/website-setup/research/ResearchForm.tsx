@@ -220,7 +220,7 @@ const ResearchForm: React.FC<ResearchFormProps> = ({ research, onSuccess, onCanc
 
   const toggleTag = (tagId: number) => {
     const currentTags = formik.values.tag_ids;
-    const newTags = currentTags.includes(tagId) ? currentTags.filter((id: number) => id !== tagId) : [...currentTags, tagId];
+    const newTags = currentTags.includes(tagId) ? currentTags.filter((id: string) => id !== tagId) : [...currentTags, tagId];
     formik.setFieldValue('tag_ids', newTags);
   };
 

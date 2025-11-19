@@ -35,6 +35,25 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
     defaultValues
   });
 
+  useEffect(() => {
+    const options =
+      designationData?.results
+        ?.filter((item) => item.isActive)
+        .map((item) => ({
+          value: item.code,
+          label: item.title
+        })) ?? [];
+
+    setFormFields((prev) =>
+      prev.map((field) => {
+        if (field.name === 'designation') {
+          return { ...field, options };
+        }
+        return field;
+      })
+    );
+  }, [designationData]);
+
   // NOTE - Form submit handler
   const onSubmit = async (data: TCampusKeyOfficialsCreateFormDataType) => {
     try {
@@ -72,21 +91,3 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
 };
 
 export default useCreateCampusKeyOfficials;
-useEffect(() => {
-  const options =
-    designationData?.results
-      ?.filter((item) => item.isActive)
-      .map((item) => ({
-        value: item.code,
-        label: item.title
-      })) ?? [];
-
-  setFormFields((prev) =>
-    prev.map((field) => {
-      if (field.name === 'designation') {
-        return { ...field, options };
-      }
-      return field;
-    })
-  );
-}, [designationData]);

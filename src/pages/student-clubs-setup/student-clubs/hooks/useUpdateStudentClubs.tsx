@@ -54,7 +54,7 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
   }, [studentClubsData, reset]);
 
   // delete handler for member item
-  const handleDeleteMemberItem = async (index: number, member_id: number | undefined) => {
+  const handleDeleteMemberItem = async (index: number, member_id?: string) => {
     if (!studentClubsData?.id || !member_id) return;
 
     try {

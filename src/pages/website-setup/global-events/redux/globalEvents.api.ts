@@ -26,7 +26,7 @@ export const globalEventsAPISlice = rootAPI.injectEndpoints({
       keepUnusedDataFor: 0.1
     }),
 
-    retrieveGlobalEvents: builder.query<IGlobalEventsDetails, number | null>({
+    retrieveGlobalEvents: builder.query<IGlobalEventsDetails, string | null>({
       query: (id) => ({
         url: `${globalEventsAPI}/${id}`,
         method: 'GET'
@@ -70,7 +70,7 @@ export const globalEventsAPISlice = rootAPI.injectEndpoints({
       invalidatesTags: ['GlobalEvents']
     }),
 
-    patchGlobalEvents: builder.mutation<IMutationSuccessResponse, { id: number; values: IGlobalEventsUpdatePayload }>({
+    patchGlobalEvents: builder.mutation<IMutationSuccessResponse, { id: string; values: IGlobalEventsUpdatePayload }>({
       query: ({ id, values }) => {
         const { unions, clubs, departments, thumbnail, eventStartDate, eventEndDate, ...rest } = values;
         const body = new FormData();
@@ -113,7 +113,7 @@ export const globalEventsAPISlice = rootAPI.injectEndpoints({
       invalidatesTags: ['GlobalEvents']
     }),
 
-    deleteGlobalEvents: builder.mutation<IMutationSuccessResponse, number>({
+    deleteGlobalEvents: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => ({
         url: `${globalEventsAPI}/${id}`,
         method: 'DELETE'

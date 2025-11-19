@@ -260,7 +260,7 @@ export function createTableDataHook<TData extends object, TApiResponse, TUpdateI
       [dispatch]
     );
 
-    const handleviewDetailsClick = useCallback(async (id: number | string | GridRowId) => {
+    const handleviewDetailsClick = useCallback(async (id: GridRowId) => {
       if (setViewId) {
         setViewId(id);
       } else {

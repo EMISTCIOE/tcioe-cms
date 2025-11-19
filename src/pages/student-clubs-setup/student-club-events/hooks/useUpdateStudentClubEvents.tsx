@@ -65,7 +65,7 @@ const useUpdateStudentClubEvents = ({ studentClubEventsData, onClose }: IStudent
   }, [studentClubsOptions]);
 
   // delete handler for gallery item
-  const handleDeleteGalleryItem = async (index: number, gallery_id: number | undefined) => {
+  const handleDeleteGalleryItem = async (index: number, gallery_id?: string) => {
     if (!studentClubEventsData?.id || !gallery_id) return;
 
     try {

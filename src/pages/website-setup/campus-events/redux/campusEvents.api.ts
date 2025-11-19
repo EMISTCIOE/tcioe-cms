@@ -29,7 +29,7 @@ export const campusEventsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Retrieve CampusEvents
-    retrieveCampusEvents: builder.query<ICampusEventsDetails, number | null>({
+    retrieveCampusEvents: builder.query<ICampusEventsDetails, string | null>({
       query: (id) => {
         return {
           url: `${campusEventsAPI}/${id}`,
@@ -97,7 +97,7 @@ export const campusEventsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Patch CampusEvents
-    patchCampusEvents: builder.mutation<IMutationSuccessResponse, { id: number; values: ICampusEventsUpdatePayload }>({
+    patchCampusEvents: builder.mutation<IMutationSuccessResponse, { id: string; values: ICampusEventsUpdatePayload }>({
       query: ({ id, values }) => {
         const { thumbnail, gallery, eventStartDate, eventEndDate, union, ...rest } = values;
         const body = new FormData();
@@ -156,7 +156,7 @@ export const campusEventsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Delete CampusEvents
-    deleteCampusEvents: builder.mutation<IMutationSuccessResponse, number>({
+    deleteCampusEvents: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => {
         return {
           url: `${campusEventsAPI}/${id}`,
@@ -165,7 +165,7 @@ export const campusEventsAPISlice = rootAPI.injectEndpoints({
       },
       invalidatesTags: ['CampusEvents']
     }),
-    deletCampusEventsgallery: builder.mutation<IMutationSuccessResponse, { id: number; gallery_id: number }>({
+    deletCampusEventsgallery: builder.mutation<IMutationSuccessResponse, { id: string; gallery_id: string }>({
       query: ({ id, gallery_id }) => {
         return {
           url: `${campusEventsAPI}/${id}/gallery/${gallery_id}`,

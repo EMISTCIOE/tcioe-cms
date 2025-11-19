@@ -73,7 +73,7 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
     );
   }, [noticeCategoriesOptions, noticeDepartmentsOptions]);
 
-  const handleDeleteMedia = async (index: number, media_id: number | undefined) => {
+  const handleDeleteMedia = async (index: number, media_id?: string) => {
     if (!noticeData?.id || !media_id) return;
 
     try {

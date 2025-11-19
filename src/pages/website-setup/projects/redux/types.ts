@@ -1,10 +1,10 @@
 export interface IProjectMember {
-  id?: number;
+  id?: string;
   full_name: string;
   roll_number: string;
   email?: string;
   phone_number?: string;
-  department?: number;
+  department?: string;
   department_name?: string;
   role: string;
   linkedin_url?: string;
@@ -12,7 +12,7 @@ export interface IProjectMember {
 }
 
 export interface IProjectTag {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   color: string;
@@ -29,17 +29,17 @@ export interface IProjectTagCreatePayload {
 }
 
 export interface IProjectTagUpdatePayload extends IProjectTagCreatePayload {
-  id: number;
+  id: string;
 }
 
 export interface IProject {
-  id: number;
+  id: string;
   title: string;
   description?: string;
   abstract?: string;
   project_type: string;
   status: string;
-  department?: number;
+  department?: string;
   department_name?: string;
   supervisor_name: string;
   supervisor_email?: string;
@@ -74,7 +74,7 @@ export interface IProjectCreatePayload {
   abstract?: string;
   project_type: string;
   status: string;
-  department?: number;
+  department?: string;
   supervisor_name: string;
   supervisor_email?: string;
   start_date?: string;
@@ -88,11 +88,11 @@ export interface IProjectCreatePayload {
   is_featured: boolean;
   is_published: boolean;
   members: IProjectMember[];
-  tag_ids: number[];
+  tag_ids: string[];
 }
 
 export interface IProjectUpdatePayload extends IProjectCreatePayload {
-  id: number;
+  id: string;
 }
 
 export interface IProjectDetails extends IProject {

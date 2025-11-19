@@ -24,7 +24,7 @@ export const researchFacilitiesAPISlice = rootAPI.injectEndpoints({
       providesTags: ['ResearchFacilities']
     }),
 
-    retrieveResearchFacility: builder.query<IResearchFacilityDetails, number | null>({
+    retrieveResearchFacility: builder.query<IResearchFacilityDetails, string | null>({
       query: (id) => ({
         url: `${researchFacilitiesAPI}/${id}`,
         method: 'GET'
@@ -57,7 +57,7 @@ export const researchFacilitiesAPISlice = rootAPI.injectEndpoints({
       invalidatesTags: ['ResearchFacilities']
     }),
 
-    patchResearchFacility: builder.mutation<IMutationSuccessResponse, { id: number; values: IResearchFacilityUpdatePayload }>({
+    patchResearchFacility: builder.mutation<IMutationSuccessResponse, { id: string; values: IResearchFacilityUpdatePayload }>({
       query: ({ id, values }) => {
         const { thumbnail, ...rest } = values;
         const body = new FormData();
@@ -81,7 +81,7 @@ export const researchFacilitiesAPISlice = rootAPI.injectEndpoints({
       invalidatesTags: ['ResearchFacilities']
     }),
 
-    deleteResearchFacility: builder.mutation<IMutationSuccessResponse, number>({
+    deleteResearchFacility: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => ({
         url: `${researchFacilitiesAPI}/${id}`,
         method: 'DELETE'

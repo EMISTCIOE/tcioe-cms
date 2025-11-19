@@ -62,7 +62,7 @@ export const campusInfoAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Delete Social Link
-    deleteSocialLink: builder.mutation<IMutationSuccessResponse, { id: number }>({
+    deleteSocialLink: builder.mutation<IMutationSuccessResponse, { id: string }>({
       query: ({ id }) => ({
         url: `${campusInfoAPI}/social-media-links/${id}/delete`,
         method: 'DELETE'

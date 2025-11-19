@@ -3,14 +3,14 @@ import { IListResponse } from '@/globals';
 /* ------------------------- CampusFeedbacks slice interface ------------------------- */
 export interface ICampusFeedbacksSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 /* -------------------------- CampusFeedbacks get interfaces ------------------------- */
 
 export interface ICampusFeedbacksItem {
-  id: number;
+  id: string;
   fullName: string;
   rollNumber: string;
   email: string;

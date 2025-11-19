@@ -3,14 +3,14 @@ import { IListResponse } from '@/globals';
 /* ------------------------- ResearchFacilities slice interface ------------------------- */
 export interface IResearchFacilitiesSliceState {
   edit: boolean;
-  currentId: number | null;
-  viewId: number | null;
+  currentId: string | null;
+  viewId: string | null;
 }
 
 /* -------------------------- ResearchFacilities get interfaces ------------------------- */
 
 export interface IResearchFacilityItem {
-  id: number;
+  id: string;
   uuid: string;
   name: string;
   slug: string;

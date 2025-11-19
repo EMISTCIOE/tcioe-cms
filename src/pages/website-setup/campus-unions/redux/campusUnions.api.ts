@@ -28,7 +28,7 @@ export const campusUnionsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Retrieve CampusUnions
-    retrieveCampusUnions: builder.query<ICampusUnionsDetails, number | null>({
+    retrieveCampusUnions: builder.query<ICampusUnionsDetails, string | null>({
       query: (id) => {
         return {
           url: `${campusUnionsAPI}/${id}`,
@@ -84,7 +84,7 @@ export const campusUnionsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Patch CampusUnions
-    patchCampusUnions: builder.mutation<IMutationSuccessResponse, { id: number; values: ICampusUnionsUpdatePayload }>({
+    patchCampusUnions: builder.mutation<IMutationSuccessResponse, { id: string; values: ICampusUnionsUpdatePayload }>({
       query: ({ id, values }) => {
         const { members, thumbnail, ...rest } = values;
         const body = new FormData();
@@ -131,7 +131,7 @@ export const campusUnionsAPISlice = rootAPI.injectEndpoints({
     }),
 
     // Delete CampusUnions
-    deleteCampusUnions: builder.mutation<IMutationSuccessResponse, number>({
+    deleteCampusUnions: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => {
         return {
           url: `${campusUnionsAPI}/${id}`,
@@ -140,7 +140,7 @@ export const campusUnionsAPISlice = rootAPI.injectEndpoints({
       },
       invalidatesTags: ['CampusUnions']
     }),
-    deletCampusUnionsMember: builder.mutation<IMutationSuccessResponse, { id: number; member_id: number }>({
+    deletCampusUnionsMember: builder.mutation<IMutationSuccessResponse, { id: string; member_id: string }>({
       query: ({ id, member_id }) => {
         return {
           url: `${campusUnionsAPI}/${id}/member/${member_id}`,

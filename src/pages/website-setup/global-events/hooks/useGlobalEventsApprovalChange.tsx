@@ -6,7 +6,7 @@ export const useGlobalEventsApprovalChange = () => {
   const [patchGlobalEvent] = usePatchGlobalEventsMutation();
   const dispatch = useAppDispatch();
 
-  const onApprovalChange = async (id: number | string, field: 'isApprovedByDepartment' | 'isApprovedByCampus', value: any) => {
+  const onApprovalChange = async (id: string, field: 'isApprovedByDepartment' | 'isApprovedByCampus', value: any) => {
     if (value === undefined || value === null) return;
     try {
       const payload: any = {};
