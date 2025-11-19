@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { validatePermissions } from '@/utils/permissions/validatePermissions';
+import { validateGlobalGalleryPermissions } from '@/utils/permissions/validatePermissions';
 import { globalGalleryPermissions } from './constants/permissions';
 
 const GlobalGalleryListing = lazy(() => import('./components/listing'));
@@ -16,4 +16,4 @@ const GlobalGalleryPage = () => {
   );
 };
 
-export default validatePermissions(GlobalGalleryPage, globalGalleryPermissions);
+export default validateGlobalGalleryPermissions(GlobalGalleryPage, globalGalleryPermissions);

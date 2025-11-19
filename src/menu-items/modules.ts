@@ -29,6 +29,9 @@ import ContactsIcon from '@mui/icons-material/Contacts';
 import PeopleIcon from '@mui/icons-material/People';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import ComputerIcon from '@mui/icons-material/Computer';
+import CloudIcon from '@mui/icons-material/Cloud';
+import EmailIcon from '@mui/icons-material/Email';
 
 // project-imports
 import { MenuItem } from './types';
@@ -64,7 +67,10 @@ const icons = {
   ContactsIcon,
   PeopleIcon,
   FeedbackIcon,
-  AdminPanelSettingsIcon
+  AdminPanelSettingsIcon,
+  ComputerIcon,
+  CloudIcon,
+  EmailIcon
 };
 
 // ==============================|| MENU ITEMS - MODULES ||============================== //
@@ -108,11 +114,27 @@ const modules: MenuItem = {
       allowedRoles: ['EMIS-STAFF'],
       children: [
         {
-          id: 'emis-management',
-          title: 'EMIS Management',
+          id: 'emis-hardware',
+          title: 'Hardware Management',
           type: 'item',
-          icon: icons.WorkIcon,
-          url: '/website-setup/emis-management',
+          icon: icons.ComputerIcon,
+          url: '/website-setup/emis-management/hardware',
+          breadcrumbs: false
+        },
+        {
+          id: 'emis-vps',
+          title: 'VPS Management',
+          type: 'item',
+          icon: icons.CloudIcon,
+          url: '/website-setup/emis-management/vps',
+          breadcrumbs: false
+        },
+        {
+          id: 'emis-email-reset',
+          title: 'Email Reset Requests',
+          type: 'item',
+          icon: icons.EmailIcon,
+          url: '/website-setup/emis-management/email-reset',
           breadcrumbs: false
         }
       ]

@@ -75,31 +75,39 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
     const lockedFieldOption = unionOptions.find((option) => String(option.value) === String(unionId));
 
     setFormFields((prev) =>
-      prev.map((field) => {
-        if (field.name === 'union') {
-          return {
-            ...field,
-            options: isUnion && lockedFieldOption ? [lockedFieldOption] : unionOptions,
-            disabled: Boolean(isUnion)
-          };
-        }
-        if (field.name === 'club') {
-          return { ...field, options: studentClubsOptions };
-        }
-        if (field.name === 'department') {
-          return { ...field, options: departmentOptions };
-        }
-        if (field.name === 'unit') {
-          return { ...field, options: unitOptions };
-        }
-        if (field.name === 'section') {
-          return { ...field, options: sectionOptions };
-        }
-        if (field.name === 'globalEvent') {
-          return { ...field, options: globalEventOptions };
-        }
-        return field;
-      })
+      prev
+        .map((field) => {
+          if (field.name === 'union') {
+            return {
+              ...field,
+              options: isUnion && lockedFieldOption ? [lockedFieldOption] : unionOptions,
+              disabled: Boolean(isUnion)
+            };
+          }
+          if (field.name === 'club') {
+            return { ...field, options: studentClubsOptions };
+          }
+          if (field.name === 'department') {
+            return { ...field, options: departmentOptions };
+          }
+          if (field.name === 'unit') {
+            return { ...field, options: unitOptions };
+          }
+          if (field.name === 'section') {
+            return { ...field, options: sectionOptions };
+          }
+          if (field.name === 'globalEvent') {
+            return { ...field, options: globalEventOptions };
+          }
+          return field;
+        })
+        .filter((field) => {
+          // Hide club, department, unit, and section fields for union users
+          if (isUnion && (field.name === 'club' || field.name === 'department' || field.name === 'unit' || field.name === 'section')) {
+            return false;
+          }
+          return true;
+        })
     );
   }, [globalEventOptions, unionOptions, studentClubsOptions, departmentOptions, unitOptions, sectionOptions, roleType, unionId]);
 
@@ -114,12 +122,12 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
       const payload: IGlobalGalleryImageCreatePayload = {
         sourceTitle: data.sourceTitle?.trim(),
         sourceContext: data.sourceContext?.trim(),
-        globalEvent: data.globalEvent,
-        union: data.union,
-        club: data.club,
-        department: data.department,
-        unit: data.unit,
-        section: data.section,
+        globalEvent: data.globalEvent ? String(data.globalEvent) : null,
+        union: data.union ? String(data.union) : null,
+        club: data.club ? String(data.club) : null,
+        department: data.department ? String(data.department) : null,
+        unit: data.unit ? String(data.unit) : null,
+        section: data.section ? String(data.section) : null,
         isActive: data.isActive,
         images: mapImagesPayload(data.images)
       };

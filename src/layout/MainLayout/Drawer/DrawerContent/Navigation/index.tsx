@@ -83,9 +83,7 @@ function filterByRole(item: MenuItem, roleType?: string): MenuItem | null {
     return { ...item };
   }
 
-  const children = item.children
-    .map((child) => filterByRole(child, roleType))
-    .filter((child): child is MenuItem => Boolean(child));
+  const children = item.children.map((child) => filterByRole(child, roleType)).filter((child): child is MenuItem => Boolean(child));
 
   if (!children.length) {
     return null;

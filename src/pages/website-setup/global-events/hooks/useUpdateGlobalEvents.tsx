@@ -80,9 +80,9 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
         eventStartDate: eventData.eventStartDate,
         eventEndDate: eventData.eventEndDate ?? undefined,
         thumbnail: eventData.thumbnail,
-        unions: eventData?.unions?.map((item) => item.id) ?? [],
-        clubs: eventData?.clubs?.map((item) => item.id) ?? [],
-        departments: eventData?.departments?.map((item) => item.id) ?? [],
+        unions: eventData?.unions?.map((item) => Number(item.id)) ?? [],
+        clubs: eventData?.clubs?.map((item) => Number(item.id)) ?? [],
+        departments: eventData?.departments?.map((item) => Number(item.id)) ?? [],
         isActive: eventData.isActive
       });
     } else {
@@ -108,9 +108,9 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
         eventEndDate: data.eventEndDate ?? eventData.eventEndDate ?? undefined,
         thumbnail: file ?? (typeof data.thumbnail === 'string' ? data.thumbnail : undefined),
         isActive: data.isActive,
-        unions: data.unions,
-        clubs: data.clubs,
-        departments: data.departments
+        unions: data.unions?.map(String),
+        clubs: data.clubs?.map(String),
+        departments: data.departments?.map(String)
       };
 
       const response = await updateEvent({ id: eventData.id, values: payload }).unwrap();

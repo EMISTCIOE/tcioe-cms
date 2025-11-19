@@ -56,49 +56,58 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
   const { roleType, unionId } = useAppSelector(authState);
 
   useEffect(() => {
+    const isUnion = roleType === 'UNION' && Boolean(unionId);
+
     setFormFields((prev) =>
-      prev.map((field) => {
-        if (field.name === 'globalEvent') {
-          return { ...field, options: globalEventOptions };
-        }
-        if (field.name === 'union') {
-          const isUnion = roleType === 'UNION' && Boolean(unionId);
-          const lockedOption = unionOptions.find((option) => String(option.value) === String(unionId));
-          return {
-            ...field,
-            options: isUnion && lockedOption ? [lockedOption] : unionOptions,
-            disabled: Boolean(isUnion)
-          };
-        }
-        if (field.name === 'club') {
-          return { ...field, options: studentClubsOptions };
-        }
-        if (field.name === 'department') {
-          return { ...field, options: departmentOptions };
-        }
-        if (field.name === 'unit') {
-          return { ...field, options: unitOptions };
-        }
-        if (field.name === 'section') {
-          return { ...field, options: sectionOptions };
-        }
-        return field;
-      })
+      prev
+        .map((field) => {
+          if (field.name === 'globalEvent') {
+            return { ...field, options: globalEventOptions };
+          }
+          if (field.name === 'union') {
+            const lockedOption = unionOptions.find((option) => String(option.value) === String(unionId));
+            return {
+              ...field,
+              options: isUnion && lockedOption ? [lockedOption] : unionOptions,
+              disabled: Boolean(isUnion)
+            };
+          }
+          if (field.name === 'club') {
+            return { ...field, options: studentClubsOptions };
+          }
+          if (field.name === 'department') {
+            return { ...field, options: departmentOptions };
+          }
+          if (field.name === 'unit') {
+            return { ...field, options: unitOptions };
+          }
+          if (field.name === 'section') {
+            return { ...field, options: sectionOptions };
+          }
+          return field;
+        })
+        .filter((field) => {
+          // Hide club, department, unit, and section fields for union users
+          if (isUnion && (field.name === 'club' || field.name === 'department' || field.name === 'unit' || field.name === 'section')) {
+            return false;
+          }
+          return true;
+        })
     );
   }, [globalEventOptions, unionOptions, studentClubsOptions, departmentOptions, unitOptions, sectionOptions, roleType, unionId]);
 
   useEffect(() => {
     if (imageData) {
       reset({
-        id: imageData.id,
+        id: Number(imageData.id),
         sourceTitle: imageData.sourceTitle ?? '',
         sourceContext: imageData.sourceContext ?? '',
-        globalEvent: imageData.globalEvent ?? null,
-        union: imageData.union ?? null,
-        club: imageData.club ?? null,
-        department: imageData.department ?? null,
-        unit: imageData.unit ?? null,
-        section: imageData.section ?? null,
+        globalEvent: imageData.globalEvent ? Number(imageData.globalEvent) : null,
+        union: imageData.union ? Number(imageData.union) : null,
+        club: imageData.club ? Number(imageData.club) : null,
+        department: imageData.department ? Number(imageData.department) : null,
+        unit: imageData.unit ? Number(imageData.unit) : null,
+        section: imageData.section ? Number(imageData.section) : null,
         isActive: imageData.isActive,
         caption: imageData.caption ?? '',
         displayOrder: imageData.displayOrder,
@@ -119,12 +128,12 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
     if (!imageData) return;
     try {
       const payload: IGlobalGalleryImageUpdatePayload = {
-        globalEvent: data.globalEvent,
-        union: data.union,
-        club: data.club,
-        department: data.department,
-        unit: data.unit,
-        section: data.section,
+        globalEvent: data.globalEvent ? String(data.globalEvent) : null,
+        union: data.union ? String(data.union) : null,
+        club: data.club ? String(data.club) : null,
+        department: data.department ? String(data.department) : null,
+        unit: data.unit ? String(data.unit) : null,
+        section: data.section ? String(data.section) : null,
         isActive: data.isActive,
         caption: data.caption?.trim(),
         displayOrder: data.displayOrder,

@@ -51,7 +51,7 @@ export interface IGlobalEventsCreatePayload {
 }
 
 export interface IGlobalEventsUpdatePayload {
-  title: string;
+  title?: string;
   description?: string;
   eventType?: ICampusEvent;
   eventStartDate?: string;
@@ -60,6 +60,8 @@ export interface IGlobalEventsUpdatePayload {
   registrationLink?: string;
   location?: string;
   isActive?: boolean;
+  isApprovedByDepartment?: boolean;
+  isApprovedByCampus?: boolean;
   unions?: string[];
   clubs?: string[];
   departments?: string[];

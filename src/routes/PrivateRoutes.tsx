@@ -40,6 +40,9 @@ const Projects = Loadable(lazy(() => import('@/pages/website-setup/projects')));
 const ProjectTags = Loadable(lazy(() => import('@/pages/website-setup/projects/tags')));
 const Academic = Loadable(lazy(() => import('@/pages/website-setup/academic')));
 const ManageEmis = Loadable(lazy(() => import('@/pages/website-setup/emis-management')));
+const EmisHardware = Loadable(lazy(() => import('@/pages/website-setup/emis-management/hardware')));
+const EmisVps = Loadable(lazy(() => import('@/pages/website-setup/emis-management/vps')));
+const EmisEmailReset = Loadable(lazy(() => import('@/pages/website-setup/emis-management/email-reset')));
 const UnionMembers = Loadable(lazy(() => import('@/pages/website-setup/union-members')));
 
 // Contact Setup Pages
@@ -100,7 +103,14 @@ const PrivateRoutes = () => {
                 <Route path="student-clubs-setup">
                   <Route path="student-clubs" element={<StudentClubs />} />
                 </Route>
-                {isEmisStaff && <Route path="emis-management" element={<ManageEmis />} />}
+                {isEmisStaff && (
+                  <Route path="emis-management">
+                    <Route index element={<ManageEmis />} />
+                    <Route path="hardware" element={<EmisHardware />} />
+                    <Route path="vps" element={<EmisVps />} />
+                    <Route path="email-reset" element={<EmisEmailReset />} />
+                  </Route>
+                )}
               </>
             )}
             <Route path="global-gallery" element={<GlobalGallery />} />

@@ -68,6 +68,7 @@ export const rootAPI = createApi({
     'DashboardStats',
     'EmisHardware',
     'EmisVpsInfo',
+    'EmisVpsService',
     'EmailResetRequest'
   ]
 });

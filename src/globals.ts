@@ -17,10 +17,11 @@ export interface PaginationParams {
   pageSize: number;
 }
 
-export interface IListResponse {
+export interface IListResponse<T = any> {
   count: number;
   next: string | null;
   previous: string | null;
+  results: T[];
 }
 
 export interface IListQueryParams {

@@ -24,6 +24,7 @@ const IsApprovedColorMap: BadgeColorMap = {
 export const getColumnConfig = (
   theme: Theme,
   canEdit: boolean,
+  canChangeApprovalStatus: boolean,
   onApprovalChange?: (
     id: string,
     field: 'isApprovedByDepartment' | 'isApprovedByCampus',
@@ -63,7 +64,7 @@ export const getColumnConfig = (
       { label: 'No', value: 'false' }
     ],
     colorMap: IsApprovedColorMap,
-    editable: canEdit,
+    editable: canChangeApprovalStatus,
     handleChange: (id, value) => onApprovalChange && onApprovalChange(id as string, 'isApprovedByDepartment', value)
   },
   {
@@ -76,7 +77,7 @@ export const getColumnConfig = (
       { label: 'No', value: 'false' }
     ],
     colorMap: IsApprovedColorMap,
-    editable: canEdit,
+    editable: canChangeApprovalStatus,
     handleChange: (id, value) => onApprovalChange && onApprovalChange(id as string, 'isApprovedByCampus', value)
   },
   { field: 'actions', headerName: '', type: 'actions' }

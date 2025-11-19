@@ -52,8 +52,8 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
     const isUnion = roleType === 'UNION' && Boolean(unionId);
     const lockedUnionOption = unionOptions.find((option) => String(option.value) === String(unionId));
 
-    setFormFields((prev) =>
-      prev.map((field) => {
+    setFormFields((prev) => {
+      const updatedFields = prev.map((field) => {
         if (field.name === 'unions') {
           return {
             ...field,
@@ -62,14 +62,29 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
           };
         }
         if (field.name === 'departments') {
-          return { ...field, options: departmentOptions };
+          return {
+            ...field,
+            options: departmentOptions
+          };
         }
         if (field.name === 'clubs') {
-          return { ...field, options: studentClubsOptions };
+          return {
+            ...field,
+            options: studentClubsOptions
+          };
         }
         return field;
-      })
-    );
+      });
+
+      // Filter out fields based on user role
+      if (isUnion) {
+        // Union users: only show unions field (hide departments and clubs)
+        return updatedFields.filter((field) => field.name !== 'departments' && field.name !== 'clubs');
+      }
+
+      // For admin/EMIS staff: show all fields
+      return updatedFields;
+    });
   }, [unionOptions, departmentOptions, studentClubsOptions, roleType, unionId]);
 
   useEffect(() => {
@@ -88,9 +103,9 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
         eventEndDate: data.eventEndDate,
         thumbnail: normalizeFile(data.thumbnail),
         isActive: data.isActive,
-        unions: data.unions,
-        clubs: data.clubs,
-        departments: data.departments
+        unions: data.unions?.map(String),
+        clubs: data.clubs?.map(String),
+        departments: data.departments?.map(String)
       };
 
       const response = await createEvent(payload).unwrap();

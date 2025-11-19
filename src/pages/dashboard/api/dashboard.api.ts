@@ -60,6 +60,14 @@ export interface PendingItems {
   events: number;
   projects: number;
   feedback: number;
+  members?: number;
+  gallery?: number;
+}
+
+export interface UnionOverview {
+  events: number;
+  members: number;
+  gallery: number;
 }
 
 export interface TrendData {
@@ -90,6 +98,7 @@ export interface DashboardStatsResponse {
     contact_statistics: ContactStatistics;
     pending_items: PendingItems;
     chart_data: ChartData;
+    union_overview?: UnionOverview;
   };
 }
 

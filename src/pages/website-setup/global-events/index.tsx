@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { validatePermissions } from '@/utils/permissions/validatePermissions';
+import { validateGlobalEventPermissions } from '@/utils/permissions/validatePermissions';
 import { globalEventsPermissions } from './constants/permissions';
 
 const GlobalEventsListing = lazy(() => import('./components/listing'));
@@ -16,4 +16,4 @@ const GlobalEventsPage = () => {
   );
 };
 
-export default validatePermissions(GlobalEventsPage, globalEventsPermissions);
+export default validateGlobalEventPermissions(GlobalEventsPage, globalEventsPermissions);

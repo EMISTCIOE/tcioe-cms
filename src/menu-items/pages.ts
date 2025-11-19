@@ -26,7 +26,8 @@ const pages: MenuItem = {
       type: 'item',
       url: '/notice',
       icon: icons.Campaign,
-      breadcrumbs: false
+      breadcrumbs: false,
+      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'DEPARTMENT-ADMIN']
     }
   ]
 };
