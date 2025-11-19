@@ -4,6 +4,8 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 // project import
 import Loadable from '@/components/Loadable';
 import MainLayout from '@/layout/MainLayout';
+import { useAppSelector } from '@/libs/hooks';
+import { authState } from '@/pages/authentication/redux/selector';
 
 // Lazy-loaded components
 const DashboardDefault = Loadable(lazy(() => import('@/pages/dashboard/index')));
@@ -37,6 +39,8 @@ const ResearchFacilities = Loadable(lazy(() => import('@/pages/website-setup/res
 const Projects = Loadable(lazy(() => import('@/pages/website-setup/projects')));
 const ProjectTags = Loadable(lazy(() => import('@/pages/website-setup/projects/tags')));
 const Academic = Loadable(lazy(() => import('@/pages/website-setup/academic')));
+const ManageEmis = Loadable(lazy(() => import('@/pages/website-setup/emis-management')));
+const UnionMembers = Loadable(lazy(() => import('@/pages/website-setup/union-members')));
 
 // Contact Setup Pages
 const Contact = Loadable(lazy(() => import('@/pages/contact')));
@@ -45,61 +49,79 @@ const Contact = Loadable(lazy(() => import('@/pages/contact')));
 const StudentClubs = Loadable(lazy(() => import('@/pages/student-clubs-setup/student-clubs')));
 // ==============================|| PRIVATE ROUTES ||============================== //
 
-const PrivateRoutes = () => (
-  <>
-    <Routes>
-      <Route path="/" element={<MainLayout />}>
-        {/* Dashboard */}
-        <Route index element={<Navigate to="dashboard/default" replace />} /> // Redirect to dashboard/default page
-        <Route path="dashboard/default" element={<DashboardDefault />} />
-        {/* Account Profile */}
-        <Route path="account">
-          <Route index element={<Navigate to="profile" replace />} /> // Redirect to personal page
-          <Route path="profile" element={<Profile />} />
-          <Route path="change-password" element={<ChangePassword />} />
-          <Route path="settings" element={<Settings />} />
+const PrivateRoutes = () => {
+  const { roleType } = useAppSelector(authState);
+  const isEmisStaff = roleType === 'EMIS-STAFF';
+  const isAdmin = roleType === 'ADMIN';
+  const isUnion = roleType === 'UNION';
+
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          {/* Dashboard */}
+          <Route index element={<Navigate to="dashboard/default" replace />} /> // Redirect to dashboard/default page
+          <Route path="dashboard/default" element={<DashboardDefault />} />
+          {/* Account Profile */}
+          <Route path="account">
+            <Route index element={<Navigate to="profile" replace />} /> // Redirect to personal page
+            <Route path="profile" element={<Profile />} />
+            <Route path="change-password" element={<ChangePassword />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
+          {/* Notice */}
+          <Route path="notice" element={<Notice />} />
+          {/* User Setup */}
+          {(isEmisStaff || isAdmin) && (
+            <Route path="user-setup">
+              <Route path="users" element={<User />} />
+              <Route path="user-roles" element={<UserRole />} />
+            </Route>
+          )}
+          <Route path="website-setup">
+            {(isEmisStaff || isAdmin) && (
+              <>
+                <Route path="academic-calendars" element={<AcademicCalendars />} />
+                <Route path="academic" element={<Academic />} />
+                <Route path="campus-downloads" element={<CampusDownloads />} />
+                <Route path="campus-feedbacks" element={<CampusFeedbacks />} />
+                <Route path="campus-info" element={<CampusInfo />} />
+                <Route path="campus-key-officials" element={<CampusKeyOfficials />} />
+                <Route path="campus-reports" element={<CampusReports />} />
+                <Route path="campus-unions" element={<CampusUnions />} />
+                <Route path="campus-sections" element={<CampusSections />} />
+                <Route path="campus-units" element={<CampusUnits />} />
+                <Route path="departments" element={<Departments />} />
+                <Route path="research" element={<Research />} />
+                <Route path="research/tags" element={<ResearchTags />} />
+                <Route path="research-facilities" element={<ResearchFacilities />} />
+                <Route path="projects" element={<Projects />} />
+                <Route path="projects/tags" element={<ProjectTags />} />
+                <Route path="student-clubs-setup">
+                  <Route path="student-clubs" element={<StudentClubs />} />
+                </Route>
+                {isEmisStaff && <Route path="emis-management" element={<ManageEmis />} />}
+              </>
+            )}
+            <Route path="global-gallery" element={<GlobalGallery />} />
+            <Route path="global-events" element={<GlobalEvents />} />
+            {isUnion && <Route path="union-members" element={<UnionMembers />} />}
+          </Route>
+          {/* Contact Setup */}
+          <Route path="contact-setup">
+            <Route path="phone-numbers" element={<Contact />} />
+          </Route>
+          {/* Student Clubs Setup (fallback for non EMIS/admin) */}
+          {!isEmisStaff && !isAdmin && (
+            <Route path="student-clubs-setup" element={<StudentClubs />} />
+          )}
         </Route>
-        {/* Notice */}
-        <Route path="notice" element={<Notice />} />
-        {/* User Setup */}
-        <Route path="user-setup">
-          <Route path="users" element={<User />} />
-          <Route path="user-roles" element={<UserRole />} />
-        </Route>
-        <Route path="website-setup">
-          <Route path="academic-calendars" element={<AcademicCalendars />} />
-          <Route path="academic" element={<Academic />} />
-          <Route path="campus-downloads" element={<CampusDownloads />} />
-          <Route path="campus-feedbacks" element={<CampusFeedbacks />} />
-          <Route path="campus-info" element={<CampusInfo />} />
-          <Route path="campus-key-officials" element={<CampusKeyOfficials />} />
-          <Route path="campus-reports" element={<CampusReports />} />
-          <Route path="campus-unions" element={<CampusUnions />} />
-          <Route path="global-gallery" element={<GlobalGallery />} />
-          <Route path="global-events" element={<GlobalEvents />} />
-          <Route path="campus-sections" element={<CampusSections />} />
-          <Route path="campus-units" element={<CampusUnits />} />
-          <Route path="departments" element={<Departments />} />
-          <Route path="research" element={<Research />} />
-          <Route path="research/tags" element={<ResearchTags />} />
-          <Route path="research-facilities" element={<ResearchFacilities />} />
-          <Route path="projects" element={<Projects />} />
-          <Route path="projects/tags" element={<ProjectTags />} />
-        </Route>
-        {/* Contact Setup */}
-        <Route path="contact-setup">
-          <Route path="phone-numbers" element={<Contact />} />
-        </Route>
-        {/* Student Clubs Setup */}
-        <Route path="student-clubs-setup">
-          <Route path="student-clubs" element={<StudentClubs />} />
-        </Route>
-      </Route>
-      <Route path="app-settings" element={<UnderConstruction />} />
-      <Route path="help" element={<UnderConstruction />} />
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
-  </>
-);
+        <Route path="app-settings" element={<UnderConstruction />} />
+        <Route path="help" element={<UnderConstruction />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </>
+  );
+};
 
 export default PrivateRoutes;

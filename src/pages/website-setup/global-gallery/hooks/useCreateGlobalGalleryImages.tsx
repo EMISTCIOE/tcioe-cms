@@ -3,7 +3,7 @@ import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useAppDispatch } from '@/libs/hooks';
+import { useAppDispatch, useAppSelector } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
 import { handleClientError } from '@/utils/functions/handleError';
 import { useCampusUnionOptions } from '@/hooks/useCampusUnionOptions';
@@ -22,6 +22,7 @@ import {
   globalGalleryCreateFormSchema
 } from '../components/create-form/config';
 import { IGlobalGalleryImageCreatePayload } from '../redux/globalGalleryImages.types';
+import { authState } from '@/pages/authentication/redux/selector';
 
 const normalizeFile = (input: File | FileList | null | undefined) => {
   if (input instanceof FileList) {
@@ -60,17 +61,27 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
     handleSubmit,
     setError,
     watch,
+    setValue,
     formState: { errors }
   } = useForm<TGlobalGalleryCreateFormDataType>({
     resolver: zodResolver(globalGalleryCreateFormSchema),
     defaultValues
   });
 
+  const { roleType, unionId } = useAppSelector(authState);
+
   useEffect(() => {
+    const isUnion = roleType === 'UNION' && Boolean(unionId);
+    const lockedFieldOption = unionOptions.find((option) => String(option.value) === String(unionId));
+
     setFormFields((prev) =>
       prev.map((field) => {
         if (field.name === 'union') {
-          return { ...field, options: unionOptions };
+          return {
+            ...field,
+            options: isUnion && lockedFieldOption ? [lockedFieldOption] : unionOptions,
+            disabled: Boolean(isUnion)
+          };
         }
         if (field.name === 'club') {
           return { ...field, options: studentClubsOptions };
@@ -90,7 +101,22 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
         return field;
       })
     );
-  }, [globalEventOptions, unionOptions, studentClubsOptions, departmentOptions, unitOptions, sectionOptions]);
+  }, [
+    globalEventOptions,
+    unionOptions,
+    studentClubsOptions,
+    departmentOptions,
+    unitOptions,
+    sectionOptions,
+    roleType,
+    unionId
+  ]);
+
+  useEffect(() => {
+    if (roleType === 'UNION' && unionId) {
+      setValue('union', Number(unionId));
+    }
+  }, [roleType, unionId, setValue]);
 
   const onSubmit = async (data: TGlobalGalleryCreateFormDataType) => {
     try {

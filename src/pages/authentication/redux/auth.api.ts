@@ -1,10 +1,5 @@
 import { rootAPI } from '../../../libs/apiSlice';
-import {
-  ForgetPasswordRequestFormDataType,
-  IAuthState,
-  LoginRequestPayload,
-  ResetPasswordRequestFormDataType,
-} from './types';
+import { ForgetPasswordRequestFormDataType, IAuthState, LoginRequestPayload, ResetPasswordRequestFormDataType } from './types';
 
 export const authAPI = 'cms/user-mod/auth';
 

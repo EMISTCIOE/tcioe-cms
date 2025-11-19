@@ -1,7 +1,7 @@
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch } from '@/libs/hooks';
+import { useAppDispatch, useAppSelector } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
 import { handleClientError } from '@/utils/functions/handleError';
 import { useCampusUnionOptions } from '@/hooks/useCampusUnionOptions';
@@ -16,6 +16,7 @@ import {
 } from '../components/create-form/config';
 import { IGlobalEventsCreatePayload } from '../redux/globalEvents.types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { authState } from '@/pages/authentication/redux/selector';
 
 const normalizeFile = (input: File | FileList | null | undefined) => {
   if (input instanceof FileList) {
@@ -38,17 +39,27 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
     handleSubmit,
     setError,
     watch,
+    setValue,
     formState: { errors }
   } = useForm<TGlobalEventsCreateFormDataType>({
     resolver: zodResolver(globalEventsCreateFormSchema),
     defaultValues: globalEventsCreateDefaultValues
   });
 
+  const { roleType, unionId } = useAppSelector(authState);
+
   useEffect(() => {
+    const isUnion = roleType === 'UNION' && Boolean(unionId);
+    const lockedUnionOption = unionOptions.find((option) => String(option.value) === String(unionId));
+
     setFormFields((prev) =>
       prev.map((field) => {
         if (field.name === 'unions') {
-          return { ...field, options: unionOptions };
+          return {
+            ...field,
+            options: isUnion && lockedUnionOption ? [lockedUnionOption] : unionOptions,
+            disabled: Boolean(isUnion)
+          };
         }
         if (field.name === 'departments') {
           return { ...field, options: departmentOptions };
@@ -59,7 +70,13 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
         return field;
       })
     );
-  }, [unionOptions, departmentOptions, studentClubsOptions]);
+  }, [unionOptions, departmentOptions, studentClubsOptions, roleType, unionId]);
+
+  useEffect(() => {
+    if (roleType === 'UNION' && unionId) {
+      setValue('unions', [Number(unionId)]);
+    }
+  }, [roleType, unionId, setValue]);
 
   const onSubmit = async (data: TGlobalEventsCreateFormDataType) => {
     try {

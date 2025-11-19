@@ -65,6 +65,9 @@ export const rootAPI = createApi({
     'AcademicProgram',
     'Subject',
     'Departments',
-    'DashboardStats'
+    'DashboardStats',
+    'EmisHardware',
+    'EmisVpsInfo',
+    'EmailResetRequest'
   ]
 });

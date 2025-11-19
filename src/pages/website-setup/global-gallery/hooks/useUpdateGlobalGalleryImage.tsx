@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch } from '@/libs/hooks';
+import { useAppDispatch, useAppSelector } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
 import { handleClientError } from '@/utils/functions/handleError';
 import { useGlobalEventOptions } from '@/hooks/useGlobalEventOptions';
@@ -19,6 +19,7 @@ import {
   TGlobalGalleryUpdateFormDataType
 } from '../components/update-form/config';
 import { IGlobalGalleryImage, IGlobalGalleryImageUpdatePayload } from '../redux/globalGalleryImages.types';
+import { authState } from '@/pages/authentication/redux/selector';
 
 const normalizeFile = (input: File | FileList | null | undefined) => {
   if (input instanceof FileList) {
@@ -45,11 +46,14 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
     setError,
     watch,
     reset,
+    setValue,
     formState: { errors }
   } = useForm<TGlobalGalleryUpdateFormDataType>({
     resolver: zodResolver(globalGalleryUpdateFormSchema),
     defaultValues: galleryUpdateDefaultValues
   });
+
+  const { roleType, unionId } = useAppSelector(authState);
 
   useEffect(() => {
     setFormFields((prev) =>
@@ -58,7 +62,13 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
           return { ...field, options: globalEventOptions };
         }
         if (field.name === 'union') {
-          return { ...field, options: unionOptions };
+          const isUnion = roleType === 'UNION' && Boolean(unionId);
+          const lockedOption = unionOptions.find((option) => String(option.value) === String(unionId));
+          return {
+            ...field,
+            options: isUnion && lockedOption ? [lockedOption] : unionOptions,
+            disabled: Boolean(isUnion)
+          };
         }
         if (field.name === 'club') {
           return { ...field, options: studentClubsOptions };
@@ -75,7 +85,16 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
         return field;
       })
     );
-  }, [globalEventOptions, unionOptions, studentClubsOptions, departmentOptions, unitOptions, sectionOptions]);
+  }, [
+    globalEventOptions,
+    unionOptions,
+    studentClubsOptions,
+    departmentOptions,
+    unitOptions,
+    sectionOptions,
+    roleType,
+    unionId
+  ]);
 
   useEffect(() => {
     if (imageData) {
@@ -98,6 +117,12 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
       reset(galleryUpdateDefaultValues);
     }
   }, [imageData, reset]);
+
+  useEffect(() => {
+    if (roleType === 'UNION' && unionId) {
+      setValue('union', Number(unionId));
+    }
+  }, [roleType, unionId, setValue]);
 
   const onSubmit = async (data: TGlobalGalleryUpdateFormDataType) => {
     if (!imageData) return;

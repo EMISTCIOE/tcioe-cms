@@ -20,7 +20,17 @@ const initialState: IAuthState = {
   forgetPasswordEmailSent: false,
   status: undefined,
   message: undefined,
-  tokens: undefined
+  tokens: undefined,
+  roleType: undefined,
+  roleDisplay: undefined,
+  designationTitle: undefined,
+  designationId: null,
+  departmentName: undefined,
+  departmentId: null,
+  clubName: undefined,
+  clubId: null,
+  unionName: undefined,
+  unionId: null
 };
 
 export const authSlice = createSlice({
@@ -41,7 +51,17 @@ export const authSlice = createSlice({
           roles,
           permissions,
           status,
-          message
+          message,
+          roleType,
+          roleDisplay,
+          designationTitle,
+          designationId,
+          departmentName,
+          departmentId,
+          clubName,
+          clubId,
+          unionName,
+          unionId
         }
       } = action;
 
@@ -58,6 +78,16 @@ export const authSlice = createSlice({
       state.status = status;
       state.message = message;
       state.isAuthenticated = true;
+      state.roleType = roleType;
+      state.roleDisplay = roleDisplay;
+      state.designationTitle = designationTitle;
+      state.designationId = designationId;
+      state.departmentName = departmentName;
+      state.departmentId = departmentId;
+      state.clubName = clubName;
+      state.clubId = clubId;
+      state.unionName = unionName;
+      state.unionId = unionId;
       // Save access and refresh tokens in the cookies
       Cookies.set('access', tokens?.access as string, {
         path: '/',

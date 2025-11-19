@@ -2,12 +2,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch } from '@/libs/hooks';
+import { useAppDispatch, useAppSelector } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
 import { handleClientError } from '@/utils/functions/handleError';
 import { useCampusUnionOptions } from '@/hooks/useCampusUnionOptions';
 import { useDepartmentOptions } from '@/hooks/useDepartmentOptions';
 import { useStudentClubs } from '@/pages/student-clubs-setup/student-clubs/hooks/useStudentClubs';
+import { authState } from '@/pages/authentication/redux/selector';
 import { usePatchGlobalEventsMutation } from '../redux/globalEvents.api';
 import { globalEventsUpdateFields, globalEventsUpdateFormSchema, TGlobalEventsUpdateFormDataType } from '../components/update-form/config';
 import { IGlobalEventsDetails, IGlobalEventsUpdatePayload } from '../redux/globalEvents.types';
@@ -37,17 +38,27 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
     setError,
     watch,
     reset,
+    setValue,
     formState: { errors }
   } = useForm<TGlobalEventsUpdateFormDataType>({
     resolver: zodResolver(globalEventsUpdateFormSchema),
     defaultValues: {}
   });
 
+  const { roleType, unionId } = useAppSelector(authState);
+
   useEffect(() => {
+    const isUnion = roleType === 'UNION' && Boolean(unionId);
+    const lockedUnionOption = unionOptions.find((option) => String(option.value) === String(unionId));
+
     setFormFields((prev) =>
       prev.map((field) => {
         if (field.name === 'unions') {
-          return { ...field, options: unionOptions };
+          return {
+            ...field,
+            options: isUnion && lockedUnionOption ? [lockedUnionOption] : unionOptions,
+            disabled: Boolean(isUnion)
+          };
         }
         if (field.name === 'departments') {
           return { ...field, options: departmentOptions };
@@ -58,7 +69,7 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
         return field;
       })
     );
-  }, [unionOptions, departmentOptions, studentClubsOptions]);
+  }, [unionOptions, departmentOptions, studentClubsOptions, roleType, unionId]);
 
   useEffect(() => {
     if (eventData) {
@@ -78,6 +89,12 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
       reset({});
     }
   }, [eventData, reset]);
+
+  useEffect(() => {
+    if (roleType === 'UNION' && unionId) {
+      setValue('unions', [Number(unionId)]);
+    }
+  }, [roleType, unionId, setValue]);
 
   const onSubmit = async (data: TGlobalEventsUpdateFormDataType) => {
     if (!eventData) return;

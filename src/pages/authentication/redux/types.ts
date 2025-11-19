@@ -30,6 +30,16 @@ export interface IAuthState {
   forgetPasswordEmailSent?: boolean;
   status?: string;
   message?: string;
+  roleType?: string;
+  roleDisplay?: string;
+  designationTitle?: string;
+  designationId?: string | null;
+  departmentName?: string | null;
+  departmentId?: string | null;
+  clubName?: string | null;
+  clubId?: string | null;
+  unionName?: string | null;
+  unionId?: string | null;
 }
 
 export interface UnverifiedLoginState {
