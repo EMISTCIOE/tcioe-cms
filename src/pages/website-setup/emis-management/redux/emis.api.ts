@@ -148,6 +148,14 @@ export const emisAPISlice = rootAPI.injectEndpoints({
         data
       }),
       invalidatesTags: ['EmailResetRequest']
+    }),
+    resetEmailRequestLimit: builder.mutation<IMutationSuccessResponse, { email: string }>({
+      query: ({ email }) => ({
+        url: `${EMIS_API}/email-reset/reset-limit`,
+        method: 'POST',
+        data: { email }
+      }),
+      invalidatesTags: ['EmailResetRequest']
     })
   })
 });
@@ -175,5 +183,6 @@ export const {
   useGetEmailResetRequestsQuery,
   useCreateEmailResetRequestMutation,
   useApproveEmailResetRequestMutation,
-  useRejectEmailResetRequestMutation
+  useRejectEmailResetRequestMutation,
+  useResetEmailRequestLimitMutation
 } = emisAPISlice;

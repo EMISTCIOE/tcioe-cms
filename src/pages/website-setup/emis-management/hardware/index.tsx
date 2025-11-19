@@ -76,7 +76,7 @@ const HardwareManagement = () => {
   const [viewDialog, setViewDialog] = useState<IEmisHardware | null>(null);
   const [deleteDialog, setDeleteDialog] = useState<IEmisHardware | null>(null);
 
-  const { data: hardwareData, isLoading, refetch } = useGetEmisHardwareQuery();
+  const { data: hardwareData, isLoading, error: hardwareError, refetch } = useGetEmisHardwareQuery();
   const [createHardware, { isLoading: createLoading }] = useCreateEmisHardwareMutation();
   const [updateHardware, { isLoading: updateLoading }] = useUpdateEmisHardwareMutation();
   const [deleteHardware, { isLoading: deleteLoading }] = useDeleteEmisHardwareMutation();
@@ -173,6 +173,37 @@ const HardwareManagement = () => {
     const IconComponent = hardwareTypeIcons[type];
     return <IconComponent />;
   };
+
+  // Handle loading state
+  if (isLoading) {
+    return (
+      <Box sx={{ p: 3, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+        <Typography>Loading hardware data...</Typography>
+      </Box>
+    );
+  }
+
+  // Handle error state
+  if (hardwareError) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <Typography variant="h4" sx={{ mb: 3 }}>
+          Hardware Management
+        </Typography>
+        <Paper sx={{ p: 3, textAlign: 'center' }}>
+          <Typography variant="h6" color="error" sx={{ mb: 2 }}>
+            Error Loading Hardware Data
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            Failed to load hardware information. Please check your permissions or contact administrator.
+          </Typography>
+          <Button variant="contained" onClick={refetch}>
+            Retry
+          </Button>
+        </Paper>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ p: 3 }}>

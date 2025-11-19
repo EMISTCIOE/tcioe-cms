@@ -49,21 +49,21 @@ export interface IEmisVpsService {
 
 export interface IEmailResetRequest {
   id: string;
-  full_name: string;
-  roll_number: string;
-  birth_date: string;
-  primary_email: string;
-  secondary_email: string;
-  phone_number: string;
+  fullName: string;
+  rollNumber: string;
+  birthDate: string;
+  primaryEmail: string;
+  secondaryEmail: string;
+  phoneNumber: string;
   status: RequestStatusType;
-  request_sequence: number;
-  requests_remaining: number;
-  processed_at?: string;
-  processed_by?: string;
-  processed_by_name?: string;
+  requestSequence: number;
+  requestsRemaining: number;
+  processedAt?: string;
+  processedBy?: string;
+  processedByName?: string;
   notes?: string;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IEmisHardwareCreatePayload {

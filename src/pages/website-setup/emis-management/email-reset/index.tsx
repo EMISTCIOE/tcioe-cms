@@ -50,7 +50,12 @@ import { format } from 'date-fns';
 import { useAppDispatch } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
 import ConfirmDialog from '@/components/ConfirmDialog';
-import { useGetEmailResetRequestsQuery, useApproveEmailResetRequestMutation, useRejectEmailResetRequestMutation } from '../redux/emis.api';
+import {
+  useGetEmailResetRequestsQuery,
+  useApproveEmailResetRequestMutation,
+  useRejectEmailResetRequestMutation,
+  useResetEmailRequestLimitMutation
+} from '../redux/emis.api';
 import { IEmailResetRequest, RequestStatusType } from '../types';
 
 interface TabPanelProps {
@@ -75,15 +80,28 @@ interface ProcessRequestFormData {
 const EmailResetManagement = () => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
+
+  // Helper function to safely format dates
+  const safeFormatDate = (dateValue: string | null | undefined, formatString: string = 'MMM dd, yyyy') => {
+    if (!dateValue) return 'N/A';
+    try {
+      return format(new Date(dateValue), formatString);
+    } catch (error) {
+      console.error('Invalid date value:', dateValue, error);
+      return 'Invalid Date';
+    }
+  };
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | RequestStatusType>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | RequestStatusType>('pending');
   const [tabValue, setTabValue] = useState(0);
   const [viewDialog, setViewDialog] = useState<IEmailResetRequest | null>(null);
   const [processDialog, setProcessDialog] = useState<{ request: IEmailResetRequest; action: 'approve' | 'reject' } | null>(null);
+  const [resetLimitDialog, setResetLimitDialog] = useState<IEmailResetRequest | null>(null);
 
   const { data: requestsData, isLoading, refetch } = useGetEmailResetRequestsQuery();
   const [approveRequest, { isLoading: approveLoading }] = useApproveEmailResetRequestMutation();
   const [rejectRequest, { isLoading: rejectLoading }] = useRejectEmailResetRequestMutation();
+  const [resetRequestLimit, { isLoading: resetLimitLoading }] = useResetEmailRequestLimitMutation();
 
   const processForm = useForm<ProcessRequestFormData>({
     defaultValues: {
@@ -110,13 +128,26 @@ const EmailResetManagement = () => {
     }
   };
 
+  const handleResetRequestLimit = async () => {
+    if (!resetLimitDialog) return;
+
+    try {
+      const response = await resetRequestLimit({ email: resetLimitDialog.primaryEmail }).unwrap();
+      dispatch(setMessage({ message: response.message, variant: 'success' }));
+      setResetLimitDialog(null);
+      refetch();
+    } catch (error: any) {
+      enqueueSnackbar(error?.data?.detail || 'Failed to reset request limit', { variant: 'error' });
+    }
+  };
+
   const filteredRequests =
     requestsData?.results?.filter((request) => {
       const matchesSearch =
-        request.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        request.roll_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        request.primary_email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        request.phone_number.toLowerCase().includes(searchTerm.toLowerCase());
+        (request.fullName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+        (request.rollNumber?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+        (request.primaryEmail?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+        (request.phoneNumber?.toLowerCase() || '').includes(searchTerm.toLowerCase());
 
       const matchesStatus = statusFilter === 'all' || request.status === statusFilter;
 
@@ -159,14 +190,14 @@ const EmailResetManagement = () => {
         <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 2 }}>
           <Box>
             <Typography variant="h6" sx={{ mb: 1 }}>
-              {request.full_name}
+              {request.fullName}
             </Typography>
             <Stack direction="row" spacing={2} sx={{ mb: 1 }}>
               <Typography variant="body2" color="text.secondary">
-                <strong>Roll:</strong> {request.roll_number}
+                <strong>Roll:</strong> {request.rollNumber}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                <strong>Sequence:</strong> #{request.request_sequence}
+                <strong>Sequence:</strong> #{request.requestSequence}
               </Typography>
             </Stack>
           </Box>
@@ -182,34 +213,34 @@ const EmailResetManagement = () => {
           <Grid item xs={12} sm={6}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <EmailIcon fontSize="small" color="action" />
-              <Typography variant="body2">{request.primary_email}</Typography>
+              <Typography variant="body2">{request.primaryEmail}</Typography>
             </Stack>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <PhoneIcon fontSize="small" color="action" />
-              <Typography variant="body2">{request.phone_number}</Typography>
+              <Typography variant="body2">{request.phoneNumber}</Typography>
             </Stack>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <CalendarIcon fontSize="small" color="action" />
-              <Typography variant="body2">DOB: {format(new Date(request.birth_date), 'MMM dd, yyyy')}</Typography>
+              <Typography variant="body2">DOB: {safeFormatDate(request.birthDate, 'MMM dd, yyyy')}</Typography>
             </Stack>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <AccessTimeIcon fontSize="small" color="action" />
-              <Typography variant="body2">{format(new Date(request.created_at), 'MMM dd, yyyy HH:mm')}</Typography>
+              <Typography variant="body2">{safeFormatDate(request.createdAt, 'MMM dd, yyyy HH:mm')}</Typography>
             </Stack>
           </Grid>
         </Grid>
 
-        {request.processed_at && (
+        {request.processedAt && (
           <Alert severity={request.status === 'approved' ? 'success' : 'error'} sx={{ mb: 2 }}>
             <Typography variant="body2">
-              <strong>{request.status === 'approved' ? 'Approved' : 'Rejected'}</strong> by {request.processed_by_name}
-              on {format(new Date(request.processed_at), 'MMM dd, yyyy HH:mm')}
+              <strong>{request.status === 'approved' ? 'Approved' : 'Rejected'}</strong> by {request.processedByName}
+              on {safeFormatDate(request.processedAt, 'MMM dd, yyyy HH:mm')}
             </Typography>
             {request.notes && (
               <Typography variant="body2" sx={{ mt: 1 }}>
@@ -219,10 +250,35 @@ const EmailResetManagement = () => {
           </Alert>
         )}
 
+        {/* Request Limit Information */}
+        {request.requestsRemaining < 10 && (
+          <Alert
+            severity={request.requestsRemaining <= 2 ? 'error' : 'warning'}
+            sx={{ mb: 2 }}
+            action={
+              request.requestsRemaining === 0 ? (
+                <Button color="inherit" size="small" onClick={() => setResetLimitDialog(request)}>
+                  Reset Limit
+                </Button>
+              ) : null
+            }
+          >
+            <Typography variant="body2">
+              <strong>Requests Remaining:</strong> {request.requestsRemaining}/10
+              {request.requestsRemaining === 0 && ' - This user cannot make more requests until limit is reset'}
+            </Typography>
+          </Alert>
+        )}
+
         <Stack direction="row" spacing={1} justifyContent="flex-end">
           <Button size="small" startIcon={<ViewIcon />} onClick={() => setViewDialog(request)}>
             View Details
           </Button>
+          {request.requestsRemaining === 0 && (
+            <Button size="small" variant="outlined" color="warning" onClick={() => setResetLimitDialog(request)}>
+              Reset Limit ({request.requestsRemaining}/10)
+            </Button>
+          )}
           {request.status === 'pending' && (
             <>
               <Button
@@ -267,17 +323,17 @@ const EmailResetManagement = () => {
             <TableRow key={request.id} hover>
               <TableCell>
                 <Box>
-                  <Typography variant="subtitle2">{request.full_name}</Typography>
+                  <Typography variant="subtitle2">{request.fullName}</Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {request.roll_number} • Sequence #{request.request_sequence}
+                    {request.rollNumber} • Sequence #{request.requestSequence}
                   </Typography>
                 </Box>
               </TableCell>
               <TableCell>
                 <Box>
-                  <Typography variant="body2">{request.primary_email}</Typography>
+                  <Typography variant="body2">{request.primaryEmail}</Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {request.phone_number}
+                    {request.phoneNumber}
                   </Typography>
                 </Box>
               </TableCell>
@@ -290,18 +346,26 @@ const EmailResetManagement = () => {
                 />
               </TableCell>
               <TableCell>
-                <Typography variant="body2">{format(new Date(request.created_at), 'MMM dd, yyyy')}</Typography>
-                {request.processed_at && (
+                <Typography variant="body2">{safeFormatDate(request.createdAt, 'MMM dd, yyyy')}</Typography>
+                {request.processedAt && (
                   <Typography variant="caption" color="text.secondary" display="block">
-                    Processed: {format(new Date(request.processed_at), 'MMM dd, yyyy')}
+                    Processed: {safeFormatDate(request.processedAt, 'MMM dd, yyyy')}
                   </Typography>
                 )}
+                <Typography variant="caption" display="block" color={request.requestsRemaining === 0 ? 'error.main' : 'text.secondary'}>
+                  Requests: {request.requestsRemaining}/10
+                </Typography>
               </TableCell>
               <TableCell align="center">
                 <Stack direction="row" spacing={1} justifyContent="center">
                   <IconButton size="small" onClick={() => setViewDialog(request)} color="primary">
                     <ViewIcon />
                   </IconButton>
+                  {request.requestsRemaining === 0 && (
+                    <IconButton size="small" onClick={() => setResetLimitDialog(request)} color="warning" title="Reset Request Limit">
+                      <AssignmentIcon />
+                    </IconButton>
+                  )}
                   {request.status === 'pending' && (
                     <>
                       <IconButton size="small" onClick={() => setProcessDialog({ request, action: 'approve' })} color="success">
@@ -346,15 +410,24 @@ const EmailResetManagement = () => {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            <FormControl fullWidth>
-              <InputLabel>Status Filter</InputLabel>
-              <Select value={statusFilter} label="Status Filter" onChange={(e) => setStatusFilter(e.target.value as any)}>
-                <MenuItem value="all">All Statuses</MenuItem>
-                <MenuItem value="pending">Pending</MenuItem>
-                <MenuItem value="approved">Approved</MenuItem>
-                <MenuItem value="rejected">Rejected</MenuItem>
-              </Select>
-            </FormControl>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <FormControl fullWidth>
+                <InputLabel>Status Filter</InputLabel>
+                <Select value={statusFilter} label="Status Filter" onChange={(e) => setStatusFilter(e.target.value as any)}>
+                  <MenuItem value="all">All Statuses</MenuItem>
+                  <MenuItem value="pending">Pending Only</MenuItem>
+                  <MenuItem value="approved">Approved Only</MenuItem>
+                  <MenuItem value="rejected">Rejected Only</MenuItem>
+                </Select>
+              </FormControl>
+              <Button
+                variant={statusFilter === 'all' ? 'contained' : 'outlined'}
+                onClick={() => setStatusFilter('all')}
+                sx={{ minWidth: 80 }}
+              >
+                Show All
+              </Button>
+            </Stack>
           </Grid>
         </Grid>
       </Paper>
@@ -362,7 +435,16 @@ const EmailResetManagement = () => {
       {/* Summary Cards */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
         <Grid item xs={12} sm={4}>
-          <Card>
+          <Card
+            sx={{
+              cursor: 'pointer',
+              bgcolor: statusFilter === 'pending' ? 'warning.lighter' : 'inherit',
+              border: statusFilter === 'pending' ? '2px solid' : '1px solid',
+              borderColor: statusFilter === 'pending' ? 'warning.main' : 'divider',
+              '&:hover': { bgcolor: 'warning.lighter' }
+            }}
+            onClick={() => setStatusFilter('pending')}
+          >
             <CardContent>
               <Stack direction="row" alignItems="center" spacing={2}>
                 <Avatar sx={{ bgcolor: 'warning.main' }}>
@@ -379,7 +461,16 @@ const EmailResetManagement = () => {
           </Card>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Card>
+          <Card
+            sx={{
+              cursor: 'pointer',
+              bgcolor: statusFilter === 'approved' ? 'success.lighter' : 'inherit',
+              border: statusFilter === 'approved' ? '2px solid' : '1px solid',
+              borderColor: statusFilter === 'approved' ? 'success.main' : 'divider',
+              '&:hover': { bgcolor: 'success.lighter' }
+            }}
+            onClick={() => setStatusFilter('approved')}
+          >
             <CardContent>
               <Stack direction="row" alignItems="center" spacing={2}>
                 <Avatar sx={{ bgcolor: 'success.main' }}>
@@ -396,7 +487,16 @@ const EmailResetManagement = () => {
           </Card>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Card>
+          <Card
+            sx={{
+              cursor: 'pointer',
+              bgcolor: statusFilter === 'rejected' ? 'error.lighter' : 'inherit',
+              border: statusFilter === 'rejected' ? '2px solid' : '1px solid',
+              borderColor: statusFilter === 'rejected' ? 'error.main' : 'divider',
+              '&:hover': { bgcolor: 'error.lighter' }
+            }}
+            onClick={() => setStatusFilter('rejected')}
+          >
             <CardContent>
               <Stack direction="row" alignItems="center" spacing={2}>
                 <Avatar sx={{ bgcolor: 'error.main' }}>
@@ -457,43 +557,43 @@ const EmailResetManagement = () => {
                   <Typography variant="subtitle2" color="text.secondary">
                     Full Name
                   </Typography>
-                  <Typography variant="body1">{viewDialog.full_name}</Typography>
+                  <Typography variant="body1">{viewDialog.fullName}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
                     Roll Number
                   </Typography>
-                  <Typography variant="body1">{viewDialog.roll_number}</Typography>
+                  <Typography variant="body1">{viewDialog.rollNumber}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
                     Date of Birth
                   </Typography>
-                  <Typography variant="body1">{format(new Date(viewDialog.birth_date), 'MMMM dd, yyyy')}</Typography>
+                  <Typography variant="body1">{safeFormatDate(viewDialog.birthDate, 'MMMM dd, yyyy')}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
                     Phone Number
                   </Typography>
-                  <Typography variant="body1">{viewDialog.phone_number}</Typography>
+                  <Typography variant="body1">{viewDialog.phoneNumber}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
                     Primary Email
                   </Typography>
-                  <Typography variant="body1">{viewDialog.primary_email}</Typography>
+                  <Typography variant="body1">{viewDialog.primaryEmail}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
                     Secondary Email
                   </Typography>
-                  <Typography variant="body1">{viewDialog.secondary_email}</Typography>
+                  <Typography variant="body1">{viewDialog.secondaryEmail}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
                     Request Sequence
                   </Typography>
-                  <Typography variant="body1">#{viewDialog.request_sequence}</Typography>
+                  <Typography variant="body1">#{viewDialog.requestSequence}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2" color="text.secondary">
@@ -506,6 +606,15 @@ const EmailResetManagement = () => {
                     size="small"
                   />
                 </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Requests Remaining
+                  </Typography>
+                  <Typography variant="body1" color={viewDialog.requestsRemaining === 0 ? 'error.main' : 'text.primary'}>
+                    {viewDialog.requestsRemaining}/10
+                    {viewDialog.requestsRemaining === 0 && ' (Limit Reached)'}
+                  </Typography>
+                </Grid>
               </Grid>
 
               <Divider />
@@ -514,19 +623,19 @@ const EmailResetManagement = () => {
                 <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
                   Request Date
                 </Typography>
-                <Typography variant="body1">{format(new Date(viewDialog.created_at), 'MMMM dd, yyyy HH:mm:ss')}</Typography>
+                <Typography variant="body1">{safeFormatDate(viewDialog.createdAt, 'MMMM dd, yyyy HH:mm:ss')}</Typography>
               </Box>
 
-              {viewDialog.processed_at && (
+              {viewDialog.processedAt && (
                 <Box>
                   <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
                     Processing Information
                   </Typography>
                   <Typography variant="body1">
-                    <strong>Processed by:</strong> {viewDialog.processed_by_name || 'Unknown'}
+                    <strong>Processed by:</strong> {viewDialog.processedByName || 'Unknown'}
                   </Typography>
                   <Typography variant="body1">
-                    <strong>Processed at:</strong> {format(new Date(viewDialog.processed_at), 'MMMM dd, yyyy HH:mm:ss')}
+                    <strong>Processed at:</strong> {safeFormatDate(viewDialog.processedAt, 'MMMM dd, yyyy HH:mm:ss')}
                   </Typography>
                   {viewDialog.notes && (
                     <Typography variant="body1" sx={{ mt: 1 }}>
@@ -540,6 +649,18 @@ const EmailResetManagement = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setViewDialog(null)}>Close</Button>
+          {viewDialog && viewDialog.requestsRemaining === 0 && (
+            <Button
+              variant="contained"
+              color="warning"
+              onClick={() => {
+                setResetLimitDialog(viewDialog);
+                setViewDialog(null);
+              }}
+            >
+              Reset Limit
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
 
@@ -553,7 +674,7 @@ const EmailResetManagement = () => {
                 <Alert severity={processDialog.action === 'approve' ? 'success' : 'warning'}>
                   <Typography variant="body2">
                     You are about to <strong>{processDialog.action}</strong> the email reset request for{' '}
-                    <strong>{processDialog.request.full_name}</strong> ({processDialog.request.roll_number}).
+                    <strong>{processDialog.request.fullName}</strong> ({processDialog.request.rollNumber}).
                   </Typography>
                 </Alert>
 
@@ -586,6 +707,35 @@ const EmailResetManagement = () => {
             </Button>
           </DialogActions>
         </form>
+      </Dialog>
+
+      {/* Reset Request Limit Confirmation Dialog */}
+      <Dialog open={!!resetLimitDialog} onClose={() => setResetLimitDialog(null)} maxWidth="sm" fullWidth>
+        <DialogTitle>Reset Request Limit</DialogTitle>
+        <DialogContent>
+          {resetLimitDialog && (
+            <Stack spacing={3} sx={{ mt: 2 }}>
+              <Alert severity="warning">
+                <Typography variant="body2">
+                  You are about to reset the email request limit for <strong>{resetLimitDialog.fullName}</strong> (
+                  {resetLimitDialog.primaryEmail}).
+                </Typography>
+              </Alert>
+              <Typography variant="body2">
+                Current status: <strong>{resetLimitDialog.requestsRemaining}/10 requests remaining</strong>
+              </Typography>
+              <Typography variant="body2">
+                After reset, this user will be able to make <strong>10 new email reset requests</strong>.
+              </Typography>
+            </Stack>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setResetLimitDialog(null)}>Cancel</Button>
+          <Button variant="contained" color="warning" onClick={handleResetRequestLimit} disabled={resetLimitLoading}>
+            {resetLimitLoading ? 'Resetting...' : 'Reset Limit'}
+          </Button>
+        </DialogActions>
       </Dialog>
     </Box>
   );

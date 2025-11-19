@@ -153,3 +153,5 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     </Box>
   );
 };
+
+export default FileUpload;

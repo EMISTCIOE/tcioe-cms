@@ -93,8 +93,8 @@ const VPSManagement = () => {
   const [deleteServiceDialog, setDeleteServiceDialog] = useState<IEmisVpsService | null>(null);
   const [expandedVps, setExpandedVps] = useState<string[]>([]);
 
-  const { data: vpsData, isLoading: vpsLoading, refetch: refetchVps } = useGetEmisVpsInfoQuery();
-  const { data: servicesData, refetch: refetchServices } = useGetEmisVpsServicesQuery();
+  const { data: vpsData, isLoading: vpsLoading, error: vpsError, refetch: refetchVps } = useGetEmisVpsInfoQuery();
+  const { data: servicesData, error: servicesError, refetch: refetchServices } = useGetEmisVpsServicesQuery();
   const [createVps, { isLoading: createVpsLoading }] = useCreateEmisVpsInfoMutation();
   const [updateVps, { isLoading: updateVpsLoading }] = useUpdateEmisVpsInfoMutation();
   const [deleteVps, { isLoading: deleteVpsLoading }] = useDeleteEmisVpsInfoMutation();
@@ -254,6 +254,45 @@ const VPSManagement = () => {
   const getServicesForVps = (vpsId: string) => {
     return servicesData?.results?.filter((service) => service.vps.toString() === vpsId) || [];
   };
+
+  // Handle loading state
+  if (vpsLoading) {
+    return (
+      <Box sx={{ p: 3, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+        <Typography>Loading VPS data...</Typography>
+      </Box>
+    );
+  }
+
+  // Handle error state
+  if (vpsError || servicesError) {
+    return (
+      <Box sx={{ p: 3 }}>
+        <Typography variant="h4" sx={{ mb: 3 }}>
+          VPS Management
+        </Typography>
+        <Paper sx={{ p: 3, textAlign: 'center' }}>
+          <Typography variant="h6" color="error" sx={{ mb: 2 }}>
+            Error Loading Data
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            {vpsError ? 'Failed to load VPS information. ' : ''}
+            {servicesError ? 'Failed to load services information. ' : ''}
+            Please check your permissions or contact administrator.
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={() => {
+              refetchVps();
+              refetchServices();
+            }}
+          >
+            Retry
+          </Button>
+        </Paper>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ p: 3 }}>
