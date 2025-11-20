@@ -7,7 +7,7 @@ export const userInfoUpdateFormSchema = z.object({
   name: z.string().min(1, 'Full Name is required'),
   phoneNo: z.string().min(10, 'Phone No. must be at least 10 characters').optional(),
   isActive: z.boolean().optional(),
-  roles: z.array(z.number()).min(1, 'At least one role is required'),
+  roles: z.array(z.number()).optional(),
   photo: z.any().optional()
 });
 

@@ -29,7 +29,7 @@ const useCreateNotice = ({ onClose }: INoticeCreateFormProps) => {
   const { options: sectionOptions } = useCampusSectionOptions();
   const { roleType, campusUnitId, campusSectionId } = useAppSelector(authState);
 
-const {
+  const {
     control,
     handleSubmit,
     setError,

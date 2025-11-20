@@ -11,7 +11,7 @@ export const userInfoFormSchema = z
     // role of user (EMIS-STAFF, ADMIN, DEPARTMENT-ADMIN, CLUB, UNION)
     role: z.string().optional(),
     // Password is now generated on the backend. Frontend no longer collects password.
-    roles: z.array(z.number()).min(1, 'At least one role is required'),
+    roles: z.array(z.number()).optional(),
     designation: z.number().optional(),
     department: z.number().optional(),
     club: z.number().optional(),
@@ -111,7 +111,7 @@ export const userInfoFields: FormField<UserInfoFormDataType>[] = [
     required: false,
     showIf: (values: any) => values?.role === 'DEPARTMENT-ADMIN'
   },
-  { name: 'roles', label: 'Roles', xs: 6, sm: 3, type: 'select', options: [], multipleChips: true, required: true },
+  { name: 'roles', label: 'Roles', xs: 6, sm: 3, type: 'select', options: [], multipleChips: true, required: false },
   // show club only when role is CLUB
   {
     name: 'club',
