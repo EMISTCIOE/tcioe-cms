@@ -49,22 +49,24 @@ import {
 } from '../redux/emis.api';
 import { HardwareTypeOption, IEmisHardware, IEmisHardwareCreatePayload } from '../types';
 
-const hardwareTypeLabels: Record<HardwareTypeOption, string> = {
+const hardwareTypeLabels: Record<HardwareTypeOption | 'default', string> = {
   router: 'Router',
   switch: 'Switch',
   server: 'Server',
   firewall: 'Firewall',
   endpoint: 'Endpoint',
-  other: 'Other'
+  other: 'Other',
+  default: 'Hardware'
 };
 
-const hardwareTypeIcons: Record<HardwareTypeOption, React.ElementType> = {
+const hardwareTypeIcons: Record<HardwareTypeOption | 'default', React.ElementType> = {
   router: RouterIcon,
   switch: DeviceHubIcon,
   server: ComputerIcon,
   firewall: SecurityIcon,
   endpoint: StorageIcon,
-  other: MoreVertIcon
+  other: MoreVertIcon,
+  default: MoreVertIcon
 };
 
 const HardwareManagement = () => {
@@ -168,6 +170,19 @@ const HardwareManagement = () => {
     setOpenDialog(true);
   };
 
+  const getHardwareLabel = (type?: string | null) => {
+    if (type && Object.prototype.hasOwnProperty.call(hardwareTypeLabels, type)) {
+      return hardwareTypeLabels[type as HardwareTypeOption];
+    }
+    return hardwareTypeLabels.default;
+  };
+
+  const getHardwareIcon = (type?: string | null) => {
+    const iconKey = type && Object.prototype.hasOwnProperty.call(hardwareTypeIcons, type) ? (type as HardwareTypeOption) : 'default';
+    const IconComponent = hardwareTypeIcons[iconKey];
+    return <IconComponent />;
+  };
+
   const filteredHardware =
     hardwareData?.results?.filter(
       (item) =>
@@ -175,11 +190,6 @@ const HardwareManagement = () => {
         item.hardware_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.location?.toLowerCase().includes(searchTerm.toLowerCase())
     ) || [];
-
-  const getHardwareIcon = (type: HardwareTypeOption) => {
-    const IconComponent = hardwareTypeIcons[type];
-    return <IconComponent />;
-  };
 
   // Handle loading state
   if (isLoading) {
@@ -260,7 +270,7 @@ const HardwareManagement = () => {
                   </Box>
                 )}
                 <Chip
-                  label={hardwareTypeLabels[item.hardware_type]}
+                  label={getHardwareLabel(item.hardware_type)}
                   color="primary"
                   size="small"
                   sx={{ position: 'absolute', top: 8, right: 8 }}
@@ -331,11 +341,13 @@ const HardwareManagement = () => {
                 control={form.control}
                 render={({ field }) => (
                   <TextField select label="Hardware Type" fullWidth {...field}>
-                    {Object.entries(hardwareTypeLabels).map(([value, label]) => (
-                      <MenuItem key={value} value={value}>
-                        {label}
-                      </MenuItem>
-                    ))}
+                    {Object.entries(hardwareTypeLabels)
+                      .filter(([value]) => value !== 'default')
+                      .map(([value, label]) => (
+                        <MenuItem key={value} value={value}>
+                          {label}
+                        </MenuItem>
+                      ))}
                   </TextField>
                 )}
               />
@@ -411,7 +423,7 @@ const HardwareManagement = () => {
                 />
               )}
               <Typography>
-                <strong>Type:</strong> {hardwareTypeLabels[viewDialog.hardware_type]}
+                <strong>Type:</strong> {getHardwareLabel(viewDialog.hardware_type)}
               </Typography>
               <Typography>
                 <strong>IP Address:</strong> {viewDialog.ip_address || 'N/A'}
@@ -446,8 +458,8 @@ const HardwareManagement = () => {
         onClose={() => setDeleteDialog(null)}
         onConfirm={handleDelete}
         title="Delete Hardware"
-        content={`Are you sure you want to delete "${deleteDialog?.name}"? This action cannot be undone.`}
-        loading={deleteLoading}
+        message={`Are you sure you want to delete "${deleteDialog?.name}"? This action cannot be undone.`}
+        isLoading={deleteLoading}
       />
     </Box>
   );

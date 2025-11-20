@@ -799,17 +799,16 @@ const VPSManagement = () => {
         onClose={() => setDeleteVpsDialog(null)}
         onConfirm={handleDeleteVps}
         title="Delete VPS"
-        content={`Are you sure you want to delete VPS "${deleteVpsDialog?.vps_name}"? This will also delete all associated services.`}
-        loading={deleteVpsLoading}
+        isLoading={deleteVpsLoading}
+        message={`Are you sure you want to delete VPS "${deleteVpsDialog?.vps_name}"? This will also delete all associated services.`}
       />
-
       <ConfirmDialog
         open={!!deleteServiceDialog}
         onClose={() => setDeleteServiceDialog(null)}
         onConfirm={handleDeleteService}
         title="Delete Service"
-        content={`Are you sure you want to delete service "${deleteServiceDialog?.name}"?`}
-        loading={deleteServiceLoading}
+        isLoading={deleteServiceLoading}
+        message={`Are you sure you want to delete service "${deleteServiceDialog?.name}"?`}
       />
     </Box>
   );
