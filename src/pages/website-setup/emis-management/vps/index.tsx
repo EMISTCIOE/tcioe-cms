@@ -112,6 +112,13 @@ const extractErrorMessage = (error: unknown, fallbackMessage: string): string =>
   return search((error as any)?.data ?? error) || fallbackMessage;
 };
 
+const formatMetric = (value?: number | null, suffix = '') => {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return `${value}${suffix}`.trim();
+  }
+  return 'Not set';
+};
+
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
   return (
@@ -423,10 +430,16 @@ const VPSManagement = () => {
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
-                    <Chip icon={<MemoryIcon />} label={`${vps.ram_gb} GB`} size="small" color="primary" variant="outlined" />
+                    <Chip icon={<MemoryIcon />} label={formatMetric(vps.ram_gb, ' GB')} size="small" color="primary" variant="outlined" />
                   </TableCell>
                   <TableCell align="center">
-                    <Chip icon={<ComputerIcon />} label={`${vps.cpu_cores} cores`} size="small" color="secondary" variant="outlined" />
+                    <Chip
+                      icon={<ComputerIcon />}
+                      label={formatMetric(vps.cpu_cores, ' cores')}
+                      size="small"
+                      color="secondary"
+                      variant="outlined"
+                    />
                   </TableCell>
                   <TableCell align="center">
                     <Chip label={`${vps.services_count || 0} services`} size="small" color={vps.services_count ? 'success' : 'default'} />
@@ -754,16 +767,14 @@ const VPSManagement = () => {
                 <strong>IP Address:</strong> {viewVpsDialog.ip_address}
               </Typography>
               <Typography>
-                <strong>RAM:</strong> {viewVpsDialog.ram_gb} GB
+                <strong>RAM:</strong> {formatMetric(viewVpsDialog.ram_gb, ' GB')}
               </Typography>
               <Typography>
-                <strong>CPU Cores:</strong> {viewVpsDialog.cpu_cores}
+                <strong>CPU Cores:</strong> {formatMetric(viewVpsDialog.cpu_cores, ' cores')}
               </Typography>
-              {viewVpsDialog.storage_gb && (
-                <Typography>
-                  <strong>Storage:</strong> {viewVpsDialog.storage_gb} GB
-                </Typography>
-              )}
+              <Typography>
+                <strong>Storage:</strong> {formatMetric(viewVpsDialog.storage_gb, ' GB')}
+              </Typography>
               {viewVpsDialog.description && (
                 <Typography>
                   <strong>Description:</strong> {viewVpsDialog.description}
