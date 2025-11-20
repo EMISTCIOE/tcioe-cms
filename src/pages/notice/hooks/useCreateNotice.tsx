@@ -48,7 +48,11 @@ const useCreateNotice = ({ onClose }: INoticeCreateFormProps) => {
             return { ...field, options: noticeCategoriesOptions || [] };
           }
           if (field.name === 'department') {
-            return { ...field, options: noticeDepartmentsOptions || [], hidden: ['CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || '') };
+            return {
+              ...field,
+              options: noticeDepartmentsOptions || [],
+              hidden: ['CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || '')
+            };
           }
           if (field.name === 'campusUnit') {
             const locked = unitOptions.find((opt) => String(opt.value) === String(campusUnitId));

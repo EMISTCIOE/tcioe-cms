@@ -29,7 +29,8 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Divider
+  Divider,
+  MenuItem
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -144,6 +145,9 @@ const VPSManagement = () => {
 
   const { data: vpsData, isLoading: vpsLoading, error: vpsError, refetch: refetchVps } = useGetEmisVpsInfoQuery();
   const { data: servicesData, error: servicesError, refetch: refetchServices } = useGetEmisVpsServicesQuery();
+
+  // Temporary debugging
+  console.log('Services Data:', servicesData);
   const [createVps, { isLoading: createVpsLoading }] = useCreateEmisVpsInfoMutation();
   const [updateVps, { isLoading: updateVpsLoading }] = useUpdateEmisVpsInfoMutation();
   const [deleteVps, { isLoading: deleteVpsLoading }] = useDeleteEmisVpsInfoMutation();
@@ -167,10 +171,15 @@ const VPSManagement = () => {
     defaultValues: {
       vps: '',
       name: '',
+      service_key: '',
       port: 80,
+      protocol: 'https',
       service_type: '',
       domain: '',
       is_ssl_enabled: false,
+      deploy_strategy: 'manual',
+      auto_restart: false,
+      status: 'running',
       description: ''
     }
   });
@@ -201,8 +210,11 @@ const VPSManagement = () => {
       setOpenServiceDialog(false);
       setEditingService(null);
       serviceForm.reset();
-      refetchServices();
-      refetchVps(); // Refresh to update service counts
+
+      // Refresh both services and VPS data
+      await Promise.all([refetchServices(), refetchVps()]);
+
+      console.log('Service created successfully, data refreshed');
     } catch (error: any) {
       const message = extractErrorMessage(error, 'Failed to save service');
       console.error('Failed to save service', error);
@@ -229,10 +241,15 @@ const VPSManagement = () => {
     serviceForm.reset({
       vps: item.vps.toString(),
       name: item.name,
+      service_key: item.service_key,
       port: item.port,
+      protocol: item.protocol,
       service_type: item.service_type,
       domain: item.domain,
       is_ssl_enabled: item.is_ssl_enabled,
+      deploy_strategy: item.deploy_strategy,
+      auto_restart: item.auto_restart,
+      status: item.status,
       description: item.description || ''
     });
     setOpenServiceDialog(true);
@@ -289,10 +306,15 @@ const VPSManagement = () => {
     serviceForm.reset({
       vps: '',
       name: '',
+      service_key: '',
       port: 80,
+      protocol: 'https',
       service_type: '',
       domain: '',
       is_ssl_enabled: false,
+      deploy_strategy: 'manual',
+      auto_restart: false,
+      status: 'running',
       description: ''
     });
     setOpenServiceDialog(true);
@@ -318,7 +340,20 @@ const VPSManagement = () => {
     }) || [];
 
   const getServicesForVps = (vpsId: string) => {
-    return servicesData?.results?.filter((service) => service.vps.toString() === vpsId) || [];
+    const services =
+      servicesData?.results?.filter((service) => {
+        // Handle both string and object cases for service.vps field
+        const serviceVpsId = typeof service.vps === 'object' ? service.vps?.id?.toString() : service.vps?.toString();
+        const matches = serviceVpsId === vpsId || serviceVpsId === vpsId.toString();
+
+        // Temporary debugging
+        console.log('Service VPS ID:', serviceVpsId, 'Looking for:', vpsId, 'Matches:', matches);
+
+        return matches;
+      }) || [];
+
+    console.log('Services for VPS', vpsId, ':', services);
+    return services;
   };
 
   // Handle loading state
@@ -365,7 +400,13 @@ const VPSManagement = () => {
       <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
         <Typography variant="h4">VPS Management</Typography>
         <Stack direction="row" spacing={2}>
-          <Button variant="outlined" startIcon={<AddIcon />} onClick={handleNewService}>
+          <Button
+            variant="outlined"
+            startIcon={<AddIcon />}
+            onClick={handleNewService}
+            disabled={!vpsData?.results || vpsData.results.length === 0}
+            title={!vpsData?.results || vpsData.results.length === 0 ? 'Create a VPS server first' : ''}
+          >
             Add Service
           </Button>
           <Button variant="contained" startIcon={<AddIcon />} onClick={handleNewVps}>
@@ -405,141 +446,157 @@ const VPSManagement = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredVps.map((vps) => (
-              <React.Fragment key={vps.id}>
-                <TableRow hover>
-                  <TableCell>
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <IconButton size="small" onClick={() => toggleVpsExpansion(vps.id)}>
-                        {expandedVps.includes(vps.id) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                      </IconButton>
-                      <Box>
-                        <Typography variant="subtitle1" fontWeight="medium">
-                          {vps.vps_name || (vps as any).vpsName}
-                        </Typography>
-                        {vps.description && (
-                          <Typography variant="body2" color="text.secondary">
-                            {vps.description}
+            {filteredVps.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
+                  <Typography variant="h6" color="text.secondary" sx={{ mb: 2 }}>
+                    No VPS servers available
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    Create your first VPS server to start managing services
+                  </Typography>
+                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleNewVps}>
+                    Add Your First VPS
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredVps.map((vps) => (
+                <React.Fragment key={vps.id}>
+                  <TableRow hover>
+                    <TableCell>
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <IconButton size="small" onClick={() => toggleVpsExpansion(vps.id)}>
+                          {expandedVps.includes(vps.id) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        </IconButton>
+                        <Box>
+                          <Typography variant="subtitle1" fontWeight="medium">
+                            {vps.vps_name || (vps as any).vpsName}
                           </Typography>
-                        )}
-                      </Box>
-                    </Stack>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body2" fontFamily="monospace">
-                      {vps.ip_address || (vps as any).ipAddress}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Chip
-                      icon={<MemoryIcon />}
-                      label={formatMetric(vps.ram_gb || (vps as any).ramGb, ' GB')}
-                      size="small"
-                      color="primary"
-                      variant="outlined"
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Chip
-                      icon={<ComputerIcon />}
-                      label={formatMetric(vps.cpu_cores || (vps as any).cpuCores, ' cores')}
-                      size="small"
-                      color="secondary"
-                      variant="outlined"
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Chip label={`${vps.services_count || 0} services`} size="small" color={vps.services_count ? 'success' : 'default'} />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Stack direction="row" spacing={1} justifyContent="center">
-                      <IconButton size="small" onClick={() => setViewVpsDialog(vps)} color="primary">
-                        <ViewIcon />
-                      </IconButton>
-                      <IconButton size="small" onClick={() => handleEditVps(vps)} color="primary">
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton size="small" onClick={() => setDeleteVpsDialog(vps)} color="error">
-                        <DeleteIcon />
-                      </IconButton>
-                    </Stack>
-                  </TableCell>
-                </TableRow>
+                          {vps.description && (
+                            <Typography variant="body2" color="text.secondary">
+                              {vps.description}
+                            </Typography>
+                          )}
+                        </Box>
+                      </Stack>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2" fontFamily="monospace">
+                        {vps.ip_address || (vps as any).ipAddress}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Chip
+                        icon={<MemoryIcon />}
+                        label={formatMetric(vps.ram_gb || (vps as any).ramGb, ' GB')}
+                        size="small"
+                        color="primary"
+                        variant="outlined"
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Chip
+                        icon={<ComputerIcon />}
+                        label={formatMetric(vps.cpu_cores || (vps as any).cpuCores, ' cores')}
+                        size="small"
+                        color="secondary"
+                        variant="outlined"
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Chip label={`${vps.services_count || 0} services`} size="small" color={vps.services_count ? 'success' : 'default'} />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Stack direction="row" spacing={1} justifyContent="center">
+                        <IconButton size="small" onClick={() => setViewVpsDialog(vps)} color="primary">
+                          <ViewIcon />
+                        </IconButton>
+                        <IconButton size="small" onClick={() => handleEditVps(vps)} color="primary">
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton size="small" onClick={() => setDeleteVpsDialog(vps)} color="error">
+                          <DeleteIcon />
+                        </IconButton>
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
 
-                {/* Services Expansion */}
-                <TableRow>
-                  <TableCell colSpan={6} sx={{ py: 0 }}>
-                    <Collapse in={expandedVps.includes(vps.id)} timeout="auto" unmountOnExit>
-                      <Box sx={{ margin: 2 }}>
-                        <Typography variant="h6" gutterBottom>
-                          Services on {vps.vps_name || (vps as any).vpsName}
-                        </Typography>
-                        <Table size="small">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Service Name</TableCell>
-                              <TableCell>IP:Port</TableCell>
-                              <TableCell>Service Type</TableCell>
-                              <TableCell>Domain</TableCell>
-                              <TableCell>SSL</TableCell>
-                              <TableCell align="center">Actions</TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {getServicesForVps(vps.id).map((service) => (
-                              <TableRow key={service.id}>
-                                <TableCell>
-                                  <Typography variant="body2" fontWeight="medium">
-                                    {service.name}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography variant="body2" fontFamily="monospace">
-                                    {vps.ip_address}:{service.port}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography variant="body2">{service.service_type}</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  <Typography variant="body2">{service.domain}</Typography>
-                                </TableCell>
-                                <TableCell>
-                                  {service.is_ssl_enabled ? (
-                                    <LockIcon color="success" fontSize="small" />
-                                  ) : (
-                                    <LockOpenIcon color="disabled" fontSize="small" />
-                                  )}
-                                </TableCell>
-                                <TableCell align="center">
-                                  <Stack direction="row" spacing={1} justifyContent="center">
-                                    <IconButton size="small" onClick={() => handleEditService(service)} color="primary">
-                                      <EditIcon />
-                                    </IconButton>
-                                    <IconButton size="small" onClick={() => setDeleteServiceDialog(service)} color="error">
-                                      <DeleteIcon />
-                                    </IconButton>
-                                  </Stack>
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                            {getServicesForVps(vps.id).length === 0 && (
+                  {/* Services Expansion */}
+                  <TableRow>
+                    <TableCell colSpan={6} sx={{ py: 0 }}>
+                      <Collapse in={expandedVps.includes(vps.id)} timeout="auto" unmountOnExit>
+                        <Box sx={{ margin: 2 }}>
+                          <Typography variant="h6" gutterBottom>
+                            Services on {vps.vps_name || (vps as any).vpsName}
+                          </Typography>
+                          <Table size="small">
+                            <TableHead>
                               <TableRow>
-                                <TableCell colSpan={6} align="center">
-                                  <Typography variant="body2" color="text.secondary">
-                                    No services configured for this VPS
-                                  </Typography>
-                                </TableCell>
+                                <TableCell>Service Name</TableCell>
+                                <TableCell>IP:Port</TableCell>
+                                <TableCell>Service Type</TableCell>
+                                <TableCell>Domain</TableCell>
+                                <TableCell>SSL</TableCell>
+                                <TableCell align="center">Actions</TableCell>
                               </TableRow>
-                            )}
-                          </TableBody>
-                        </Table>
-                      </Box>
-                    </Collapse>
-                  </TableCell>
-                </TableRow>
-              </React.Fragment>
-            ))}
+                            </TableHead>
+                            <TableBody>
+                              {getServicesForVps(vps.id).map((service) => (
+                                <TableRow key={service.id}>
+                                  <TableCell>
+                                    <Typography variant="body2" fontWeight="medium">
+                                      {service.name}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography variant="body2" fontFamily="monospace">
+                                      {vps.ip_address || (vps as any).ipAddress}:{service.port}
+                                    </Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography variant="body2">{service.service_type || (service as any).serviceType}</Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Typography variant="body2">{service.domain}</Typography>
+                                  </TableCell>
+                                  <TableCell>
+                                    {service.is_ssl_enabled || (service as any).isSslEnabled ? (
+                                      <LockIcon color="success" fontSize="small" />
+                                    ) : (
+                                      <LockOpenIcon color="disabled" fontSize="small" />
+                                    )}
+                                  </TableCell>
+                                  <TableCell align="center">
+                                    <Stack direction="row" spacing={1} justifyContent="center">
+                                      <IconButton size="small" onClick={() => handleEditService(service)} color="primary">
+                                        <EditIcon />
+                                      </IconButton>
+                                      <IconButton size="small" onClick={() => setDeleteServiceDialog(service)} color="error">
+                                        <DeleteIcon />
+                                      </IconButton>
+                                    </Stack>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                              {getServicesForVps(vps.id).length === 0 && (
+                                <TableRow>
+                                  <TableCell colSpan={6} align="center">
+                                    <Typography variant="body2" color="text.secondary">
+                                      No services configured for this VPS
+                                    </Typography>
+                                  </TableCell>
+                                </TableRow>
+                              )}
+                            </TableBody>
+                          </Table>
+                        </Box>
+                      </Collapse>
+                    </TableCell>
+                  </TableRow>
+                </React.Fragment>
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -650,14 +707,20 @@ const VPSManagement = () => {
                     label="VPS Server"
                     fullWidth
                     error={!!fieldState.error}
-                    helperText={fieldState.error?.message}
+                    helperText={fieldState.error?.message || (vpsLoading ? 'Loading VPS servers...' : '')}
                     {...field}
                   >
-                    {vpsData?.results?.map((vps) => (
-                      <option key={vps.id} value={vps.id}>
-                        {vps.vps_name || (vps as any).vpsName} ({vps.ip_address || (vps as any).ipAddress})
-                      </option>
-                    ))}
+                    {vpsLoading ? (
+                      <MenuItem value="">Loading VPS servers...</MenuItem>
+                    ) : vpsData?.results && vpsData.results.length > 0 ? (
+                      vpsData.results.map((vps) => (
+                        <MenuItem key={vps.id} value={vps.id}>
+                          {vps.vps_name || (vps as any).vpsName} ({vps.ip_address || (vps as any).ipAddress})
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem value="">No VPS servers available</MenuItem>
+                    )}
                   </TextField>
                 )}
               />
@@ -715,20 +778,54 @@ const VPSManagement = () => {
               />
 
               <Controller
-                name="domain"
+                name="service_key"
                 control={serviceForm.control}
-                rules={{ required: 'Domain is required' }}
+                rules={{ required: 'Service key is required' }}
                 render={({ field, fieldState }) => (
                   <TextField
-                    label="Domain"
+                    label="Service Key"
                     fullWidth
-                    placeholder="e.g., ecast.tcioe.edu.np"
+                    placeholder="e.g., backend, frontend, api"
                     error={!!fieldState.error}
                     helperText={fieldState.error?.message}
                     {...field}
                   />
                 )}
               />
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name="domain"
+                    control={serviceForm.control}
+                    rules={{ required: 'Domain is required' }}
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        label="Domain"
+                        fullWidth
+                        placeholder="e.g., ecast.tcioe.edu.np"
+                        error={!!fieldState.error}
+                        helperText={fieldState.error?.message}
+                        {...field}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name="protocol"
+                    control={serviceForm.control}
+                    render={({ field }) => (
+                      <TextField select label="Protocol" fullWidth {...field}>
+                        <MenuItem value="http">HTTP</MenuItem>
+                        <MenuItem value="https">HTTPS</MenuItem>
+                        <MenuItem value="tcp">TCP</MenuItem>
+                        <MenuItem value="udp">UDP</MenuItem>
+                      </TextField>
+                    )}
+                  />
+                </Grid>
+              </Grid>
 
               <Controller
                 name="is_ssl_enabled"
@@ -742,11 +839,46 @@ const VPSManagement = () => {
                     value={field.value ? 'true' : 'false'}
                     onChange={(e) => field.onChange(e.target.value === 'true')}
                   >
-                    <option value="false">No (HTTP)</option>
-                    <option value="true">Yes (HTTPS)</option>
+                    <MenuItem value="false">No (HTTP)</MenuItem>
+                    <MenuItem value="true">Yes (HTTPS)</MenuItem>
                   </TextField>
                 )}
               />
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name="deploy_strategy"
+                    control={serviceForm.control}
+                    render={({ field }) => (
+                      <TextField select label="Deploy Strategy" fullWidth {...field}>
+                        <MenuItem value="manual">Manual</MenuItem>
+                        <MenuItem value="gitops">GitOps</MenuItem>
+                        <MenuItem value="ci_cd">CI/CD</MenuItem>
+                      </TextField>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name="auto_restart"
+                    control={serviceForm.control}
+                    render={({ field }) => (
+                      <TextField
+                        select
+                        label="Auto Restart"
+                        fullWidth
+                        {...field}
+                        value={field.value ? 'true' : 'false'}
+                        onChange={(e) => field.onChange(e.target.value === 'true')}
+                      >
+                        <MenuItem value="false">Disabled</MenuItem>
+                        <MenuItem value="true">Enabled</MenuItem>
+                      </TextField>
+                    )}
+                  />
+                </Grid>
+              </Grid>
 
               <Controller
                 name="description"
