@@ -8,12 +8,22 @@ export const baseURL = `${import.meta.env.VITE_PUBLIC_APP_HTTP_SCHEME}${import.m
 
 // Main Axios instance
 export const axiosInstance = axios.create({
-  baseURL
+  baseURL,
+  withCredentials: true,
+  timeout: 30000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
 // Separate instance for refreshing tokens
 const refreshInstance = axios.create({
-  baseURL
+  baseURL,
+  withCredentials: true,
+  timeout: 30000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
 // Flag to track ongoing token refresh process

@@ -360,7 +360,8 @@ const HardwareManagement = () => {
                     </Typography>
                     <FileUpload
                       accept="image/*"
-                      onFileSelect={(file) => field.onChange(file)}
+                      value={field.value}
+                      onChange={(file) => field.onChange(file)}
                       helperText="Upload a thumbnail image for this hardware"
                     />
                   </Box>
