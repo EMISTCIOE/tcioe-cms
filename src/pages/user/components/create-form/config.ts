@@ -9,15 +9,15 @@ export const userInfoFormSchema = z
     email: z.string().email('Invalid email address'),
     isActive: z.boolean().optional(),
     // role of user (EMIS-STAFF, ADMIN, DEPARTMENT-ADMIN, CLUB, UNION)
-  role: z.string().optional(),
-  // Password is now generated on the backend. Frontend no longer collects password.
-  roles: z.array(z.number()).min(1, 'At least one role is required'),
-  designation: z.number().optional(),
-  department: z.number().optional(),
-  club: z.number().optional(),
-  union: z.number().optional(),
-  campusUnit: z.number().optional(),
-  campusSection: z.number().optional(),
+    role: z.string().optional(),
+    // Password is now generated on the backend. Frontend no longer collects password.
+    roles: z.array(z.number()).min(1, 'At least one role is required'),
+    designation: z.number().optional(),
+    department: z.number().optional(),
+    club: z.number().optional(),
+    union: z.number().optional(),
+    campusUnit: z.number().optional(),
+    campusSection: z.number().optional(),
     photo: z
       .any()
       .refine(

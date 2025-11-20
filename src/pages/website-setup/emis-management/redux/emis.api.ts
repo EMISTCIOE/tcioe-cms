@@ -18,14 +18,14 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     // Hardware endpoints
     getEmisHardware: builder.query<IListResponse<IEmisHardware>, void>({
       query: () => ({
-        url: `${EMIS_API}/hardware`,
+        url: `${EMIS_API}/hardware/`,
         method: 'GET'
       }),
       providesTags: ['EmisHardware']
     }),
     createEmisHardware: builder.mutation<IMutationSuccessResponse, FormData>({
       query: (data) => ({
-        url: `${EMIS_API}/hardware`,
+        url: `${EMIS_API}/hardware/`,
         method: 'POST',
         data,
         headers: {
@@ -36,7 +36,7 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     }),
     updateEmisHardware: builder.mutation<IMutationSuccessResponse, { id: string; data: FormData }>({
       query: ({ id, data }) => ({
-        url: `${EMIS_API}/hardware/${id}`,
+        url: `${EMIS_API}/hardware/${id}/`,
         method: 'PUT',
         data,
         headers: {
@@ -47,7 +47,7 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     }),
     deleteEmisHardware: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => ({
-        url: `${EMIS_API}/hardware/${id}`,
+        url: `${EMIS_API}/hardware/${id}/`,
         method: 'DELETE'
       }),
       invalidatesTags: ['EmisHardware']
@@ -56,14 +56,14 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     // VPS endpoints
     getEmisVpsInfo: builder.query<IListResponse<IEmisVpsInfo>, void>({
       query: () => ({
-        url: `${EMIS_API}/vps-info`,
+        url: `${EMIS_API}/vps-info/`,
         method: 'GET'
       }),
       providesTags: ['EmisVpsInfo']
     }),
     createEmisVpsInfo: builder.mutation<IMutationSuccessResponse, IEmisVpsInfoCreatePayload>({
       query: (values) => ({
-        url: `${EMIS_API}/vps-info`,
+        url: `${EMIS_API}/vps-info/`,
         method: 'POST',
         data: values
       }),
@@ -71,7 +71,7 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     }),
     updateEmisVpsInfo: builder.mutation<IMutationSuccessResponse, { id: string; data: IEmisVpsInfoCreatePayload }>({
       query: ({ id, data }) => ({
-        url: `${EMIS_API}/vps-info/${id}`,
+        url: `${EMIS_API}/vps-info/${id}/`,
         method: 'PUT',
         data
       }),
@@ -79,7 +79,7 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     }),
     deleteEmisVpsInfo: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => ({
-        url: `${EMIS_API}/vps-info/${id}`,
+        url: `${EMIS_API}/vps-info/${id}/`,
         method: 'DELETE'
       }),
       invalidatesTags: ['EmisVpsInfo', 'EmisVpsService']
@@ -88,14 +88,14 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     // VPS Services endpoints
     getEmisVpsServices: builder.query<IListResponse<IEmisVpsService>, void>({
       query: () => ({
-        url: `${EMIS_API}/vps-services`,
+        url: `${EMIS_API}/vps-services/`,
         method: 'GET'
       }),
       providesTags: ['EmisVpsService']
     }),
     createEmisVpsService: builder.mutation<IMutationSuccessResponse, IEmisVpsServiceCreatePayload>({
       query: (values) => ({
-        url: `${EMIS_API}/vps-services`,
+        url: `${EMIS_API}/vps-services/`,
         method: 'POST',
         data: values
       }),
@@ -103,7 +103,7 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     }),
     updateEmisVpsService: builder.mutation<IMutationSuccessResponse, { id: string; data: IEmisVpsServiceCreatePayload }>({
       query: ({ id, data }) => ({
-        url: `${EMIS_API}/vps-services/${id}`,
+        url: `${EMIS_API}/vps-services/${id}/`,
         method: 'PUT',
         data
       }),
@@ -111,7 +111,7 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     }),
     deleteEmisVpsService: builder.mutation<IMutationSuccessResponse, string>({
       query: (id) => ({
-        url: `${EMIS_API}/vps-services/${id}`,
+        url: `${EMIS_API}/vps-services/${id}/`,
         method: 'DELETE'
       }),
       invalidatesTags: ['EmisVpsService', 'EmisVpsInfo']
@@ -120,14 +120,14 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     // Email Reset Request endpoints
     getEmailResetRequests: builder.query<IListResponse<IEmailResetRequest>, void>({
       query: () => ({
-        url: `${EMIS_API}/email-reset`,
+        url: `${EMIS_API}/email-reset/`,
         method: 'GET'
       }),
       providesTags: ['EmailResetRequest']
     }),
     createEmailResetRequest: builder.mutation<IMutationSuccessResponse, IEmailResetRequestCreatePayload>({
       query: (values) => ({
-        url: `${EMIS_API}/email-reset`,
+        url: `${EMIS_API}/email-reset/`,
         method: 'POST',
         data: values
       }),
@@ -135,7 +135,7 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     }),
     approveEmailResetRequest: builder.mutation<IMutationSuccessResponse, { id: string; data: { notes?: string } }>({
       query: ({ id, data }) => ({
-        url: `${EMIS_API}/email-reset/${id}/approve`,
+        url: `${EMIS_API}/email-reset/${id}/approve/`,
         method: 'POST',
         data
       }),
@@ -143,7 +143,7 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     }),
     rejectEmailResetRequest: builder.mutation<IMutationSuccessResponse, { id: string; data: { notes?: string } }>({
       query: ({ id, data }) => ({
-        url: `${EMIS_API}/email-reset/${id}/reject`,
+        url: `${EMIS_API}/email-reset/${id}/reject/`,
         method: 'POST',
         data
       }),
@@ -151,7 +151,7 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     }),
     resetEmailRequestLimit: builder.mutation<IMutationSuccessResponse, { email: string }>({
       query: ({ email }) => ({
-        url: `${EMIS_API}/email-reset/reset-limit`,
+        url: `${EMIS_API}/email-reset/reset-limit/`,
         method: 'POST',
         data: { email }
       }),

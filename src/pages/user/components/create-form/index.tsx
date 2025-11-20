@@ -201,9 +201,7 @@ export default function UserCreateForm({ onClose, fixedRole }: UserCreateFormPro
 
   useEffect(() => {
     if (campusSectionOptions.length) {
-      setFormFields((prev) =>
-        prev.map((field) => (field.name === 'campusSection' ? { ...field, options: campusSectionOptions } : field))
-      );
+      setFormFields((prev) => prev.map((field) => (field.name === 'campusSection' ? { ...field, options: campusSectionOptions } : field)));
     }
   }, [campusSectionOptions]);
 
