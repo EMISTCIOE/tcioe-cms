@@ -30,6 +30,8 @@ export interface IUser {
   departmentName?: string | null;
   clubName?: string | null;
   unionName?: string | null;
+  campusUnitName?: string | null;
+  campusSectionName?: string | null;
 }
 
 export interface UserList {
@@ -56,6 +58,8 @@ export interface UserCreatePayload {
   department?: string;
   club?: string;
   union?: string;
+  campusUnit?: string;
+  campusSection?: string;
 }
 
 export interface UserUpdatePayload {
@@ -65,6 +69,8 @@ export interface UserUpdatePayload {
   phoneNo?: string;
   isActive?: boolean;
   photo?: File | null | undefined;
+  campusUnit?: string;
+  campusSection?: string;
 }
 
 export interface UserDetails extends IUser {

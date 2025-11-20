@@ -11,6 +11,8 @@ import { useGetCampusStaffDesignationsQuery } from '@/pages/website-setup/campus
 import { useGetDepartmentsQuery } from '@/pages/website-setup/departments/redux/departments.api';
 import { useGetStudentClubsQuery } from '@/pages/student-clubs-setup/student-clubs/redux/studentClubs.api';
 import { useGetCampusUnionsQuery } from '@/pages/website-setup/campus-unions/redux/campusUnions.api';
+import { useCampusUnitOptions } from '@/hooks/useCampusUnitOptions';
+import { useCampusSectionOptions } from '@/hooks/useCampusSectionOptions';
 import { useAppDispatch } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
 import { splitName } from '@/utils/functions/splitCombineName';
@@ -22,7 +24,7 @@ import { handleClientError } from '@/utils/functions/handleError';
 import { UserCreatePayload, UserRole } from '../../redux/types';
 import { defaultValues, uniqueFieldNames, userInfoFields, UserInfoFormDataType, userInfoFormSchema } from './config';
 
-type FixedRoleType = 'EMIS-STAFF' | 'ADMIN' | 'DEPARTMENT-ADMIN' | 'CLUB' | 'UNION';
+type FixedRoleType = 'EMIS-STAFF' | 'ADMIN' | 'DEPARTMENT-ADMIN' | 'CLUB' | 'UNION' | 'CAMPUS-UNIT' | 'CAMPUS-SECTION';
 
 interface UserCreateFormProps {
   onClose?: () => void;
@@ -37,6 +39,8 @@ export default function UserCreateForm({ onClose, fixedRole }: UserCreateFormPro
   const { data: departmentData } = useGetDepartmentsQuery({ search: '', paginationModel: { page: 0, pageSize: 500 }, sortModel: [] });
   const { data: studentClubsData } = useGetStudentClubsQuery({ search: '', paginationModel: { page: 0, pageSize: 500 }, sortModel: [] });
   const { data: campusUnionsData } = useGetCampusUnionsQuery({ search: '', paginationModel: { page: 0, pageSize: 500 }, sortModel: [] });
+  const { options: campusUnitOptions } = useCampusUnitOptions();
+  const { options: campusSectionOptions } = useCampusSectionOptions();
   const [triggerGetUsers] = useLazyGetUsersQuery();
   const { data: rolesData } = useGetUserRolesQuery({
     search: '',
@@ -95,7 +99,9 @@ export default function UserCreateForm({ onClose, fixedRole }: UserCreateFormPro
         designation: (rest as any).designation as unknown as string,
         department: (rest as any).department as unknown as string,
         club: (rest as any).club as unknown as string,
-        union: (rest as any).union as unknown as string
+        union: (rest as any).union as unknown as string,
+        campusUnit: (rest as any).campusUnit as unknown as string,
+        campusSection: (rest as any).campusSection as unknown as string
       };
 
       const res = await createUser(payload).unwrap();
@@ -186,6 +192,20 @@ export default function UserCreateForm({ onClose, fixedRole }: UserCreateFormPro
       setFormFields((prev) => prev.map((field) => (field.name === 'union' ? { ...field, options } : field)));
     }
   }, [campusUnionsData]);
+
+  useEffect(() => {
+    if (campusUnitOptions.length) {
+      setFormFields((prev) => prev.map((field) => (field.name === 'campusUnit' ? { ...field, options: campusUnitOptions } : field)));
+    }
+  }, [campusUnitOptions]);
+
+  useEffect(() => {
+    if (campusSectionOptions.length) {
+      setFormFields((prev) =>
+        prev.map((field) => (field.name === 'campusSection' ? { ...field, options: campusSectionOptions } : field))
+      );
+    }
+  }, [campusSectionOptions]);
 
   // extraComponents left empty; no password fields on frontend
   const extraComponents = {};

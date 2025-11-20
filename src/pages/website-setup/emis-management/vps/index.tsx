@@ -70,6 +70,48 @@ interface TabPanelProps {
   value: number;
 }
 
+const extractErrorMessage = (error: unknown, fallbackMessage: string): string => {
+  const search = (payload: unknown): string | null => {
+    if (!payload) {
+      return null;
+    }
+
+    if (typeof payload === 'string') {
+      return payload;
+    }
+
+    if (Array.isArray(payload)) {
+      for (const item of payload) {
+        const nested = search(item);
+        if (nested) {
+          return nested;
+        }
+      }
+      return null;
+    }
+
+    if (typeof payload === 'object') {
+      const data = payload as Record<string, unknown>;
+      if (typeof data.detail === 'string') {
+        return data.detail;
+      }
+      if (typeof data.message === 'string') {
+        return data.message;
+      }
+      for (const key of Object.keys(data)) {
+        const nested = search(data[key]);
+        if (nested) {
+          return nested;
+        }
+      }
+    }
+
+    return null;
+  };
+
+  return search((error as any)?.data ?? error) || fallbackMessage;
+};
+
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
   return (
@@ -136,7 +178,9 @@ const VPSManagement = () => {
       vpsForm.reset();
       refetchVps();
     } catch (error: any) {
-      enqueueSnackbar(error?.data?.detail || 'Failed to save VPS', { variant: 'error' });
+      const message = extractErrorMessage(error, 'Failed to save VPS');
+      console.error('Failed to save VPS', error);
+      enqueueSnackbar(message, { variant: 'error' });
     }
   };
 
@@ -153,7 +197,9 @@ const VPSManagement = () => {
       refetchServices();
       refetchVps(); // Refresh to update service counts
     } catch (error: any) {
-      enqueueSnackbar(error?.data?.detail || 'Failed to save service', { variant: 'error' });
+      const message = extractErrorMessage(error, 'Failed to save service');
+      console.error('Failed to save service', error);
+      enqueueSnackbar(message, { variant: 'error' });
     }
   };
 
@@ -195,7 +241,9 @@ const VPSManagement = () => {
       refetchVps();
       refetchServices();
     } catch (error: any) {
-      enqueueSnackbar(error?.data?.detail || 'Failed to delete VPS', { variant: 'error' });
+      const message = extractErrorMessage(error, 'Failed to delete VPS');
+      console.error('Failed to delete VPS', error);
+      enqueueSnackbar(message, { variant: 'error' });
     }
   };
 
@@ -209,7 +257,9 @@ const VPSManagement = () => {
       refetchServices();
       refetchVps(); // Refresh to update service counts
     } catch (error: any) {
-      enqueueSnackbar(error?.data?.detail || 'Failed to delete service', { variant: 'error' });
+      const message = extractErrorMessage(error, 'Failed to delete service');
+      console.error('Failed to delete service', error);
+      enqueueSnackbar(message, { variant: 'error' });
     }
   };
 
