@@ -267,7 +267,11 @@ const HardwareManagement = () => {
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
               <CardMedia sx={{ height: 200, position: 'relative', bgcolor: 'grey.100' }}>
                 {item.thumbnail_image ? (
-                  <img src={buildMediaUrl(item.thumbnail_image)} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img
+                    src={buildMediaUrl(item.thumbnail_image)}
+                    alt={item.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
                 ) : (
                   <Box
                     sx={{
@@ -419,17 +423,17 @@ const HardwareManagement = () => {
       <Dialog open={!!viewDialog} onClose={() => setViewDialog(null)} maxWidth="sm" fullWidth>
         <DialogTitle>{viewDialog?.name}</DialogTitle>
         <DialogContent>
-              {viewDialog && (
-                <Stack spacing={2}>
-                  {viewDialog.thumbnail_image && (
-                    <Box
-                      component="img"
-                      src={buildMediaUrl(viewDialog.thumbnail_image)}
-                      alt={viewDialog.name}
-                      sx={{
-                        width: '100%',
-                        height: 200,
-                        objectFit: 'cover',
+          {viewDialog && (
+            <Stack spacing={2}>
+              {viewDialog.thumbnail_image && (
+                <Box
+                  component="img"
+                  src={buildMediaUrl(viewDialog.thumbnail_image)}
+                  alt={viewDialog.name}
+                  sx={{
+                    width: '100%',
+                    height: 200,
+                    objectFit: 'cover',
                     borderRadius: 1
                   }}
                 />

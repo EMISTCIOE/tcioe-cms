@@ -30,7 +30,11 @@ const initialState: IAuthState = {
   clubName: undefined,
   clubId: null,
   unionName: undefined,
-  unionId: null
+  unionId: null,
+  campusUnitName: undefined,
+  campusUnitId: null,
+  campusSectionName: undefined,
+  campusSectionId: null
 };
 
 export const authSlice = createSlice({
@@ -42,6 +46,7 @@ export const authSlice = createSlice({
         payload: {
           fullName,
           email,
+          id,
           photo,
           phoneNo,
           tokens,
@@ -61,10 +66,15 @@ export const authSlice = createSlice({
           clubName,
           clubId,
           unionName,
-          unionId
+          unionId,
+          campusUnitName,
+          campusUnitId,
+          campusSectionName,
+          campusSectionId
         }
       } = action;
 
+      state.id = id;
       state.fullName = fullName;
       state.email = email;
       state.photo = photo;
@@ -88,6 +98,10 @@ export const authSlice = createSlice({
       state.clubId = clubId;
       state.unionName = unionName;
       state.unionId = unionId;
+      state.campusUnitName = campusUnitName;
+      state.campusUnitId = campusUnitId;
+      state.campusSectionName = campusSectionName;
+      state.campusSectionId = campusSectionId;
       // Save access and refresh tokens in the cookies
       Cookies.set('access', tokens?.access as string, {
         path: '/',

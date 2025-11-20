@@ -11,7 +11,7 @@ export interface IRole {
 }
 
 export interface IAuthState {
-  id: string;
+  id: number | string;
   fullName: string;
   email: string;
   phoneNo: string;
@@ -40,6 +40,10 @@ export interface IAuthState {
   clubId?: string | null;
   unionName?: string | null;
   unionId?: string | null;
+  campusUnitName?: string | null;
+  campusUnitId?: string | null;
+  campusSectionName?: string | null;
+  campusSectionId?: string | null;
 }
 
 export interface UnverifiedLoginState {
