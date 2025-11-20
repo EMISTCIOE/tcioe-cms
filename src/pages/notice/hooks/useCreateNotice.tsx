@@ -8,7 +8,7 @@ import { setMessage } from '@/pages/common/redux/common.slice';
 import { useCreateNoticeMutation } from '../redux/notice.api';
 
 import { handleClientError } from '@/utils/functions/handleError';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { INoticeCreateFormProps } from '../components/create-form';
 import { defaultValues, noticeCreateFields, noticeCreateFormSchema, TNoticeCreateFormDataType } from '../components/create-form/config';
 import { useNoticeCategories } from './useNoticeCategories';
@@ -29,11 +29,12 @@ const useCreateNotice = ({ onClose }: INoticeCreateFormProps) => {
   const { options: sectionOptions } = useCampusSectionOptions();
   const { roleType, campusUnitId, campusSectionId } = useAppSelector(authState);
 
-  const {
+const {
     control,
     handleSubmit,
     setError,
     watch,
+    setValue,
     formState: { errors }
   } = useForm<TNoticeCreateFormDataType>({
     resolver: zodResolver(noticeCreateFormSchema),
@@ -81,16 +82,14 @@ const useCreateNotice = ({ onClose }: INoticeCreateFormProps) => {
     );
   }, [noticeCategoriesOptions, noticeDepartmentsOptions, roleType, campusUnitId, campusSectionId, unitOptions, sectionOptions]);
 
-  useMemo(() => {
+  useEffect(() => {
     if (roleType === 'CAMPUS-UNIT' && campusUnitId) {
-      // @ts-ignore
-      control.setValue('campusUnit', Number(campusUnitId));
+      setValue('campusUnit', String(campusUnitId));
     }
     if (roleType === 'CAMPUS-SECTION' && campusSectionId) {
-      // @ts-ignore
-      control.setValue('campusSection', Number(campusSectionId));
+      setValue('campusSection', String(campusSectionId));
     }
-  }, [roleType, campusUnitId, campusSectionId, control]);
+  }, [roleType, campusUnitId, campusSectionId, setValue]);
 
   // NOTE - Form submit handler
   const onSubmit = async (data: TNoticeCreateFormDataType) => {

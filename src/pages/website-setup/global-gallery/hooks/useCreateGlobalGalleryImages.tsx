@@ -116,8 +116,8 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
         .filter((field) => {
           // Hide unrelated linkage fields for scoped roles
           if (isUnion && ['club', 'department', 'unit', 'section'].includes(field.name as string)) return false;
-          if (isUnit && ['union', 'club', 'department', 'section'].includes(field.name as string)) return false;
-          if (isSection && ['union', 'club', 'department', 'unit'].includes(field.name as string)) return false;
+          if (isUnit && ['union', 'club', 'department', 'section', 'globalEvent'].includes(field.name as string)) return false;
+          if (isSection && ['union', 'club', 'department', 'unit', 'globalEvent'].includes(field.name as string)) return false;
           return true;
         })
     );
@@ -139,10 +139,10 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
       setValue('union', Number(unionId));
     }
     if (roleType === 'CAMPUS-UNIT' && campusUnitId) {
-      setValue('unit', Number(campusUnitId));
+      setValue('unit', String(campusUnitId));
     }
     if (roleType === 'CAMPUS-SECTION' && campusSectionId) {
-      setValue('section', Number(campusSectionId));
+      setValue('section', String(campusSectionId));
     }
   }, [roleType, unionId, campusUnitId, campusSectionId, setValue]);
 

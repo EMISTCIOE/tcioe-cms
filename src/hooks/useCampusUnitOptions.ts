@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { axiosInstance } from '@/libs/axios';
 import { SelectOption } from '@/components/app-form/types';
+import { useAppSelector } from '@/libs/hooks';
+import { authState } from '@/pages/authentication/redux/selector';
 
 interface CampusUnitOption {
   id: string;
@@ -9,11 +11,23 @@ interface CampusUnitOption {
 
 export const useCampusUnitOptions = () => {
   const [options, setOptions] = useState<SelectOption[]>([]);
+  const { roleType, campusUnitId, campusUnitName } = useAppSelector(authState);
+
+  const lockedOption = useMemo(() => {
+    if (roleType === 'CAMPUS-UNIT' && campusUnitId) {
+      return [{ label: campusUnitName || 'My Unit', value: String(campusUnitId) }];
+    }
+    return null;
+  }, [roleType, campusUnitId, campusUnitName]);
 
   useEffect(() => {
     let isMounted = true;
 
     const fetchUnits = async () => {
+      if (lockedOption) {
+        setOptions(lockedOption);
+        return;
+      }
       try {
         const response = await axiosInstance.get('cms/website-mod/campus-units', {
           params: {
@@ -40,7 +54,7 @@ export const useCampusUnitOptions = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [lockedOption]);
 
   return {
     options

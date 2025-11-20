@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { axiosInstance } from '@/libs/axios';
 import { SelectOption } from '@/components/app-form/types';
+import { useAppSelector } from '@/libs/hooks';
+import { authState } from '@/pages/authentication/redux/selector';
 
 interface CampusUnionOption {
   id: string;
@@ -9,11 +11,17 @@ interface CampusUnionOption {
 
 export const useCampusUnionOptions = () => {
   const [options, setOptions] = useState<SelectOption[]>([]);
+  const { roleType } = useAppSelector(authState);
+  const skipFetch = useMemo(() => ['CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || ''), [roleType]);
 
   useEffect(() => {
     let isMounted = true;
 
     const fetchUnions = async () => {
+      if (skipFetch) {
+        setOptions([]);
+        return;
+      }
       try {
         const response = await axiosInstance.get('cms/website-mod/campus-unions', {
           params: {
@@ -40,7 +48,7 @@ export const useCampusUnionOptions = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [skipFetch]);
 
   return {
     options
