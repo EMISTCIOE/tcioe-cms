@@ -213,11 +213,11 @@ const VPSManagement = () => {
   const handleEditVps = (item: IEmisVpsInfo) => {
     setEditingVps(item);
     vpsForm.reset({
-      vps_name: item.vps_name,
-      ip_address: item.ip_address,
-      ram_gb: item.ram_gb,
-      cpu_cores: item.cpu_cores,
-      storage_gb: item.storage_gb || 10,
+      vps_name: item.vps_name || (item as any).vpsName,
+      ip_address: item.ip_address || (item as any).ipAddress,
+      ram_gb: item.ram_gb || (item as any).ramGb,
+      cpu_cores: item.cpu_cores || (item as any).cpuCores,
+      storage_gb: item.storage_gb || (item as any).storageGb || 10,
       description: item.description || '',
       notes: item.notes || ''
     });
@@ -306,8 +306,9 @@ const VPSManagement = () => {
 
   const filteredVps =
     vpsData?.results?.filter((item) => {
-      const vpsName = typeof item.vps_name === 'string' ? item.vps_name.toLowerCase() : '';
-      const ipAddress = typeof item.ip_address === 'string' ? item.ip_address.toLowerCase() : '';
+      // Handle both camelCase and snake_case field names
+      const vpsName = (item.vps_name || (item as any).vpsName || '').toLowerCase();
+      const ipAddress = (item.ip_address || (item as any).ipAddress || '').toLowerCase();
 
       if (!normalizedSearch) {
         return true;
@@ -414,7 +415,7 @@ const VPSManagement = () => {
                       </IconButton>
                       <Box>
                         <Typography variant="subtitle1" fontWeight="medium">
-                          {vps.vps_name}
+                          {vps.vps_name || (vps as any).vpsName}
                         </Typography>
                         {vps.description && (
                           <Typography variant="body2" color="text.secondary">
@@ -426,16 +427,22 @@ const VPSManagement = () => {
                   </TableCell>
                   <TableCell>
                     <Typography variant="body2" fontFamily="monospace">
-                      {vps.ip_address}
+                      {vps.ip_address || (vps as any).ipAddress}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
-                    <Chip icon={<MemoryIcon />} label={formatMetric(vps.ram_gb, ' GB')} size="small" color="primary" variant="outlined" />
+                    <Chip
+                      icon={<MemoryIcon />}
+                      label={formatMetric(vps.ram_gb || (vps as any).ramGb, ' GB')}
+                      size="small"
+                      color="primary"
+                      variant="outlined"
+                    />
                   </TableCell>
                   <TableCell align="center">
                     <Chip
                       icon={<ComputerIcon />}
-                      label={formatMetric(vps.cpu_cores, ' cores')}
+                      label={formatMetric(vps.cpu_cores || (vps as any).cpuCores, ' cores')}
                       size="small"
                       color="secondary"
                       variant="outlined"
@@ -465,7 +472,7 @@ const VPSManagement = () => {
                     <Collapse in={expandedVps.includes(vps.id)} timeout="auto" unmountOnExit>
                       <Box sx={{ margin: 2 }}>
                         <Typography variant="h6" gutterBottom>
-                          Services on {vps.vps_name}
+                          Services on {vps.vps_name || (vps as any).vpsName}
                         </Typography>
                         <Table size="small">
                           <TableHead>
@@ -648,7 +655,7 @@ const VPSManagement = () => {
                   >
                     {vpsData?.results?.map((vps) => (
                       <option key={vps.id} value={vps.id}>
-                        {vps.vps_name} ({vps.ip_address})
+                        {vps.vps_name || (vps as any).vpsName} ({vps.ip_address || (vps as any).ipAddress})
                       </option>
                     ))}
                   </TextField>
@@ -759,7 +766,7 @@ const VPSManagement = () => {
 
       {/* View VPS Dialog */}
       <Dialog open={!!viewVpsDialog} onClose={() => setViewVpsDialog(null)} maxWidth="sm" fullWidth>
-        <DialogTitle>{viewVpsDialog?.vps_name}</DialogTitle>
+        <DialogTitle>{viewVpsDialog?.vps_name || (viewVpsDialog as any)?.vpsName}</DialogTitle>
         <DialogContent>
           {viewVpsDialog && (
             <Stack spacing={2}>
@@ -767,10 +774,10 @@ const VPSManagement = () => {
                 <strong>IP Address:</strong> {viewVpsDialog.ip_address}
               </Typography>
               <Typography>
-                <strong>RAM:</strong> {formatMetric(viewVpsDialog.ram_gb, ' GB')}
+                <strong>RAM:</strong> {formatMetric(viewVpsDialog.ram_gb || (viewVpsDialog as any).ramGb, ' GB')}
               </Typography>
               <Typography>
-                <strong>CPU Cores:</strong> {formatMetric(viewVpsDialog.cpu_cores, ' cores')}
+                <strong>CPU Cores:</strong> {formatMetric(viewVpsDialog.cpu_cores || (viewVpsDialog as any).cpuCores, ' cores')}
               </Typography>
               <Typography>
                 <strong>Storage:</strong> {formatMetric(viewVpsDialog.storage_gb, ' GB')}
@@ -800,7 +807,7 @@ const VPSManagement = () => {
         onConfirm={handleDeleteVps}
         title="Delete VPS"
         isLoading={deleteVpsLoading}
-        message={`Are you sure you want to delete VPS "${deleteVpsDialog?.vps_name}"? This will also delete all associated services.`}
+        message={`Are you sure you want to delete VPS "${deleteVpsDialog?.vps_name || (deleteVpsDialog as any)?.vpsName}"? This will also delete all associated services.`}
       />
       <ConfirmDialog
         open={!!deleteServiceDialog}

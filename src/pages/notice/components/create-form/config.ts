@@ -23,6 +23,8 @@ export type Media = z.infer<typeof mediaSchema>;
 export const noticeCreateFormSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   department: z.union([z.number(), z.string()]).nullable(),
+  campusUnit: z.union([z.number(), z.string()]).nullable().optional(),
+  campusSection: z.union([z.number(), z.string()]).nullable().optional(),
   category: z.union([z.number(), z.string()]),
   description: z.string().optional(),
   isFeatured: z.boolean().default(true),
@@ -52,6 +54,8 @@ export type TNoticeCreateFormDataType = z.infer<typeof noticeCreateFormSchema>;
 export const defaultValues: Partial<TNoticeCreateFormDataType> = {
   title: '',
   department: null,
+  campusUnit: null,
+  campusSection: null,
   category: undefined,
   description: '',
   isFeatured: true,
@@ -76,6 +80,8 @@ export const noticeCreateFields: FormField<TNoticeCreateFormDataType>[] = [
     inputStyle: { fontSize: '1rem' }
   },
   { name: 'department', label: 'Department', xs: 12, sm: 6, type: 'select', options: [] },
+  { name: 'campusUnit', label: 'Campus Unit', xs: 12, sm: 6, type: 'select', options: [] },
+  { name: 'campusSection', label: 'Campus Section', xs: 12, sm: 6, type: 'select', options: [] },
   { name: 'category', label: 'Category', xs: 12, sm: 6, type: 'select', options: [], required: true },
   { name: 'description', label: 'Description', xs: 12, sm: 12, type: 'editor', multiline: true, rows: 4 },
   {

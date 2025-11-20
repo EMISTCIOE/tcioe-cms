@@ -102,6 +102,8 @@ export interface INoticeMediaCreatePayload {
 export interface INoticeCreatePayload {
   title: string;
   department: string | null;
+  campusUnit?: string | null;
+  campusSection?: string | null;
   category: string;
   thumbnail?: File | null;
   isFeatured: boolean;
@@ -124,6 +126,8 @@ export interface INoticeMediaPatchPayload {
 export interface INoticeUpdatePayload {
   title: string;
   department?: string | null;
+  campusUnit?: string | null;
+  campusSection?: string | null;
   category?: string;
   thumbnail?: File | string | null;
   isFeatured?: boolean;

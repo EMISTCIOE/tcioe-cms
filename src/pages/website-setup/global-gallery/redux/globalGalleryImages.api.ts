@@ -85,7 +85,8 @@ export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
 
     patchGlobalGalleryImage: builder.mutation<IMutationSuccessResponse, { id: string; values: IGlobalGalleryImageUpdatePayload }>({
       query: ({ id, values }) => {
-        const { union, club, department, unit, section, globalEvent, sourceTitle, sourceContext, isActive, image, caption, displayOrder } = values;
+        const { union, club, department, unit, section, globalEvent, sourceTitle, sourceContext, isActive, image, caption, displayOrder } =
+          values;
         const body = new FormData();
 
         if (typeof isActive === 'boolean') {

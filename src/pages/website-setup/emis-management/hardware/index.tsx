@@ -130,7 +130,16 @@ const hardwareTypeIcons: Record<HardwareTypeOption | 'default', React.ElementTyp
 
 const buildMediaUrl = (url?: string | null) => {
   if (!url) return '';
+  // If URL is already complete, return as-is
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  // If URL starts with /media, it's relative to backend base
+  if (url.startsWith('/media')) {
+    const baseUrl = import.meta.env.VITE_PUBLIC_APP_BASE_URL;
+    // Remove /api/ from the base URL for media files
+    const mediaBaseUrl = baseUrl.replace('/api/', '');
+    return `${import.meta.env.VITE_PUBLIC_APP_HTTP_SCHEME}${mediaBaseUrl}${url}`;
+  }
+  // Default case - build full URL
   const base = `${import.meta.env.VITE_PUBLIC_APP_HTTP_SCHEME}${import.meta.env.VITE_PUBLIC_APP_BASE_URL}`;
   return `${base}${url.startsWith('/') ? url : `/${url}`}`;
 };
@@ -207,8 +216,8 @@ const HardwareManagement = () => {
     setEditingItem(item);
     form.reset({
       name: item.name,
-      asset_tag: item.asset_tag || '',
-      hardware_type: item.hardware_type,
+      asset_tag: item.asset_tag || (item as any).assetTag || '',
+      hardware_type: item.hardware_type || (item as any).hardwareType,
       ip_address: item.ip_address || '',
       location: item.location || '',
       environment: item.environment,
@@ -267,8 +276,8 @@ const HardwareManagement = () => {
     hardwareData?.results?.filter(
       (item) =>
         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.hardware_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.location?.toLowerCase().includes(searchTerm.toLowerCase())
+        (item.hardware_type || (item as any).hardwareType || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (item.location || '').toLowerCase().includes(searchTerm.toLowerCase())
     ) || [];
 
   // Handle loading state
@@ -334,9 +343,9 @@ const HardwareManagement = () => {
           <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
               <CardMedia sx={{ height: 200, position: 'relative', bgcolor: 'grey.100' }}>
-                {item.thumbnail_image ? (
+                {item.thumbnail_image || (item as any).thumbnailImage ? (
                   <img
-                    src={buildMediaUrl(item.thumbnail_image)}
+                    src={buildMediaUrl(item.thumbnail_image || (item as any).thumbnailImage)}
                     alt={item.name}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
@@ -350,11 +359,13 @@ const HardwareManagement = () => {
                       bgcolor: 'grey.200'
                     }}
                   >
-                    <Avatar sx={{ width: 80, height: 80, bgcolor: 'primary.main' }}>{getHardwareIcon(item.hardware_type)}</Avatar>
+                    <Avatar sx={{ width: 80, height: 80, bgcolor: 'primary.main' }}>
+                      {getHardwareIcon(item.hardware_type || (item as any).hardwareType)}
+                    </Avatar>
                   </Box>
                 )}
                 <Chip
-                  label={getHardwareLabel(item.hardware_type)}
+                  label={getHardwareLabel(item.hardware_type || (item as any).hardwareType)}
                   color="primary"
                   size="small"
                   sx={{ position: 'absolute', top: 8, right: 8 }}
@@ -366,7 +377,7 @@ const HardwareManagement = () => {
                   {item.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                  {item.ip_address || 'No IP Address'}
+                  {item.ip_address || (item as any).ipAddress || 'No IP Address'}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                   {item.location || 'No Location'}
@@ -530,10 +541,10 @@ const HardwareManagement = () => {
         <DialogContent>
           {viewDialog && (
             <Stack spacing={2}>
-              {viewDialog.thumbnail_image && (
+              {(viewDialog.thumbnail_image || (viewDialog as any).thumbnailImage) && (
                 <Box
                   component="img"
-                  src={buildMediaUrl(viewDialog.thumbnail_image)}
+                  src={buildMediaUrl(viewDialog.thumbnail_image || (viewDialog as any).thumbnailImage)}
                   alt={viewDialog.name}
                   sx={{
                     width: '100%',
@@ -544,10 +555,13 @@ const HardwareManagement = () => {
                 />
               )}
               <Typography>
-                <strong>Type:</strong> {getHardwareLabel(viewDialog.hardware_type)}
+                <strong>Asset Tag:</strong> {viewDialog.asset_tag || (viewDialog as any).assetTag || 'N/A'}
               </Typography>
               <Typography>
-                <strong>IP Address:</strong> {viewDialog.ip_address || 'N/A'}
+                <strong>Type:</strong> {getHardwareLabel(viewDialog.hardware_type || (viewDialog as any).hardwareType)}
+              </Typography>
+              <Typography>
+                <strong>IP Address:</strong> {viewDialog.ip_address || (viewDialog as any).ipAddress || 'N/A'}
               </Typography>
               <Typography>
                 <strong>Location:</strong> {viewDialog.location || 'N/A'}
