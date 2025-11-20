@@ -81,6 +81,13 @@ const HardwareManagement = () => {
   const [updateHardware, { isLoading: updateLoading }] = useUpdateEmisHardwareMutation();
   const [deleteHardware, { isLoading: deleteLoading }] = useDeleteEmisHardwareMutation();
 
+  const extractErrorMessage = (error: any, fallback: string) => {
+    if (!error) return fallback;
+    if (typeof error === 'string') return error;
+    if (typeof error?.data === 'string') return error.data;
+    return error?.data?.detail || error?.data?.message || fallback;
+  };
+
   const form = useForm<IEmisHardwareCreatePayload>({
     defaultValues: {
       name: '',
@@ -116,7 +123,7 @@ const HardwareManagement = () => {
       form.reset();
       refetch();
     } catch (error: any) {
-      enqueueSnackbar(error?.data?.detail || 'Failed to save hardware', { variant: 'error' });
+      enqueueSnackbar(extractErrorMessage(error, 'Failed to save hardware'), { variant: 'error' });
     }
   };
 
@@ -143,7 +150,7 @@ const HardwareManagement = () => {
       setDeleteDialog(null);
       refetch();
     } catch (error: any) {
-      enqueueSnackbar(error?.data?.detail || 'Failed to delete hardware', { variant: 'error' });
+      enqueueSnackbar(extractErrorMessage(error, 'Failed to delete hardware'), { variant: 'error' });
     }
   };
 
