@@ -408,6 +408,24 @@ const modules: MenuItem = {
           url: '/user-setup/users?role=UNION',
           breadcrumbs: false,
           allowedRoles: ['EMIS-STAFF', 'ADMIN']
+        },
+        {
+          id: 'users-campus-unit',
+          title: 'Campus Unit Users',
+          icon: icons.BusinessIcon,
+          type: 'item',
+          url: '/user-setup/users?role=CAMPUS-UNIT',
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN']
+        },
+        {
+          id: 'users-campus-section',
+          title: 'Campus Section Users',
+          icon: icons.ClassIcon,
+          type: 'item',
+          url: '/user-setup/users?role=CAMPUS-SECTION',
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN']
         }
       ]
     }
