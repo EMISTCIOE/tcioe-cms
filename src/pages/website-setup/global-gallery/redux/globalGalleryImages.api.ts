@@ -50,12 +50,14 @@ export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
 
     createGlobalGalleryImages: builder.mutation<IMutationSuccessResponse, IGlobalGalleryImageCreatePayload>({
       query: (values) => {
-        const { images, union, club, department, globalEvent, sourceTitle, sourceContext, isActive } = values;
+        const { images, union, club, department, unit, section, globalEvent, sourceTitle, sourceContext, isActive } = values;
         const body = new FormData();
         if (typeof isActive === 'boolean') body.append('is_active', String(isActive));
         if (union !== undefined && union !== null) body.append('union', String(union));
         if (club !== undefined && club !== null) body.append('club', String(club));
         if (department !== undefined && department !== null) body.append('department', String(department));
+        if (unit !== undefined && unit !== null) body.append('unit', String(unit));
+        if (section !== undefined && section !== null) body.append('section', String(section));
         if (globalEvent !== undefined && globalEvent !== null) body.append('global_event', String(globalEvent));
         if (sourceTitle) body.append('source_title', sourceTitle);
         if (sourceContext) body.append('source_context', sourceContext);
@@ -83,7 +85,7 @@ export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
 
     patchGlobalGalleryImage: builder.mutation<IMutationSuccessResponse, { id: string; values: IGlobalGalleryImageUpdatePayload }>({
       query: ({ id, values }) => {
-        const { union, club, department, globalEvent, sourceTitle, sourceContext, isActive, image, caption, displayOrder } = values;
+        const { union, club, department, unit, section, globalEvent, sourceTitle, sourceContext, isActive, image, caption, displayOrder } = values;
         const body = new FormData();
 
         if (typeof isActive === 'boolean') {
@@ -100,6 +102,14 @@ export const globalGalleryImagesAPISlice = rootAPI.injectEndpoints({
         if (department !== undefined) {
           if (department === null) body.append('department', '');
           else body.append('department', String(department));
+        }
+        if (unit !== undefined) {
+          if (unit === null) body.append('unit', '');
+          else body.append('unit', String(unit));
+        }
+        if (section !== undefined) {
+          if (section === null) body.append('section', '');
+          else body.append('section', String(section));
         }
         if (globalEvent !== undefined) {
           if (globalEvent === null) body.append('global_event', '');
