@@ -17,8 +17,10 @@ export const snackbarListenerMiddleware: Middleware = (store) => (next) => (acti
     if (typedAction.type === setMessage.type) {
       const { message, variant } = typedAction.payload;
 
-      // Automatically show the snackbar when the message changes
-      enqueueSnackbar(message, { variant });
+      // Only enqueue valid string messages
+      if (typeof message === 'string' && message.trim().length > 0) {
+        enqueueSnackbar(message, { variant });
+      }
     }
   }
 

@@ -69,6 +69,13 @@ const hardwareTypeIcons: Record<HardwareTypeOption | 'default', React.ElementTyp
   default: MoreVertIcon
 };
 
+const buildMediaUrl = (url?: string | null) => {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  const base = `${import.meta.env.VITE_PUBLIC_APP_HTTP_SCHEME}${import.meta.env.VITE_PUBLIC_APP_BASE_URL}`;
+  return `${base}${url.startsWith('/') ? url : `/${url}`}`;
+};
+
 const HardwareManagement = () => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -119,7 +126,12 @@ const HardwareManagement = () => {
         ? await updateHardware({ id: editingItem.id, data: formData }).unwrap()
         : await createHardware(formData).unwrap();
 
-      dispatch(setMessage({ message: response.message, variant: 'success' }));
+      dispatch(
+        setMessage({
+          message: response.message || (editingItem ? 'Hardware updated successfully' : 'Hardware created successfully'),
+          variant: 'success'
+        })
+      );
       setOpenDialog(false);
       setEditingItem(null);
       form.reset();
@@ -255,7 +267,7 @@ const HardwareManagement = () => {
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
               <CardMedia sx={{ height: 200, position: 'relative', bgcolor: 'grey.100' }}>
                 {item.thumbnail_image ? (
-                  <img src={item.thumbnail_image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={buildMediaUrl(item.thumbnail_image)} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
                   <Box
                     sx={{
@@ -407,17 +419,17 @@ const HardwareManagement = () => {
       <Dialog open={!!viewDialog} onClose={() => setViewDialog(null)} maxWidth="sm" fullWidth>
         <DialogTitle>{viewDialog?.name}</DialogTitle>
         <DialogContent>
-          {viewDialog && (
-            <Stack spacing={2}>
-              {viewDialog.thumbnail_image && (
-                <Box
-                  component="img"
-                  src={viewDialog.thumbnail_image}
-                  alt={viewDialog.name}
-                  sx={{
-                    width: '100%',
-                    height: 200,
-                    objectFit: 'cover',
+              {viewDialog && (
+                <Stack spacing={2}>
+                  {viewDialog.thumbnail_image && (
+                    <Box
+                      component="img"
+                      src={buildMediaUrl(viewDialog.thumbnail_image)}
+                      alt={viewDialog.name}
+                      sx={{
+                        width: '100%',
+                        height: 200,
+                        objectFit: 'cover',
                     borderRadius: 1
                   }}
                 />
