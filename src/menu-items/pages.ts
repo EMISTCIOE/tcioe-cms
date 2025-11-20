@@ -27,7 +27,7 @@ const pages: MenuItem = {
       url: '/notice',
       icon: icons.Campaign,
       breadcrumbs: false,
-      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'DEPARTMENT-ADMIN']
+      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'DEPARTMENT-ADMIN', 'CAMPUS-UNIT', 'CAMPUS-SECTION']
     }
   ]
 };

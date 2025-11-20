@@ -85,7 +85,7 @@ const modules: MenuItem = {
       title: 'Manage Events',
       type: 'collapse',
       icon: icons.EventIcon,
-      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION'],
+      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION'],
       children: [
         {
           id: 'global-events',
@@ -93,7 +93,8 @@ const modules: MenuItem = {
           type: 'item',
           icon: icons.CelebrationIcon,
           url: '/website-setup/global-events',
-          breadcrumbs: false
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION']
         },
         {
           id: 'global-gallery',
@@ -102,7 +103,7 @@ const modules: MenuItem = {
           icon: icons.PhotoLibraryIcon,
           url: '/website-setup/global-gallery',
           breadcrumbs: false,
-          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION']
+          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION']
         }
       ]
     },
@@ -196,7 +197,7 @@ const modules: MenuItem = {
       title: 'Manage Units',
       type: 'collapse',
       icon: icons.BusinessIcon,
-      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
+      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'CAMPUS-UNIT', 'CAMPUS-SECTION'],
       children: [
         {
           id: 'campus-units',
@@ -204,7 +205,8 @@ const modules: MenuItem = {
           type: 'item',
           icon: icons.InfoIcon,
           url: '/website-setup/campus-units',
-          breadcrumbs: false
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'CAMPUS-UNIT']
         },
         {
           id: 'campus-sections',
@@ -212,7 +214,8 @@ const modules: MenuItem = {
           type: 'item',
           icon: icons.BusinessIcon,
           url: '/website-setup/campus-sections',
-          breadcrumbs: false
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'CAMPUS-SECTION']
         }
       ]
     },

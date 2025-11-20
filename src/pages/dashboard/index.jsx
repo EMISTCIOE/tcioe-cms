@@ -50,6 +50,10 @@ export default function DashboardDefault() {
     };
   }, [statsResponse?.data]);
   const isUnionUser = roleType === 'UNION';
+  const isUnitUser = roleType === 'CAMPUS-UNIT';
+  const isSectionUser = roleType === 'CAMPUS-SECTION';
+  const isScopedUser = isUnionUser || isUnitUser || isSectionUser;
+  const scopedLabel = isUnionUser ? 'Union' : isUnitUser ? 'Unit' : 'Section';
 
   if (isLoading) {
     return (
@@ -77,10 +81,10 @@ export default function DashboardDefault() {
       {/* Quick Stats Row */}
       <Grid item xs={12}>
         <Typography variant="h5" sx={{ mb: 2 }}>
-          {isUnionUser ? 'My Union Overview' : 'Pending Items & Actions'}
+          {isScopedUser ? `My ${scopedLabel} Overview` : 'Pending Items & Actions'}
         </Typography>
       </Grid>
-      {!isUnionUser && (
+      {!isScopedUser && (
         <>
           <Grid item xs={12} sm={6} md={2.4}>
             <QuickStatsCard
@@ -104,14 +108,14 @@ export default function DashboardDefault() {
       )}
       <Grid item xs={12} sm={6} md={isUnionUser ? 4 : 2.4}>
         <QuickStatsCard
-          title={isUnionUser ? 'My Events' : 'Pending Events'}
+          title={isScopedUser ? 'My Events' : 'Pending Events'}
           value={stats?.pendingItems?.events?.toString() || '0'}
           icon={<CalendarMonthIcon sx={{ fontSize: 28 }} />}
           color="primary"
-          subtitle={isUnionUser ? 'Union events' : 'Upcoming events'}
+          subtitle={isScopedUser ? `${scopedLabel} events` : 'Upcoming events'}
         />
       </Grid>
-      {!isUnionUser && (
+      {!isScopedUser && (
         <>
           <Grid item xs={12} sm={6} md={2.4}>
             <QuickStatsCard
@@ -133,11 +137,11 @@ export default function DashboardDefault() {
           </Grid>
         </>
       )}
-      {isUnionUser && (
+      {isScopedUser && (
         <>
           <Grid item xs={12} sm={6} md={4}>
             <QuickStatsCard
-              title="Union Members"
+              title={`${scopedLabel} Members`}
               value={stats?.pendingItems?.members?.toString() || '0'}
               icon={<PersonIcon sx={{ fontSize: 28 }} />}
               color="info"
@@ -157,7 +161,7 @@ export default function DashboardDefault() {
       )}
 
       {/* Charts Section */}
-      {!isUnionUser && stats?.chartData && (
+      {!isScopedUser && stats?.chartData && (
         <Grid item xs={12} sx={{ mt: 2 }}>
           <DashboardCharts chartData={stats.chartData} />
         </Grid>
@@ -166,41 +170,49 @@ export default function DashboardDefault() {
       {/* Management Actions */}
       <Grid item xs={12} sx={{ mt: 2 }}>
         <Typography variant="h5" sx={{ mb: 2 }}>
-          {isUnionUser ? 'Union Management' : 'Content Management'}
+          {isScopedUser ? `${scopedLabel} Management` : 'Content Management'}
         </Typography>
       </Grid>
 
-      {isUnionUser ? (
+      {isScopedUser ? (
         <>
           <Grid item xs={12} sm={6} md={4}>
             <ActionCard
-              title="Union Members"
-              description="Manage your union members and their details"
+              title={`My ${scopedLabel} Profile`}
+              description={`Manage your ${scopedLabel.toLowerCase()} details`}
               icon={<PersonIcon sx={{ fontSize: 32 }} />}
               color="primary"
-              url="/website-setup/union-members"
+              url={
+                isUnionUser
+                  ? '/website-setup/union-members'
+                  : isUnitUser
+                    ? '/website-setup/campus-units'
+                    : '/website-setup/campus-sections'
+              }
             />
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
             <ActionCard
-              title="Union Events"
-              description="Create and manage events for your union"
-              icon={<CalendarMonthIcon sx={{ fontSize: 32 }} />}
-              color="success"
-              url="/website-setup/global-events"
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={4}>
-            <ActionCard
-              title="Union Gallery"
-              description="Upload and manage gallery images for your union"
+              title={`${scopedLabel} Gallery`}
+              description={`Upload and manage gallery images for your ${scopedLabel.toLowerCase()}`}
               icon={<InfoIcon sx={{ fontSize: 32 }} />}
               color="info"
               url="/website-setup/global-gallery"
             />
           </Grid>
+
+          {(isUnitUser || isSectionUser) && (
+            <Grid item xs={12} sm={6} md={4}>
+              <ActionCard
+                title="Notices"
+                description="Submit notices for your team"
+                icon={<NotificationsActiveIcon sx={{ fontSize: 32 }} />}
+                color="secondary"
+                url="/notice"
+              />
+            </Grid>
+          )}
         </>
       ) : (
         <>

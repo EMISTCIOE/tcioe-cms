@@ -28,6 +28,14 @@ const ROLE_CONFIG = {
   UNION: {
     title: 'Union Users',
     createButtonTitle: 'Add Union User'
+  },
+  'CAMPUS-UNIT': {
+    title: 'Campus Unit Users',
+    createButtonTitle: 'Add Campus Unit User'
+  },
+  'CAMPUS-SECTION': {
+    title: 'Campus Section Users',
+    createButtonTitle: 'Add Campus Section User'
   }
 } as const;
 

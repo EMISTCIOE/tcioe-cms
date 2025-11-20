@@ -27,6 +27,10 @@ const getLinkedEntityLabel = (user: UserItem) => {
       return user.clubName ? `Club: ${user.clubName}` : 'Club: Not Assigned';
     case 'UNION':
       return user.unionName ? `Union: ${user.unionName}` : 'Union: Not Assigned';
+    case 'CAMPUS-UNIT':
+      return user.campusUnitName ? `Campus Unit: ${user.campusUnitName}` : 'Campus Unit: Not Assigned';
+    case 'CAMPUS-SECTION':
+      return user.campusSectionName ? `Campus Section: ${user.campusSectionName}` : 'Campus Section: Not Assigned';
     default:
       return 'Not Assigned';
   }
