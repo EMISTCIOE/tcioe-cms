@@ -245,11 +245,19 @@ const VPSManagement = () => {
     setExpandedVps((prev) => (prev.includes(vpsId) ? prev.filter((id) => id !== vpsId) : [...prev, vpsId]));
   };
 
+  const normalizedSearch = searchTerm.trim().toLowerCase();
+
   const filteredVps =
-    vpsData?.results?.filter(
-      (item) =>
-        item.vps_name.toLowerCase().includes(searchTerm.toLowerCase()) || item.ip_address?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) || [];
+    vpsData?.results?.filter((item) => {
+      const vpsName = typeof item.vps_name === 'string' ? item.vps_name.toLowerCase() : '';
+      const ipAddress = typeof item.ip_address === 'string' ? item.ip_address.toLowerCase() : '';
+
+      if (!normalizedSearch) {
+        return true;
+      }
+
+      return vpsName.includes(normalizedSearch) || ipAddress.includes(normalizedSearch);
+    }) || [];
 
   const getServicesForVps = (vpsId: string) => {
     return servicesData?.results?.filter((service) => service.vps.toString() === vpsId) || [];
