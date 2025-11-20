@@ -183,11 +183,7 @@ export default function DashboardDefault() {
               icon={<PersonIcon sx={{ fontSize: 32 }} />}
               color="primary"
               url={
-                isUnionUser
-                  ? '/website-setup/union-members'
-                  : isUnitUser
-                    ? '/website-setup/campus-units'
-                    : '/website-setup/campus-sections'
+                isUnionUser ? '/website-setup/union-members' : isUnitUser ? '/website-setup/campus-units' : '/website-setup/campus-sections'
               }
             />
           </Grid>

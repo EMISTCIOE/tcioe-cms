@@ -1,7 +1,8 @@
-import { ComponentType, useEffect, useState } from 'react';
+import { ComponentType, useEffect, useState, useMemo } from 'react';
 
 import { IRequiredPermission } from '@/globals';
 import { useAppDispatch } from '@/libs/hooks';
+import { useAppSelector } from '@/libs/hooks';
 import { setPermissions } from '@/pages/common/redux/common.slice';
 import Unauthorized from '@/pages/errors/Unauthorized';
 import {
@@ -10,17 +11,24 @@ import {
   useHasGlobalEventPagePermissions,
   useHasGlobalGalleryPagePermissions
 } from './helpers';
+import { authState } from '@/pages/authentication/redux/selector';
 
 interface Props {}
 
 export const validatePermissions = <P extends Props>(Component: ComponentType<P>, requiredPermissions: IRequiredPermission) => {
   const WrappedComponent: React.FC<P> = (props) => {
     const dispatch = useAppDispatch();
+    const { roleType } = useAppSelector(authState);
 
     // Extract permission strings once
-    const permissionsStrings = extractPermissionStrings(requiredPermissions);
+    const permissionsStrings = useMemo(() => extractPermissionStrings(requiredPermissions), [requiredPermissions]);
     const hasPermission = useHasAnyPermissions(permissionsStrings);
     const [showMessage, setShowMessage] = useState(false);
+
+    // Allow union/unit/section users through (UI already scopes their menu)
+    if (['UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || '')) {
+      return <Component {...props} />;
+    }
 
     useEffect(() => {
       //set current component permission constants in redux

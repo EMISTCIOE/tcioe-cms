@@ -68,11 +68,15 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
     defaultValues
   });
 
-  const { roleType, unionId } = useAppSelector(authState);
+  const { roleType, unionId, campusUnitId, campusSectionId } = useAppSelector(authState);
 
   useEffect(() => {
     const isUnion = roleType === 'UNION' && Boolean(unionId);
-    const lockedFieldOption = unionOptions.find((option) => String(option.value) === String(unionId));
+    const isUnit = roleType === 'CAMPUS-UNIT' && Boolean(campusUnitId);
+    const isSection = roleType === 'CAMPUS-SECTION' && Boolean(campusSectionId);
+    const lockedUnion = unionOptions.find((option) => String(option.value) === String(unionId));
+    const lockedUnit = unitOptions.find((option) => String(option.value) === String(campusUnitId));
+    const lockedSection = sectionOptions.find((option) => String(option.value) === String(campusSectionId));
 
     setFormFields((prev) =>
       prev
@@ -80,7 +84,7 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
           if (field.name === 'union') {
             return {
               ...field,
-              options: isUnion && lockedFieldOption ? [lockedFieldOption] : unionOptions,
+              options: isUnion && lockedUnion ? [lockedUnion] : unionOptions,
               disabled: Boolean(isUnion)
             };
           }
@@ -91,10 +95,18 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
             return { ...field, options: departmentOptions };
           }
           if (field.name === 'unit') {
-            return { ...field, options: unitOptions };
+            return {
+              ...field,
+              options: isUnit && lockedUnit ? [lockedUnit] : unitOptions,
+              disabled: Boolean(isUnit)
+            };
           }
           if (field.name === 'section') {
-            return { ...field, options: sectionOptions };
+            return {
+              ...field,
+              options: isSection && lockedSection ? [lockedSection] : sectionOptions,
+              disabled: Boolean(isSection)
+            };
           }
           if (field.name === 'globalEvent') {
             return { ...field, options: globalEventOptions };
@@ -102,20 +114,37 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
           return field;
         })
         .filter((field) => {
-          // Hide club, department, unit, and section fields for union users
-          if (isUnion && (field.name === 'club' || field.name === 'department' || field.name === 'unit' || field.name === 'section')) {
-            return false;
-          }
+          // Hide unrelated linkage fields for scoped roles
+          if (isUnion && ['club', 'department', 'unit', 'section'].includes(field.name as string)) return false;
+          if (isUnit && ['union', 'club', 'department', 'section'].includes(field.name as string)) return false;
+          if (isSection && ['union', 'club', 'department', 'unit'].includes(field.name as string)) return false;
           return true;
         })
     );
-  }, [globalEventOptions, unionOptions, studentClubsOptions, departmentOptions, unitOptions, sectionOptions, roleType, unionId]);
+  }, [
+    globalEventOptions,
+    unionOptions,
+    studentClubsOptions,
+    departmentOptions,
+    unitOptions,
+    sectionOptions,
+    roleType,
+    unionId,
+    campusUnitId,
+    campusSectionId
+  ]);
 
   useEffect(() => {
     if (roleType === 'UNION' && unionId) {
       setValue('union', Number(unionId));
     }
-  }, [roleType, unionId, setValue]);
+    if (roleType === 'CAMPUS-UNIT' && campusUnitId) {
+      setValue('unit', Number(campusUnitId));
+    }
+    if (roleType === 'CAMPUS-SECTION' && campusSectionId) {
+      setValue('section', Number(campusSectionId));
+    }
+  }, [roleType, unionId, campusUnitId, campusSectionId, setValue]);
 
   const onSubmit = async (data: TGlobalGalleryCreateFormDataType) => {
     try {

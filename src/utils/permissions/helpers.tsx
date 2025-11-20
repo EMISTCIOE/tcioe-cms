@@ -9,8 +9,12 @@ export function useHasParticularPermissions(permission: string | string[]): bool
 
   if (isSuperuser) return true;
 
+  if (['CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || '')) {
+    return true;
+  }
+
   // Union users can create, edit and delete global gallery images regardless of explicit permissions
-  if (roleType === 'UNION') {
+  if (['UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || '')) {
     const unionAllowedGalleryPermissions = [
       'add_globalgalleryimage',
       'change_globalgalleryimage',
@@ -33,7 +37,7 @@ export function useHasGlobalEventPermissions(permission: string | string[]): boo
   const requiredPermissions = Array.isArray(permission) ? permission : [permission];
 
   // Union users can create and edit global events regardless of explicit permissions
-  if (roleType === 'UNION') {
+  if (['UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || '')) {
     const unionAllowedPermissions = ['add_globalevent', 'change_globalevent'];
     if (requiredPermissions.some((perm) => unionAllowedPermissions.includes(perm))) {
       return true;
@@ -61,8 +65,8 @@ export function useHasGlobalEventPagePermissions(requiredPermissions: IRequiredP
 
   if (isSuperuser) return true;
 
-  // Union users can access global events page regardless of explicit permissions
-  if (roleType === 'UNION') {
+  // Union/Unit/Section users can access global events page regardless of explicit permissions
+  if (['UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || '')) {
     return true;
   }
 
@@ -76,8 +80,8 @@ export function useHasGlobalGalleryPagePermissions(requiredPermissions: IRequire
 
   if (isSuperuser) return true;
 
-  // Union users can access global gallery page regardless of explicit permissions
-  if (roleType === 'UNION') {
+  // Union/Unit/Section users can access global gallery page regardless of explicit permissions
+  if (['UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || '')) {
     return true;
   }
 

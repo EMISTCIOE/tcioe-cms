@@ -33,7 +33,20 @@ import {
   Security as SecurityIcon,
   DeviceHub as DeviceHubIcon,
   Storage as StorageIcon,
-  MoreVert as MoreVertIcon
+  MoreVert as MoreVertIcon,
+  Print as PrintIcon,
+  Phone as PhoneIcon,
+  Videocam as VideocamIcon,
+  Scanner as ScannerIcon,
+  Monitor as MonitorIcon,
+  Laptop as LaptopIcon,
+  DesktopWindows as DesktopIcon,
+  Tablet as TabletIcon,
+  PhoneAndroid as MobileIcon,
+  Wifi as AccessPointIcon,
+  Dns as ServerIcon,
+  AccountTree as NetworkIcon,
+  Inventory as RackIcon
 } from '@mui/icons-material';
 import { useForm, Controller } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
@@ -55,6 +68,29 @@ const hardwareTypeLabels: Record<HardwareTypeOption | 'default', string> = {
   server: 'Server',
   firewall: 'Firewall',
   endpoint: 'Endpoint',
+  storage: 'Storage',
+  ups: 'UPS',
+  printer: 'Printer',
+  telephone: 'Telephone',
+  projector: 'Projector',
+  camera: 'Camera',
+  scanner: 'Scanner',
+  monitor: 'Monitor',
+  laptop: 'Laptop',
+  desktop: 'Desktop',
+  tablet: 'Tablet',
+  mobile: 'Mobile Device',
+  access_point: 'Access Point',
+  modem: 'Modem',
+  repeater: 'Repeater',
+  bridge: 'Bridge',
+  gateway: 'Gateway',
+  load_balancer: 'Load Balancer',
+  nas: 'NAS',
+  san: 'SAN',
+  rack: 'Server Rack',
+  pdu: 'Power Distribution Unit',
+  kvm: 'KVM Switch',
   other: 'Other',
   default: 'Hardware'
 };
@@ -62,9 +98,32 @@ const hardwareTypeLabels: Record<HardwareTypeOption | 'default', string> = {
 const hardwareTypeIcons: Record<HardwareTypeOption | 'default', React.ElementType> = {
   router: RouterIcon,
   switch: DeviceHubIcon,
-  server: ComputerIcon,
+  server: ServerIcon,
   firewall: SecurityIcon,
   endpoint: StorageIcon,
+  storage: StorageIcon,
+  ups: StorageIcon,
+  printer: PrintIcon,
+  telephone: PhoneIcon,
+  projector: VideocamIcon,
+  camera: VideocamIcon,
+  scanner: ScannerIcon,
+  monitor: MonitorIcon,
+  laptop: LaptopIcon,
+  desktop: DesktopIcon,
+  tablet: TabletIcon,
+  mobile: MobileIcon,
+  access_point: AccessPointIcon,
+  modem: RouterIcon,
+  repeater: NetworkIcon,
+  bridge: NetworkIcon,
+  gateway: NetworkIcon,
+  load_balancer: DeviceHubIcon,
+  nas: StorageIcon,
+  san: StorageIcon,
+  rack: RackIcon,
+  pdu: StorageIcon,
+  kvm: DeviceHubIcon,
   other: MoreVertIcon,
   default: MoreVertIcon
 };
@@ -100,9 +159,12 @@ const HardwareManagement = () => {
   const form = useForm<IEmisHardwareCreatePayload>({
     defaultValues: {
       name: '',
+      asset_tag: '',
       hardware_type: 'server',
       ip_address: '',
       location: '',
+      environment: 'production',
+      status: 'operational',
       description: '',
       specifications: {},
       thumbnail_image: null
@@ -145,9 +207,12 @@ const HardwareManagement = () => {
     setEditingItem(item);
     form.reset({
       name: item.name,
+      asset_tag: item.asset_tag || '',
       hardware_type: item.hardware_type,
       ip_address: item.ip_address || '',
       location: item.location || '',
+      environment: item.environment,
+      status: item.status,
       description: item.description || '',
       specifications: item.specifications || {},
       thumbnail_image: null // Don't prefill image
@@ -172,9 +237,12 @@ const HardwareManagement = () => {
     setEditingItem(null);
     form.reset({
       name: '',
+      asset_tag: '',
       hardware_type: 'server',
       ip_address: '',
       location: '',
+      environment: 'production',
+      status: 'operational',
       description: '',
       specifications: {},
       thumbnail_image: null
@@ -353,6 +421,12 @@ const HardwareManagement = () => {
               />
 
               <Controller
+                name="asset_tag"
+                control={form.control}
+                render={({ field }) => <TextField label="Asset Tag" fullWidth {...field} />}
+              />
+
+              <Controller
                 name="hardware_type"
                 control={form.control}
                 render={({ field }) => (
@@ -367,6 +441,37 @@ const HardwareManagement = () => {
                   </TextField>
                 )}
               />
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name="environment"
+                    control={form.control}
+                    render={({ field }) => (
+                      <TextField select label="Environment" fullWidth {...field}>
+                        <MenuItem value="production">Production</MenuItem>
+                        <MenuItem value="staging">Staging</MenuItem>
+                        <MenuItem value="development">Development</MenuItem>
+                        <MenuItem value="lab">Lab</MenuItem>
+                      </TextField>
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name="status"
+                    control={form.control}
+                    render={({ field }) => (
+                      <TextField select label="Status" fullWidth {...field}>
+                        <MenuItem value="operational">Operational</MenuItem>
+                        <MenuItem value="standby">Standby</MenuItem>
+                        <MenuItem value="maintenance">Maintenance</MenuItem>
+                        <MenuItem value="retired">Retired</MenuItem>
+                      </TextField>
+                    )}
+                  />
+                </Grid>
+              </Grid>
 
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
