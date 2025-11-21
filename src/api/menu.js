@@ -39,19 +39,25 @@ export function useGetMenuMaster() {
 export function useMenuActions() {
   const queryClient = useQueryClient();
 
-  const setDrawerOpen = useCallback((isDashboardDrawerOpened) => {
-    queryClient.setQueryData(menuQueryKey, (currentMenuMaster = initialState) => ({
-      ...currentMenuMaster,
-      isDashboardDrawerOpened
-    }));
-  }, [queryClient]);
+  const setDrawerOpen = useCallback(
+    (isDashboardDrawerOpened) => {
+      queryClient.setQueryData(menuQueryKey, (currentMenuMaster = initialState) => ({
+        ...currentMenuMaster,
+        isDashboardDrawerOpened
+      }));
+    },
+    [queryClient]
+  );
 
-  const setActiveItem = useCallback((openedItem) => {
-    queryClient.setQueryData(menuQueryKey, (currentMenuMaster = initialState) => ({
-      ...currentMenuMaster,
-      openedItem
-    }));
-  }, [queryClient]);
+  const setActiveItem = useCallback(
+    (openedItem) => {
+      queryClient.setQueryData(menuQueryKey, (currentMenuMaster = initialState) => ({
+        ...currentMenuMaster,
+        openedItem
+      }));
+    },
+    [queryClient]
+  );
 
   return {
     setDrawerOpen,
