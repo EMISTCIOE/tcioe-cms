@@ -78,6 +78,21 @@ const CustomInput = forwardRef<any, CustomInputProps>(
     const errorId = error ? `${name}-error-text` : undefined;
     const theme = useTheme();
     const extensions = useExtensions({ placeholder: 'Write something awesome...' });
+    const baseInputSx = {
+      backgroundColor: alpha(theme.palette.primary.light, 0.04),
+      borderRadius: 1.5,
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: alpha(theme.palette.primary.main, 0.25)
+      },
+      '&:hover .MuiOutlinedInput-notchedOutline': {
+        borderColor: alpha(theme.palette.primary.main, 0.5)
+      },
+      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+        borderColor: theme.palette.primary.main,
+        boxShadow: `0 0 0 2px ${alpha(theme.palette.primary.main, 0.16)}`
+      }
+    };
+    const mergedInputSx = { ...baseInputSx, ...inputStyle };
 
     const {
       setRef,
@@ -171,7 +186,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                   alignItems: 'center',
                   ...(multipleChips && valueSelected && { padding: '5px' })
                 },
-                ...inputStyle
+                ...mergedInputSx
               }}
               {...inputProps}
             >
@@ -259,7 +274,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
               }}
               ref={setRef}
               aria-describedby={errorId}
-              sx={{ ...inputStyle }}
+              sx={{ ...mergedInputSx }}
             >
               {options?.map((option: SelectOption) => (
                 <FormControlLabel key={option.value} value={option.value} control={<Radio {...inputProps} />} label={option.label} />
@@ -279,7 +294,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
               checked={Boolean(value)}
               onChange={onChange}
               aria-describedby={errorId}
-              sx={{ ...inputStyle }}
+              sx={{ ...mergedInputSx }}
               inputRef={setRef}
               {...inputProps}
             />
@@ -540,7 +555,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
               error={error}
               placeholder={placeholder}
               inputRef={setRef}
-              sx={{ ...inputStyle }}
+              sx={{ ...mergedInputSx }}
               {...inputProps}
             />
             <ErrorForInput error={error} helperText={helperText} />
@@ -596,7 +611,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
               aria-describedby={errorId}
               placeholder={placeholder}
               inputRef={setRef}
-              sx={{ ...inputStyle }}
+              sx={{ ...mergedInputSx }}
               {...inputProps}
             />
             <ErrorForInput error={error} helperText={helperText} />
@@ -617,7 +632,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
         return (
           <Box sx={sx} style={style} className={className}>
             <LabelForInput label={label} name={name} required={required} />
-            <Box sx={{ minHeight: 220, ...inputStyle }}>
+            <Box sx={{ minHeight: 220, ...mergedInputSx }}>
               <RichTextEditor
                 ref={rteRef}
                 extensions={extensions}
@@ -670,7 +685,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
               aria-describedby={errorId}
               placeholder={placeholder}
               inputRef={setRef}
-              sx={{ ...inputStyle }}
+              sx={{ ...mergedInputSx }}
               {...inputProps}
             />
             <ErrorForInput error={error} helperText={helperText} />

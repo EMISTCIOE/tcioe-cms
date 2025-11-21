@@ -35,7 +35,7 @@ export const useCampusUnionOptions = () => {
         const unions: CampusUnionOption[] = response.data?.results || [];
         const mapped = unions.map((union) => ({
           label: union.name,
-          value: union.id
+          value: String(union.id)
         }));
         setOptions(mapped);
       } catch (error) {

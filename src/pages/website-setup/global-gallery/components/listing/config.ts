@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 
 export interface IGlobalGalleryImageTableRow {
   id: string;
+  image: string;
   caption: string;
   sourceType: string;
   sourceName: string;
@@ -27,6 +28,13 @@ export const sourceTypeLabels: Record<string, string> = {
 };
 
 export const getColumnConfig = (_theme: Theme): ColumnConfig<IGlobalGalleryImageTableRow>[] => [
+  {
+    field: 'image',
+    headerName: 'IMAGE',
+    type: 'image',
+    minWidth: 100,
+    editable: false
+  },
   { field: 'caption', headerName: 'CAPTION', type: 'text', minWidth: 220, editable: false },
   {
     field: 'sourceType',

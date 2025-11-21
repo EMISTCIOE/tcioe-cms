@@ -20,12 +20,12 @@ const NoticeCreateForm = lazy(() => import('../create-form'));
 
 const NoticeListingSection = () => {
   const theme = useTheme();
-  const customActions = useCustomActions();
-  const { tableDataHook, isOptionsLoaded, noticeCategoriesOptions, noticeDepartmentsOptions } = useNoticeTable();
   const canCreate = useHasParticularPermissions(noticePermissions.add);
   const canEdit = useHasParticularPermissions(noticePermissions.edit);
   const canDelete = useHasParticularPermissions(noticePermissions.delete);
   const canUpdateStatus = useHasParticularPermissions(noticeStatusPermission.edit);
+  const customActions = useCustomActions({ canUpdateStatus });
+  const { tableDataHook, isOptionsLoaded, noticeCategoriesOptions, noticeDepartmentsOptions } = useNoticeTable();
   const { onStatusChange } = useNoticeStatusChange();
   const { onApprovalChange } = useNoticeApprovalChange();
 

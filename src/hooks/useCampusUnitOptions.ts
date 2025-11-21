@@ -11,20 +11,53 @@ interface CampusUnitOption {
 
 export const useCampusUnitOptions = () => {
   const [options, setOptions] = useState<SelectOption[]>([]);
+  const [unitName, setUnitName] = useState<string | null>(null);
   const { roleType, campusUnitId, campusUnitName } = useAppSelector(authState);
+
+  // Fetch unit name if missing from auth state
+  useEffect(() => {
+    if (roleType === 'CAMPUS-UNIT' && campusUnitId && !campusUnitName) {
+      const fetchUnitName = async () => {
+        try {
+          const response = await axiosInstance.get(`cms/website-mod/campus-units/${campusUnitId}`);
+          if (response.data?.name) {
+            setUnitName(response.data.name);
+          }
+        } catch (error) {
+          console.error('Failed to fetch unit name', error);
+        }
+      };
+      fetchUnitName();
+    }
+  }, [roleType, campusUnitId, campusUnitName]);
 
   const lockedOption = useMemo(() => {
     if (roleType === 'CAMPUS-UNIT' && campusUnitId) {
-      return [{ label: campusUnitName || 'My Unit', value: String(campusUnitId) }];
+      const displayName = campusUnitName || unitName || 'My Unit';
+      const option = { label: displayName, value: String(campusUnitId) };
+      console.log(
+        'Campus Unit locked option created (STRING VALUE):',
+        option,
+        'roleType:',
+        roleType,
+        'campusUnitId:',
+        campusUnitId,
+        'campusUnitName:',
+        campusUnitName,
+        'fetchedUnitName:',
+        unitName
+      );
+      return [option];
     }
     return null;
-  }, [roleType, campusUnitId, campusUnitName]);
+  }, [roleType, campusUnitId, campusUnitName, unitName]);
 
   useEffect(() => {
     let isMounted = true;
 
     const fetchUnits = async () => {
       if (lockedOption) {
+        console.log('Setting locked campus unit options:', lockedOption);
         setOptions(lockedOption);
         return;
       }
@@ -41,7 +74,7 @@ export const useCampusUnitOptions = () => {
         const units: CampusUnitOption[] = response.data?.results || [];
         const mapped = units.map((unit) => ({
           label: unit.name,
-          value: unit.id
+          value: String(unit.id)
         }));
         setOptions(mapped);
       } catch (error) {

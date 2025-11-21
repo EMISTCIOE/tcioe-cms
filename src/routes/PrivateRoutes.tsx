@@ -50,6 +50,9 @@ const Contact = Loadable(lazy(() => import('@/pages/contact')));
 
 // Student Clubs Setup Pages
 const StudentClubs = Loadable(lazy(() => import('@/pages/student-clubs-setup/student-clubs')));
+
+// My Unit Page
+const MyUnit = Loadable(lazy(() => import('@/pages/my-unit')));
 // ==============================|| PRIVATE ROUTES ||============================== //
 
 const PrivateRoutes = () => {
@@ -74,6 +77,8 @@ const PrivateRoutes = () => {
             <Route path="change-password" element={<ChangePassword />} />
             <Route path="settings" element={<Settings />} />
           </Route>
+          {/* My Unit - For Campus Unit and Section users */}
+          {(isUnit || isSection) && <Route path="my-unit" element={<MyUnit />} />}
           {/* Notice */}
           <Route path="notice" element={<Notice />} />
           {/* User Setup */}
@@ -123,8 +128,10 @@ const PrivateRoutes = () => {
           <Route path="contact-setup">
             <Route path="phone-numbers" element={<Contact />} />
           </Route>
-          {/* Student Clubs Setup (fallback for non EMIS/admin) */}
-          {!isEmisStaff && !isAdmin && <Route path="student-clubs-setup" element={<StudentClubs />} />}
+          {/* Student Clubs Setup (accessible at top level for all roles that can reach the page) */}
+          <Route path="student-clubs-setup">
+            <Route path="student-clubs" element={<StudentClubs />} />
+          </Route>
         </Route>
         <Route path="app-settings" element={<UnderConstruction />} />
         <Route path="help" element={<UnderConstruction />} />

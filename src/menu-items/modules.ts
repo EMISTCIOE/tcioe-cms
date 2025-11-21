@@ -194,11 +194,29 @@ const modules: MenuItem = {
     },
     {
       id: 'manage-units',
-      title: 'Manage Units',
+      title: 'Manage Units & Sections',
       type: 'collapse',
       icon: icons.BusinessIcon,
       allowedRoles: ['EMIS-STAFF', 'ADMIN', 'CAMPUS-UNIT', 'CAMPUS-SECTION'],
       children: [
+        {
+          id: 'my-unit',
+          title: 'My Unit',
+          type: 'item',
+          icon: icons.Person3Icon,
+          url: '/my-unit',
+          breadcrumbs: false,
+          allowedRoles: ['CAMPUS-UNIT']
+        },
+        {
+          id: 'my-section',
+          title: 'My Section',
+          type: 'item',
+          icon: icons.Person3Icon,
+          url: '/my-unit',
+          breadcrumbs: false,
+          allowedRoles: ['CAMPUS-SECTION']
+        },
         {
           id: 'campus-units',
           title: 'Campus Units',
@@ -206,7 +224,7 @@ const modules: MenuItem = {
           icon: icons.InfoIcon,
           url: '/website-setup/campus-units',
           breadcrumbs: false,
-          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'CAMPUS-UNIT']
+          allowedRoles: ['EMIS-STAFF', 'ADMIN']
         },
         {
           id: 'campus-sections',
@@ -215,7 +233,7 @@ const modules: MenuItem = {
           icon: icons.BusinessIcon,
           url: '/website-setup/campus-sections',
           breadcrumbs: false,
-          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'CAMPUS-SECTION']
+          allowedRoles: ['EMIS-STAFF', 'ADMIN']
         }
       ]
     },

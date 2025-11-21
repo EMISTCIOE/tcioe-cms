@@ -72,7 +72,6 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
       }
       append(createNewItem(overrides) as FieldArray<T, ArrayPath<T>>);
     });
-
     event.target.value = '';
   };
 
@@ -91,7 +90,12 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
       <LabelForDynamicSection name={name} label={label} required={required} />
       {fields.length > 0 ? (
         (fields as TField<T>[]).map((field, index) => (
-          <Grid container spacing={2} key={field.uid} sx={{ mb: 2 }}>
+          <Grid
+            container
+            spacing={2}
+            key={field.uid}
+            sx={{ mb: 2, p: 2, borderRadius: 2, border: '1px solid', borderColor: 'divider', backgroundColor: 'background.paper' }}
+          >
             {itemFields.map((item) => {
               const fieldName = `${name}.${index}.${String(item.name)}` as Path<T>;
               return (
@@ -142,7 +146,7 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
         <input
           type="file"
           ref={fileInputRef}
-          accept={fileField.accpetFileTypes ?? 'image/*'}
+          accept={fileField.acceptFileTypes ?? fileField.accpetFileTypes ?? 'image/*'}
           multiple
           onChange={handleBulkFiles}
           style={{ display: 'none' }}
@@ -150,7 +154,16 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
       )}
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, my: 4 }}>
         {fileField && (
-          <Button variant="outlined" onClick={() => fileInputRef.current?.click()} disabled={currentNoOfFileds >= resolvedMaxSelectable}>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              // Small delay to ensure the input is ready
+              setTimeout(() => {
+                fileInputRef.current?.click();
+              }, 10);
+            }}
+            disabled={currentNoOfFileds >= resolvedMaxSelectable}
+          >
             Bulk Add
           </Button>
         )}

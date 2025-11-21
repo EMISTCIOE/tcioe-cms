@@ -25,8 +25,8 @@ export const validatePermissions = <P extends Props>(Component: ComponentType<P>
     const hasPermission = useHasAnyPermissions(permissionsStrings);
     const [showMessage, setShowMessage] = useState(false);
 
-    // Allow union/unit/section users through (UI already scopes their menu)
-    if (['UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || '')) {
+    // Allow role-based users through (Admin, EMIS-STAFF have broad access, UI scopes others)
+    if (['ADMIN', 'EMIS-STAFF', 'UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || '')) {
       return <Component {...props} />;
     }
 

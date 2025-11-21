@@ -7,11 +7,18 @@ import { currentNoticeId, setEdit, setIsStatusModal } from '../redux/notice.slic
 
 import { ITableData } from '../components/listing/config';
 
-export const useCustomActions = () => {
+interface UseCustomActionsProps {
+  canUpdateStatus: boolean;
+}
+
+export const useCustomActions = ({ canUpdateStatus }: UseCustomActionsProps) => {
   const dispatch = useDispatch();
 
-  return [
-    (params: GridRowParams<ITableData>) => (
+  const actions = [];
+
+  // Only add status update action if user has permission
+  if (canUpdateStatus) {
+    actions.push((params: GridRowParams<ITableData>) => (
       <GridActionsCellItem
         key="update-status"
         sx={{
@@ -35,6 +42,8 @@ export const useCustomActions = () => {
           dispatch(setEdit(true));
         }}
       />
-    )
-  ];
+    ));
+  }
+
+  return actions;
 };

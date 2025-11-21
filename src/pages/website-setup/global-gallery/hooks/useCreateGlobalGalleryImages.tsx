@@ -68,15 +68,19 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
     defaultValues
   });
 
-  const { roleType, unionId, campusUnitId, campusSectionId } = useAppSelector(authState);
+  const { roleType, unionId, campusUnitId, campusSectionId, departmentId, clubId } = useAppSelector(authState);
 
   useEffect(() => {
     const isUnion = roleType === 'UNION' && Boolean(unionId);
     const isUnit = roleType === 'CAMPUS-UNIT' && Boolean(campusUnitId);
     const isSection = roleType === 'CAMPUS-SECTION' && Boolean(campusSectionId);
+    const isDepartmentAdmin = roleType === 'DEPARTMENT-ADMIN' && Boolean(departmentId);
+    const isClub = roleType === 'CLUB' && Boolean(clubId);
     const lockedUnion = unionOptions.find((option) => String(option.value) === String(unionId));
     const lockedUnit = unitOptions.find((option) => String(option.value) === String(campusUnitId));
     const lockedSection = sectionOptions.find((option) => String(option.value) === String(campusSectionId));
+    const lockedDepartment = departmentOptions.find((option) => String(option.value) === String(departmentId));
+    const lockedClub = studentClubsOptions.find((option) => String(option.value) === String(clubId));
 
     setFormFields((prev) =>
       prev
@@ -89,16 +93,24 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
             };
           }
           if (field.name === 'club') {
-            return { ...field, options: studentClubsOptions };
+            return {
+              ...field,
+              options: isClub && lockedClub ? [lockedClub] : studentClubsOptions,
+              disabled: Boolean(isClub && lockedClub)
+            };
           }
           if (field.name === 'department') {
-            return { ...field, options: departmentOptions };
+            return {
+              ...field,
+              options: isDepartmentAdmin && lockedDepartment ? [lockedDepartment] : departmentOptions,
+              disabled: Boolean(isDepartmentAdmin && lockedDepartment)
+            };
           }
           if (field.name === 'unit') {
             return {
               ...field,
               options: isUnit && lockedUnit ? [lockedUnit] : unitOptions,
-              disabled: Boolean(isUnit)
+              disabled: Boolean(isUnit && lockedUnit)
             };
           }
           if (field.name === 'section') {
@@ -118,6 +130,8 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
           if (isUnion && ['club', 'department', 'unit', 'section'].includes(field.name as string)) return false;
           if (isUnit && ['union', 'club', 'department', 'section', 'globalEvent'].includes(field.name as string)) return false;
           if (isSection && ['union', 'club', 'department', 'unit', 'globalEvent'].includes(field.name as string)) return false;
+          if (isDepartmentAdmin && ['union', 'club', 'unit', 'section'].includes(field.name as string)) return false;
+          if (isClub && ['union', 'department', 'unit', 'section'].includes(field.name as string)) return false;
           return true;
         })
     );
@@ -131,20 +145,64 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
     roleType,
     unionId,
     campusUnitId,
-    campusSectionId
+    campusSectionId,
+    departmentId,
+    clubId
   ]);
 
   useEffect(() => {
-    if (roleType === 'UNION' && unionId) {
-      setValue('union', Number(unionId));
+    const isDepartmentAdmin = roleType === 'DEPARTMENT-ADMIN' && Boolean(departmentId);
+    const isClub = roleType === 'CLUB' && Boolean(clubId);
+    if (roleType === 'UNION' && unionId && unionOptions.length > 0) {
+      const unionExists = unionOptions.find((opt) => String(opt.value) === String(unionId));
+      if (unionExists) {
+        console.log('Setting union value for create:', String(unionId));
+        setValue('union', String(unionId));
+      }
     }
-    if (roleType === 'CAMPUS-UNIT' && campusUnitId) {
-      setValue('unit', String(campusUnitId));
+    if (roleType === 'CAMPUS-UNIT' && campusUnitId && unitOptions.length > 0) {
+      const unitExists = unitOptions.find((opt) => String(opt.value) === String(campusUnitId));
+
+      if (unitExists) {
+        console.log('Setting unit value for create:', String(campusUnitId));
+        setValue('unit', String(campusUnitId));
+      }
     }
-    if (roleType === 'CAMPUS-SECTION' && campusSectionId) {
-      setValue('section', String(campusSectionId));
+    if (roleType === 'CAMPUS-SECTION' && campusSectionId && sectionOptions.length > 0) {
+      const sectionExists = sectionOptions.find((opt) => String(opt.value) === String(campusSectionId));
+      if (sectionExists) {
+        console.log('Setting section value for create:', String(campusSectionId), 'options:', sectionOptions);
+        setValue('section', String(campusSectionId));
+      }
     }
-  }, [roleType, unionId, campusUnitId, campusSectionId, setValue]);
+    if (isDepartmentAdmin && departmentId && departmentOptions.length > 0) {
+      const departmentExists = departmentOptions.find((opt) => String(opt.value) === String(departmentId));
+      if (departmentExists) {
+        console.log('Setting department value for create:', String(departmentId));
+        setValue('department', String(departmentId));
+      }
+    }
+    if (isClub && clubId && studentClubsOptions.length > 0) {
+      const clubExists = studentClubsOptions.find((opt) => String(opt.value) === String(clubId));
+      if (clubExists) {
+        console.log('Setting club value for create:', String(clubId));
+        setValue('club', String(clubId));
+      }
+    }
+  }, [
+    roleType,
+    unionId,
+    campusUnitId,
+    campusSectionId,
+    setValue,
+    unionOptions,
+    unitOptions,
+    sectionOptions,
+    departmentId,
+    departmentOptions,
+    studentClubsOptions,
+    clubId
+  ]);
 
   const onSubmit = async (data: TGlobalGalleryCreateFormDataType) => {
     try {

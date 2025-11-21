@@ -27,7 +27,7 @@ export const useDepartmentOptions = () => {
         const departments: Department[] = response.data?.results || [];
         const mapped = departments.map((dept) => ({
           label: dept.name,
-          value: dept.id
+          value: String(dept.id)
         }));
 
         setOptions(mapped);

@@ -11,13 +11,13 @@ export const userInfoFormSchema = z
     // role of user (EMIS-STAFF, ADMIN, DEPARTMENT-ADMIN, CLUB, UNION)
     role: z.string().optional(),
     // Password is now generated on the backend. Frontend no longer collects password.
-    roles: z.array(z.number()).optional(),
-    designation: z.number().optional(),
-    department: z.number().optional(),
-    club: z.number().optional(),
-    union: z.number().optional(),
-    campusUnit: z.number().optional(),
-    campusSection: z.number().optional(),
+    roles: z.array(z.union([z.number(), z.string()])).optional(),
+    designation: z.union([z.number(), z.string()]).optional(),
+    department: z.union([z.number(), z.string()]).optional(),
+    club: z.union([z.number(), z.string()]).optional(),
+    union: z.union([z.number(), z.string()]).optional(),
+    campusUnit: z.union([z.number(), z.string()]).optional(),
+    campusSection: z.union([z.number(), z.string()]).optional(),
     photo: z
       .any()
       .refine(

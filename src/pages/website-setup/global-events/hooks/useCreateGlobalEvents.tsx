@@ -46,11 +46,15 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
     defaultValues: globalEventsCreateDefaultValues
   });
 
-  const { roleType, unionId } = useAppSelector(authState);
+  const { roleType, unionId, departmentId, clubId } = useAppSelector(authState);
 
   useEffect(() => {
     const isUnion = roleType === 'UNION' && Boolean(unionId);
+    const isDepartmentAdmin = roleType === 'DEPARTMENT-ADMIN' && Boolean(departmentId);
+    const isStudentClub = roleType === 'CLUB' && Boolean(clubId);
     const lockedUnionOption = unionOptions.find((option) => String(option.value) === String(unionId));
+    const lockedDepartment = departmentOptions.find((option) => String(option.value) === String(departmentId));
+    const lockedClub = studentClubsOptions.find((option) => String(option.value) === String(clubId));
 
     setFormFields((prev) => {
       const updatedFields = prev.map((field) => {
@@ -64,28 +68,33 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
         if (field.name === 'departments') {
           return {
             ...field,
-            options: departmentOptions
+            options: isDepartmentAdmin && lockedDepartment ? [lockedDepartment] : departmentOptions,
+            disabled: Boolean(isDepartmentAdmin && lockedDepartment)
           };
         }
         if (field.name === 'clubs') {
           return {
             ...field,
-            options: studentClubsOptions
+            options: isStudentClub && lockedClub ? [lockedClub] : studentClubsOptions,
+            disabled: Boolean(isStudentClub && lockedClub)
           };
         }
         return field;
       });
 
-      // Filter out fields based on user role
       if (isUnion) {
-        // Union users: only show unions field (hide departments and clubs)
         return updatedFields.filter((field) => field.name !== 'departments' && field.name !== 'clubs');
       }
+      if (isDepartmentAdmin) {
+        return updatedFields.filter((field) => field.name !== 'clubs' && field.name !== 'unions');
+      }
+      if (isStudentClub) {
+        return updatedFields.filter((field) => field.name !== 'unions' && field.name !== 'departments');
+      }
 
-      // For admin/EMIS staff: show all fields
       return updatedFields;
     });
-  }, [unionOptions, departmentOptions, studentClubsOptions, roleType, unionId]);
+  }, [unionOptions, departmentOptions, studentClubsOptions, roleType, unionId, departmentId, clubId]);
 
   useEffect(() => {
     if (roleType === 'UNION' && unionId) {
@@ -93,8 +102,23 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
     }
   }, [roleType, unionId, setValue]);
 
+  useEffect(() => {
+    const isDepartmentAdmin = roleType === 'DEPARTMENT-ADMIN' && Boolean(departmentId);
+    const isStudentClub = roleType === 'CLUB' && Boolean(clubId);
+
+    if (isDepartmentAdmin && departmentId && departmentOptions.length > 0) {
+      setValue('departments', [Number(departmentId)]);
+    }
+    if (isStudentClub && clubId && studentClubsOptions.length > 0) {
+      setValue('clubs', [Number(clubId)]);
+    }
+  }, [roleType, departmentId, clubId, departmentOptions, studentClubsOptions, setValue]);
+
   const onSubmit = async (data: TGlobalEventsCreateFormDataType) => {
     try {
+      const isDepartmentAdmin = roleType === 'DEPARTMENT-ADMIN' && Boolean(departmentId);
+      const isStudentClub = roleType === 'CLUB' && Boolean(clubId);
+
       const payload: IGlobalEventsCreatePayload = {
         title: data.title.trim(),
         description: data.description?.trim(),
@@ -107,6 +131,18 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
         clubs: data.clubs?.map(String),
         departments: data.departments?.map(String)
       };
+
+      if (isDepartmentAdmin && departmentId) {
+        payload.departments = [String(departmentId)];
+        payload.clubs = undefined;
+        payload.unions = undefined;
+      }
+
+      if (isStudentClub && clubId) {
+        payload.clubs = [String(clubId)];
+        payload.unions = undefined;
+        payload.departments = undefined;
+      }
 
       const response = await createEvent(payload).unwrap();
       dispatch(setMessage({ message: response.message, variant: 'success' }));

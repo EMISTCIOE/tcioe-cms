@@ -35,6 +35,8 @@ export const noticeUpdateFormSchema = z.object({
   id: z.string().min(1, 'Notice ID is required'),
   title: z.string().min(1, 'Title is required'),
   department: z.union([z.number(), z.string()]).nullable(),
+  campusUnit: z.union([z.number(), z.string()]).nullable().optional(),
+  campusSection: z.union([z.number(), z.string()]).nullable().optional(),
   category: z.union([z.number(), z.string()]).optional(),
   description: z.string().optional(),
   isFeatured: z.boolean().default(true).optional(),
@@ -70,6 +72,8 @@ export type TNoticeUpdateFormDataType = z.infer<typeof noticeUpdateFormSchema>;
 export const defaultValues: Partial<TNoticeUpdateFormDataType> = {
   title: '',
   department: null,
+  campusUnit: null,
+  campusSection: null,
   category: undefined,
   description: '',
   isFeatured: true,
@@ -95,6 +99,8 @@ export const noticeUpdateFields: FormField<TNoticeUpdateFormDataType>[] = [
     inputStyle: { fontSize: '1rem' }
   },
   { name: 'department', label: 'Department', xs: 12, sm: 6, type: 'select', options: [], required: false },
+  { name: 'campusUnit', label: 'Campus Unit', xs: 12, sm: 6, type: 'select', options: [], required: false },
+  { name: 'campusSection', label: 'Campus Section', xs: 12, sm: 6, type: 'select', options: [], required: false },
   { name: 'category', label: 'Category', xs: 12, sm: 6, type: 'select', options: [], required: true },
   { name: 'description', label: 'Description', xs: 12, sm: 12, type: 'editor', multiline: true, rows: 4 },
   {

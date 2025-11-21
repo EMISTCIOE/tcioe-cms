@@ -53,14 +53,30 @@ export function useInputHandlers({
     setIsFileModalOpen(false);
   };
 
-  // Cleanup for Blob URLs when component unmounts or value changes
+  // Handle file preview when value is set directly (e.g., from bulk add)
+  useEffect(() => {
+    if (value instanceof File && !fileModalUrl) {
+      // Create preview URL for file that was set directly
+      const url = URL.createObjectURL(value);
+      const isPdfFile = value.type === 'application/pdf';
+      setFileModalUrl(url);
+      setIsCurrentFilePdf(isPdfFile);
+    } else if (!(value instanceof File) && fileModalUrl) {
+      // Clean up URL when value is no longer a file
+      URL.revokeObjectURL(fileModalUrl);
+      setFileModalUrl(null);
+      setIsCurrentFilePdf(false);
+    }
+  }, [value, fileModalUrl]);
+
+  // Cleanup for Blob URLs when component unmounts
   useEffect(() => {
     return () => {
       if (fileModalUrl && value instanceof File) {
         URL.revokeObjectURL(fileModalUrl);
       }
     };
-  }, [fileModalUrl, value]); // Re-run effect if fileModalUrl or value changes
+  }, [fileModalUrl, value]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

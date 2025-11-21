@@ -20,12 +20,12 @@ export type TGalleryImage = z.infer<typeof imageSchema>;
 export const globalGalleryCreateFormSchema = z.object({
   sourceTitle: z.string().optional(),
   sourceContext: z.string().optional(),
-  globalEvent: z.number().nullable().optional(),
-  union: z.number().nullable().optional(),
-  club: z.number().nullable().optional(),
-  department: z.number().nullable().optional(),
-  unit: z.number().nullable().optional(),
-  section: z.number().nullable().optional(),
+  globalEvent: z.union([z.string(), z.number()]).nullable().optional(),
+  union: z.union([z.string(), z.number()]).nullable().optional(),
+  club: z.union([z.string(), z.number()]).nullable().optional(),
+  department: z.union([z.string(), z.number()]).nullable().optional(),
+  unit: z.union([z.string(), z.number()]).nullable().optional(),
+  section: z.union([z.string(), z.number()]).nullable().optional(),
   isActive: z.boolean().default(true),
   images: z.array(imageSchema).min(1, 'Add at least one gallery image')
 });

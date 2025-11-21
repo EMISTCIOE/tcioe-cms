@@ -5,16 +5,16 @@ export const globalGalleryUpdateFormSchema = z.object({
   id: z.number().min(1, 'Image ID is required'),
   sourceTitle: z.string().optional(),
   sourceContext: z.string().optional(),
-  globalEvent: z.number().nullable().optional(),
-  union: z.number().nullable().optional(),
-  club: z.number().nullable().optional(),
-  department: z.number().nullable().optional(),
-  unit: z.number().nullable().optional(),
-  section: z.number().nullable().optional(),
+  globalEvent: z.union([z.string(), z.number()]).nullable().optional(),
+  union: z.union([z.string(), z.number()]).nullable().optional(),
+  club: z.union([z.string(), z.number()]).nullable().optional(),
+  department: z.union([z.string(), z.number()]).nullable().optional(),
+  unit: z.union([z.string(), z.number()]).nullable().optional(),
+  section: z.union([z.string(), z.number()]).nullable().optional(),
   isActive: z.boolean().default(true),
   caption: z.string().optional(),
   displayOrder: z.number().int().positive().optional(),
-  image: z.any().optional()
+  image: z.union([z.instanceof(File), z.string()]).optional()
 });
 
 export type TGlobalGalleryUpdateFormDataType = z.infer<typeof globalGalleryUpdateFormSchema>;
@@ -32,7 +32,7 @@ export const galleryUpdateDefaultValues: Partial<TGlobalGalleryUpdateFormDataTyp
   isActive: true,
   caption: '',
   displayOrder: 1,
-  image: undefined
+  image: ''
 };
 
 export const globalGalleryUpdateFields: FormField<TGlobalGalleryUpdateFormDataType>[] = [
