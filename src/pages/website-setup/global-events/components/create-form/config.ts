@@ -15,6 +15,8 @@ export const globalEventsCreateFormSchema = z.object({
   unions: z.array(z.number()).optional(),
   clubs: z.array(z.number()).optional(),
   departments: z.array(z.number()).optional(),
+  isApprovedByDepartment: z.boolean().default(false).optional(),
+  isApprovedByCampus: z.boolean().default(false).optional(),
   isActive: z.boolean().default(true)
 });
 
@@ -32,6 +34,8 @@ export const globalEventsCreateFields: FormField<TGlobalEventsCreateFormDataType
   { name: 'unions', label: 'Unions', type: 'select', xs: 12, sm: 4, multipleChips: true, options: [] },
   { name: 'clubs', label: 'Clubs', type: 'select', xs: 12, sm: 4, multipleChips: true, options: [] },
   { name: 'departments', label: 'Departments', type: 'select', xs: 12, sm: 4, multipleChips: true, options: [] },
+  { name: 'isApprovedByDepartment', label: 'Approved by Department', type: 'switch', xs: 12, sm: 3 },
+  { name: 'isApprovedByCampus', label: 'Approved by Campus', type: 'switch', xs: 12, sm: 3 },
   { name: 'isActive', label: 'Active Status', type: 'switch', xs: 12, sm: 2 }
 ];
 
@@ -47,5 +51,7 @@ export const globalEventsCreateDefaultValues: TGlobalEventsCreateFormDataType = 
   unions: [],
   clubs: [],
   departments: [],
+  isApprovedByDepartment: false,
+  isApprovedByCampus: false,
   isActive: true
 };

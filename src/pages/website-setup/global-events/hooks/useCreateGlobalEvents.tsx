@@ -17,6 +17,7 @@ import {
 import { IGlobalEventsCreatePayload } from '../redux/globalEvents.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { authState } from '@/pages/authentication/redux/selector';
+import { useCanAccessApprovalFields } from '@/utils/permissions/helpers';
 
 const normalizeFile = (input: File | FileList | null | undefined) => {
   if (input instanceof FileList) {
@@ -33,6 +34,7 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
   const { options: unionOptions } = useCampusUnionOptions();
   const { options: departmentOptions } = useDepartmentOptions();
   const { studentClubsOptions } = useStudentClubs();
+  const canAccessApprovalFields = useCanAccessApprovalFields();
 
   const {
     control,
@@ -56,8 +58,8 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
     const lockedDepartment = departmentOptions.find((option) => String(option.value) === String(departmentId));
     const lockedClub = studentClubsOptions.find((option) => String(option.value) === String(clubId));
 
-    setFormFields((prev) => {
-      const updatedFields = prev.map((field) => {
+    setFormFields(() => {
+      let updatedFields = globalEventsCreateFields.map((field) => {
         if (field.name === 'unions') {
           return {
             ...field,
@@ -82,6 +84,12 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
         return field;
       });
 
+      if (!canAccessApprovalFields) {
+        updatedFields = updatedFields.filter(
+          (field) => field.name !== 'isApprovedByDepartment' && field.name !== 'isApprovedByCampus'
+        );
+      }
+
       if (isUnion) {
         return updatedFields.filter((field) => field.name !== 'departments' && field.name !== 'clubs');
       }
@@ -94,7 +102,7 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
 
       return updatedFields;
     });
-  }, [unionOptions, departmentOptions, studentClubsOptions, roleType, unionId, departmentId, clubId]);
+  }, [unionOptions, departmentOptions, studentClubsOptions, roleType, unionId, departmentId, clubId, canAccessApprovalFields]);
 
   useEffect(() => {
     if (roleType === 'UNION' && unionId) {
@@ -131,6 +139,11 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
         clubs: data.clubs?.map(String),
         departments: data.departments?.map(String)
       };
+
+      if (canAccessApprovalFields) {
+        payload.isApprovedByDepartment = Boolean(data.isApprovedByDepartment);
+        payload.isApprovedByCampus = Boolean(data.isApprovedByCampus);
+      }
 
       if (isDepartmentAdmin && departmentId) {
         payload.departments = [String(departmentId)];

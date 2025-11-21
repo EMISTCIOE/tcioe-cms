@@ -45,6 +45,8 @@ export interface IGlobalEventsCreatePayload {
   registrationLink?: string;
   location?: string;
   isActive?: boolean;
+  isApprovedByDepartment?: boolean;
+  isApprovedByCampus?: boolean;
   unions?: string[];
   clubs?: string[];
   departments?: string[];

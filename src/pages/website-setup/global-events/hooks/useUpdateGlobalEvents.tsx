@@ -12,6 +12,7 @@ import { authState } from '@/pages/authentication/redux/selector';
 import { usePatchGlobalEventsMutation } from '../redux/globalEvents.api';
 import { globalEventsUpdateFields, globalEventsUpdateFormSchema, TGlobalEventsUpdateFormDataType } from '../components/update-form/config';
 import { IGlobalEventsDetails, IGlobalEventsUpdatePayload } from '../redux/globalEvents.types';
+import { useCanAccessApprovalFields } from '@/utils/permissions/helpers';
 
 const normalizeFile = (input: File | FileList | string | null | undefined) => {
   if (input instanceof FileList) {
@@ -31,6 +32,7 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
   const { options: unionOptions } = useCampusUnionOptions();
   const { options: departmentOptions } = useDepartmentOptions();
   const { studentClubsOptions } = useStudentClubs();
+  const canAccessApprovalFields = useCanAccessApprovalFields();
 
   const {
     control,
@@ -55,8 +57,8 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
     const lockedDepartment = departmentOptions.find((option) => String(option.value) === String(departmentId));
     const lockedClub = studentClubsOptions.find((option) => String(option.value) === String(clubId));
 
-    setFormFields((prev) => {
-      const updatedFields = prev.map((field) => {
+    setFormFields(() => {
+      let updatedFields = globalEventsUpdateFields.map((field) => {
         if (field.name === 'unions') {
           return {
             ...field,
@@ -81,6 +83,12 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
         return field;
       });
 
+      if (!canAccessApprovalFields) {
+        updatedFields = updatedFields.filter(
+          (field) => field.name !== 'isApprovedByDepartment' && field.name !== 'isApprovedByCampus'
+        );
+      }
+
       if (isUnion) {
         return updatedFields.filter((field) => field.name !== 'departments' && field.name !== 'clubs');
       }
@@ -93,7 +101,7 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
 
       return updatedFields;
     });
-  }, [unionOptions, departmentOptions, studentClubsOptions, roleType, unionId, departmentId, clubId]);
+  }, [unionOptions, departmentOptions, studentClubsOptions, roleType, unionId, departmentId, clubId, canAccessApprovalFields]);
 
   useEffect(() => {
     if (eventData) {
@@ -107,6 +115,8 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
         unions: eventData?.unions?.map((item) => Number(item.id)) ?? [],
         clubs: eventData?.clubs?.map((item) => Number(item.id)) ?? [],
         departments: eventData?.departments?.map((item) => Number(item.id)) ?? [],
+        isApprovedByDepartment: eventData.isApprovedByDepartment ?? false,
+        isApprovedByCampus: eventData.isApprovedByCampus ?? false,
         isActive: eventData.isActive
       });
     } else {
@@ -150,6 +160,11 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
         clubs: data.clubs?.map(String),
         departments: data.departments?.map(String)
       };
+
+      if (canAccessApprovalFields) {
+        payload.isApprovedByDepartment = data.isApprovedByDepartment;
+        payload.isApprovedByCampus = data.isApprovedByCampus;
+      }
 
       if (isDepartmentAdmin && departmentId) {
         payload.departments = [String(departmentId)];
