@@ -54,7 +54,7 @@ export default function DashboardDefault() {
   const isSectionUser = roleType === 'CAMPUS-SECTION';
   const isScopedUser = isUnionUser || isUnitUser || isSectionUser;
   const scopedLabel = isUnionUser ? 'Union' : isUnitUser ? 'Unit' : 'Section';
-  
+
   // Only EMIS Staff and Admin users can see charts and trend graphs
   const canViewCharts = roleType === 'EMIS-STAFF' || roleType === 'ADMIN';
 
