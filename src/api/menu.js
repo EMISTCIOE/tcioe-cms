@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import useSWR, { mutate } from 'swr';
+import { useMemo, useCallback } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const initialState = {
   openedItem: 'dashboard',
@@ -15,44 +15,46 @@ export const endpoints = {
   dashboard: '/dashboard' // server URL
 };
 
+const menuQueryKey = [endpoints.key, endpoints.master];
+
 export function useGetMenuMaster() {
-  const { data, isLoading } = useSWR(endpoints.key + endpoints.master, () => initialState, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
+  const { data, isPending } = useQuery({
+    queryKey: menuQueryKey,
+    queryFn: async () => initialState,
+    staleTime: Infinity,
+    gcTime: Infinity
   });
 
   const memoizedValue = useMemo(
     () => ({
-      menuMaster: data,
-      menuMasterLoading: isLoading
+      menuMaster: data ?? initialState,
+      menuMasterLoading: isPending
     }),
-    [data, isLoading]
+    [data, isPending]
   );
 
   return memoizedValue;
 }
 
-export function handlerDrawerOpen(isDashboardDrawerOpened) {
-  // to update local state based on key
+export function useMenuActions() {
+  const queryClient = useQueryClient();
 
-  mutate(
-    endpoints.key + endpoints.master,
-    (currentMenuMaster) => {
-      return { ...currentMenuMaster, isDashboardDrawerOpened };
-    },
-    false
-  );
-}
+  const setDrawerOpen = useCallback((isDashboardDrawerOpened) => {
+    queryClient.setQueryData(menuQueryKey, (currentMenuMaster = initialState) => ({
+      ...currentMenuMaster,
+      isDashboardDrawerOpened
+    }));
+  }, [queryClient]);
 
-export function handlerActiveItem(openedItem) {
-  // to update local state based on key
+  const setActiveItem = useCallback((openedItem) => {
+    queryClient.setQueryData(menuQueryKey, (currentMenuMaster = initialState) => ({
+      ...currentMenuMaster,
+      openedItem
+    }));
+  }, [queryClient]);
 
-  mutate(
-    endpoints.key + endpoints.master,
-    (currentMenuMaster) => {
-      return { ...currentMenuMaster, openedItem };
-    },
-    false
-  );
+  return {
+    setDrawerOpen,
+    setActiveItem
+  };
 }

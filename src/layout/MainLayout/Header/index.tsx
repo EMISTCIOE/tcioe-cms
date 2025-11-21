@@ -11,7 +11,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import AppBarStyled from './AppBarStyled';
 import HeaderContent from './HeaderContent';
 
-import { handlerDrawerOpen, useGetMenuMaster } from '@/api/menu';
+import { useGetMenuMaster, useMenuActions } from '@/api/menu';
 
 // assets
 import MenuFoldOutlined from '@ant-design/icons/MenuFoldOutlined';
@@ -24,6 +24,7 @@ export default function Header() {
   const downLG = useMediaQuery(theme.breakpoints.down('lg'));
 
   const { menuMaster } = useGetMenuMaster();
+  const { setDrawerOpen } = useMenuActions();
   // @ts-ignore
   const drawerOpen = menuMaster.isDashboardDrawerOpened;
 
@@ -35,7 +36,7 @@ export default function Header() {
     <Toolbar>
       <IconButton
         aria-label="open drawer"
-        onClick={() => handlerDrawerOpen(!drawerOpen)}
+        onClick={() => setDrawerOpen(!drawerOpen)}
         edge="start"
         sx={{
           bgcolor: drawerOpen ? 'transparent' : 'action.hover',

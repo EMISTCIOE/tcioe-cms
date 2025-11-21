@@ -15,6 +15,7 @@ import '@fontsource/public-sans/700.css';
 // project import
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import ReactQueryProvider from './libs/ReactQueryProvider';
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
@@ -23,7 +24,9 @@ if (rootElement) {
   // ==============================|| MAIN - REACT DOM RENDER ||============================== //
   root.render(
     <BrowserRouter>
-      <App />
+      <ReactQueryProvider>
+        <App />
+      </ReactQueryProvider>
     </BrowserRouter>
   );
 }

@@ -11,7 +11,7 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 // project import
-import { handlerActiveItem, useGetMenuMaster } from '@/api/menu';
+import { useGetMenuMaster, useMenuActions } from '@/api/menu';
 import { MenuItem } from '@/menu-items/types';
 
 type ListItemProps =
@@ -26,6 +26,7 @@ export default function NavItem({ item, level }: { item: MenuItem; level: number
   const theme = useTheme();
 
   const { menuMaster } = useGetMenuMaster();
+  const { setActiveItem } = useMenuActions();
   const drawerOpen = menuMaster?.isDashboardDrawerOpened;
   const openItem = menuMaster?.openedItem;
 
@@ -54,7 +55,7 @@ export default function NavItem({ item, level }: { item: MenuItem; level: number
 
   // active menu item on page load
   useEffect(() => {
-    if (pathname === item.url) handlerActiveItem(item.id);
+    if (pathname === item.url) setActiveItem(item.id);
     // eslint-disable-next-line
   }, [pathname]);
 
@@ -67,7 +68,7 @@ export default function NavItem({ item, level }: { item: MenuItem; level: number
     <ListItemButton
       {...listItemProps}
       disabled={item?.disabled || false}
-      onClick={() => handlerActiveItem(item.id)}
+      onClick={() => setActiveItem(item.id)}
       selected={isSelected}
       sx={{
         zIndex: 1201,

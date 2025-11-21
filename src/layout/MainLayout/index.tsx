@@ -13,18 +13,19 @@ import navigation from '@/menu-items';
 import Drawer from './Drawer';
 import Header from './Header';
 
-import { handlerDrawerOpen, useGetMenuMaster } from '@/api/menu';
+import { useGetMenuMaster, useMenuActions } from '@/api/menu';
 import { MenuSearchProvider } from '@/contexts/search-context';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
 export default function MainLayout() {
   const { menuMasterLoading } = useGetMenuMaster();
+  const { setDrawerOpen } = useMenuActions();
   const downXL = useMediaQuery((theme: any) => theme.breakpoints.down('xl'));
 
   useEffect(() => {
-    handlerDrawerOpen(!downXL);
-  }, [downXL]);
+    setDrawerOpen(!downXL);
+  }, [downXL, setDrawerOpen]);
 
   if (menuMasterLoading) return <Loader />;
 

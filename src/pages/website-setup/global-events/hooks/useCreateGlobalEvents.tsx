@@ -85,9 +85,7 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
       });
 
       if (!canAccessApprovalFields) {
-        updatedFields = updatedFields.filter(
-          (field) => field.name !== 'isApprovedByDepartment' && field.name !== 'isApprovedByCampus'
-        );
+        updatedFields = updatedFields.filter((field) => field.name !== 'isApprovedByDepartment' && field.name !== 'isApprovedByCampus');
       }
 
       if (isUnion) {

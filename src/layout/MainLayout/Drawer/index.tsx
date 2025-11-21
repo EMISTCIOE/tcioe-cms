@@ -10,7 +10,7 @@ import DrawerContent from './DrawerContent';
 import DrawerHeader from './DrawerHeader';
 import MiniDrawerStyled from './MiniDrawerStyled';
 
-import { handlerDrawerOpen, useGetMenuMaster } from '@/api/menu';
+import { useGetMenuMaster, useMenuActions } from '@/api/menu';
 import { drawerWidth } from '@/config';
 
 // ==============================|| MAIN LAYOUT - DRAWER ||============================== //
@@ -21,6 +21,7 @@ interface MainDrawerProps {
 
 export default function MainDrawer({ window }: MainDrawerProps) {
   const { menuMaster } = useGetMenuMaster();
+  const { setDrawerOpen } = useMenuActions();
   const drawerOpen = menuMaster?.isDashboardDrawerOpened ?? false;
   const matchDownMD = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
@@ -43,7 +44,7 @@ export default function MainDrawer({ window }: MainDrawerProps) {
           container={container}
           variant="temporary"
           open={drawerOpen}
-          onClose={() => handlerDrawerOpen(!drawerOpen)}
+          onClose={() => setDrawerOpen(!drawerOpen)}
           ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: 'block', lg: 'none' },
