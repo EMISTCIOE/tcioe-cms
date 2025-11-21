@@ -146,7 +146,7 @@ export default function DynamicFieldArraySection<T extends Record<string, any>>(
         <input
           type="file"
           ref={fileInputRef}
-          accept={fileField.acceptFileTypes ?? fileField.accpetFileTypes ?? 'image/*'}
+          accept={fileField.accpetFileTypes ?? 'image/*'}
           multiple
           onChange={handleBulkFiles}
           style={{ display: 'none' }}
