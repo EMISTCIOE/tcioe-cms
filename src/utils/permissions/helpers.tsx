@@ -150,6 +150,11 @@ export function useHasGlobalEventPermissions(permission: string | string[]): boo
 
   const requiredPermissions = Array.isArray(permission) ? permission : [permission];
 
+  // Admin and EMIS staff have full access to event actions
+  if (['ADMIN', 'EMIS-STAFF'].includes(roleType || '')) {
+    return true;
+  }
+
   // Union users can create and edit global events but not delete them
   if (roleType === 'UNION') {
     const unionAllowedPermissions = ['add_globalevent', 'change_globalevent', 'view_globalevent'];
