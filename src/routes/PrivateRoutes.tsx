@@ -22,6 +22,7 @@ const Notice = Loadable(lazy(() => import('@/pages/notice')));
 
 // Website Setup Pages
 const AcademicCalendars = Loadable(lazy(() => import('@/pages/website-setup/academic-calendars')));
+const AcademicDownloads = Loadable(lazy(() => import('@/pages/website-setup/academic-downloads')));
 const CampusDownloads = Loadable(lazy(() => import('@/pages/website-setup/campus-downloads')));
 const CampusFeedbacks = Loadable(lazy(() => import('@/pages/website-setup/campus-feedbacks')));
 const CampusInfo = Loadable(lazy(() => import('@/pages/website-setup/campus-info')));
@@ -93,6 +94,7 @@ const PrivateRoutes = () => {
               <>
                 <Route path="academic-calendars" element={<AcademicCalendars />} />
                 <Route path="academic" element={<Academic />} />
+                {(isEmisStaff || isAdmin) && <Route path="academic-downloads" element={<AcademicDownloads />} />}
                 <Route path="campus-downloads" element={<CampusDownloads />} />
                 <Route path="campus-feedbacks" element={<CampusFeedbacks />} />
                 <Route path="campus-info" element={<CampusInfo />} />

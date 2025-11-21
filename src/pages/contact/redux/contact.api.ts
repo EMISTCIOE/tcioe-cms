@@ -20,7 +20,7 @@ export const phoneNumberAPISlice = rootAPI.injectEndpoints({
         });
 
         return {
-          url: `v1/${phoneNumberAPI}/?offset=${page * pageSize}&limit=${pageSize}&search=${search ?? ''}&ordering=${orderingString}&${filterString}`,
+          url: `${phoneNumberAPI}/?offset=${page * pageSize}&limit=${pageSize}&search=${search ?? ''}&ordering=${orderingString}&${filterString}`,
           method: 'GET'
         };
       },
@@ -30,7 +30,7 @@ export const phoneNumberAPISlice = rootAPI.injectEndpoints({
     // Get Phone Number Details
     getPhoneNumberDetails: builder.query<IPhoneNumber, GridRowId>({
       query: (id) => ({
-        url: `v1/${phoneNumberAPI}/${id}/`,
+        url: `${phoneNumberAPI}/${id}/`,
         method: 'GET'
       }),
       providesTags: ['PhoneNumber']
@@ -39,7 +39,7 @@ export const phoneNumberAPISlice = rootAPI.injectEndpoints({
     // Create Phone Number
     createPhoneNumber: builder.mutation<IMutationSuccessResponse, IPhoneNumberCreatePayload>({
       query: (data) => ({
-        url: `v1/${phoneNumberAPI}/`,
+        url: `${phoneNumberAPI}/`,
         method: 'POST',
         data
       }),
@@ -49,7 +49,7 @@ export const phoneNumberAPISlice = rootAPI.injectEndpoints({
     // Update Phone Number
     updatePhoneNumber: builder.mutation<IMutationSuccessResponse, { id: GridRowId; data: IPhoneNumberUpdatePayload }>({
       query: ({ id, data }) => ({
-        url: `v1/${phoneNumberAPI}/${id}/`,
+        url: `${phoneNumberAPI}/${id}/`,
         method: 'PATCH',
         data
       }),
@@ -59,7 +59,7 @@ export const phoneNumberAPISlice = rootAPI.injectEndpoints({
     // Delete Phone Number (soft delete)
     deletePhoneNumber: builder.mutation<IMutationSuccessResponse, GridRowId>({
       query: (id) => ({
-        url: `v1/${phoneNumberAPI}/${id}/`,
+        url: `${phoneNumberAPI}/${id}/`,
         method: 'DELETE'
       }),
       invalidatesTags: ['PhoneNumber']
@@ -68,7 +68,7 @@ export const phoneNumberAPISlice = rootAPI.injectEndpoints({
     // Bulk Delete Phone Numbers
     bulkDeletePhoneNumbers: builder.mutation<IMutationSuccessResponse, GridRowId[]>({
       query: (ids) => ({
-        url: `v1/${phoneNumberAPI}/bulk_delete/`,
+        url: `${phoneNumberAPI}/bulk_delete/`,
         method: 'POST',
         data: { ids }
       }),

@@ -19,6 +19,7 @@ import CampusUnitsReducer from '@/pages/website-setup/campus-units/redux/campusU
 import CampusReportsReducer from '@/pages/website-setup/campus-reports/redux/campusReports.slice';
 import AcademicCalendersReducer from '@/pages/website-setup/academic-calendars/redux/academicCalendars.slice';
 import campusDownloadsReducer from '@/pages/website-setup/campus-downloads/redux/campusDownloads.slice';
+import academicDownloadsReducer from '@/pages/website-setup/academic-downloads/redux/academicDownloads.slice';
 import StudentClubsReducer from '@/pages/student-clubs-setup/student-clubs/redux/studentClubs.slice';
 import StudentClubEventsReducer from '@/pages/student-clubs-setup/student-club-events/redux/studentClubEvents.slice';
 import researchFacilitiesReducer from '@/pages/website-setup/research-facilities/redux/researchFacilities.slice';
@@ -46,6 +47,7 @@ export const rootReducer = combineReducers({
   campusReports: CampusReportsReducer,
   academicCalendars: AcademicCalendersReducer,
   campusDownloads: campusDownloadsReducer,
+  academicDownloads: academicDownloadsReducer,
   studentClubs: StudentClubsReducer,
   studentClubEvents: StudentClubEventsReducer,
   globalGalleryImages: globalGalleryImagesReducer,
