@@ -27,7 +27,7 @@ const normalizeFile = (input: File | FileList | string | null | undefined) => {
 const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEventsDetails; onClose?: () => void }) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const [updateEvent] = usePatchGlobalEventsMutation();
+  const [updateEvent, { isLoading: isUpdating }] = usePatchGlobalEventsMutation();
   const [formFields, setFormFields] = useState(globalEventsUpdateFields);
   const { options: unionOptions } = useCampusUnionOptions();
   const { options: departmentOptions } = useDepartmentOptions();
@@ -152,6 +152,8 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
         eventType: data.eventType,
         eventStartDate: data.eventStartDate ?? eventData.eventStartDate,
         eventEndDate: data.eventEndDate ?? eventData.eventEndDate ?? undefined,
+        registrationLink: data.registrationLink?.trim() ?? eventData.registrationLink ?? undefined,
+        location: data.location?.trim() ?? eventData.location ?? undefined,
         thumbnail: file ?? (typeof data.thumbnail === 'string' ? data.thumbnail : undefined),
         isActive: data.isActive,
         unions: data.unions?.map(String),
@@ -189,7 +191,8 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
     control,
     errors,
     watch,
-    formFields
+    formFields,
+    isUpdating
   };
 };
 

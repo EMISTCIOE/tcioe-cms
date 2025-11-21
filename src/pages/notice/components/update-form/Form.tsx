@@ -14,7 +14,7 @@ export interface INoticeUpdateFormProps {
 }
 
 export default function NoticeUpdateForm({ noticeData, onClose }: INoticeUpdateFormProps) {
-  const { control, errors, watch, formFields, handleSubmit } = useUpdateNotice({ noticeData, onClose });
+  const { control, errors, watch, formFields, handleSubmit, isUpdating } = useUpdateNotice({ noticeData, onClose });
   const formValues = watch();
 
   return (
@@ -26,15 +26,15 @@ export default function NoticeUpdateForm({ noticeData, onClose }: INoticeUpdateF
           </Grid>
 
           <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 1 }}>
-            <Button variant="outlined" color="error" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button variant="contained" type="submit">
-              Update
-            </Button>
-          </Grid>
+          <Button variant="outlined" color="error" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button variant="contained" type="submit" disabled={isUpdating}>
+            {isUpdating ? 'Updating...' : 'Update'}
+          </Button>
         </Grid>
-      </form>
-    </Box>
+      </Grid>
+    </form>
+  </Box>
   );
 }

@@ -9,7 +9,7 @@ export interface IGlobalEventsCreateFormProps {
 }
 
 export default function GlobalEventsCreateForm({ onClose }: IGlobalEventsCreateFormProps) {
-  const { control, errors, watch, formFields, handleSubmit } = useCreateGlobalEvents({ onClose });
+  const { control, errors, watch, formFields, handleSubmit, isCreating } = useCreateGlobalEvents({ onClose });
   const formValues = watch();
 
   return (
@@ -24,8 +24,8 @@ export default function GlobalEventsCreateForm({ onClose }: IGlobalEventsCreateF
           <Button variant="outlined" color="error" onClick={onClose}>
             Cancel
           </Button>
-          <Button variant="contained" type="submit" disabled={Object.keys(errors).length > 0}>
-            Create
+          <Button variant="contained" type="submit" disabled={Object.keys(errors).length > 0 || isCreating}>
+            {isCreating ? 'Creating...' : 'Create'}
           </Button>
         </Grid>
       </Grid>

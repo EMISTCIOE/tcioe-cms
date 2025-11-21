@@ -12,7 +12,7 @@ export interface INoticeCreateFormProps {
 }
 
 export default function NoticeCreateForm({ onClose }: INoticeCreateFormProps) {
-  const { control, errors, watch, formFields, handleSubmit } = useCreateNotice({ onClose });
+  const { control, errors, watch, formFields, handleSubmit, isCreating } = useCreateNotice({ onClose });
   const formValues = watch();
 
   return (
@@ -27,8 +27,8 @@ export default function NoticeCreateForm({ onClose }: INoticeCreateFormProps) {
             <Button variant="outlined" color="error" onClick={onClose}>
               Cancel
             </Button>
-            <Button variant="contained" type="submit" disabled={Object.keys(errors).length > 0}>
-              Create
+            <Button variant="contained" type="submit" disabled={Object.keys(errors).length > 0 || isCreating}>
+              {isCreating ? 'Creating...' : 'Create'}
             </Button>
           </Grid>
         </Grid>

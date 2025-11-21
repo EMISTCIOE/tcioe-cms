@@ -29,7 +29,7 @@ const normalizeFile = (input: File | FileList | null | undefined) => {
 const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const [createEvent] = useCreateGlobalEventsMutation();
+  const [createEvent, { isLoading: isCreating }] = useCreateGlobalEventsMutation();
   const [formFields, setFormFields] = useState(globalEventsCreateFields);
   const { options: unionOptions } = useCampusUnionOptions();
   const { options: departmentOptions } = useDepartmentOptions();
@@ -131,6 +131,8 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
         eventType: data.eventType,
         eventStartDate: data.eventStartDate,
         eventEndDate: data.eventEndDate,
+        registrationLink: data.registrationLink?.trim(),
+        location: data.location?.trim(),
         thumbnail: normalizeFile(data.thumbnail),
         isActive: data.isActive,
         unions: data.unions?.map(String),
@@ -168,7 +170,8 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
     control,
     errors,
     watch,
-    formFields
+    formFields,
+    isCreating
   };
 };
 

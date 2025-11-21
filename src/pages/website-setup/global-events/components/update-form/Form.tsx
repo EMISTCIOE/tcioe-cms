@@ -10,7 +10,7 @@ interface IGlobalEventsUpdateFormProps {
 }
 
 export default function GlobalEventsUpdateForm({ eventData, onClose }: IGlobalEventsUpdateFormProps) {
-  const { control, errors, watch, formFields, handleSubmit } = useUpdateGlobalEvents({ eventData, onClose });
+  const { control, errors, watch, formFields, handleSubmit, isUpdating } = useUpdateGlobalEvents({ eventData, onClose });
   const formValues = watch();
 
   return (
@@ -25,8 +25,8 @@ export default function GlobalEventsUpdateForm({ eventData, onClose }: IGlobalEv
           <Button variant="outlined" color="error" onClick={onClose}>
             Cancel
           </Button>
-          <Button variant="contained" type="submit" disabled={Object.keys(errors).length > 0}>
-            Update
+          <Button variant="contained" type="submit" disabled={Object.keys(errors).length > 0 || isUpdating}>
+            {isUpdating ? 'Updating...' : 'Update'}
           </Button>
         </Grid>
       </Grid>

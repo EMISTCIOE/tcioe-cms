@@ -22,7 +22,7 @@ import { useCanAccessApprovalFields } from '@/utils/permissions/helpers';
 const useCreateNotice = ({ onClose }: INoticeCreateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const [createNotice] = useCreateNoticeMutation();
+  const [createNotice, { isLoading: isCreating }] = useCreateNoticeMutation();
   const [formFields, setFormFields] = useState(noticeCreateFields);
   const { noticeCategoriesOptions } = useNoticeCategories();
   const { noticeDepartmentsOptions } = useNoticeDepartments();
@@ -225,7 +225,8 @@ const useCreateNotice = ({ onClose }: INoticeCreateFormProps) => {
     control,
     errors,
     watch,
-    formFields
+    formFields,
+    isCreating
   };
 };
 

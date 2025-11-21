@@ -31,7 +31,7 @@ import { TField } from '@/components/app-form/types';
 const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const [updateNotice] = usePatchNoticeMutation();
+  const [updateNotice, { isLoading: isUpdating }] = usePatchNoticeMutation();
   const [deleteNoticeMedia] = useDeleteNoticeMediaMutation();
   const [formFields, setFormFields] = useState(noticeUpdateFields);
   const { noticeCategoriesOptions } = useNoticeCategories();
@@ -294,7 +294,8 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
     control,
     errors,
     watch,
-    formFields
+    formFields,
+    isUpdating
   };
 };
 
