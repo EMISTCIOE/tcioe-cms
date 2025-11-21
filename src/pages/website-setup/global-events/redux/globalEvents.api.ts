@@ -39,18 +39,26 @@ export const globalEventsAPISlice = rootAPI.injectEndpoints({
       query: (values) => {
         const { unions, clubs, departments, thumbnail, eventStartDate, eventEndDate, ...rest } = values;
         const body = new FormData();
+        const snakeMap: Record<string, string> = {
+          isActive: 'is_active',
+          isApprovedByDepartment: 'is_approved_by_department',
+          isApprovedByCampus: 'is_approved_by_campus',
+          registrationLink: 'registration_link',
+          eventType: 'event_type'
+        };
 
         Object.entries(rest).forEach(([key, value]) => {
           if (value !== undefined && value !== null) {
-            body.append(key, value as string);
+            const snakeKey = snakeMap[key] ?? key;
+            body.append(snakeKey, value as string);
           }
         });
 
         if (eventStartDate) {
-          body.append('eventStartDate', formatReadableDatetime(eventStartDate, 'YYYY-MM-DD'));
+          body.append('event_start_date', formatReadableDatetime(eventStartDate, 'YYYY-MM-DD'));
         }
         if (eventEndDate) {
-          body.append('eventEndDate', formatReadableDatetime(eventEndDate, 'YYYY-MM-DD'));
+          body.append('event_end_date', formatReadableDatetime(eventEndDate, 'YYYY-MM-DD'));
         }
 
         if (thumbnail instanceof File) {
@@ -74,18 +82,26 @@ export const globalEventsAPISlice = rootAPI.injectEndpoints({
       query: ({ id, values }) => {
         const { unions, clubs, departments, thumbnail, eventStartDate, eventEndDate, ...rest } = values;
         const body = new FormData();
+        const snakeMap: Record<string, string> = {
+          isActive: 'is_active',
+          isApprovedByDepartment: 'is_approved_by_department',
+          isApprovedByCampus: 'is_approved_by_campus',
+          registrationLink: 'registration_link',
+          eventType: 'event_type'
+        };
 
         Object.entries(rest).forEach(([key, value]) => {
           if (value !== undefined && value !== null) {
-            body.append(key, value as string);
+            const snakeKey = snakeMap[key] ?? key;
+            body.append(snakeKey, value as string);
           }
         });
 
         if (eventStartDate) {
-          body.append('eventStartDate', formatReadableDatetime(eventStartDate, 'YYYY-MM-DD'));
+          body.append('event_start_date', formatReadableDatetime(eventStartDate, 'YYYY-MM-DD'));
         }
         if (eventEndDate) {
-          body.append('eventEndDate', formatReadableDatetime(eventEndDate, 'YYYY-MM-DD'));
+          body.append('event_end_date', formatReadableDatetime(eventEndDate, 'YYYY-MM-DD'));
         }
 
         if (thumbnail instanceof File) {

@@ -55,10 +55,17 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
       query: (values) => {
         const { thumbnail, medias, department, ...rest } = values;
         const body = new FormData();
+        const snakeMap: Record<string, string> = {
+          isFeatured: 'is_featured',
+          isDraft: 'is_draft',
+          isApprovedByDepartment: 'is_approved_by_department',
+          isApprovedByCampus: 'is_approved_by_campus'
+        };
 
         for (const [key, value] of Object.entries(rest)) {
           if (value !== undefined && value !== null) {
-            body.append(key, value as string | Blob);
+            const snakeKey = snakeMap[key] ?? key;
+            body.append(snakeKey, value as string | Blob);
           }
         }
 
@@ -110,15 +117,22 @@ export const noticeAPISlice = rootAPI.injectEndpoints({
         // status is extracted for not sending it.
         // and isDraft for not sending it if false.
         const body = new FormData();
+        const snakeMap: Record<string, string> = {
+          isFeatured: 'is_featured',
+          isDraft: 'is_draft',
+          isApprovedByDepartment: 'is_approved_by_department',
+          isApprovedByCampus: 'is_approved_by_campus'
+        };
 
         for (const [key, value] of Object.entries(rest)) {
           if (value !== undefined && value !== null) {
-            body.append(key, value as string | Blob);
+            const snakeKey = snakeMap[key] ?? key;
+            body.append(snakeKey, value as string | Blob);
           }
         }
 
         if (isDraft) {
-          body.append('isDraft', String(isDraft));
+          body.append('is_draft', String(isDraft));
         }
 
         if (department === null || department === '') {
