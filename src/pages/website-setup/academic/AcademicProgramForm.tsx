@@ -35,7 +35,7 @@ export const AcademicProgramForm: React.FC<AcademicProgramFormProps> = ({ progra
   const [programType, setProgramType] = useState(program?.program_type ?? ACADEMIC_PROGRAM_TYPE_OPTIONS[0].value);
   const [departmentId, setDepartmentId] = useState<number | ''>(program?.department?.id ?? '');
   const [thumbnail, setThumbnail] = useState<File | null>(null);
-  const [isActive, setIsActive] = useState(program?.is_active ?? true);
+  const [isActive, setIsActive] = useState<Boolean>(program?.is_active ?? true);
 
   const { options } = useDepartmentOptions();
 

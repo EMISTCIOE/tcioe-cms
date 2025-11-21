@@ -14,19 +14,20 @@ const IsActiveColorMap: BadgeColorMap = {
 };
 
 export const getColumnConfig = (theme: Theme, designationOptions: { label: string; value: string }[]): ColumnConfig<ITableData>[] => [
-  { field: 'photo', headerName: 'PHOTO', type: 'image' },
-  { field: 'titlePrefix', headerName: 'PREFIX', type: 'select', valueOptions: [...enumToOptions(CampusKeyOfficialsTitleprefix)] },
+  { field: 'photo', headerName: 'PHOTO', type: 'image', width: 72 },
+  { field: 'titlePrefix', headerName: 'PREFIX', type: 'select', width: 110, valueOptions: [...enumToOptions(CampusKeyOfficialsTitleprefix)] },
   {
     field: 'designation',
     headerName: 'DESIGNATION',
     type: 'select',
     valueOptions: designationOptions,
     filterable: true,
-    minWidth: 240
+    minWidth: 180,
+    flex: 1
   },
-  { field: 'fullName', headerName: 'FULL NAME', type: 'text', sortable: true },
-  { field: 'phoneNumber', headerName: 'PHONE NO.', type: 'text' },
-  { field: 'email', headerName: 'EMAIL', type: 'text', minWidth: 180 },
+  { field: 'fullName', headerName: 'FULL NAME', type: 'text', sortable: true, minWidth: 160, flex: 1 },
+  { field: 'phoneNumber', headerName: 'PHONE NO.', type: 'text', width: 130 },
+  { field: 'email', headerName: 'EMAIL', type: 'text', minWidth: 200, flex: 1.1 },
   {
     field: 'isKeyOfficial',
     headerName: 'KEY OFFICIAL',
@@ -46,7 +47,8 @@ export const getColumnConfig = (theme: Theme, designationOptions: { label: strin
       { label: 'Active', value: 'true' },
       { label: 'InActive', value: 'false' }
     ],
-    colorMap: IsActiveColorMap
+    colorMap: IsActiveColorMap,
+    width: 140
   },
-  { field: 'actions', headerName: '', type: 'actions' }
+  { field: 'actions', headerName: '', type: 'actions', width: 90 }
 ];

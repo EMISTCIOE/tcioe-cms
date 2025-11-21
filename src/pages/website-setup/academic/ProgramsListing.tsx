@@ -123,6 +123,7 @@ export const ProgramsListing: React.FC<ProgramsListingProps> = ({ onEdit }) => {
             <TableHead>
               <TableRow>
                 <TableCell>Program</TableCell>
+                <TableCell>Short Name</TableCell>
                 <TableCell>Type</TableCell>
                 <TableCell>Department</TableCell>
                 <TableCell>Status</TableCell>
@@ -132,16 +133,18 @@ export const ProgramsListing: React.FC<ProgramsListingProps> = ({ onEdit }) => {
             <TableBody>
               {programs.map((program) => (
                 <TableRow key={program.id} hover>
-                  <TableCell sx={{ minWidth: 250 }}>
+                  <TableCell sx={{ minWidth: 220 }}>
                     <Stack spacing={0.5}>
                       <Typography variant="subtitle2">{program.name}</Typography>
-                      <Typography variant="body2" color="text.secondary" noWrap>
-                        {program.short_name}
-                      </Typography>
                       <Typography variant="body2" color="text.secondary" noWrap>
                         {program.description}
                       </Typography>
                     </Stack>
+                  </TableCell>
+                  <TableCell sx={{ minWidth: 120 }}>
+                    <Typography variant="body2" color="text.secondary" noWrap>
+                      {program.short_name || '-'}
+                    </Typography>
                   </TableCell>
                   <TableCell>
                     <Chip label={getProgramTypeLabel(program.program_type)} size="small" />
