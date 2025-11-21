@@ -17,6 +17,7 @@ export interface ICampusKeyOfficialsStatusSliceState {
 
 export enum CampusKeyOfficialsTitleprefix {
   ER = 'ER',
+  AR = 'AR',
   PROF = 'PROF',
   DR = 'DR',
   MR = 'MR',

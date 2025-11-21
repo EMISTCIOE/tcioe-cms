@@ -30,7 +30,6 @@ export const academicDownloadsSlice = createSlice({
   }
 });
 
-export const { setEdit, currentAcademicDownloadsId, clearAcademicDownloadsData, setViewId, clearViewId } =
-  academicDownloadsSlice.actions;
+export const { setEdit, currentAcademicDownloadsId, clearAcademicDownloadsData, setViewId, clearViewId } = academicDownloadsSlice.actions;
 
 export default academicDownloadsSlice.reducer;
