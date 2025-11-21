@@ -23,6 +23,18 @@ export const departmentApi = rootAPI.injectEndpoints({
         };
       },
       keepUnusedDataFor: 0.1,
+      transformResponse: (response: any) => ({
+        ...response,
+        results:
+          response?.results?.map((item: any) => ({
+            ...item,
+            short_name: item.short_name ?? item.shortName ?? '',
+            brief_description: item.brief_description ?? item.briefDescription ?? '',
+            detailed_description: item.detailed_description ?? item.detailedDescription ?? '',
+            phone_no: item.phone_no ?? item.phoneNo ?? '',
+            is_active: item.is_active ?? item.isActive ?? false
+          })) ?? []
+      }),
       providesTags: ['Departments']
     }),
 
@@ -33,6 +45,14 @@ export const departmentApi = rootAPI.injectEndpoints({
         method: 'GET'
       }),
       keepUnusedDataFor: 0.1,
+      transformResponse: (item: any) => ({
+        ...item,
+        short_name: item.short_name ?? item.shortName ?? '',
+        brief_description: item.brief_description ?? item.briefDescription ?? '',
+        detailed_description: item.detailed_description ?? item.detailedDescription ?? '',
+        phone_no: item.phone_no ?? item.phoneNo ?? '',
+        is_active: item.is_active ?? item.isActive ?? false
+      }),
       providesTags: ['Departments']
     }),
 
