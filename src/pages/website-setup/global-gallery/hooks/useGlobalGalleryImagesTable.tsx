@@ -8,17 +8,8 @@ import { IGlobalGalleryImageTableRow } from '../components/listing/config';
 
 export const useGlobalGalleryImagesTable = () => {
   const dispatch = useAppDispatch();
-  const {
-    roleType,
-    campusUnitId,
-    campusSectionId,
-    campusUnitName,
-    campusSectionName,
-    departmentId,
-    departmentName,
-    clubId,
-    clubName
-  } = useAppSelector(authState);
+  const { roleType, campusUnitId, campusSectionId, campusUnitName, campusSectionName, departmentId, departmentName, clubId, clubName } =
+    useAppSelector(authState);
 
   return createTableDataHook<IGlobalGalleryImageTableRow, IGlobalGalleryImageList>({
     useListQuery: useGetGlobalGalleryImagesQuery,
@@ -30,9 +21,7 @@ export const useGlobalGalleryImagesTable = () => {
         const normalizedClubName = clubName?.toLowerCase();
         filteredResults = filteredResults.filter((item: IGlobalGalleryImage) => {
           const isClubContent = ['club_gallery', 'club_event'].includes(item.sourceType || '');
-          const matchesClub = normalizedClubName
-            ? Boolean(item.sourceName?.toLowerCase().includes(normalizedClubName))
-            : true;
+          const matchesClub = normalizedClubName ? Boolean(item.sourceName?.toLowerCase().includes(normalizedClubName)) : true;
           return isClubContent && matchesClub;
         });
       } else if (roleType === 'DEPARTMENT-ADMIN' && departmentId) {

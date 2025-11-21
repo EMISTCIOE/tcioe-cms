@@ -107,9 +107,7 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
 
     const isDepartmentAdmin = roleType === 'DEPARTMENT-ADMIN' && Boolean(departmentId);
     const isStudentClub = roleType === 'CLUB';
-    const lockedDepartment = noticeDepartmentsOptions.find(
-      (option) => option && String(option.value) === String(departmentId)
-    );
+    const lockedDepartment = noticeDepartmentsOptions.find((option) => option && String(option.value) === String(departmentId));
     const shouldLockDepartmentField = (isDepartmentAdmin || (isStudentClub && departmentId)) && Boolean(lockedDepartment);
 
     setFormFields((prev) =>
@@ -207,17 +205,7 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
         setValue('department', expectedDepartmentValue);
       }
     }
-  }, [
-    roleType,
-    campusUnitId,
-    campusSectionId,
-    unitOptions,
-    sectionOptions,
-    watch,
-    setValue,
-    departmentId,
-    noticeDepartmentsOptions
-  ]);
+  }, [roleType, campusUnitId, campusSectionId, unitOptions, sectionOptions, watch, setValue, departmentId, noticeDepartmentsOptions]);
 
   const handleDeleteMedia = async (index: number, media_id?: string) => {
     if (!noticeData?.id || !media_id) return;

@@ -124,9 +124,7 @@ const useCreateNotice = ({ onClose }: INoticeCreateFormProps) => {
 
     const isDepartmentAdmin = roleType === 'DEPARTMENT-ADMIN' && Boolean(departmentId);
     const isStudentClub = roleType === 'CLUB';
-    const lockedDepartment = noticeDepartmentsOptions.find(
-      (opt) => opt && String(opt.value) === String(departmentId)
-    );
+    const lockedDepartment = noticeDepartmentsOptions.find((opt) => opt && String(opt.value) === String(departmentId));
     const shouldLockDepartment = (isDepartmentAdmin || (isStudentClub && departmentId)) && Boolean(lockedDepartment);
     if (shouldLockDepartment && departmentId) {
       console.log('Setting department value on create:', String(departmentId));

@@ -183,7 +183,6 @@ export function useHasGlobalEventPermissions(permission: string | string[]): boo
   return requiredPermissions.some((required) => permissions?.some((perm: IPermission) => perm.codename === required)) || false;
 }
 
-
 export function useHasAnyPermissions(requiredPermissions: string[]): boolean {
   const { permissions, isSuperuser } = useAppSelector(authState);
 
