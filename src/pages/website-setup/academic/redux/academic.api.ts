@@ -35,6 +35,7 @@ export const academicAPISlice = rootAPI.injectEndpoints({
           response?.results?.map((item: any) => ({
             ...item,
             short_name: item.short_name ?? item.shortName ?? '',
+            program_type: item.program_type ?? item.programType ?? '',
             is_active: item.is_active ?? item.isActive ?? false,
             department: item.department
               ? {
