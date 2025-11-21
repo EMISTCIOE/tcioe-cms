@@ -15,7 +15,13 @@ const IsActiveColorMap: BadgeColorMap = {
 
 export const getColumnConfig = (theme: Theme, designationOptions: { label: string; value: string }[]): ColumnConfig<ITableData>[] => [
   { field: 'photo', headerName: 'PHOTO', type: 'image', width: 72 },
-  { field: 'titlePrefix', headerName: 'PREFIX', type: 'select', width: 110, valueOptions: [...enumToOptions(CampusKeyOfficialsTitleprefix)] },
+  {
+    field: 'titlePrefix',
+    headerName: 'PREFIX',
+    type: 'select',
+    width: 110,
+    valueOptions: [...enumToOptions(CampusKeyOfficialsTitleprefix)]
+  },
   {
     field: 'designation',
     headerName: 'DESIGNATION',

@@ -27,5 +27,6 @@ export const getColumnConfig = (_theme: Theme): ColumnConfig<ITableData>[] => [
     falseLabel: 'Inactive'
   },
   { field: 'created_at', headerName: 'Created At', type: 'date', editable: false, minWidth: 180 },
-  { field: 'updated_at', headerName: 'Updated At', type: 'date', editable: false, minWidth: 180 }
+  { field: 'updated_at', headerName: 'Updated At', type: 'date', editable: false, minWidth: 180 },
+  { field: 'actions', headerName: '', type: 'actions', width: 90 }
 ];

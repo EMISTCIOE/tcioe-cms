@@ -30,6 +30,25 @@ export const academicAPISlice = rootAPI.injectEndpoints({
           method: 'GET'
         };
       },
+      transformResponse: (response: any) => {
+        const results =
+          response?.results?.map((item: any) => ({
+            ...item,
+            short_name: item.short_name ?? item.shortName ?? '',
+            is_active: item.is_active ?? item.isActive ?? false,
+            department: item.department
+              ? {
+                  ...item.department,
+                  short_name: item.department.short_name ?? item.department.shortName
+                }
+              : item.department
+          })) ?? [];
+
+        return {
+          ...response,
+          results
+        } as IAcademicProgramListResponse;
+      },
       providesTags: (result) =>
         result
           ? [
