@@ -12,9 +12,9 @@ export const globalEventsCreateFormSchema = z.object({
   thumbnail: z.any().optional(),
   registrationLink: z.string().optional(),
   location: z.string(),
-  unions: z.array(z.number()).optional(),
-  clubs: z.array(z.number()).optional(),
-  departments: z.array(z.number()).optional(),
+  unions: z.array(z.union([z.string(), z.number()])).optional(),
+  clubs: z.array(z.union([z.string(), z.number()])).optional(),
+  departments: z.array(z.union([z.string(), z.number()])).optional(),
   isApprovedByDepartment: z.boolean().default(false).optional(),
   isApprovedByCampus: z.boolean().default(false).optional(),
   isActive: z.boolean().default(true)

@@ -110,9 +110,9 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
         eventStartDate: eventData.eventStartDate,
         eventEndDate: eventData.eventEndDate ?? undefined,
         thumbnail: eventData.thumbnail,
-        unions: eventData?.unions?.map((item) => Number(item.id)) ?? [],
-        clubs: eventData?.clubs?.map((item) => Number(item.id)) ?? [],
-        departments: eventData?.departments?.map((item) => Number(item.id)) ?? [],
+        unions: eventData?.unions?.map((item) => String(item.id)) ?? [],
+        clubs: eventData?.clubs?.map((item) => String(item.id)) ?? [],
+        departments: eventData?.departments?.map((item) => String(item.id)) ?? [],
         isApprovedByDepartment: eventData.isApprovedByDepartment ?? false,
         isApprovedByCampus: eventData.isApprovedByCampus ?? false,
         isActive: eventData.isActive
@@ -124,7 +124,7 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
 
   useEffect(() => {
     if (roleType === 'UNION' && unionId) {
-      setValue('unions', [Number(unionId)]);
+      setValue('unions', [String(unionId)]);
     }
   }, [roleType, unionId, setValue]);
 
@@ -133,10 +133,10 @@ const useUpdateGlobalEvents = ({ eventData, onClose }: { eventData?: IGlobalEven
     const isStudentClub = roleType === 'CLUB' && Boolean(clubId);
 
     if (isDepartmentAdmin && departmentId && departmentOptions.length > 0) {
-      setValue('departments', [Number(departmentId)]);
+      setValue('departments', [String(departmentId)]);
     }
     if (isStudentClub && clubId && studentClubsOptions.length > 0) {
-      setValue('clubs', [Number(clubId)]);
+      setValue('clubs', [String(clubId)]);
     }
   }, [roleType, departmentId, clubId, departmentOptions, studentClubsOptions, setValue]);
 

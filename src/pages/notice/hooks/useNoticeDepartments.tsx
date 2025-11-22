@@ -20,7 +20,7 @@ export const useNoticeDepartments = () => {
     return (
       noticeDepartmentsData?.results?.map((department) => ({
         label: department.name,
-        value: department.id
+        value: String(department.id)
       })) || []
     );
   }, [noticeDepartmentsData]);

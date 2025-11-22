@@ -23,6 +23,11 @@ import { ICampusEventsUpdatePayload } from '../redux/types';
 import { TField } from '@/components/app-form/types';
 import { useCampusUnionOptions } from '@/hooks/useCampusUnionOptions';
 
+const toStringOrNull = (value?: string | number | null) => {
+  if (value === null || value === undefined || value === '') return null;
+  return String(value);
+};
+
 const useUpdateCampusEvents = ({ campusEventsData, onClose }: ICampusEventsUpdateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -47,7 +52,8 @@ const useUpdateCampusEvents = ({ campusEventsData, onClose }: ICampusEventsUpdat
   useEffect(() => {
     if (campusEventsData) {
       reset({
-        ...campusEventsData
+        ...campusEventsData,
+        union: toStringOrNull((campusEventsData as any)?.union?.id ?? (campusEventsData as any)?.union)
       });
     }
   }, [campusEventsData, reset]);

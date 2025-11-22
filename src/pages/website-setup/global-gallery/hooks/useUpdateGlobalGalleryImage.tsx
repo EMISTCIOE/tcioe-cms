@@ -28,6 +28,11 @@ const normalizeFile = (input: File | FileList | null | undefined) => {
   return input ?? null;
 };
 
+const toStringOrNull = (value?: string | number | null) => {
+  if (value === null || value === undefined || value === '') return null;
+  return String(value);
+};
+
 const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlobalGalleryImage; onClose?: () => void }) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -141,12 +146,12 @@ const useUpdateGlobalGalleryImage = ({ imageData, onClose }: { imageData?: IGlob
         id: Number(imageData.id),
         sourceTitle: imageData.sourceTitle ?? '',
         sourceContext: imageData.sourceContext ?? '',
-        globalEvent: imageData.globalEvent ? Number(imageData.globalEvent) : null,
-        union: imageData.union ? Number(imageData.union) : null,
-        club: imageData.club ? Number(imageData.club) : null,
-        department: imageData.department ? Number(imageData.department) : null,
-        unit: imageData.unit ? Number(imageData.unit) : null,
-        section: imageData.section ? Number(imageData.section) : null,
+        globalEvent: toStringOrNull(imageData.globalEvent),
+        union: toStringOrNull(imageData.union),
+        club: toStringOrNull(imageData.club),
+        department: toStringOrNull(imageData.department),
+        unit: toStringOrNull(imageData.unit),
+        section: toStringOrNull(imageData.section),
         isActive: imageData.isActive,
         caption: imageData.caption ?? '',
         displayOrder: imageData.displayOrder,

@@ -28,6 +28,11 @@ import { useNoticeDepartments } from './useNoticeDepartments';
 import { INoticeUpdatePayload, NoticeStatus } from '../redux/types';
 import { TField } from '@/components/app-form/types';
 
+const toStringOrNull = (value?: string | number | null) => {
+  if (value === null || value === undefined || value === '') return null;
+  return String(value);
+};
+
 const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -86,10 +91,10 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
       reset({
         ...noticeData,
         status: noticeData.status || NoticeStatus.DRAFT,
-        category: noticeData.category?.id ?? null,
-        department: noticeData.department?.id ?? null,
-        campusUnit: campusUnitValue,
-        campusSection: campusSectionValue,
+        category: toStringOrNull(noticeData.category?.id),
+        department: toStringOrNull(noticeData.department?.id),
+        campusUnit: toStringOrNull(campusUnitValue),
+        campusSection: toStringOrNull(campusSectionValue),
         medias: noticeData.medias ?? undefined,
         isDraft: noticeData.status === NoticeStatus.DRAFT
       });

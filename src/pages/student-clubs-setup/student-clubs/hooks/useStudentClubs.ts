@@ -16,7 +16,7 @@ export const useStudentClubs = () => {
     return (
       data?.results.map((club) => ({
         label: club.name,
-        value: club.id
+        value: String(club.id)
       })) ?? []
     );
   }, [data]);

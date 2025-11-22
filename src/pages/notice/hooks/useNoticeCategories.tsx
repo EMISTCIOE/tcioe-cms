@@ -16,7 +16,7 @@ export const useNoticeCategories = () => {
     return (
       noticeCategoriesData?.results?.map((category) => ({
         label: category.name,
-        value: category.id
+        value: String(category.id)
       })) || []
     );
   }, [noticeCategoriesData]);

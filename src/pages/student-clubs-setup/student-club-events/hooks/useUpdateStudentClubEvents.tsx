@@ -23,6 +23,11 @@ import { IStudentClubEventsUpdatePayload } from '../redux/types';
 import { TField } from '@/components/app-form/types';
 import { useStudentClubs } from './useStudentClubs';
 
+const toStringOrNull = (value?: string | number | null) => {
+  if (value === null || value === undefined || value === '') return null;
+  return String(value);
+};
+
 const useUpdateStudentClubEvents = ({ studentClubEventsData, onClose }: IStudentClubEventsUpdateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -48,7 +53,7 @@ const useUpdateStudentClubEvents = ({ studentClubEventsData, onClose }: IStudent
     if (studentClubEventsData) {
       reset({
         ...studentClubEventsData,
-        club: studentClubEventsData?.club?.id ?? null
+        club: toStringOrNull(studentClubEventsData?.club?.id ?? (studentClubEventsData as any)?.club)
       });
     }
   }, [studentClubEventsData, reset]);
