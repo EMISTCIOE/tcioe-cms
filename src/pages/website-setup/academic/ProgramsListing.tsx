@@ -25,6 +25,8 @@ import { toast } from 'react-toastify';
 import { useDeleteAcademicProgramMutation, useGetAcademicProgramsQuery } from './redux/academic.api';
 import { IAcademicProgram, ACADEMIC_PROGRAM_TYPE_OPTIONS } from './types';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
+import { useAppSelector } from '@/libs/hooks';
+import { authState } from '@/pages/authentication/redux/selector';
 
 interface ProgramsListingProps {
   onEdit: (program: IAcademicProgram) => void;
@@ -35,11 +37,13 @@ export const ProgramsListing: React.FC<ProgramsListingProps> = ({ onEdit }) => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
   const [deleteProgramId, setDeleteProgramId] = useState<number | null>(null);
+  const { roleType, departmentId } = useAppSelector(authState);
 
   const { data, isLoading, error, refetch } = useGetAcademicProgramsQuery({
     limit: rowsPerPage,
     offset: page * rowsPerPage,
-    search: searchTerm || undefined
+    search: searchTerm || undefined,
+    department: roleType === 'DEPARTMENT-ADMIN' ? departmentId || undefined : undefined
   });
 
   const [deleteAcademicProgram, { isLoading: isDeleting }] = useDeleteAcademicProgramMutation();

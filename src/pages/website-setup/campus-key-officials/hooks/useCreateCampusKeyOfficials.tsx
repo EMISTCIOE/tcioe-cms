@@ -7,6 +7,7 @@ import { ICampusKeyOfficialsCreatePayload } from '../redux/types';
 import { useAppDispatch } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
 import { useCreateCampusKeyOfficialsMutation, useGetCampusStaffDesignationsQuery } from '../redux/campusKeyOfficials.api';
+import { useGetDepartmentsQuery } from '@/pages/website-setup/departments/redux/departments.api';
 
 import { handleClientError } from '@/utils/functions/handleError';
 import { ICampusKeyOfficialsCreateFormProps } from '../components/create-form';
@@ -22,6 +23,7 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
   const { enqueueSnackbar } = useSnackbar();
   const [createCampusKeyOfficials] = useCreateCampusKeyOfficialsMutation();
   const { data: designationData } = useGetCampusStaffDesignationsQuery();
+  const { data: departmentData } = useGetDepartmentsQuery({ search: '', paginationModel: { page: 0, pageSize: 500 }, sortModel: [] });
   const [formFields, setFormFields] = useState(campusKeyOfficialsCreateFields);
 
   const {
@@ -43,16 +45,20 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
           value: item.code,
           label: item.title
         })) ?? [];
+    const departmentOptions =
+      departmentData?.results?.map((item) => ({
+        value: item.id,
+        label: item.name
+      })) ?? [];
 
     setFormFields((prev) =>
       prev.map((field) => {
-        if (field.name === 'designation') {
-          return { ...field, options };
-        }
+        if (field.name === 'designation') return { ...field, options };
+        if (field.name === 'department') return { ...field, options: departmentOptions };
         return field;
       })
     );
-  }, [designationData]);
+  }, [designationData, departmentData]);
 
   // NOTE - Form submit handler
   const onSubmit = async (data: TCampusKeyOfficialsCreateFormDataType) => {
@@ -75,7 +81,8 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
           message: 'message',
           photo: 'photo',
           isKeyOfficial: 'isKeyOfficial',
-          isActive: 'isActive'
+          isActive: 'isActive',
+          department: 'department'
         }
       });
     }

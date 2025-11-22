@@ -20,6 +20,8 @@ import { IAcademicDownloadsUpdateFormProps } from '../components/update-form/For
 import { usePatchAcademicDownloadsMutation } from '../redux/academicDownloads.api';
 import { IAcademicDownloadsUpdatePayload } from '../redux/types';
 import { useDepartmentOptions } from '@/hooks/useDepartmentOptions';
+import { useAppSelector } from '@/libs/hooks';
+import { authState } from '@/pages/authentication/redux/selector';
 
 const useUpdateAcademicDownloads = ({ academicDownloadsData, onClose }: IAcademicDownloadsUpdateFormProps) => {
   const dispatch = useAppDispatch();
@@ -27,6 +29,7 @@ const useUpdateAcademicDownloads = ({ academicDownloadsData, onClose }: IAcademi
   const [updateAcademicDownloads] = usePatchAcademicDownloadsMutation();
   const [formFields, setFormFields] = useState(academicDownloadsUpdateFields);
   const { options: departmentOptions } = useDepartmentOptions();
+  const { roleType, departmentId } = useAppSelector(authState);
 
   const {
     control,
@@ -41,12 +44,21 @@ const useUpdateAcademicDownloads = ({ academicDownloadsData, onClose }: IAcademi
   });
 
   useEffect(() => {
-    if (departmentOptions.length) {
-      setFormFields((previous) =>
-        previous.map((field) => (field.name === 'department' ? { ...field, options: departmentOptions } : field))
-      );
-    }
-  }, [departmentOptions]);
+    const isDepartmentAdmin = roleType === 'DEPARTMENT-ADMIN' && Boolean(departmentId);
+    const lockedDept = departmentOptions.find((opt) => String(opt.value) === String(departmentId));
+
+    setFormFields((previous) =>
+      previous.map((field) => {
+        if (field.name === 'department') {
+          if (isDepartmentAdmin && lockedDept) {
+            return { ...field, options: [lockedDept], disabled: true };
+          }
+          return { ...field, options: departmentOptions };
+        }
+        return field;
+      })
+    );
+  }, [departmentOptions, roleType, departmentId]);
 
   // Reset form with data when it's available
   useEffect(() => {
@@ -56,10 +68,14 @@ const useUpdateAcademicDownloads = ({ academicDownloadsData, onClose }: IAcademi
         ...academicDownloadsData,
         id: academicDownloadsData.id ? String(academicDownloadsData.id) : '',
         isActive,
-        department: academicDownloadsData.department?.id ? String(academicDownloadsData.department.id) : ''
+        department: academicDownloadsData.department?.id
+          ? String(academicDownloadsData.department.id)
+          : departmentId
+            ? String(departmentId)
+            : ''
       });
     }
-  }, [academicDownloadsData, reset]);
+  }, [academicDownloadsData, reset, departmentId]);
 
   // This is for form update not for inline update
   const onSubmit = async (data: TAcademicDownloadsUpdateFormDataType) => {

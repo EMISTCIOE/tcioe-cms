@@ -19,12 +19,14 @@ import {
 import { ICampusKeyOfficialsUpdateFormProps } from '../components/update-form/Form';
 import { useGetCampusStaffDesignationsQuery, usePatchCampusKeyOfficialsMutation } from '../redux/campusKeyOfficials.api';
 import { ICampusKeyOfficialsUpdatePayload } from '../redux/types';
+import { useGetDepartmentsQuery } from '@/pages/website-setup/departments/redux/departments.api';
 
 const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampusKeyOfficialsUpdateFormProps) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [updateCampusKeyOfficials] = usePatchCampusKeyOfficialsMutation();
   const { data: designationData } = useGetCampusStaffDesignationsQuery();
+  const { data: departmentData } = useGetDepartmentsQuery({ search: '', paginationModel: { page: 0, pageSize: 500 }, sortModel: [] });
   const [formFields, setFormFields] = useState(campusKeyOfficialsUpdateFields);
 
   const {
@@ -56,7 +58,8 @@ const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampu
         phoneNumber: dataAny.phone_number ?? dataAny.phoneNumber ?? '',
         isKeyOfficial: dataAny.is_key_official ?? dataAny.isKeyOfficial ?? true,
         isActive: dataAny.is_active ?? dataAny.isActive ?? true,
-        displayOrder: dataAny.display_order ?? dataAny.displayOrder ?? 1
+        displayOrder: dataAny.display_order ?? dataAny.displayOrder ?? 1,
+        department: dataAny.department?.id ?? dataAny.department ?? undefined
       });
     }
   }, [campusKeyOfficialsData, reset]);
@@ -79,6 +82,21 @@ const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampu
       })
     );
   }, [designationData]);
+
+  useEffect(() => {
+    const departmentOptions =
+      departmentData?.results?.map((item) => ({
+        value: item.id,
+        label: item.name
+      })) ?? [];
+
+    setFormFields((prev) =>
+      prev.map((field) => {
+        if (field.name === 'department') return { ...field, options: departmentOptions };
+        return field;
+      })
+    );
+  }, [departmentData]);
 
   // This is for form update not for inline update
   const onSubmit = async (data: TCampusKeyOfficialsUpdateFormDataType) => {
@@ -112,7 +130,8 @@ const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampu
           message: 'message',
           photo: 'photo',
           isKeyOfficial: 'isKeyOfficial',
-          isActive: 'isActive'
+          isActive: 'isActive',
+          department: 'department'
         }
       });
     }

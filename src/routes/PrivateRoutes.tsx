@@ -63,6 +63,7 @@ const PrivateRoutes = () => {
   const isUnion = roleType === 'UNION';
   const isUnit = roleType === 'CAMPUS-UNIT';
   const isSection = roleType === 'CAMPUS-SECTION';
+  const isDeptAdmin = roleType === 'DEPARTMENT-ADMIN';
 
   return (
     <>
@@ -90,11 +91,11 @@ const PrivateRoutes = () => {
             </Route>
           )}
           <Route path="website-setup">
-            {(isEmisStaff || isAdmin || isUnit || isSection) && (
+            {(isEmisStaff || isAdmin || isUnit || isSection || isDeptAdmin) && (
               <>
                 <Route path="academic-calendars" element={<AcademicCalendars />} />
                 <Route path="academic" element={<Academic />} />
-                {(isEmisStaff || isAdmin) && <Route path="academic-downloads" element={<AcademicDownloads />} />}
+                {(isEmisStaff || isAdmin || isDeptAdmin) && <Route path="academic-downloads" element={<AcademicDownloads />} />}
                 <Route path="campus-downloads" element={<CampusDownloads />} />
                 <Route path="campus-feedbacks" element={<CampusFeedbacks />} />
                 <Route path="campus-info" element={<CampusInfo />} />
@@ -103,7 +104,7 @@ const PrivateRoutes = () => {
                 {(isEmisStaff || isAdmin) && <Route path="campus-unions" element={<CampusUnions />} />}
                 {(isEmisStaff || isAdmin || isSection) && <Route path="campus-sections" element={<CampusSections />} />}
                 {(isEmisStaff || isAdmin || isUnit) && <Route path="campus-units" element={<CampusUnits />} />}
-                {(isEmisStaff || isAdmin) && <Route path="departments" element={<Departments />} />}
+                {(isEmisStaff || isAdmin || isDeptAdmin) && <Route path="departments" element={<Departments />} />}
                 <Route path="research" element={<Research />} />
                 <Route path="research/tags" element={<ResearchTags />} />
                 <Route path="research-facilities" element={<ResearchFacilities />} />

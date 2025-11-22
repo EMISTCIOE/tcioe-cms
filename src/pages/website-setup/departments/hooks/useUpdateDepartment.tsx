@@ -50,7 +50,7 @@ const useUpdateDepartment = ({ departmentData, onClose }: IDepartmentUpdateFormP
         phoneNo: departmentData.phone_no ?? '',
         email: departmentData.email ?? '',
         isActive: departmentData.is_active,
-        thumbnail: departmentData.thumbnail ?? null
+        thumbnail: null
       });
     }
   }, [departmentData, reset]);
@@ -60,6 +60,7 @@ const useUpdateDepartment = ({ departmentData, onClose }: IDepartmentUpdateFormP
     const { id, ...formValues } = data;
     try {
       // Transform camelCase to snake_case for API
+      const thumbnail = formValues.thumbnail;
       const values: IDepartmentUpdatePayload = {
         name: formValues.name,
         short_name: formValues.shortName,
@@ -67,9 +68,14 @@ const useUpdateDepartment = ({ departmentData, onClose }: IDepartmentUpdateFormP
         detailed_description: formValues.detailedDescription,
         phone_no: formValues.phoneNo,
         email: formValues.email,
-        thumbnail: formValues.thumbnail,
         is_active: formValues.isActive
       };
+      if (thumbnail instanceof File) {
+        values.thumbnail = thumbnail;
+      } else if (thumbnail === null) {
+        values.thumbnail = null;
+      }
+
       const payload = {
         id,
         values

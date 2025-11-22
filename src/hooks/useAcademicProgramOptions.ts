@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '@/libs/axios';
 import { SelectOption } from '@/components/app-form/types';
+import { useAppSelector } from '@/libs/hooks';
+import { authState } from '@/pages/authentication/redux/selector';
 
 interface AcademicProgramFetch {
   id: string;
@@ -10,17 +12,20 @@ interface AcademicProgramFetch {
 
 export const useAcademicProgramOptions = () => {
   const [options, setOptions] = useState<SelectOption[]>([]);
+  const { roleType, departmentId } = useAppSelector(authState);
 
   useEffect(() => {
     let isMounted = true;
 
     const fetchPrograms = async () => {
       try {
+        const params: any = { offset: 0, limit: 200 };
+        if (roleType === 'DEPARTMENT-ADMIN' && departmentId) {
+          params.department = departmentId;
+        }
+
         const response = await axiosInstance.get('cms/department-mod/academic-programs', {
-          params: {
-            offset: 0,
-            limit: 200
-          }
+          params
         });
 
         if (!isMounted) return;

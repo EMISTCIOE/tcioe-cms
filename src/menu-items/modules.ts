@@ -85,7 +85,7 @@ const modules: MenuItem = {
       title: 'Manage Events',
       type: 'collapse',
       icon: icons.EventIcon,
-      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION'],
+      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION', 'DEPARTMENT-ADMIN', 'CLUB'],
       children: [
         {
           id: 'global-events',
@@ -94,7 +94,7 @@ const modules: MenuItem = {
           icon: icons.CelebrationIcon,
           url: '/website-setup/global-events',
           breadcrumbs: false,
-          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION']
+          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION', 'DEPARTMENT-ADMIN', 'CLUB']
         },
         {
           id: 'global-gallery',
@@ -103,7 +103,7 @@ const modules: MenuItem = {
           icon: icons.PhotoLibraryIcon,
           url: '/website-setup/global-gallery',
           breadcrumbs: false,
-          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION']
+          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION', 'DEPARTMENT-ADMIN', 'CLUB']
         }
       ]
     },
@@ -259,7 +259,7 @@ const modules: MenuItem = {
       title: 'Manage Academic',
       type: 'collapse',
       icon: icons.SchoolIcon,
-      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
+      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'DEPARTMENT-ADMIN'],
       children: [
         {
           id: 'departments',
@@ -284,7 +284,7 @@ const modules: MenuItem = {
       title: 'Manage Resources',
       type: 'collapse',
       icon: icons.FolderIcon,
-      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
+      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'DEPARTMENT-ADMIN'],
       children: [
         {
           id: 'academic-downloads',
@@ -292,7 +292,8 @@ const modules: MenuItem = {
           type: 'item',
           icon: icons.DownloadIcon,
           url: '/website-setup/academic-downloads',
-          breadcrumbs: false
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'DEPARTMENT-ADMIN']
         },
         {
           id: 'campus-downloads',
@@ -300,7 +301,8 @@ const modules: MenuItem = {
           type: 'item',
           icon: icons.DownloadIcon,
           url: '/website-setup/campus-downloads',
-          breadcrumbs: false
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN']
         },
         {
           id: 'contact-directory',
@@ -308,7 +310,8 @@ const modules: MenuItem = {
           type: 'item',
           icon: icons.ContactsIcon,
           url: '/contact-setup/phone-numbers',
-          breadcrumbs: false
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN']
         },
         {
           id: 'campus-feedbacks',
@@ -316,7 +319,8 @@ const modules: MenuItem = {
           type: 'item',
           icon: icons.FeedbackIcon,
           url: '/website-setup/campus-feedbacks',
-          breadcrumbs: false
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN']
         }
       ]
     },
@@ -325,7 +329,7 @@ const modules: MenuItem = {
       title: 'Manage Projects',
       type: 'collapse',
       icon: icons.WorkIcon,
-      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
+      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'DEPARTMENT-ADMIN'],
       children: [
         {
           id: 'projects',
@@ -350,7 +354,7 @@ const modules: MenuItem = {
       title: 'Manage Research',
       type: 'collapse',
       icon: icons.ScienceIcon,
-      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
+      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'DEPARTMENT-ADMIN'],
       children: [
         {
           id: 'research',

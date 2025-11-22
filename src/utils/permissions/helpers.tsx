@@ -109,7 +109,31 @@ export function useHasParticularPermissions(permission: string | string[]): bool
       'add_globalevent',
       'change_globalevent',
       'delete_globalevent',
-      'view_globalevent'
+      'view_globalevent',
+      'view_department',
+      'add_department',
+      'edit_department',
+      'delete_department',
+      'view_academic_program',
+      'add_academic_program',
+      'edit_academic_program',
+      'delete_academic_program',
+      'view_academicprogram',
+      'add_academicprogram',
+      'edit_academicprogram',
+      'delete_academicprogram',
+      'view_subject',
+      'add_subject',
+      'edit_subject',
+      'delete_subject',
+      'view_academic_download',
+      'add_academic_download',
+      'edit_academic_download',
+      'delete_academic_download',
+      'view_department_download',
+      'add_department_download',
+      'edit_department_download',
+      'delete_department_download'
     ];
     if (requiredPermissions.some((perm) => departmentAllowedPermissions.includes(perm))) {
       return true;

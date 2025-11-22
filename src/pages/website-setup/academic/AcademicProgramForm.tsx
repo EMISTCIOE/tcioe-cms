@@ -21,6 +21,8 @@ import { FileUpload } from '@/components/FileUpload';
 import { useDepartmentOptions } from '@/hooks/useDepartmentOptions';
 import { useCreateAcademicProgramMutation, useUpdateAcademicProgramMutation } from './redux/academic.api';
 import { IAcademicProgram, IAcademicProgramCreatePayload, IAcademicProgramUpdatePayload, ACADEMIC_PROGRAM_TYPE_OPTIONS } from './types';
+import { useAppSelector } from '@/libs/hooks';
+import { authState } from '@/pages/authentication/redux/selector';
 
 interface AcademicProgramFormProps {
   program?: IAcademicProgram;
@@ -38,12 +40,18 @@ export const AcademicProgramForm: React.FC<AcademicProgramFormProps> = ({ progra
   const [isActive, setIsActive] = useState<Boolean>(program?.is_active ?? true);
 
   const { options } = useDepartmentOptions();
+  const { roleType, departmentId: userDepartmentId } = useAppSelector(authState);
 
   useEffect(() => {
-    if (!departmentId && options.length > 0) {
+    const isDepartmentAdmin = roleType === 'DEPARTMENT-ADMIN' && Boolean(userDepartmentId);
+    const lockedOption = options.find((opt) => String(opt.value) === String(userDepartmentId));
+
+    if (isDepartmentAdmin && lockedOption) {
+      setDepartmentId(Number(userDepartmentId));
+    } else if (!departmentId && options.length > 0) {
       setDepartmentId(options[0].value);
     }
-  }, [departmentId, options]);
+  }, [departmentId, options, roleType, userDepartmentId]);
 
   const [createAcademicProgram, { isLoading: creating }] = useCreateAcademicProgramMutation();
   const [updateAcademicProgram, { isLoading: updating }] = useUpdateAcademicProgramMutation();
@@ -114,9 +122,9 @@ export const AcademicProgramForm: React.FC<AcademicProgramFormProps> = ({ progra
             </Stack>
 
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-              <FormControl fullWidth>
-                <InputLabel id="academic-program-type-label">Program Type</InputLabel>
-                <Select
+          <FormControl fullWidth>
+            <InputLabel id="academic-program-type-label">Program Type</InputLabel>
+            <Select
                   labelId="academic-program-type-label"
                   label="Program Type"
                   value={programType}
@@ -131,7 +139,7 @@ export const AcademicProgramForm: React.FC<AcademicProgramFormProps> = ({ progra
                 </Select>
               </FormControl>
 
-              <FormControl fullWidth>
+              <FormControl fullWidth disabled={roleType === 'DEPARTMENT-ADMIN' && Boolean(userDepartmentId)}>
                 <InputLabel id="academic-program-department-label">Department</InputLabel>
                 <Select
                   labelId="academic-program-department-label"
