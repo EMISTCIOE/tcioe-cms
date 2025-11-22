@@ -224,7 +224,7 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
         return acc;
       },
       { globalEvent: null, union: null, club: null, department: null, unit: null, section: null } as {
-        [K in keyof typeof relations]: typeof relations[K] | null;
+        [K in keyof typeof relations]: (typeof relations)[K] | null;
       }
     );
   };

@@ -13,10 +13,7 @@ export const useStudentClubs = () => {
     filterModel: { items: [] }
   };
 
-  const skipFetch = useMemo(
-    () => ['UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || ''),
-    [roleType]
-  );
+  const skipFetch = useMemo(() => ['UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || ''), [roleType]);
 
   const { data, isFetching } = useGetStudentClubsQuery(args, { skip: skipFetch });
 
