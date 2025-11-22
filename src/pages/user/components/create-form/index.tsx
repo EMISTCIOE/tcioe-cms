@@ -49,9 +49,7 @@ export default function UserCreateForm({ onClose, fixedRole }: UserCreateFormPro
     sortModel: []
   });
   const [autoRoleIds, setAutoRoleIds] = useState<(string | number)[]>([]);
-  const [formFields, setFormFields] = useState(() =>
-    userInfoFields.filter((field) => field.name !== 'role' && field.name !== 'roles')
-  );
+  const [formFields, setFormFields] = useState(() => userInfoFields.filter((field) => field.name !== 'role' && field.name !== 'roles'));
 
   const {
     control,
@@ -139,9 +137,7 @@ export default function UserCreateForm({ onClose, fixedRole }: UserCreateFormPro
   // NOTE - Fetching roles data and setting it to form fields
   useEffect(() => {
     if (rolesData?.count) {
-      const matchingRole = rolesData.results.find(
-        (role: UserRole) => role.codename?.toUpperCase() === resolvedRole?.toUpperCase()
-      );
+      const matchingRole = rolesData.results.find((role: UserRole) => role.codename?.toUpperCase() === resolvedRole?.toUpperCase());
       const derivedIds = matchingRole ? [matchingRole.id] : [];
 
       setAutoRoleIds(derivedIds);
