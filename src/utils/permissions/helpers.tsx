@@ -152,10 +152,8 @@ export function useHasParticularPermissions(permission: string | string[]): bool
       'change_globalevent',
       'delete_globalevent',
       'view_globalevent',
-      'add_notice',
-      'change_notice',
-      'delete_notice',
-      'view_notice'
+      'view_student_clubs',
+      'edit_student_clubs'
     ];
     if (requiredPermissions.some((perm) => clubAllowedPermissions.includes(perm))) {
       return true;

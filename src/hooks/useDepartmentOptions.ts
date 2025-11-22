@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { axiosInstance } from '@/libs/axios';
 import { SelectOption } from '@/components/app-form/types';
+import { useAppSelector } from '@/libs/hooks';
+import { authState } from '@/pages/authentication/redux/selector';
 
 interface Department {
   id: string;
@@ -9,11 +11,17 @@ interface Department {
 
 export const useDepartmentOptions = () => {
   const [options, setOptions] = useState<SelectOption[]>([]);
+  const { roleType } = useAppSelector(authState);
+  const skipFetch = useMemo(() => roleType === 'CLUB', [roleType]);
 
   useEffect(() => {
     let isMounted = true;
 
     const fetchDepartments = async () => {
+      if (skipFetch) {
+        setOptions([]);
+        return;
+      }
       try {
         const response = await axiosInstance.get('cms/department-mod/departments', {
           params: {
@@ -41,7 +49,7 @@ export const useDepartmentOptions = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [skipFetch]);
 
   return {
     options

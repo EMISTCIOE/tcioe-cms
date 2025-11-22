@@ -12,7 +12,7 @@ interface CampusUnionOption {
 export const useCampusUnionOptions = () => {
   const [options, setOptions] = useState<SelectOption[]>([]);
   const { roleType } = useAppSelector(authState);
-  const skipFetch = useMemo(() => ['CAMPUS-UNIT', 'CAMPUS-SECTION'].includes(roleType || ''), [roleType]);
+  const skipFetch = useMemo(() => ['CAMPUS-UNIT', 'CAMPUS-SECTION', 'CLUB'].includes(roleType || ''), [roleType]);
 
   useEffect(() => {
     let isMounted = true;

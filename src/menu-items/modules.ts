@@ -242,7 +242,7 @@ const modules: MenuItem = {
       title: 'Manage Clubs',
       type: 'collapse',
       icon: icons.GroupsIcon,
-      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
+      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'CLUB'],
       children: [
         {
           id: 'student-clubs',
@@ -250,7 +250,8 @@ const modules: MenuItem = {
           icon: icons.Diversity3Icon,
           type: 'item',
           url: '/student-clubs-setup/student-clubs',
-          breadcrumbs: false
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN', 'CLUB']
         }
       ]
     },
