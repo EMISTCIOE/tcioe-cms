@@ -24,6 +24,8 @@ import { FileUpload } from '@/components/FileUpload';
 import { useCreateProjectMutation, useUpdateProjectMutation, useGetProjectTagsQuery } from './redux/projects.api';
 import { IProject, IProjectMember, IProjectCreatePayload } from './redux/types';
 import { toast } from 'react-toastify';
+import { useGetDepartmentsQuery } from '@/pages/website-setup/departments/redux/departments.api';
+import { useGetAcademicProgramsQuery } from '@/pages/website-setup/academic/redux/academic.api';
 
 interface ProjectFormProps {
   project?: IProject;
@@ -72,6 +74,11 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onSuccess, onCancel 
   const [createProject, { isLoading: isCreating }] = useCreateProjectMutation();
   const [updateProject, { isLoading: isUpdating }] = useUpdateProjectMutation();
   const { data: tagsData } = useGetProjectTagsQuery();
+  const { data: departmentData } = useGetDepartmentsQuery({
+    search: '',
+    paginationModel: { page: 0, pageSize: 200 },
+    sortModel: []
+  });
 
   const isEditing = !!project;
   const isLoading = isCreating || isUpdating;
@@ -84,6 +91,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onSuccess, onCancel 
       project_type: project?.project_type || 'final_year',
       status: project?.status || 'draft',
       department: project?.department || undefined,
+      academic_program: project?.academic_program || undefined,
       supervisor_name: project?.supervisor_name || '',
       supervisor_email: project?.supervisor_email || '',
       start_date: project?.start_date || '',
@@ -126,6 +134,14 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onSuccess, onCancel 
       }
     }
   });
+
+  const { data: programData } = useGetAcademicProgramsQuery({
+    limit: 200,
+    department: formik.values.department
+  });
+
+  const departmentOptions = departmentData?.results || [];
+  const programOptions = programData?.results || [];
 
   const addMember = () => {
     formik.setFieldValue('members', [
@@ -228,6 +244,47 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, onSuccess, onCancel 
                     {PROJECT_STATUSES.map((status) => (
                       <MenuItem key={status.value} value={status.value}>
                         {status.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    select
+                    name="department"
+                    label="Department"
+                    value={formik.values.department || ''}
+                    onChange={(e) => {
+                      formik.handleChange(e);
+                      formik.setFieldValue('academic_program', '');
+                    }}
+                    helperText="Link this project to a department"
+                  >
+                    <MenuItem value="">Select Department</MenuItem>
+                    {departmentOptions.map((dept: any) => (
+                      <MenuItem key={dept.id} value={dept.id}>
+                        {dept.name} {dept.short_name ? `(${dept.short_name})` : ''}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    select
+                    name="academic_program"
+                    label="Academic Program (optional)"
+                    value={formik.values.academic_program || ''}
+                    onChange={formik.handleChange}
+                    helperText="Associate this project with a specific academic program"
+                  >
+                    <MenuItem value="">All Programs</MenuItem>
+                    {programOptions.map((program: any) => (
+                      <MenuItem key={program.id} value={program.id}>
+                        {program.name} {program.short_name ? `(${program.short_name})` : ''}
                       </MenuItem>
                     ))}
                   </TextField>

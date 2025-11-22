@@ -41,6 +41,9 @@ export interface IProject {
   status: string;
   department?: string;
   department_name?: string;
+  academic_program?: string;
+  academic_program_name?: string;
+  academic_program_short_name?: string;
   supervisor_name: string;
   supervisor_email?: string;
   start_date?: string;
@@ -75,6 +78,7 @@ export interface IProjectCreatePayload {
   project_type: string;
   status: string;
   department?: string;
+  academic_program?: string;
   supervisor_name: string;
   supervisor_email?: string;
   start_date?: string;

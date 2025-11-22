@@ -98,6 +98,10 @@ export interface IResearch {
   created_by: string;
   updated_by?: string;
   department?: string;
+  department_name?: string;
+  academic_program?: string;
+  academic_program_name?: string;
+  academic_program_short_name?: string;
   participants: IResearchParticipant[];
   publications: IResearchPublication[];
   tags: IResearchTag[];
@@ -130,6 +134,7 @@ export interface IResearchCreatePayload {
   is_featured: boolean;
   is_published: boolean;
   department?: string;
+  academic_program?: string;
   participants: IResearchParticipantCreatePayload[];
   publications: IResearchPublicationCreatePayload[];
   tag_ids: string[];
@@ -162,6 +167,7 @@ export interface IResearchFilters {
   start_date_to?: string;
   tag_ids?: string[];
   department?: string;
+  academic_program?: string;
   ordering?: string;
   page?: number;
   page_size?: number;

@@ -393,6 +393,23 @@ const modules: MenuItem = {
       ]
     },
     {
+      id: 'manage-journal',
+      title: 'Manage Journal',
+      type: 'collapse',
+      icon: icons.LibraryBooksIcon,
+      allowedRoles: ['EMIS-STAFF', 'ADMIN', 'DEPARTMENT-ADMIN'],
+      children: [
+        {
+          id: 'journal-articles',
+          title: 'Journal',
+          icon: icons.ArticleIcon,
+          type: 'item',
+          url: '/website-setup/journal',
+          breadcrumbs: false
+        }
+      ]
+    },
+    {
       id: 'manage-users',
       title: 'Manage Users',
       type: 'collapse',

@@ -39,6 +39,7 @@ const ResearchTags = Loadable(lazy(() => import('@/pages/website-setup/research/
 const ResearchFacilities = Loadable(lazy(() => import('@/pages/website-setup/research-facilities')));
 const Projects = Loadable(lazy(() => import('@/pages/website-setup/projects')));
 const ProjectTags = Loadable(lazy(() => import('@/pages/website-setup/projects/tags')));
+const Journal = Loadable(lazy(() => import('@/pages/website-setup/journal')));
 const Academic = Loadable(lazy(() => import('@/pages/website-setup/academic')));
 const ManageEmis = Loadable(lazy(() => import('@/pages/website-setup/emis-management')));
 const EmisHardware = Loadable(lazy(() => import('@/pages/website-setup/emis-management/hardware')));
@@ -108,6 +109,7 @@ const PrivateRoutes = () => {
                 <Route path="research" element={<Research />} />
                 <Route path="research/tags" element={<ResearchTags />} />
                 <Route path="research-facilities" element={<ResearchFacilities />} />
+                <Route path="journal" element={<Journal />} />
                 <Route path="projects" element={<Projects />} />
                 <Route path="projects/tags" element={<ProjectTags />} />
                 <Route path="student-clubs-setup">

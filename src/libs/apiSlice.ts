@@ -64,6 +64,8 @@ export const rootAPI = createApi({
     'ProjectTags',
     'Research',
     'ResearchTag',
+    'JournalArticle',
+    'JournalAuthor',
     'AcademicProgram',
     'Subject',
     'Departments',

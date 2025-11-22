@@ -34,6 +34,8 @@ import {
   IResearchPublicationCreatePayload
 } from './redux/types';
 import { toast } from 'react-toastify';
+import { useGetDepartmentsQuery } from '@/pages/website-setup/departments/redux/departments.api';
+import { useGetAcademicProgramsQuery } from '@/pages/website-setup/academic/redux/academic.api';
 
 interface ResearchFormProps {
   research?: IResearch;
@@ -101,6 +103,11 @@ const ResearchForm: React.FC<ResearchFormProps> = ({ research, onSuccess, onCanc
   const [createResearch, { isLoading: isCreating }] = useCreateResearchMutation();
   const [updateResearch, { isLoading: isUpdating }] = useUpdateResearchMutation();
   const { data: tagsData } = useGetResearchTagsQuery({});
+  const { data: departmentData } = useGetDepartmentsQuery({
+    search: '',
+    paginationModel: { page: 0, pageSize: 200 },
+    sortModel: []
+  });
 
   const isEditing = !!research;
   const isLoading = isCreating || isUpdating;
@@ -131,6 +138,7 @@ const ResearchForm: React.FC<ResearchFormProps> = ({ research, onSuccess, onCanc
       is_featured: research?.is_featured || false,
       is_published: research?.is_published || false,
       department: research?.department || undefined,
+      academic_program: research?.academic_program || undefined,
       participants: research?.participants || [
         {
           full_name: '',
@@ -162,10 +170,18 @@ const ResearchForm: React.FC<ResearchFormProps> = ({ research, onSuccess, onCanc
 
         onSuccess();
       } catch (error) {
-        toast.error(isEditing ? 'Failed to update research' : 'Failed to create research');
-      }
+      toast.error(isEditing ? 'Failed to update research' : 'Failed to create research');
     }
+  }
+});
+
+  const { data: programData } = useGetAcademicProgramsQuery({
+    limit: 200,
+    department: formik.values.department
   });
+
+  const departmentOptions = departmentData?.results || [];
+  const programOptions = programData?.results || [];
 
   const addParticipant = () => {
     formik.setFieldValue('participants', [
@@ -295,6 +311,48 @@ const ResearchForm: React.FC<ResearchFormProps> = ({ research, onSuccess, onCanc
                     {RESEARCH_STATUSES.map((status) => (
                       <MenuItem key={status.value} value={status.value}>
                         {status.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    select
+                    name="department"
+                    label="Department"
+                    value={formik.values.department || ''}
+                    onChange={(e) => {
+                      formik.handleChange(e);
+                      formik.setFieldValue('academic_program', '');
+                    }}
+                    helperText="Link this research to a department"
+                  >
+                    <MenuItem value="">Select Department</MenuItem>
+                    {departmentOptions.map((dept: any) => (
+                      <MenuItem key={dept.id} value={dept.id}>
+                        {dept.name} {dept.short_name ? `(${dept.short_name})` : ''}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    select
+                    name="academic_program"
+                    label="Academic Program (optional)"
+                    value={formik.values.academic_program || ''}
+                    onChange={formik.handleChange}
+                    helperText="Further narrow to a specific academic program"
+                    disabled={!departmentOptions.length}
+                  >
+                    <MenuItem value="">All Programs</MenuItem>
+                    {programOptions.map((program: any) => (
+                      <MenuItem key={program.id} value={program.id}>
+                        {program.name} {program.short_name ? `(${program.short_name})` : ''}
                       </MenuItem>
                     ))}
                   </TextField>
