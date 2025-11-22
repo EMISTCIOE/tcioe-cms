@@ -11,11 +11,15 @@ const IResolvedColorMap: BadgeColorMap = {
   UNRESOLVED: { backgroundColor: 'error.lighter', color: 'error.main' }
 };
 
-export const getColumnConfig = (theme: Theme): ColumnConfig<ITableData>[] => [
+export const getColumnConfig = (
+  theme: Theme,
+  customActions: ColumnConfig<ITableData>['customActions'] = []
+): ColumnConfig<ITableData>[] => [
   { field: 'fullName', headerName: 'FULL NAME', type: 'text', sortable: true, editable: false },
   { field: 'rollNumber', headerName: 'ROLL NO.', type: 'text', editable: false },
   { field: 'email', headerName: 'EMAIL', type: 'text', minWidth: 180, editable: false },
   { field: 'message', headerName: 'MESSAGE', type: 'text', minWidth: 180, editable: false },
+  { field: 'responseMessage', headerName: 'RESPONSE', type: 'text', minWidth: 200, editable: false, visible: false },
   {
     field: 'isResolved',
     headerName: 'RESOLVED STATUS',
@@ -28,6 +32,7 @@ export const getColumnConfig = (theme: Theme): ColumnConfig<ITableData>[] => [
     ],
     colorMap: IResolvedColorMap
   },
+  { field: 'resolvedAt', headerName: 'RESOLVED ON', type: 'date', sortable: true, editable: false, visible: false },
   { field: 'createdAt', headerName: 'CREATED AT', type: 'date', sortable: true, editable: false },
-  { field: 'actions', headerName: '', type: 'actions' }
+  { field: 'actions', headerName: '', type: 'actions', customActions }
 ];

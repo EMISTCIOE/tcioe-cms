@@ -16,6 +16,9 @@ export interface ICampusFeedbacksItem {
   email: string;
   message: string;
   isResolved: boolean;
+  responseMessage?: string;
+  resolvedAt?: string;
+  resolvedBy?: string;
   createdAt: string; // ISO Date string
 }
 
@@ -30,4 +33,5 @@ export interface ICampusFeedbacksDetails extends ICampusFeedbacksItem {}
 
 export interface ICampusFeedbacksUpdatePayload {
   isResolved: boolean;
+  responseMessage?: string;
 }

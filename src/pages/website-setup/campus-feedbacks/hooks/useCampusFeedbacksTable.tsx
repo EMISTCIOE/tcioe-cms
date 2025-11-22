@@ -40,13 +40,19 @@ export const useCampusFeedbacksTable = () => {
       return apiData.results.map((item) => ({
         ...item,
         message: item?.message || '',
+        responseMessage: item?.responseMessage || '',
+        resolvedAt: item?.resolvedAt || '',
+        resolvedBy: item?.resolvedBy || '',
         isResolved: item?.isResolved ? 'true' : 'false'
       }));
     },
 
     // NOTE - Data transformations table data to api data of inline update
     transformTableDataToUpdateInput: (rowData) => {
-      return { isResolved: rowData.isResolved === 'true' ? true : false };
+      return {
+        isResolved: rowData.isResolved === 'true' ? true : false,
+        responseMessage: rowData.responseMessage?.trim() || undefined
+      };
     }
   });
 };
