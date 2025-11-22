@@ -237,33 +237,33 @@ const modules: MenuItem = {
         }
       ]
     },
-  {
-    id: 'manage-clubs',
-    title: 'Manage Clubs',
-    type: 'collapse',
-    icon: icons.GroupsIcon,
-    allowedRoles: ['EMIS-STAFF', 'ADMIN'],
-    children: [
-      {
-        id: 'student-clubs',
-        title: 'Student Clubs',
-        icon: icons.Diversity3Icon,
-        type: 'item',
-        url: '/student-clubs-setup/student-clubs',
-        breadcrumbs: false,
-        allowedRoles: ['EMIS-STAFF', 'ADMIN']
-      }
-    ]
-  },
-  {
-    id: 'my-club',
-    title: 'My Club',
-    type: 'item',
-    icon: icons.GroupsIcon,
-    url: '/student-clubs-setup/student-clubs',
-    breadcrumbs: false,
-    allowedRoles: ['CLUB']
-  },
+    {
+      id: 'manage-clubs',
+      title: 'Manage Clubs',
+      type: 'collapse',
+      icon: icons.GroupsIcon,
+      allowedRoles: ['EMIS-STAFF', 'ADMIN'],
+      children: [
+        {
+          id: 'student-clubs',
+          title: 'Student Clubs',
+          icon: icons.Diversity3Icon,
+          type: 'item',
+          url: '/student-clubs-setup/student-clubs',
+          breadcrumbs: false,
+          allowedRoles: ['EMIS-STAFF', 'ADMIN']
+        }
+      ]
+    },
+    {
+      id: 'my-club',
+      title: 'My Club',
+      type: 'item',
+      icon: icons.GroupsIcon,
+      url: '/student-clubs-setup/student-clubs',
+      breadcrumbs: false,
+      allowedRoles: ['CLUB']
+    },
     {
       id: 'manage-academic',
       title: 'Manage Academic',

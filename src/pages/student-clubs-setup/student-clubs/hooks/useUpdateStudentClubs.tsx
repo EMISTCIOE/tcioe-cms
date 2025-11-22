@@ -57,8 +57,8 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
               ? String(departmentId)
               : null
             : studentClubsData.department?.id
-            ? String(studentClubsData.department.id)
-            : null
+              ? String(studentClubsData.department.id)
+              : null
       });
     }
   }, [studentClubsData, reset, roleType, departmentId]);

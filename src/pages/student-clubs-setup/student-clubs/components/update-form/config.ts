@@ -3,9 +3,7 @@ import * as z from 'zod';
 
 // NOTE - Define the schema for the members of the campus union.
 const memberSchema = z.object({
-  id: z
-    .preprocess((val) => (val === null || val === undefined ? undefined : String(val)), z.string().min(1))
-    .optional(),
+  id: z.preprocess((val) => (val === null || val === undefined ? undefined : String(val)), z.string().min(1)).optional(),
   fullName: z.string().min(1, 'Full Name is required'),
   designation: z.string().min(1, 'Designation is required'),
   photo: z

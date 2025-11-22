@@ -204,17 +204,43 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
     clubId
   ]);
 
+  const resolveSingleRelation = (data: TGlobalGalleryCreateFormDataType) => {
+    const relations = {
+      globalEvent: data.globalEvent,
+      union: data.union,
+      club: data.club,
+      department: data.department,
+      unit: data.unit,
+      section: data.section
+    };
+
+    // Priority: prefer explicit event, otherwise first available relation
+    const priority: (keyof typeof relations)[] = ['globalEvent', 'union', 'club', 'department', 'unit', 'section'];
+    const primaryKey = priority.find((key) => relations[key] !== null && relations[key] !== undefined);
+
+    return priority.reduce(
+      (acc, key) => {
+        acc[key] = key === primaryKey ? relations[key] : null;
+        return acc;
+      },
+      { globalEvent: null, union: null, club: null, department: null, unit: null, section: null } as {
+        [K in keyof typeof relations]: typeof relations[K] | null;
+      }
+    );
+  };
+
   const onSubmit = async (data: TGlobalGalleryCreateFormDataType) => {
     try {
+      const resolvedRelations = resolveSingleRelation(data);
       const payload: IGlobalGalleryImageCreatePayload = {
         sourceTitle: data.sourceTitle?.trim(),
         sourceContext: data.sourceContext?.trim(),
-        globalEvent: data.globalEvent ? String(data.globalEvent) : null,
-        union: data.union ? String(data.union) : null,
-        club: data.club ? String(data.club) : null,
-        department: data.department ? String(data.department) : null,
-        unit: data.unit ? String(data.unit) : null,
-        section: data.section ? String(data.section) : null,
+        globalEvent: resolvedRelations.globalEvent ? String(resolvedRelations.globalEvent) : null,
+        union: resolvedRelations.union ? String(resolvedRelations.union) : null,
+        club: resolvedRelations.club ? String(resolvedRelations.club) : null,
+        department: resolvedRelations.department ? String(resolvedRelations.department) : null,
+        unit: resolvedRelations.unit ? String(resolvedRelations.unit) : null,
+        section: resolvedRelations.section ? String(resolvedRelations.section) : null,
         isActive: data.isActive,
         images: mapImagesPayload(data.images)
       };
