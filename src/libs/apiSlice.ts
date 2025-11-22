@@ -4,12 +4,13 @@ import { axiosInstance, baseURL } from './axios';
 const axiosBaseQuery =
   ({ URL } = { URL: '' }) =>
   async (args: any, api: any, extraOptions: any) => {
-    const { url, method, data, params, headers, signal } = args;
+    const { url, method, data, body, params, headers, signal } = args;
     try {
       const result = await axiosInstance({
         url: URL + url,
         method,
-        data,
+        // Support both `data` (axios-style) and `body` (fetchBaseQuery-style)
+        data: data ?? body,
         params,
         headers,
         cancelToken: signal

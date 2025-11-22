@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Grid } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import FormSection from '@/components/app-form/FormSection';
@@ -35,6 +35,7 @@ export default function UserCreateForm({ onClose, fixedRole }: UserCreateFormPro
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [createUser] = useCreateUserMutation();
+  const resolvedRole = useMemo<FixedRoleType>(() => (fixedRole ?? 'EMIS-STAFF') as FixedRoleType, [fixedRole]);
   const { data: designationData } = useGetCampusStaffDesignationsQuery();
   const { data: departmentData } = useGetDepartmentsQuery({ search: '', paginationModel: { page: 0, pageSize: 500 }, sortModel: [] });
   const { data: studentClubsData } = useGetStudentClubsQuery({ search: '', paginationModel: { page: 0, pageSize: 500 }, sortModel: [] });
@@ -47,7 +48,10 @@ export default function UserCreateForm({ onClose, fixedRole }: UserCreateFormPro
     paginationModel: { page: 0, pageSize: 100 },
     sortModel: []
   });
-  const [formFields, setFormFields] = useState(userInfoFields);
+  const [autoRoleIds, setAutoRoleIds] = useState<(string | number)[]>([]);
+  const [formFields, setFormFields] = useState(() =>
+    userInfoFields.filter((field) => field.name !== 'role' && field.name !== 'roles')
+  );
 
   const {
     control,
@@ -61,7 +65,7 @@ export default function UserCreateForm({ onClose, fixedRole }: UserCreateFormPro
     resolver: zodResolver(userInfoFormSchema),
     defaultValues: {
       ...defaultValues,
-      role: fixedRole ?? defaultValues.role
+      role: resolvedRole ?? defaultValues.role
     }
   });
 
@@ -88,6 +92,12 @@ export default function UserCreateForm({ onClose, fixedRole }: UserCreateFormPro
     try {
       const { name, ...rest } = data;
       const { firstName, middleName, lastName } = splitName(name);
+      const rolesToSend = (data.roles?.length ? data.roles : autoRoleIds).map((id) => id.toString());
+
+      if (!rolesToSend.length) {
+        enqueueSnackbar('Unable to determine role. Please retry after roles load.', { variant: 'error' });
+        return;
+      }
 
       // Build payload; cast numeric select values to strings where backend expects IDs
       const payload: UserCreatePayload = {
@@ -95,7 +105,8 @@ export default function UserCreateForm({ onClose, fixedRole }: UserCreateFormPro
         middleName,
         lastName,
         ...rest,
-        role: ((rest as any).role as unknown as string) || fixedRole,
+        role: ((rest as any).role as unknown as string) || resolvedRole,
+        roles: rolesToSend,
         designation: (rest as any).designation as unknown as string,
         department: (rest as any).department as unknown as string,
         club: (rest as any).club as unknown as string,
@@ -128,41 +139,19 @@ export default function UserCreateForm({ onClose, fixedRole }: UserCreateFormPro
   // NOTE - Fetching roles data and setting it to form fields
   useEffect(() => {
     if (rolesData?.count) {
-      const roleOptions: SelectOption[] = rolesData.results.map((role: UserRole) => ({
-        label: role.name,
-        value: role.id
-      }));
+      const matchingRole = rolesData.results.find(
+        (role: UserRole) => role.codename?.toUpperCase() === resolvedRole?.toUpperCase()
+      );
+      const derivedIds = matchingRole ? [matchingRole.id] : [];
 
-      setFormFields((prev) => prev.map((field) => (field.name === 'roles' ? { ...field, options: roleOptions } : field)));
+      setAutoRoleIds(derivedIds);
+      setValue('roles', derivedIds as any, { shouldValidate: true });
     }
-  }, [rolesData]);
-
-  // Lock the account type selector when a fixed role is provided
-  useEffect(() => {
-    const baseRoleField = userInfoFields.find((field) => field.name === 'role');
-
-    setFormFields((prev) =>
-      prev.map((field) => {
-        if (field.name !== 'role') {
-          return field;
-        }
-
-        const filteredOptions = fixedRole
-          ? (baseRoleField?.options || []).filter((option) => option.value === fixedRole)
-          : baseRoleField?.options || field.options;
-
-        return {
-          ...field,
-          options: filteredOptions,
-          disabled: Boolean(fixedRole)
-        };
-      })
-    );
-  }, [fixedRole]);
+  }, [rolesData, resolvedRole, setValue]);
 
   useEffect(() => {
-    setValue('role', (fixedRole ?? defaultValues.role) as any, { shouldValidate: true, shouldDirty: false });
-  }, [fixedRole, setValue]);
+    setValue('role', (resolvedRole ?? defaultValues.role) as any, { shouldValidate: true, shouldDirty: false });
+  }, [resolvedRole, setValue]);
 
   // Populate designation/department/club/union options when data available
   useEffect(() => {

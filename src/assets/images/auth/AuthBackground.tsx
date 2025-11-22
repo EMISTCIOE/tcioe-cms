@@ -72,7 +72,7 @@ export default function AuthBackground() {
             left: logo.left,
             width: `${logo.size}px`,
             height: `${logo.size}px`,
-            backgroundImage: 'url(/logo_dark.jpg)',
+            backgroundImage: 'url(/logo_dark.png)',
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',

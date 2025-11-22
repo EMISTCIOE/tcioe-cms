@@ -44,7 +44,7 @@ const CampusFeedbacksListingSection = () => {
   };
 
   const customActions = [
-    (params: GridRowParams<ITableData>) => (
+    (params: GridRowParams<ITableData>) =>
       canEdit ? (
         <GridActionsCellItem
           key="resolve"
@@ -54,7 +54,6 @@ const CampusFeedbacksListingSection = () => {
           onClick={() => handleResolve(params.row)}
         />
       ) : null
-    )
   ];
 
   return (
