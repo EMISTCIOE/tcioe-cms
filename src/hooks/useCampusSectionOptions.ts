@@ -13,6 +13,7 @@ export const useCampusSectionOptions = () => {
   const [options, setOptions] = useState<SelectOption[]>([]);
   const [sectionName, setSectionName] = useState<string | null>(null);
   const { roleType, campusSectionId, campusSectionName } = useAppSelector(authState);
+  const skipFetch = useMemo(() => ['DEPARTMENT-ADMIN', 'UNION', 'CLUB'].includes(roleType || ''), [roleType]);
 
   // Fetch section name if missing from auth state
   useEffect(() => {
@@ -43,9 +44,8 @@ export const useCampusSectionOptions = () => {
     let isMounted = true;
 
     const fetchSections = async () => {
-      // Department Admins don't need section options; skip fetch
-      if (roleType === 'DEPARTMENT-ADMIN') {
-        setOptions([]);
+      if (skipFetch) {
+        setOptions(lockedOption ?? []);
         return;
       }
       if (lockedOption) {
@@ -78,7 +78,7 @@ export const useCampusSectionOptions = () => {
     return () => {
       isMounted = false;
     };
-  }, [lockedOption]);
+  }, [lockedOption, skipFetch]);
 
   return {
     options

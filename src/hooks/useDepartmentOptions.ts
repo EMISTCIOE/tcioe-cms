@@ -10,16 +10,29 @@ interface Department {
 }
 
 export const useDepartmentOptions = () => {
-  const [options, setOptions] = useState<SelectOption[]>([]);
-  const { roleType } = useAppSelector(authState);
+  const { roleType, departmentId, departmentName } = useAppSelector(authState);
   const skipFetch = useMemo(() => roleType === 'CLUB', [roleType]);
+  const lockedDepartment = useMemo(() => {
+    if (roleType === 'CLUB' && departmentId) {
+      return [
+        {
+          label: departmentName || 'My Department',
+          value: String(departmentId)
+        }
+      ];
+    }
+    return [];
+  }, [roleType, departmentId, departmentName]);
+
+  // Initialize with locked department for club users to avoid empty options during first render
+  const [options, setOptions] = useState<SelectOption[]>(lockedDepartment);
 
   useEffect(() => {
     let isMounted = true;
 
     const fetchDepartments = async () => {
       if (skipFetch) {
-        setOptions([]);
+        setOptions(lockedDepartment);
         return;
       }
       try {
@@ -49,7 +62,7 @@ export const useDepartmentOptions = () => {
     return () => {
       isMounted = false;
     };
-  }, [skipFetch]);
+  }, [skipFetch, departmentId, departmentName, lockedDepartment]);
 
   return {
     options

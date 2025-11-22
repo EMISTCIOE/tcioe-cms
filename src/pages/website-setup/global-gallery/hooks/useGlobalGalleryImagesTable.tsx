@@ -17,14 +17,7 @@ export const useGlobalGalleryImagesTable = () => {
     transformResponseToTableData: (apiData) => {
       let filteredResults = apiData?.results || [];
 
-      if (roleType === 'CLUB' && clubId) {
-        const normalizedClubName = clubName?.toLowerCase();
-        filteredResults = filteredResults.filter((item: IGlobalGalleryImage) => {
-          const isClubContent = ['club_gallery', 'club_event'].includes(item.sourceType || '');
-          const matchesClub = normalizedClubName ? Boolean(item.sourceName?.toLowerCase().includes(normalizedClubName)) : true;
-          return isClubContent && matchesClub;
-        });
-      } else if (roleType === 'DEPARTMENT-ADMIN' && departmentId) {
+      if (roleType === 'DEPARTMENT-ADMIN' && departmentId) {
         const normalizedDepartmentName = departmentName?.toLowerCase();
         filteredResults = filteredResults.filter((item: IGlobalGalleryImage) => {
           const isDepartmentContent = item.sourceType === 'department_gallery';

@@ -3,7 +3,9 @@ import * as z from 'zod';
 
 // NOTE - Define the schema for the members of the campus union.
 const memberSchema = z.object({
-  id: z.string().uuid().optional(),
+  id: z
+    .preprocess((val) => (val === null || val === undefined ? undefined : String(val)), z.string().min(1))
+    .optional(),
   fullName: z.string().min(1, 'Full Name is required'),
   designation: z.string().min(1, 'Designation is required'),
   photo: z
@@ -29,7 +31,7 @@ export type Member = z.infer<typeof memberSchema>;
 
 // NOTE - Define the schema for the form.
 export const studentClubsUpdateFormSchema = z.object({
-  id: z.string().min(1, 'Student Club ID is required'),
+  id: z.preprocess((val) => (val === null || val === undefined ? val : String(val)), z.string().min(1, 'Student Club ID is required')),
   name: z.string().min(1, 'Name is required'),
   shortDescription: z.string().min(1, 'Short Description is required'),
   detailedDescription: z.string().optional(),
@@ -54,7 +56,7 @@ export const studentClubsUpdateFormSchema = z.object({
       }
     )
     .optional(),
-  members: z.array(memberSchema).min(1, 'At least one member is required')
+  members: z.array(memberSchema).optional()
 });
 
 // NOTE - Generate a type from the schema
@@ -87,7 +89,7 @@ export const studentClubsUpdateFields: FormField<TStudentClubsUpdateFormDataType
     type: 'array',
     xs: 12,
     sm: 12,
-    required: true,
+    required: false,
     itemFields: [
       { name: 'photo', label: 'Photo', type: 'file', accpetFileTypes: 'image/*', xs: 12, sm: 3 },
       { name: 'fullName', label: 'Full Name', type: 'text', xs: 6, sm: 3, required: true },

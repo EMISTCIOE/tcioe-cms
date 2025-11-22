@@ -13,6 +13,7 @@ export const useCampusUnitOptions = () => {
   const [options, setOptions] = useState<SelectOption[]>([]);
   const [unitName, setUnitName] = useState<string | null>(null);
   const { roleType, campusUnitId, campusUnitName } = useAppSelector(authState);
+  const skipFetch = useMemo(() => ['DEPARTMENT-ADMIN', 'UNION', 'CLUB'].includes(roleType || ''), [roleType]);
 
   // Fetch unit name if missing from auth state
   useEffect(() => {
@@ -56,9 +57,8 @@ export const useCampusUnitOptions = () => {
     let isMounted = true;
 
     const fetchUnits = async () => {
-      // Department Admins don't need unit options; skip fetch
-      if (roleType === 'DEPARTMENT-ADMIN') {
-        setOptions([]);
+      if (skipFetch) {
+        setOptions(lockedOption ?? []);
         return;
       }
       if (lockedOption) {
@@ -92,7 +92,7 @@ export const useCampusUnitOptions = () => {
     return () => {
       isMounted = false;
     };
-  }, [lockedOption]);
+  }, [lockedOption, skipFetch]);
 
   return {
     options

@@ -219,6 +219,14 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
         images: mapImagesPayload(data.images)
       };
 
+      if (roleType === 'CLUB' && clubId) {
+        if (data.globalEvent) {
+          payload.club = null;
+        } else {
+          payload.club = String(clubId);
+        }
+      }
+
       const res = await createCollection(payload).unwrap();
       dispatch(setMessage({ message: res.message, variant: 'success' }));
       onClose?.();

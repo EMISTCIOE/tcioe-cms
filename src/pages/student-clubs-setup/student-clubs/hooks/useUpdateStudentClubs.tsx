@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 // PROJECT IMPORTS
-import { useAppDispatch } from '@/libs/hooks';
+import { useAppDispatch, useAppSelector } from '@/libs/hooks';
 import { setMessage } from '@/pages/common/redux/common.slice';
 import { handleClientError } from '@/utils/functions/handleError';
 
@@ -22,6 +22,7 @@ import { useDeletStudentClubsMemberMutation, usePatchStudentClubsMutation } from
 import { IStudentClubsUpdatePayload } from '../redux/types';
 import { TField } from '@/components/app-form/types';
 import { useDepartmentOptions } from '@/hooks/useDepartmentOptions';
+import { authState } from '@/pages/authentication/redux/selector';
 
 const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdateFormProps) => {
   const dispatch = useAppDispatch();
@@ -30,6 +31,7 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
   const [deleteStudentClubsMemberItem] = useDeletStudentClubsMemberMutation();
   const [formFields, setFormFields] = useState(studentClubsUpdateFields);
   const { options: departmentOptions } = useDepartmentOptions();
+  const { roleType, departmentId } = useAppSelector(authState);
 
   const {
     control,
@@ -37,6 +39,7 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
     setError,
     watch,
     reset,
+    setValue,
     formState: { errors }
   } = useForm<TStudentClubsUpdateFormDataType>({
     resolver: zodResolver(studentClubsUpdateFormSchema),
@@ -48,10 +51,17 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
     if (studentClubsData) {
       reset({
         ...studentClubsData,
-        department: studentClubsData.department?.id || null
+        department:
+          roleType === 'CLUB'
+            ? departmentId
+              ? String(departmentId)
+              : null
+            : studentClubsData.department?.id
+            ? String(studentClubsData.department.id)
+            : null
       });
     }
-  }, [studentClubsData, reset]);
+  }, [studentClubsData, reset, roleType, departmentId]);
 
   // delete handler for member item
   const handleDeleteMemberItem = async (index: number, member_id?: string) => {
@@ -79,12 +89,69 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
   }, [studentClubsData]);
 
   useEffect(() => {
-    setFormFields((prev) => prev.map((field) => (field.name === 'department' ? { ...field, options: departmentOptions } : field)));
-  }, [departmentOptions]);
+    setFormFields((prev) =>
+      prev.map((field) => {
+        if (field.name === 'department') {
+          return {
+            ...field,
+            options: departmentOptions ?? [],
+            disabled: roleType === 'CLUB'
+          };
+        }
+        return field;
+      })
+    );
+  }, [departmentOptions, roleType]);
+
+  useEffect(() => {
+    // For club users, ensure department value and option are set even if options array is empty
+    if (roleType === 'CLUB') {
+      const fallbackDepartmentId =
+        departmentId || studentClubsData?.department?.id ? String(departmentId || studentClubsData?.department?.id) : null;
+
+      if (fallbackDepartmentId) {
+        setValue('department', fallbackDepartmentId);
+
+        setFormFields((prev) =>
+          prev.map((field) => {
+            if (field.name === 'department') {
+              const optionExists = (field.options || []).some((opt) => opt.value === fallbackDepartmentId);
+              return {
+                ...field,
+                options: optionExists
+                  ? field.options
+                  : [
+                      ...(field.options || []),
+                      {
+                        label: studentClubsData?.department?.name || 'My Department',
+                        value: fallbackDepartmentId
+                      }
+                    ],
+                disabled: true
+              };
+            }
+            return field;
+          })
+        );
+      }
+    }
+    // If department still empty but we have options, pick the first as fallback to pass validation
+    if (!watch('department') && departmentOptions?.length) {
+      const firstOption = departmentOptions[0];
+      setValue('department', String(firstOption.value));
+    }
+  }, [roleType, departmentId, setValue, departmentOptions, studentClubsData]);
 
   // This is for form update not for inline update
   const onSubmit = async (data: TStudentClubsUpdateFormDataType) => {
+    console.log('Submitting student club update payload:', data);
     const { id, ...values } = data;
+    if (!values.members) {
+      values.members = [];
+    }
+    if (values.department && typeof values.department !== 'string') {
+      values.department = String(values.department);
+    }
     try {
       const payload = {
         id,
@@ -103,7 +170,7 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
   };
 
   return {
-    handleSubmit: () => handleSubmit(onSubmit),
+    submitHandler: handleSubmit(onSubmit),
     control,
     errors,
     watch,

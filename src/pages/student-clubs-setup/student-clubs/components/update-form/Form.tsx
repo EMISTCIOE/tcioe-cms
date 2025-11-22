@@ -14,11 +14,11 @@ export interface IStudentClubsUpdateFormProps {
 }
 
 export default function StudentClubsUpdateForm({ studentClubsData, onClose }: IStudentClubsUpdateFormProps) {
-  const { control, errors, watch, formFields, handleSubmit } = useUpdateStudentClubs({ studentClubsData, onClose });
+  const { control, errors, watch, formFields, submitHandler } = useUpdateStudentClubs({ studentClubsData, onClose });
   const formValues = watch();
 
   return (
-    <form onSubmit={handleSubmit()}>
+    <form onSubmit={submitHandler}>
       <Grid container spacing={3} sx={{ pt: 1 }}>
         <Grid item xs={12}>
           <MainCard divider title={'Update Student Club'}>
@@ -30,7 +30,7 @@ export default function StudentClubsUpdateForm({ studentClubsData, onClose }: IS
           <Button variant="outlined" color="error" onClick={onClose}>
             Cancel
           </Button>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="button" onClick={submitHandler}>
             Update
           </Button>
         </Grid>

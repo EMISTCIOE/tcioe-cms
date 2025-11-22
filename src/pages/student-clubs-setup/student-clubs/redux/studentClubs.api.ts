@@ -69,13 +69,13 @@ export const studentClubsAPISlice = rootAPI.injectEndpoints({
               body.append(`members[${index}][photo]`, member.photo);
             }
             if (member.fullName) {
-              body.append(`members[${index}][fullName]`, member.fullName);
+              body.append(`members[${index}][full_name]`, member.fullName);
             }
             if (member.designation) {
               body.append(`members[${index}][designation]`, member.designation);
             }
             if (member.isActive !== undefined) {
-              body.append(`members[${index}][isActive]`, String(member.isActive));
+              body.append(`members[${index}][is_active]`, String(member.isActive));
             }
           });
         }
@@ -122,13 +122,13 @@ export const studentClubsAPISlice = rootAPI.injectEndpoints({
               body.append(`members[${index}][id]`, String(member.id));
             }
             if (member.fullName) {
-              body.append(`members[${index}][fullName]`, member.fullName);
+              body.append(`members[${index}][full_name]`, member.fullName);
             }
             if (member.designation) {
               body.append(`members[${index}][designation]`, member.designation);
             }
             if (member.isActive !== undefined) {
-              body.append(`members[${index}][isActive]`, String(member.isActive));
+              body.append(`members[${index}][is_active]`, String(member.isActive));
             }
           });
         }
