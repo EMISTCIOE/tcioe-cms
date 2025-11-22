@@ -434,13 +434,7 @@ const JournalForm: React.FC<JournalFormProps> = ({ article, onSuccess, onCancel 
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        startIcon={<Add />}
-                        onClick={handleAddAuthor}
-                        disabled={isCreatingAuthor}
-                      >
+                      <Button size="small" variant="outlined" startIcon={<Add />} onClick={handleAddAuthor} disabled={isCreatingAuthor}>
                         Add Author
                       </Button>
                     </Grid>

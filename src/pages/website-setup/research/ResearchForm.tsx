@@ -170,10 +170,10 @@ const ResearchForm: React.FC<ResearchFormProps> = ({ research, onSuccess, onCanc
 
         onSuccess();
       } catch (error) {
-      toast.error(isEditing ? 'Failed to update research' : 'Failed to create research');
+        toast.error(isEditing ? 'Failed to update research' : 'Failed to create research');
+      }
     }
-  }
-});
+  });
 
   const { data: programData } = useGetAcademicProgramsQuery({
     limit: 200,

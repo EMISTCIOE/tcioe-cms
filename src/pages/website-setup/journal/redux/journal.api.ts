@@ -22,9 +22,7 @@ export const journalApi = rootAPI.injectEndpoints({
           params.offset = (paginationModel.page ?? 0) * paginationModel.pageSize;
         }
         if (sortModel?.length) {
-          params.ordering = sortModel
-            .map((s: any) => `${s.sort === 'desc' ? '-' : ''}${s.field}`)
-            .join(',');
+          params.ordering = sortModel.map((s: any) => `${s.sort === 'desc' ? '-' : ''}${s.field}`).join(',');
         }
         if (filterModel?.items?.length) {
           filterModel.items.forEach((item: any) => {
