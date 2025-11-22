@@ -56,6 +56,11 @@ export const useCampusUnitOptions = () => {
     let isMounted = true;
 
     const fetchUnits = async () => {
+      // Department Admins don't need unit options; skip fetch
+      if (roleType === 'DEPARTMENT-ADMIN') {
+        setOptions([]);
+        return;
+      }
       if (lockedOption) {
         console.log('Setting locked campus unit options:', lockedOption);
         setOptions(lockedOption);

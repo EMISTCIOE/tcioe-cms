@@ -97,7 +97,8 @@ const ApprovalCell = ({
 export const getColumnConfig = (
   theme: Theme,
   canEdit: boolean,
-  canChangeApprovalStatus: boolean,
+  canApproveDepartment: boolean,
+  canApproveCampus: boolean,
   onApprovalChange?: (
     id: string,
     field: 'isApprovedByDepartment' | 'isApprovedByCampus',
@@ -137,7 +138,7 @@ export const getColumnConfig = (
     renderCell: (params) => (
       <ApprovalCell
         approved={params.row.isApprovedByDepartment === 'true'}
-        disabled={!canChangeApprovalStatus}
+        disabled={!canApproveDepartment}
         onApprove={() => onApprovalChange && onApprovalChange(params.id as string, 'isApprovedByDepartment', true)}
         onReject={() => onApprovalChange && onApprovalChange(params.id as string, 'isApprovedByDepartment', false)}
         label="Department"
@@ -154,7 +155,7 @@ export const getColumnConfig = (
     renderCell: (params) => (
       <ApprovalCell
         approved={params.row.isApprovedByCampus === 'true'}
-        disabled={!canChangeApprovalStatus}
+        disabled={!canApproveCampus}
         onApprove={() => onApprovalChange && onApprovalChange(params.id as string, 'isApprovedByCampus', true)}
         onReject={() => onApprovalChange && onApprovalChange(params.id as string, 'isApprovedByCampus', false)}
         label="Campus"

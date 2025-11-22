@@ -43,6 +43,11 @@ export const useCampusSectionOptions = () => {
     let isMounted = true;
 
     const fetchSections = async () => {
+      // Department Admins don't need section options; skip fetch
+      if (roleType === 'DEPARTMENT-ADMIN') {
+        setOptions([]);
+        return;
+      }
       if (lockedOption) {
         setOptions(lockedOption);
         return;

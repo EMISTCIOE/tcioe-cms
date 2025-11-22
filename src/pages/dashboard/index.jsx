@@ -72,8 +72,8 @@ export default function DashboardDefault() {
   const isScopedUser = isUnionUser || isUnitUser || isSectionUser;
   const scopedLabel = isUnionUser ? 'Union' : isUnitUser ? 'Unit' : 'Section';
 
-  // Only EMIS Staff and Admin users can see charts and trend graphs
-  const canViewCharts = roleType === 'EMIS-STAFF' || roleType === 'ADMIN';
+  // EMIS Staff, Admin, and Department Admin users can see charts and trend graphs
+  const canViewCharts = ['EMIS-STAFF', 'ADMIN', 'DEPARTMENT-ADMIN'].includes(roleType || '');
 
   // Chart visibility check
   console.log('📊 Charts available for role:', roleType, '| Can view:', canViewCharts);
@@ -193,7 +193,7 @@ export default function DashboardDefault() {
         </>
       )}
 
-      {/* Charts Section - Only for EMIS Staff and Admin */}
+      {/* Charts Section - Only for EMIS/Platform/Admin-level roles */}
       {canViewCharts && (
         <Grid item xs={12} sx={{ mt: 2 }}>
           {stats?.chartData ? (

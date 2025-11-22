@@ -255,13 +255,21 @@ export function useHasGlobalGalleryPagePermissions(requiredPermissions: IRequire
   return permissionsStrings.some((permission) => permissions?.some((perm) => perm.codename === permission));
 }
 
-export function useCanChangeApprovalStatus(): boolean {
+export function useApprovalAccess() {
   const { isSuperuser, roleType } = useAppSelector(authState);
 
-  if (isSuperuser) return true;
+  const canApproveCampus = isSuperuser || roleType === 'ADMIN' || roleType === 'EMIS-STAFF';
+  const canApproveDepartment = canApproveCampus || roleType === 'DEPARTMENT-ADMIN';
 
-  // Admin and EMIS staff can change approval status
-  return roleType === 'ADMIN' || roleType === 'EMIS-STAFF';
+  return {
+    canApproveDepartment,
+    canApproveCampus
+  };
+}
+
+export function useCanChangeApprovalStatus(): boolean {
+  const { canApproveCampus, canApproveDepartment } = useApprovalAccess();
+  return canApproveCampus || canApproveDepartment;
 }
 
 export function useCanAccessApprovalFields(): boolean {

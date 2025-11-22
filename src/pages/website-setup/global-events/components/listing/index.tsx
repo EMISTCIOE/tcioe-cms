@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import TableContainer from '@/components/app-table/TableContainer';
-import { useHasParticularPermissions, useHasGlobalEventPermissions, useCanChangeApprovalStatus } from '@/utils/permissions/helpers';
+import { useHasParticularPermissions, useHasGlobalEventPermissions, useApprovalAccess } from '@/utils/permissions/helpers';
 import { globalEventsPermissions } from '../../constants/permissions';
 import { useGlobalEventsTable } from '../../hooks/useGlobalEventsTable';
 import { getColumnConfig as getGlobalEventsColumnConfig, ITableData } from './config';
@@ -13,14 +13,16 @@ const GlobalEventsListing = () => {
   const canCreate = useHasGlobalEventPermissions(globalEventsPermissions.add);
   const canEdit = useHasGlobalEventPermissions(globalEventsPermissions.edit);
   const canDelete = useHasParticularPermissions(globalEventsPermissions.delete);
-  const canChangeApprovalStatus = useCanChangeApprovalStatus();
+  const { canApproveDepartment, canApproveCampus } = useApprovalAccess();
   const { onApprovalChange } = useGlobalEventsApprovalChange();
 
   return (
     <TableContainer<ITableData>
       title="Global Events"
       useTableHook={tableHooks}
-      getColumnConfig={(theme) => getGlobalEventsColumnConfig(theme, canEdit, canChangeApprovalStatus, onApprovalChange)}
+      getColumnConfig={(theme) =>
+        getGlobalEventsColumnConfig(theme, canEdit, canApproveDepartment, canApproveCampus, onApprovalChange)
+      }
       createButtonTitle="Add"
       createNewForm={canCreate ? (onClose) => <GlobalEventsCreateForm onClose={onClose} /> : undefined}
       allowEditing={canEdit}
