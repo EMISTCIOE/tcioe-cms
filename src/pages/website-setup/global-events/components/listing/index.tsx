@@ -20,9 +20,7 @@ const GlobalEventsListing = () => {
     <TableContainer<ITableData>
       title="Global Events"
       useTableHook={tableHooks}
-      getColumnConfig={(theme) =>
-        getGlobalEventsColumnConfig(theme, canEdit, canApproveDepartment, canApproveCampus, onApprovalChange)
-      }
+      getColumnConfig={(theme) => getGlobalEventsColumnConfig(theme, canEdit, canApproveDepartment, canApproveCampus, onApprovalChange)}
       createButtonTitle="Add"
       createNewForm={canCreate ? (onClose) => <GlobalEventsCreateForm onClose={onClose} /> : undefined}
       allowEditing={canEdit}
