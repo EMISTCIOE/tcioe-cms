@@ -122,9 +122,9 @@ export const AcademicProgramForm: React.FC<AcademicProgramFormProps> = ({ progra
             </Stack>
 
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-          <FormControl fullWidth>
-            <InputLabel id="academic-program-type-label">Program Type</InputLabel>
-            <Select
+              <FormControl fullWidth>
+                <InputLabel id="academic-program-type-label">Program Type</InputLabel>
+                <Select
                   labelId="academic-program-type-label"
                   label="Program Type"
                   value={programType}

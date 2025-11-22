@@ -24,11 +24,7 @@ const DepartmentsListingSection = () => {
       getColumnConfig={getColumnConfig}
       createButtonTitle="Add"
       createNewForm={
-        roleType === 'DEPARTMENT-ADMIN'
-          ? undefined
-          : canCreate
-            ? (onClose) => <DepartmentsCreateForm onClose={onClose} />
-            : undefined
+        roleType === 'DEPARTMENT-ADMIN' ? undefined : canCreate ? (onClose) => <DepartmentsCreateForm onClose={onClose} /> : undefined
       }
       allowEditing={canEdit}
       allowDeleting={roleType === 'DEPARTMENT-ADMIN' ? false : canDelete}
