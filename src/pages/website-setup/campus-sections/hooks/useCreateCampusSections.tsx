@@ -28,10 +28,7 @@ const useCreateCampusSections = ({ onClose }: ICampusSectionsCreateFormProps) =>
     paginationModel: { page: 0, pageSize: 1000 },
     sortModel: [{ field: 'displayOrder', sort: 'asc' }],
     filterModel: {
-      items: [
-        { field: 'isActive', operator: 'equals', value: 'true' },
-        { field: 'isKeyOfficial', operator: 'equals', value: 'true' }
-      ]
+      items: [{ field: 'isActive', operator: 'equals', value: 'true' }]
     }
   });
 
