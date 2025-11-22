@@ -34,9 +34,18 @@ export default function MainLayout() {
       <Box sx={{ display: 'flex', width: '100%' }}>
         <Header />
         <Drawer />
-        <Box component="main" sx={{ width: 'calc(100% - 260px)', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
+        <Box
+          component="main"
+          sx={{
+            width: { xs: '100%', lg: 'calc(100% - 260px)' },
+            flexGrow: 1,
+            p: { xs: 1.5, sm: 2.5, md: 3 },
+            minHeight: '100vh',
+            transition: (theme) => theme.transitions.create(['margin', 'width'])
+          }}
+        >
           <Toolbar />
-          <Box sx={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <Box sx={{ maxWidth: '1400px', margin: '0 auto', px: { xs: 0.5, sm: 0 } }}>
             <Breadcrumbs navigation={navigation} title />
             <Outlet />
           </Box>

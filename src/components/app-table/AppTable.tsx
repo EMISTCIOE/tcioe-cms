@@ -155,7 +155,15 @@ const AppTable = <T extends object>({
 
   return (
     <>
-      <Box sx={{ ...BoxStyles, ...containerSx }}>
+      <Box
+        sx={{
+          ...BoxStyles,
+          ...containerSx,
+          '& .MuiDataGrid-root': {
+            border: 'none'
+          }
+        }}
+      >
         <DataGrid
           // rest props
           {...dataGridProps}

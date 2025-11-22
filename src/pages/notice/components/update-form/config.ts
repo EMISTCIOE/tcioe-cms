@@ -131,7 +131,7 @@ export const noticeUpdateFields: FormField<TNoticeUpdateFormDataType>[] = [
     ] as FormField<Media>[]
   },
   { name: 'isFeatured', label: 'Featured', xs: 6, sm: 3, type: 'switch' },
-  { name: 'isDraft', label: 'Draft', xs: 6, sm: 3, type: 'switch', showIf: (formData) => formData.status === NoticeStatus.DRAFT },
+  { name: 'isDraft', label: 'Draft', xs: 6, sm: 3, type: 'switch' },
   { name: 'isApprovedByDepartment', label: 'Approved by Dept', xs: 6, sm: 3, type: 'switch' },
   { name: 'isApprovedByCampus', label: 'Approved by Campus', xs: 6, sm: 3, type: 'switch' }
 ];

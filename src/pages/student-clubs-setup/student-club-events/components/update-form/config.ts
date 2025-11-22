@@ -29,9 +29,7 @@ export const studentClubEventsUpdateFormSchema = z.object({
   description: z.string().optional(),
   date: z.string().optional(),
   isActive: z.boolean().default(true),
-  club: z.union([z.string(), z.number()]).pipe(
-    z.string().min(1, 'Club is required')
-  ),
+  club: z.union([z.string(), z.number()]).pipe(z.string().min(1, 'Club is required')),
   thumbnail: z
     .union([z.string().min(1, 'File URL cannot be empty.'), z.any()])
     .refine(

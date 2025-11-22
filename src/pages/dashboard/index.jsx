@@ -43,16 +43,27 @@ export default function DashboardDefault() {
 
     const { pending_items: pendingItems, chart_data: chartData, ...rest } = statsResponse.data;
 
-    // Debug logging to check what we're getting from API
-    console.log('📊 Dashboard Stats Response:', statsResponse);
-    console.log('📈 Chart Data:', chartData);
-    console.log('📋 Pending Items:', pendingItems);
-    console.log('👤 Role Type:', roleType);
+    // Convert snake_case API response to camelCase for chart component
+    const convertedChartData = chartData
+      ? {
+          noticesTrend: chartData.notices_trend || [],
+          usersGrowth: chartData.users_growth || [],
+          researchPublicationsTrend: chartData.research_publications_trend || [],
+          eventsTrend: chartData.events_trend || [],
+          projectsTrend: chartData.projects_trend || []
+        }
+      : {
+          noticesTrend: [],
+          usersGrowth: [],
+          researchPublicationsTrend: [],
+          eventsTrend: [],
+          projectsTrend: []
+        };
 
     return {
       ...rest,
       pendingItems,
-      chartData
+      chartData: convertedChartData
     };
   }, [statsResponse?.data, roleType]);
   const isUnionUser = roleType === 'UNION';
@@ -64,12 +75,8 @@ export default function DashboardDefault() {
   // Only EMIS Staff and Admin users can see charts and trend graphs
   const canViewCharts = roleType === 'EMIS-STAFF' || roleType === 'ADMIN';
 
-  // Debug logging for chart visibility
-  console.log('🔍 Chart Visibility Debug:');
-  console.log('  - Role Type:', roleType);
-  console.log('  - Can View Charts:', canViewCharts);
-  console.log('  - Has Chart Data:', !!stats?.chartData);
-  console.log('  - Chart Data Contents:', stats?.chartData);
+  // Chart visibility check
+  console.log('📊 Charts available for role:', roleType, '| Can view:', canViewCharts);
 
   if (isLoading) {
     return (
@@ -88,7 +95,17 @@ export default function DashboardDefault() {
   }
 
   return (
-    <Grid container rowSpacing={3} columnSpacing={2.75} sx={{ p: { xxs: 1, xs: 0 } }}>
+    <Grid
+      container
+      rowSpacing={3}
+      columnSpacing={2.75}
+      sx={{
+        p: { xxs: 1, xs: 1, sm: 0 },
+        '& .MuiGrid-item': {
+          minWidth: 0
+        }
+      }}
+    >
       {/* Welcome Banner */}
       <Grid item xs={12}>
         <WelcomeBanner />
@@ -176,30 +193,17 @@ export default function DashboardDefault() {
         </>
       )}
 
-      {/* Debug Section - Temporary */}
-      <Grid item xs={12} sx={{ mt: 2 }}>
-        <Alert severity="info">
-          <strong>Debug Info:</strong>
-          <br />
-          Role: {roleType} | Can View Charts: {canViewCharts ? 'Yes' : 'No'} | Has Chart Data: {stats?.chartData ? 'Yes' : 'No'}
-          {stats?.chartData && <br />}
-          {stats?.chartData && `Chart Data Keys: ${Object.keys(stats.chartData).join(', ')}`}
-        </Alert>
-      </Grid>
-
       {/* Charts Section - Only for EMIS Staff and Admin */}
-      {canViewCharts && stats?.chartData && (
+      {canViewCharts && (
         <Grid item xs={12} sx={{ mt: 2 }}>
-          <DashboardCharts chartData={stats.chartData} />
-        </Grid>
-      )}
-
-      {/* Show message when charts should be visible but aren't */}
-      {canViewCharts && !stats?.chartData && (
-        <Grid item xs={12} sx={{ mt: 2 }}>
-          <Alert severity="warning">
-            <strong>Charts Not Available:</strong> You have permission to view charts, but no chart data was returned from the server.
-          </Alert>
+          {stats?.chartData ? (
+            <DashboardCharts chartData={stats.chartData} />
+          ) : (
+            <Alert severity="info">
+              <strong>Charts Loading:</strong> Generating chart data... If this persists, there may not be enough historical data to display
+              trends.
+            </Alert>
+          )}
         </Grid>
       )}
 

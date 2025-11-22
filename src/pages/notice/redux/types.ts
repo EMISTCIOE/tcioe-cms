@@ -5,7 +5,6 @@ export interface INoticeSliceState {
   edit: boolean;
   currentId: string | null;
   viewId: string | null;
-  isStatusModal: boolean;
 }
 
 export interface INoticeStatusSliceState {

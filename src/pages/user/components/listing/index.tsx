@@ -68,6 +68,13 @@ const UserListingSection = () => {
       title={`${title} Users`}
       useTableHook={tableHooks}
       getColumnConfig={getColumnConfig}
+      tableProps={{
+        sx: {
+          '& .MuiDataGrid-root': {
+            minHeight: { xs: 480, sm: 'auto' }
+          }
+        }
+      }}
       createButtonTitle={createForm ? createButtonTitle : undefined}
       createNewForm={createForm}
       allowEditing={canEdit}

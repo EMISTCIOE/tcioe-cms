@@ -10,11 +10,10 @@ import { useRetrieveNoticeQuery } from '../../redux/notice.api';
 import { noticeState } from '../../redux/notice.selector';
 import { clearNoticeData, setEdit } from '../../redux/notice.slice';
 import NoticeUpdateForm from './Form';
-import NoticeStatusUpdateForm from '../status-update/Form';
 
 const NoticeEditModal = () => {
   const dispatch = useDispatch();
-  const { edit, currentId, isStatusModal } = useSelector(noticeState);
+  const { edit, currentId } = useSelector(noticeState);
 
   // Convert currentId to number for the query
   const numericId = currentId ? Number(currentId) : null;
@@ -37,15 +36,13 @@ const NoticeEditModal = () => {
       open={edit}
       onClose={handleClose}
       fullWidth={false}
-      maxWidth={isStatusModal ? 'sm' : 'lg'}
-      title={isStatusModal ? 'Update Status' : 'Update Notice'}
+      maxWidth="lg"
+      title="Update Notice"
       content={
         isLoading ? (
           <div style={{ display: 'flex', justifyContent: 'center', padding: '20px' }}>
             <CircularProgress />
           </div>
-        ) : isStatusModal ? (
-          <NoticeStatusUpdateForm noticeData={noticeData} onClose={handleClose} />
         ) : (
           <NoticeUpdateForm noticeData={noticeData} onClose={handleClose} />
         )

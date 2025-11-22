@@ -29,6 +29,47 @@ html {
   }
 }
 
+/* Cloudflare Turnstile responsive styles */
+.cf-turnstile {
+  margin: 0 auto !important;
+  transform-origin: center !important;
+}
+
+/* Mobile responsiveness for Turnstile */
+@media (max-width: 600px) {
+  .cf-turnstile {
+    transform: scale(0.85) !important;
+    transform-origin: center !important;
+  }
+
+  .cf-turnstile iframe {
+    max-width: 280px !important;
+    width: 100% !important;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 400px) {
+  .cf-turnstile {
+    transform: scale(0.75) !important;
+    transform-origin: center !important;
+  }
+
+  .cf-turnstile iframe {
+    max-width: 250px !important;
+  }
+}
+
+/* Ensure proper spacing around auth components */
+.auth-form-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.auth-form-container * {
+  box-sizing: border-box;
+}
+
 @media print {
   .MuiDataGrid-main {
     height: auto !important;

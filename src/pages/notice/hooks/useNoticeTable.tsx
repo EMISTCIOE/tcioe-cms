@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/libs/hooks';
-import { ITableData } from '../components/listing/config';
+import { ITableData } from '../components/listing/config.tsx';
 import { createTableDataHook } from '@/hooks/createTableDataHook';
 import { useDeleteNoticeMutation, useGetNoticesQuery, usePatchNoticeMutation } from '../redux/notice.api';
 import { currentNoticeId, setEdit, setViewId } from '../redux/notice.slice';
@@ -57,7 +57,6 @@ export const useNoticeTable = () => {
         category: (rowData as any).category,
         thumbnail: (rowData as any).thumbnail,
         isFeatured: (rowData as any).isFeatured === 'true',
-        status: (rowData as any).status,
         description: (rowData as any).description
       };
 

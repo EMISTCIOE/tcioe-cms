@@ -1,49 +1,16 @@
-import { Tooltip } from '@mui/material';
-import { GridActionsCellItem, GridRowParams } from '@mui/x-data-grid';
-import AssistantPhotoOutlined from '@mui/icons-material/AssistantPhotoOutlined';
+import { GridRowParams } from '@mui/x-data-grid';
 
 import { useDispatch } from 'react-redux';
-import { currentNoticeId, setEdit, setIsStatusModal } from '../redux/notice.slice';
+import { currentNoticeId, setEdit } from '../redux/notice.slice';
 
-import { ITableData } from '../components/listing/config';
+import { ITableData } from '../components/listing/config.tsx';
 
-interface UseCustomActionsProps {
-  canUpdateStatus: boolean;
-}
-
-export const useCustomActions = ({ canUpdateStatus }: UseCustomActionsProps) => {
+export const useCustomActions = () => {
   const dispatch = useDispatch();
 
   const actions = [];
 
-  // Only add status update action if user has permission
-  if (canUpdateStatus) {
-    actions.push((params: GridRowParams<ITableData>) => (
-      <GridActionsCellItem
-        key="update-status"
-        sx={{
-          ':hover': {
-            backgroundColor: (theme) => theme.palette.primary.lighter,
-            color: (theme) => theme.palette.primary.main
-          }
-        }}
-        showInMenu
-        icon={
-          <Tooltip title="Update Status">
-            <span>
-              <AssistantPhotoOutlined color="primary" sx={{ height: '20px' }} />
-            </span>
-          </Tooltip>
-        }
-        label="Update Status"
-        onClick={() => {
-          dispatch(setIsStatusModal(true));
-          dispatch(currentNoticeId(params.id));
-          dispatch(setEdit(true));
-        }}
-      />
-    ));
-  }
+  // Placeholder for future contextual actions
 
   return actions;
 };

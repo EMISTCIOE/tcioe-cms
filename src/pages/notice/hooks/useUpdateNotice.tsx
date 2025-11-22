@@ -29,7 +29,7 @@ import { INoticeUpdatePayload, NoticeStatus } from '../redux/types';
 import { TField } from '@/components/app-form/types';
 
 const toStringOrNull = (value?: string | number | null) => {
-  if (value === null || value === undefined || value === '') return null;
+  if (value === null || value === undefined || value === '') return undefined;
   return String(value);
 };
 
@@ -241,6 +241,7 @@ const useUpdateNotice = ({ noticeData, onClose }: INoticeUpdateFormProps) => {
     const { id, ...values } = data;
     try {
       const payloadValues = { ...values } as INoticeUpdatePayload;
+      delete (payloadValues as any).status;
 
       if (roleType === 'DEPARTMENT-ADMIN') {
         payloadValues.campusUnit = null;

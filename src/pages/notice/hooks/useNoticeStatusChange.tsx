@@ -1,5 +1,5 @@
 import { usePatchNoticeStatusMutation } from '../redux/notice.api';
-import { ITableData } from '../components/listing/config';
+import { ITableData } from '../components/listing/config.tsx';
 import { NoticeStatus } from '../redux/types';
 import { GridRowId } from '@mui/x-data-grid';
 import { useAppDispatch } from '@/libs/hooks';
