@@ -15,7 +15,13 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon, FileDownload as FileDownloadIcon, Link as LinkIcon } from '@mui/icons-material';
+import {
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+  FileDownload as FileDownloadIcon,
+  Link as LinkIcon
+} from '@mui/icons-material';
 import { useForm, Controller } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
 
@@ -32,8 +38,9 @@ import {
 import { EmisDownloadCategoryOption, IEmisDownload, IEmisDownloadPayload } from '../types';
 
 const categoryLabels: Record<EmisDownloadCategoryOption, string> = {
-  report_form: 'Reports & Forms',
-  resource: 'Resources'
+  reports: 'Reports',
+  forms: 'Forms',
+  downloads: 'Downloads'
 };
 
 const buildMediaUrl = (url?: string | null) => {
@@ -59,7 +66,7 @@ const EmisDownloadsPage = () => {
     defaultValues: {
       title: '',
       description: '',
-      category: 'report_form',
+      category: 'reports',
       link_url: '',
       file: null
     }
@@ -79,7 +86,7 @@ const EmisDownloadsPage = () => {
       form.reset({
         title: '',
         description: '',
-        category: 'report_form',
+        category: 'reports',
         link_url: '',
         file: null
       });
@@ -239,9 +246,7 @@ const EmisDownloadsPage = () => {
             <Controller
               name="link_url"
               control={form.control}
-              render={({ field }) => (
-                <TextField {...field} label="External link" placeholder="https://example.com/file.pdf" />
-              )}
+              render={({ field }) => <TextField {...field} label="External link" placeholder="https://example.com/file.pdf" />}
             />
             <Controller
               name="file"
@@ -259,11 +264,7 @@ const EmisDownloadsPage = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-          <Button
-            onClick={form.handleSubmit(handleSubmit)}
-            variant="contained"
-            disabled={creating || updating}
-          >
+          <Button onClick={form.handleSubmit(handleSubmit)} variant="contained" disabled={creating || updating}>
             {editingItem ? 'Update' : 'Create'}
           </Button>
         </DialogActions>

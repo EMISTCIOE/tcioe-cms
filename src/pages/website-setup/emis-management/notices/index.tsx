@@ -53,9 +53,7 @@ const formatDateInput = (value?: string) => {
   if (!value) return '';
   const date = new Date(value);
   const pad = (n: number) => n.toString().padStart(2, '0');
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(
-    date.getMinutes()
-  )}`;
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 };
 
 const EmisNoticesPage = () => {
@@ -325,11 +323,7 @@ const EmisNoticesPage = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-          <Button
-            onClick={form.handleSubmit(handleSubmit)}
-            variant="contained"
-            disabled={creating || updating}
-          >
+          <Button onClick={form.handleSubmit(handleSubmit)} variant="contained" disabled={creating || updating}>
             {editingItem ? 'Update' : 'Create'}
           </Button>
         </DialogActions>

@@ -216,7 +216,7 @@ export interface IEmailResetRequestCreatePayload {
   phone_number: string;
 }
 
-export type EmisDownloadCategoryOption = 'report_form' | 'resource';
+export type EmisDownloadCategoryOption = 'reports' | 'forms' | 'downloads';
 
 export interface IEmisDownload {
   id: string;
