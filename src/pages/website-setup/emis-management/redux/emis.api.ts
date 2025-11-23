@@ -182,7 +182,7 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     updateEmisDownload: builder.mutation<IEmisDownload, { id: string; data: FormData }>({
       query: ({ id, data }) => ({
         url: `${EMIS_API}/downloads/${id}/`,
-        method: 'PUT',
+        method: 'PATCH',
         data,
         headers: { 'Content-Type': 'multipart/form-data' }
       }),
@@ -216,7 +216,7 @@ export const emisAPISlice = rootAPI.injectEndpoints({
     updateEmisNotice: builder.mutation<IEmisNotice, { id: string; data: FormData }>({
       query: ({ id, data }) => ({
         url: `${EMIS_API}/notices/${id}/`,
-        method: 'PUT',
+        method: 'PATCH',
         data,
         headers: { 'Content-Type': 'multipart/form-data' }
       }),

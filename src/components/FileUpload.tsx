@@ -8,6 +8,9 @@ interface FileUploadProps {
   multiple?: boolean;
   onChange: (file: File | File[] | null) => void;
   value?: File | File[] | null;
+  existingFileName?: string;
+  existingFileUrl?: string;
+  existingFileHint?: string;
   error?: boolean;
   helperText?: string;
   maxSize?: number; // in MB
@@ -19,6 +22,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   multiple = false,
   onChange,
   value,
+  existingFileName,
+  existingFileUrl,
+  existingFileHint = 'Existing file will be kept unless you upload a new one.',
   error = false,
   helperText,
   maxSize = 10
@@ -115,6 +121,31 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
       <input ref={fileInputRef} type="file" accept={accept} multiple={multiple} onChange={handleFileSelect} style={{ display: 'none' }} />
 
+      {!value && existingFileName && (
+        <Card variant="outlined" sx={{ mb: 2 }}>
+          <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                <InsertDriveFile color="action" />
+                <Box>
+                  <Typography variant="body2" noWrap title={existingFileName}>
+                    {existingFileName}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {existingFileHint}
+                  </Typography>
+                </Box>
+              </Box>
+              {existingFileUrl && (
+                <Button variant="text" size="small" href={existingFileUrl} target="_blank" rel="noopener noreferrer">
+                  Open
+                </Button>
+              )}
+            </Box>
+          </CardContent>
+        </Card>
+      )}
+
       <Box
         sx={{
           border: '2px dashed',
@@ -138,7 +169,14 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           {accept && `Accepted formats: ${accept}`}
           {maxSize && ` • Max size: ${maxSize}MB`}
         </Typography>
-        <Button variant="outlined" sx={{ mt: 2 }} onClick={handleButtonClick}>
+        <Button
+          variant="outlined"
+          sx={{ mt: 2 }}
+          onClick={(event) => {
+            event.stopPropagation();
+            handleButtonClick();
+          }}
+        >
           Choose Files
         </Button>
       </Box>

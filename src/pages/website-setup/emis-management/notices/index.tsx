@@ -21,7 +21,6 @@ import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon, Visibility as V
 import { useForm, Controller } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
 
-import { RichTextEditor } from '@/components/RichTextEditor';
 import FileUpload from '@/components/FileUpload';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import { useAppDispatch } from '@/libs/hooks';
@@ -33,6 +32,12 @@ import {
   useUpdateEmisNoticeMutation
 } from '../redux/emis.api';
 import { EmisNoticeCategoryOption, EmisNoticeSeverityOption, IEmisNotice, IEmisNoticePayload } from '../types';
+
+type AnyNotice = IEmisNotice & {
+  isPublished?: boolean;
+  publishedAt?: string;
+  attachment?: string | null;
+};
 
 const categoryLabels: Record<EmisNoticeCategoryOption, string> = {
   security: 'Security',
@@ -49,11 +54,36 @@ const severityLabels: Record<EmisNoticeSeverityOption, string> = {
   info: 'Info'
 };
 
+const buildMediaUrl = (url?: string | null) => {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  const base = `${import.meta.env.VITE_PUBLIC_APP_HTTP_SCHEME}${import.meta.env.VITE_PUBLIC_APP_BASE_URL}`.replace('/api/', '');
+  return `${base}${url.startsWith('/') ? url : `/${url}`}`;
+};
+
 const formatDateInput = (value?: string) => {
   if (!value) return '';
   const date = new Date(value);
   const pad = (n: number) => n.toString().padStart(2, '0');
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+};
+
+const toIsoString = (value?: string) => {
+  if (!value) return '';
+  const date = new Date(value);
+  return isNaN(date.getTime()) ? '' : date.toISOString();
+};
+
+const stripHtml = (value?: string | null) => {
+  if (!value) return '';
+  return value.replace(/<[^>]+>/g, '').trim();
+};
+
+const normalizeNotice = (notice: AnyNotice) => {
+  const published_at = notice.published_at || notice.publishedAt || '';
+  const is_published = notice.is_published ?? notice.isPublished ?? false;
+  const attachment = notice.attachment ?? (notice as any).attachment ?? null;
+  return { ...notice, published_at, is_published, attachment };
 };
 
 const EmisNoticesPage = () => {
@@ -83,17 +113,18 @@ const EmisNoticesPage = () => {
   });
 
   const handleOpen = (item?: IEmisNotice) => {
-    setEditingItem(item || null);
-    if (item) {
+    const normalized = item ? normalizeNotice(item as AnyNotice) : null;
+    setEditingItem((normalized as IEmisNotice) || null);
+    if (normalized) {
       form.reset({
-        title: item.title,
-        summary: item.summary || '',
-        body: item.body || '',
-        category: item.category,
-        severity: item.severity,
-        published_at: formatDateInput(item.published_at),
-        is_published: item.is_published,
-        external_url: item.external_url || '',
+        title: normalized.title,
+        summary: normalized.summary || '',
+        body: stripHtml(normalized.body) || '',
+        category: normalized.category,
+        severity: normalized.severity,
+        published_at: formatDateInput(normalized.published_at),
+        is_published: normalized.is_published,
+        external_url: normalized.external_url || '',
         attachment: null
       });
     } else {
@@ -119,7 +150,8 @@ const EmisNoticesPage = () => {
     if (values.body) formData.append('body', values.body);
     formData.append('category', values.category);
     formData.append('severity', values.severity);
-    if (values.published_at) formData.append('published_at', values.published_at);
+    const publishIso = toIsoString(values.published_at);
+    if (publishIso) formData.append('published_at', publishIso);
     formData.append('is_published', `${values.is_published ?? true}`);
     if (values.external_url) formData.append('external_url', values.external_url);
     if (values.attachment) formData.append('attachment', values.attachment);
@@ -133,7 +165,7 @@ const EmisNoticesPage = () => {
         dispatch(setMessage({ message: 'Notice created successfully', type: 'success' }));
       }
       setDialogOpen(false);
-      refetch();
+      await refetch();
     } catch (err: any) {
       const detail = err?.data?.detail || err?.data?.message || 'Unable to save notice';
       enqueueSnackbar(detail, { variant: 'error' });
@@ -153,7 +185,9 @@ const EmisNoticesPage = () => {
     }
   };
 
-  const notices = useMemo(() => data?.results || [], [data?.results]);
+  const notices = useMemo(() => (data?.results || []).map((n: AnyNotice) => normalizeNotice(n)), [data?.results]);
+  const existingAttachmentName = editingItem?.attachment ? editingItem.attachment.split('/').pop() || editingItem.attachment : undefined;
+  const existingAttachmentUrl = editingItem?.attachment ? buildMediaUrl(editingItem.attachment) : undefined;
 
   return (
     <Box sx={{ p: 3 }}>
@@ -293,14 +327,7 @@ const EmisNoticesPage = () => {
             <Controller
               name="body"
               control={form.control}
-              render={({ field }) => (
-                <RichTextEditor
-                  label="Body"
-                  value={field.value || ''}
-                  onChange={field.onChange}
-                  placeholder="Write the full notice content..."
-                />
-              )}
+              render={({ field }) => <TextField {...field} label="Body" multiline minRows={4} placeholder="Write the full notice content..." />}
             />
             <Controller
               name="external_url"
@@ -316,6 +343,9 @@ const EmisNoticesPage = () => {
                   value={field.value as File | null}
                   onChange={(f) => field.onChange(f)}
                   label="Attachment (optional)"
+                  existingFileName={existingAttachmentName}
+                  existingFileUrl={existingAttachmentUrl}
+                  existingFileHint="Current attachment will be kept unless you upload a new one."
                 />
               )}
             />

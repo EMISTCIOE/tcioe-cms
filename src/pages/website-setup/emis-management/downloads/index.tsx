@@ -138,6 +138,8 @@ const EmisDownloadsPage = () => {
   };
 
   const downloads = useMemo(() => data?.results || [], [data?.results]);
+  const existingFileName = editingItem?.file ? editingItem.file.split('/').pop() || editingItem.file : undefined;
+  const existingFileUrl = editingItem?.file ? buildMediaUrl(editingItem.file) : undefined;
 
   return (
     <Box sx={{ p: 3 }}>
@@ -257,6 +259,9 @@ const EmisDownloadsPage = () => {
                   value={field.value as File | null}
                   onChange={(f) => field.onChange(f)}
                   label="Upload file (optional if link is provided)"
+                  existingFileName={existingFileName}
+                  existingFileUrl={existingFileUrl}
+                  existingFileHint="Current file will remain unless you upload a new one."
                 />
               )}
             />

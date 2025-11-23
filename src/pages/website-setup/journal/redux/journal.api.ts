@@ -8,8 +8,8 @@ import {
   IJournalAuthorCreatePayload
 } from './types';
 
-const articlesAPI = 'cms/journal-mod/articles';
-const authorsAPI = 'cms/journal-mod/authors';
+const articlesAPI = 'cms/journal-mod/articles/';
+const authorsAPI = 'cms/journal-mod/authors/';
 
 export const journalApi = rootAPI.injectEndpoints({
   endpoints: (builder) => ({
@@ -52,7 +52,7 @@ export const journalApi = rootAPI.injectEndpoints({
 
     updateJournalArticle: builder.mutation<IJournalArticle, { id: string } & Partial<IJournalArticleCreatePayload>>({
       query: ({ id, ...payload }) => ({
-        url: `${articlesAPI}/${id}`,
+        url: `${articlesAPI}${id}/`,
         method: 'PATCH',
         data: payload
       }),
@@ -64,7 +64,7 @@ export const journalApi = rootAPI.injectEndpoints({
 
     deleteJournalArticle: builder.mutation<void, string>({
       query: (id) => ({
-        url: `${articlesAPI}/${id}`,
+        url: `${articlesAPI}${id}/`,
         method: 'DELETE'
       }),
       invalidatesTags: (result, error, id) => [
