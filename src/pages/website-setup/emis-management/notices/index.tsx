@@ -327,7 +327,9 @@ const EmisNoticesPage = () => {
             <Controller
               name="body"
               control={form.control}
-              render={({ field }) => <TextField {...field} label="Body" multiline minRows={4} placeholder="Write the full notice content..." />}
+              render={({ field }) => (
+                <TextField {...field} label="Body" multiline minRows={4} placeholder="Write the full notice content..." />
+              )}
             />
             <Controller
               name="external_url"

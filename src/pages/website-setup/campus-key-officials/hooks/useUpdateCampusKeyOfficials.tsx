@@ -20,6 +20,7 @@ import { ICampusKeyOfficialsUpdateFormProps } from '../components/update-form/Fo
 import { useGetCampusStaffDesignationsQuery, usePatchCampusKeyOfficialsMutation } from '../redux/campusKeyOfficials.api';
 import { ICampusKeyOfficialsUpdatePayload } from '../redux/types';
 import { useGetDepartmentsQuery } from '@/pages/website-setup/departments/redux/departments.api';
+import { useCampusSectionOptions } from '@/hooks/useCampusSectionOptions';
 
 const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampusKeyOfficialsUpdateFormProps) => {
   const dispatch = useAppDispatch();
@@ -27,6 +28,7 @@ const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampu
   const [updateCampusKeyOfficials] = usePatchCampusKeyOfficialsMutation();
   const { data: designationData } = useGetCampusStaffDesignationsQuery();
   const { data: departmentData } = useGetDepartmentsQuery({ search: '', paginationModel: { page: 0, pageSize: 500 }, sortModel: [] });
+  const { options: campusSectionOptions } = useCampusSectionOptions();
   const [formFields, setFormFields] = useState(campusKeyOfficialsUpdateFields);
 
   const {
@@ -59,7 +61,13 @@ const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampu
         isKeyOfficial: dataAny.is_key_official ?? dataAny.isKeyOfficial ?? true,
         isActive: dataAny.is_active ?? dataAny.isActive ?? true,
         displayOrder: dataAny.display_order ?? dataAny.displayOrder ?? 1,
-        department: dataAny.department?.id ?? dataAny.department ?? undefined
+        department: dataAny.department?.id ?? dataAny.department ?? undefined,
+        campusSection:
+          dataAny.campus_section?.id ??
+          dataAny.campus_section ??
+          dataAny.campusSection?.id ??
+          dataAny.campusSection ??
+          undefined
       });
     }
   }, [campusKeyOfficialsData, reset]);
@@ -93,10 +101,11 @@ const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampu
     setFormFields((prev) =>
       prev.map((field) => {
         if (field.name === 'department') return { ...field, options: departmentOptions };
+        if (field.name === 'campusSection') return { ...field, options: campusSectionOptions };
         return field;
       })
     );
-  }, [departmentData]);
+  }, [departmentData, campusSectionOptions]);
 
   // This is for form update not for inline update
   const onSubmit = async (data: TCampusKeyOfficialsUpdateFormDataType) => {
@@ -107,6 +116,9 @@ const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampu
       if (apiValues.displayOrder !== undefined) {
         apiValues.display_order = apiValues.displayOrder;
         delete apiValues.displayOrder;
+      }
+      if (apiValues.campusSection === '') {
+        apiValues.campusSection = null;
       }
 
       const payload = {
@@ -131,7 +143,8 @@ const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampu
           photo: 'photo',
           isKeyOfficial: 'isKeyOfficial',
           isActive: 'isActive',
-          department: 'department'
+          department: 'department',
+          campusSection: 'campusSection'
         }
       });
     }

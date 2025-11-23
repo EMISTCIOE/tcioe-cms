@@ -56,6 +56,7 @@ export interface ICampusKeyOfficialsItem {
   email?: string | null;
   phoneNumber?: string | null;
   department?: { id: string | number; name: string; short_name?: string | null; type?: string } | null;
+  campusSection?: { id?: string | number; uuid?: string; name: string; slug?: string } | null;
   isKeyOfficial: boolean;
   isActive: boolean;
 }
@@ -75,6 +76,7 @@ export interface ICampusKeyOfficialsDetails {
   email: string | null;
   phoneNumber: string | null;
   department?: string | number | null;
+  campusSection?: string | number | null;
   createdBy: string;
   updatedBy: string;
   createdAt: string; // ISO Date string
@@ -95,6 +97,7 @@ export interface ICampusKeyOfficialsCreatePayload {
   isKeyOfficial?: boolean;
   isActive?: boolean;
   department?: string;
+  campusSection?: string | number | null;
 }
 
 /* ------------------------- CampusKeyOfficials patch interfaces ------------------------- */
@@ -110,4 +113,5 @@ export interface ICampusKeyOfficialsUpdatePayload {
   isActive?: boolean;
   displayOrder?: number;
   department?: string;
+  campusSection?: string | number | null;
 }

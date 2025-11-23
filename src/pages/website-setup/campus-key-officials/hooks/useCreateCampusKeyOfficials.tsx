@@ -17,6 +17,7 @@ import {
   defaultValues,
   TCampusKeyOfficialsCreateFormDataType
 } from '../components/create-form/config';
+import { useCampusSectionOptions } from '@/hooks/useCampusSectionOptions';
 
 const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormProps) => {
   const dispatch = useAppDispatch();
@@ -24,6 +25,7 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
   const [createCampusKeyOfficials] = useCreateCampusKeyOfficialsMutation();
   const { data: designationData } = useGetCampusStaffDesignationsQuery();
   const { data: departmentData } = useGetDepartmentsQuery({ search: '', paginationModel: { page: 0, pageSize: 500 }, sortModel: [] });
+  const { options: campusSectionOptions } = useCampusSectionOptions();
   const [formFields, setFormFields] = useState(campusKeyOfficialsCreateFields);
 
   const {
@@ -55,15 +57,20 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
       prev.map((field) => {
         if (field.name === 'designation') return { ...field, options };
         if (field.name === 'department') return { ...field, options: departmentOptions };
+        if (field.name === 'campusSection') return { ...field, options: campusSectionOptions };
         return field;
       })
     );
-  }, [designationData, departmentData]);
+  }, [designationData, departmentData, campusSectionOptions]);
 
   // NOTE - Form submit handler
   const onSubmit = async (data: TCampusKeyOfficialsCreateFormDataType) => {
     try {
       const payload = { ...data } as ICampusKeyOfficialsCreatePayload;
+      // Normalize campusSection to null instead of empty string/undefined
+      if (payload.campusSection === '') {
+        payload.campusSection = null as unknown as undefined;
+      }
       const res = await createCampusKeyOfficials(payload).unwrap();
       dispatch(setMessage({ message: res.message, variant: 'success' }));
       onClose?.();
@@ -82,7 +89,8 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
           photo: 'photo',
           isKeyOfficial: 'isKeyOfficial',
           isActive: 'isActive',
-          department: 'department'
+          department: 'department',
+          campusSection: 'campusSection'
         }
       });
     }
