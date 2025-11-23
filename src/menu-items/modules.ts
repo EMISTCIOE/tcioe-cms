@@ -137,6 +137,22 @@ const modules: MenuItem = {
           icon: icons.EmailIcon,
           url: '/website-setup/emis-management/email-reset',
           breadcrumbs: false
+        },
+        {
+          id: 'emis-downloads',
+          title: 'EMIS Downloads',
+          type: 'item',
+          icon: icons.DownloadIcon,
+          url: '/website-setup/emis-management/downloads',
+          breadcrumbs: false
+        },
+        {
+          id: 'emis-notices',
+          title: 'EMIS Notices',
+          type: 'item',
+          icon: icons.NotificationsIcon,
+          url: '/website-setup/emis-management/notices',
+          breadcrumbs: false
         }
       ]
     },

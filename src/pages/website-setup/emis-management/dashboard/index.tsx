@@ -5,7 +5,9 @@ import {
   Cloud as CloudIcon,
   Email as EmailIcon,
   Hardware as HardwareIcon,
-  NetworkCheck as NetworkIcon
+  NetworkCheck as NetworkIcon,
+  Download as DownloadIcon,
+  Notifications as NotificationsIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -37,6 +39,22 @@ const EmisManagementDashboard = () => {
       path: '/website-setup/emis-management/email-reset',
       color: 'error.main',
       features: ['Approval Workflow', 'Phone Verification', 'Webhook Integration', 'Request Tracking']
+    },
+    {
+      title: 'Downloads',
+      description: 'Central library for EMIS forms, reports, and resources.',
+      icon: <DownloadIcon sx={{ fontSize: 48, color: 'success.main' }} />,
+      path: '/website-setup/emis-management/downloads',
+      color: 'success.main',
+      features: ['Forms & Reports', 'External Links', 'File Uploads']
+    },
+    {
+      title: 'EMIS Notices',
+      description: 'Publish security advisories, maintenance windows, and release updates for EMIS.',
+      icon: <NotificationsIcon sx={{ fontSize: 48, color: 'info.main' }} />,
+      path: '/website-setup/emis-management/notices',
+      color: 'info.main',
+      features: ['Security Alerts', 'Maintenance Windows', 'Release Notes']
     }
   ];
 

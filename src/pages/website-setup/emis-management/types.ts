@@ -215,3 +215,60 @@ export interface IEmailResetRequestCreatePayload {
   secondary_email: string;
   phone_number: string;
 }
+
+export type EmisDownloadCategoryOption = 'report_form' | 'resource';
+
+export interface IEmisDownload {
+  id: string;
+  uuid: string;
+  title: string;
+  description?: string;
+  category: EmisDownloadCategoryOption;
+  file?: string | null;
+  link_url?: string | null;
+  created_at: string;
+  updated_at: string;
+  is_active: boolean;
+}
+
+export interface IEmisDownloadPayload {
+  title: string;
+  description?: string;
+  category: EmisDownloadCategoryOption;
+  link_url?: string;
+  file?: File | null;
+}
+
+export type EmisNoticeCategoryOption = 'security' | 'maintenance' | 'release' | 'advisory' | 'general';
+export type EmisNoticeSeverityOption = 'info' | 'minor' | 'major' | 'critical';
+
+export interface IEmisNotice {
+  id: string;
+  uuid: string;
+  slug: string;
+  title: string;
+  summary?: string;
+  body?: string;
+  category: EmisNoticeCategoryOption;
+  severity: EmisNoticeSeverityOption;
+  published_at: string;
+  is_published: boolean;
+  attachment?: string | null;
+  external_url?: string | null;
+  views: number;
+  created_at: string;
+  updated_at: string;
+  is_active: boolean;
+}
+
+export interface IEmisNoticePayload {
+  title: string;
+  summary?: string;
+  body?: string;
+  category: EmisNoticeCategoryOption;
+  severity: EmisNoticeSeverityOption;
+  published_at?: string;
+  is_published?: boolean;
+  attachment?: File | null;
+  external_url?: string;
+}

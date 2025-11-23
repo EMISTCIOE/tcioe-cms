@@ -45,6 +45,8 @@ const ManageEmis = Loadable(lazy(() => import('@/pages/website-setup/emis-manage
 const EmisHardware = Loadable(lazy(() => import('@/pages/website-setup/emis-management/hardware')));
 const EmisVps = Loadable(lazy(() => import('@/pages/website-setup/emis-management/vps')));
 const EmisEmailReset = Loadable(lazy(() => import('@/pages/website-setup/emis-management/email-reset')));
+const EmisDownloads = Loadable(lazy(() => import('@/pages/website-setup/emis-management/downloads')));
+const EmisNotices = Loadable(lazy(() => import('@/pages/website-setup/emis-management/notices')));
 const UnionMembers = Loadable(lazy(() => import('@/pages/website-setup/union-members')));
 
 // Contact Setup Pages
@@ -121,6 +123,8 @@ const PrivateRoutes = () => {
                     <Route path="hardware" element={<EmisHardware />} />
                     <Route path="vps" element={<EmisVps />} />
                     <Route path="email-reset" element={<EmisEmailReset />} />
+                    <Route path="downloads" element={<EmisDownloads />} />
+                    <Route path="notices" element={<EmisNotices />} />
                   </Route>
                 )}
               </>

@@ -73,6 +73,8 @@ export const rootAPI = createApi({
     'EmisHardware',
     'EmisVpsInfo',
     'EmisVpsService',
-    'EmailResetRequest'
+    'EmailResetRequest',
+    'EmisDownload',
+    'EmisNotice'
   ]
 });

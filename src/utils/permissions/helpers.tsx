@@ -24,7 +24,15 @@ export function useHasParticularPermissions(permission: string | string[]): bool
       'add_emis_vps',
       'change_emis_vps',
       'delete_emis_vps',
-      'view_emis_vps'
+      'view_emis_vps',
+      'add_emisdownload',
+      'change_emisdownload',
+      'delete_emisdownload',
+      'view_emisdownload',
+      'add_emisnotice',
+      'change_emisnotice',
+      'delete_emisnotice',
+      'view_emisnotice'
     ];
 
     if (requiredPermissions.some((perm) => emisRestrictedPermissions.includes(perm))) {

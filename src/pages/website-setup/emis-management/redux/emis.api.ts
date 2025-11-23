@@ -5,6 +5,10 @@ import {
   IEmailResetRequestCreatePayload,
   IEmisHardware,
   IEmisHardwareCreatePayload,
+  IEmisDownload,
+  IEmisDownloadPayload,
+  IEmisNotice,
+  IEmisNoticePayload,
   IEmisVpsInfo,
   IEmisVpsInfoCreatePayload,
   IEmisVpsService,
@@ -156,6 +160,74 @@ export const emisAPISlice = rootAPI.injectEndpoints({
         data: { email }
       }),
       invalidatesTags: ['EmailResetRequest']
+    }),
+
+    // Downloads
+    getEmisDownloads: builder.query<IListResponse<IEmisDownload>, void>({
+      query: () => ({
+        url: `${EMIS_API}/downloads/`,
+        method: 'GET'
+      }),
+      providesTags: ['EmisDownload']
+    }),
+    createEmisDownload: builder.mutation<IEmisDownload, FormData>({
+      query: (data) => ({
+        url: `${EMIS_API}/downloads/`,
+        method: 'POST',
+        data,
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }),
+      invalidatesTags: ['EmisDownload']
+    }),
+    updateEmisDownload: builder.mutation<IEmisDownload, { id: string; data: FormData }>({
+      query: ({ id, data }) => ({
+        url: `${EMIS_API}/downloads/${id}/`,
+        method: 'PUT',
+        data,
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }),
+      invalidatesTags: ['EmisDownload']
+    }),
+    deleteEmisDownload: builder.mutation<IMutationSuccessResponse, string>({
+      query: (id) => ({
+        url: `${EMIS_API}/downloads/${id}/`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['EmisDownload']
+    }),
+
+    // Notices
+    getEmisNotices: builder.query<IListResponse<IEmisNotice>, void>({
+      query: () => ({
+        url: `${EMIS_API}/notices/`,
+        method: 'GET'
+      }),
+      providesTags: ['EmisNotice']
+    }),
+    createEmisNotice: builder.mutation<IEmisNotice, FormData>({
+      query: (data) => ({
+        url: `${EMIS_API}/notices/`,
+        method: 'POST',
+        data,
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }),
+      invalidatesTags: ['EmisNotice']
+    }),
+    updateEmisNotice: builder.mutation<IEmisNotice, { id: string; data: FormData }>({
+      query: ({ id, data }) => ({
+        url: `${EMIS_API}/notices/${id}/`,
+        method: 'PUT',
+        data,
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }),
+      invalidatesTags: ['EmisNotice']
+    }),
+    deleteEmisNotice: builder.mutation<IMutationSuccessResponse, string>({
+      query: (id) => ({
+        url: `${EMIS_API}/notices/${id}/`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['EmisNotice']
     })
   })
 });
@@ -184,5 +256,17 @@ export const {
   useCreateEmailResetRequestMutation,
   useApproveEmailResetRequestMutation,
   useRejectEmailResetRequestMutation,
-  useResetEmailRequestLimitMutation
+  useResetEmailRequestLimitMutation,
+
+  // Downloads
+  useGetEmisDownloadsQuery,
+  useCreateEmisDownloadMutation,
+  useUpdateEmisDownloadMutation,
+  useDeleteEmisDownloadMutation,
+
+  // Notices
+  useGetEmisNoticesQuery,
+  useCreateEmisNoticeMutation,
+  useUpdateEmisNoticeMutation,
+  useDeleteEmisNoticeMutation
 } = emisAPISlice;
