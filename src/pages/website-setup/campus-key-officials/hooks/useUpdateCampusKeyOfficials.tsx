@@ -63,11 +63,7 @@ const useUpdateCampusKeyOfficials = ({ campusKeyOfficialsData, onClose }: ICampu
         displayOrder: dataAny.display_order ?? dataAny.displayOrder ?? 1,
         department: dataAny.department?.id ?? dataAny.department ?? undefined,
         campusSection:
-          dataAny.campus_section?.id ??
-          dataAny.campus_section ??
-          dataAny.campusSection?.id ??
-          dataAny.campusSection ??
-          undefined
+          dataAny.campus_section?.id ?? dataAny.campus_section ?? dataAny.campusSection?.id ?? dataAny.campusSection ?? undefined
       });
     }
   }, [campusKeyOfficialsData, reset]);
