@@ -29,6 +29,7 @@ export interface IListQueryParams {
   paginationModel?: GridPaginationModel;
   sortModel?: GridSortModel;
   filterModel?: GridFilterModel;
+  filters?: Record<string, string | number | boolean | undefined | null>;
 }
 
 export interface IMutationSuccessResponse {

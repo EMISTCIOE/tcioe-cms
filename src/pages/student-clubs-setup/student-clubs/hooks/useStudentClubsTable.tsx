@@ -1,10 +1,11 @@
 import { createTableDataHook } from '@/hooks/createTableDataHook';
-import { useAppDispatch } from '@/libs/hooks';
+import { useAppDispatch, useAppSelector } from '@/libs/hooks';
 
 import { ITableData } from '../components/listing/config';
 import { useDeleteStudentClubsMutation, useGetStudentClubsQuery, usePatchStudentClubsMutation } from '../redux/studentClubs.api';
 import { currentStudentClubsId, setEdit, setViewId } from '../redux/studentClubs.slice';
 import { IStudentClubsItem } from '../redux/types';
+import { authState } from '@/pages/authentication/redux/selector';
 
 /**
  * Custom hook for StudentClubs table Fetching and updating
@@ -13,8 +14,14 @@ import { IStudentClubsItem } from '../redux/types';
  */
 export const useStudentClubsTable = () => {
   const dispatch = useAppDispatch();
+  const { roleType, departmentId, clubId } = useAppSelector(authState);
 
-  return createTableDataHook<ITableData, any>({
+  const scopedFilters =
+    (roleType === 'DEPARTMENT-ADMIN' && departmentId && { department: departmentId }) ||
+    (roleType === 'CLUB' && clubId && { id: clubId }) ||
+    undefined;
+
+  const baseHook = createTableDataHook<ITableData, any>({
     // RTK Query hooks
     useListQuery: useGetStudentClubsQuery,
     useUpdateMutation: usePatchStudentClubsMutation,
@@ -48,4 +55,16 @@ export const useStudentClubsTable = () => {
       return rowData;
     }
   });
+
+  return (initialParams?: Parameters<typeof baseHook>[0]) => {
+    const mergedFilters = {
+      ...(initialParams?.filters || {}),
+      ...(scopedFilters || {})
+    };
+
+    return baseHook({
+      ...initialParams,
+      ...(Object.keys(mergedFilters).length ? { filters: mergedFilters } : {})
+    });
+  };
 };

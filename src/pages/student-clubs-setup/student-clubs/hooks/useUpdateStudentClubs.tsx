@@ -32,6 +32,8 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
   const [formFields, setFormFields] = useState(studentClubsUpdateFields);
   const { options: departmentOptions } = useDepartmentOptions();
   const { roleType, departmentId } = useAppSelector(authState);
+  const isDepartmentAdmin = roleType === 'DEPARTMENT-ADMIN' && Boolean(departmentId);
+  const isClubUser = roleType === 'CLUB';
 
   const {
     control,
@@ -51,17 +53,18 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
     if (studentClubsData) {
       reset({
         ...studentClubsData,
-        department:
-          roleType === 'CLUB'
-            ? departmentId
-              ? String(departmentId)
-              : null
-            : studentClubsData.department?.id
-              ? String(studentClubsData.department.id)
-              : null
+        department: (() => {
+          if (isClubUser) {
+            return departmentId ? String(departmentId) : studentClubsData.department?.id ? String(studentClubsData.department.id) : null;
+          }
+          if (isDepartmentAdmin && departmentId) {
+            return String(departmentId);
+          }
+          return studentClubsData.department?.id ? String(studentClubsData.department.id) : null;
+        })()
       });
     }
-  }, [studentClubsData, reset, roleType, departmentId]);
+  }, [studentClubsData, reset, roleType, departmentId, isDepartmentAdmin, isClubUser]);
 
   // delete handler for member item
   const handleDeleteMemberItem = async (index: number, member_id?: string) => {
@@ -95,27 +98,28 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
           return {
             ...field,
             options: departmentOptions ?? [],
-            disabled: roleType === 'CLUB'
+            disabled: roleType === 'CLUB' || isDepartmentAdmin
           };
         }
         return field;
       })
     );
-  }, [departmentOptions, roleType]);
+  }, [departmentOptions, roleType, isDepartmentAdmin]);
 
   useEffect(() => {
     // For club users, ensure department value and option are set even if options array is empty
-    if (roleType === 'CLUB') {
+    if (isClubUser || isDepartmentAdmin) {
       const fallbackDepartmentId =
-        departmentId || studentClubsData?.department?.id ? String(departmentId || studentClubsData?.department?.id) : null;
+        (isDepartmentAdmin ? departmentId : departmentId || studentClubsData?.department?.id) ?? studentClubsData?.department?.id ?? null;
 
       if (fallbackDepartmentId) {
-        setValue('department', fallbackDepartmentId);
+        const normalizedFallback = String(fallbackDepartmentId);
+        setValue('department', normalizedFallback);
 
         setFormFields((prev) =>
           prev.map((field) => {
             if (field.name === 'department') {
-              const optionExists = (field.options || []).some((opt) => opt.value === fallbackDepartmentId);
+              const optionExists = (field.options || []).some((opt) => opt.value === normalizedFallback);
               return {
                 ...field,
                 options: optionExists
@@ -124,7 +128,7 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
                       ...(field.options || []),
                       {
                         label: studentClubsData?.department?.name || 'My Department',
-                        value: fallbackDepartmentId
+                        value: normalizedFallback
                       }
                     ],
                 disabled: true
@@ -140,7 +144,7 @@ const useUpdateStudentClubs = ({ studentClubsData, onClose }: IStudentClubsUpdat
       const firstOption = departmentOptions[0];
       setValue('department', String(firstOption.value));
     }
-  }, [roleType, departmentId, setValue, departmentOptions, studentClubsData]);
+  }, [roleType, departmentId, setValue, departmentOptions, studentClubsData, isDepartmentAdmin, isClubUser]);
 
   // This is for form update not for inline update
   const onSubmit = async (data: TStudentClubsUpdateFormDataType) => {

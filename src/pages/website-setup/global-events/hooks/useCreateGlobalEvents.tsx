@@ -92,7 +92,7 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
         return updatedFields.filter((field) => field.name !== 'departments' && field.name !== 'clubs');
       }
       if (isDepartmentAdmin) {
-        return updatedFields.filter((field) => field.name !== 'clubs' && field.name !== 'unions');
+        return updatedFields.filter((field) => field.name !== 'unions');
       }
       if (isStudentClub) {
         return updatedFields.filter((field) => field.name !== 'unions' && field.name !== 'departments');
@@ -147,7 +147,6 @@ const useCreateGlobalEvents = ({ onClose }: { onClose?: () => void }) => {
 
       if (isDepartmentAdmin && departmentId) {
         payload.departments = [String(departmentId)];
-        payload.clubs = undefined;
         payload.unions = undefined;
       }
 

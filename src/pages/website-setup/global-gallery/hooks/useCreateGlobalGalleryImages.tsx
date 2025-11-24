@@ -130,7 +130,7 @@ const useCreateGlobalGalleryImages = ({ onClose }: { onClose?: () => void }) => 
           if (isUnion && ['club', 'department', 'unit', 'section'].includes(field.name as string)) return false;
           if (isUnit && ['union', 'club', 'department', 'section', 'globalEvent'].includes(field.name as string)) return false;
           if (isSection && ['union', 'club', 'department', 'unit', 'globalEvent'].includes(field.name as string)) return false;
-          if (isDepartmentAdmin && ['union', 'club', 'unit', 'section'].includes(field.name as string)) return false;
+          if (isDepartmentAdmin && ['union', 'unit', 'section'].includes(field.name as string)) return false;
           if (isClub && ['union', 'department', 'unit', 'section'].includes(field.name as string)) return false;
           return true;
         })

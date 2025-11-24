@@ -9,17 +9,29 @@ export const studentClubsAPISlice = rootAPI.injectEndpoints({
   endpoints: (builder) => ({
     //Get StudentClubs
     getStudentClubs: builder.query<IStudentClubsList, IListQueryParams>({
-      query: ({ search, paginationModel, sortModel, filterModel }) => {
+      query: ({ search, paginationModel, sortModel, filterModel, filters }) => {
         // build query params
         const { page, pageSize, orderingString, filterString } = getQueryParams({
           search,
           paginationModel,
           sortModel,
-          filterModel
+          filterModel,
+          filters
         });
 
+        const queryParts = [
+          `offset=${page * pageSize}`,
+          `limit=${pageSize}`,
+          `search=${search ?? ''}`,
+          `ordering=${orderingString}`
+        ];
+
+        if (filterString) {
+          queryParts.push(filterString);
+        }
+
         return {
-          url: `${studentClubsAPI}?offset=${page * pageSize}&limit=${pageSize}&search=${search ?? ''}&ordering=${orderingString}&${filterString}`,
+          url: `${studentClubsAPI}?${queryParts.filter(Boolean).join('&')}`,
           method: 'GET'
         };
       },
