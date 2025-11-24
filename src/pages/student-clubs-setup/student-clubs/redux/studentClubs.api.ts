@@ -19,12 +19,7 @@ export const studentClubsAPISlice = rootAPI.injectEndpoints({
           filters
         });
 
-        const queryParts = [
-          `offset=${page * pageSize}`,
-          `limit=${pageSize}`,
-          `search=${search ?? ''}`,
-          `ordering=${orderingString}`
-        ];
+        const queryParts = [`offset=${page * pageSize}`, `limit=${pageSize}`, `search=${search ?? ''}`, `ordering=${orderingString}`];
 
         if (filterString) {
           queryParts.push(filterString);
