@@ -42,7 +42,8 @@ const useUpdateNoticeStatus = ({ noticeData, onClose }: INoticeStatusUpdateFormP
   useEffect(() => {
     if (noticeData) {
       reset({
-        ...noticeData
+        id: Number(noticeData.id),
+        status: noticeData.status
       });
     }
   }, [noticeData, reset]);
