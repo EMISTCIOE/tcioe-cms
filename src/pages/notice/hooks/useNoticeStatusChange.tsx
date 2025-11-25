@@ -10,13 +10,11 @@ export const useNoticeStatusChange = () => {
   const dispatch = useAppDispatch();
 
   const onStatusChange = async (id: GridRowId, value: ITableData[keyof ITableData]) => {
-    if (!value) {
-      return;
-    }
+    // Always send APPROVED regardless of selected value to match backend enforcement.
     try {
       const res = await patchNoticeStatus({
         id,
-        values: { status: value as NoticeStatus }
+        values: { status: NoticeStatus.APPROVED }
       }).unwrap();
       dispatch(setMessage({ message: res.message, variant: 'success' }));
     } catch (error) {

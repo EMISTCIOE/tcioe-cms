@@ -16,6 +16,7 @@ import {
   noticeStatusUpdateFormSchema,
   TNoticeStatusUpdateFormDataType
 } from '../components/status-update/config';
+import { NoticeStatus } from '../redux/types';
 import { INoticeStatusUpdateFormProps } from '../components/status-update/Form';
 import { usePatchNoticeStatusMutation } from '../redux/notice.api';
 
@@ -50,9 +51,10 @@ const useUpdateNoticeStatus = ({ noticeData, onClose }: INoticeStatusUpdateFormP
   const onSubmit = async (data: TNoticeStatusUpdateFormDataType) => {
     const { id, ...values } = data;
     try {
+      // Ensure backend always receives APPROVED status from the CMS.
       const payload = {
         id,
-        values
+        values: { ...values, status: NoticeStatus.APPROVED }
       };
       const res = await updateNoticeStatus(payload).unwrap();
       dispatch(setMessage({ message: res.message, variant: 'success' }));
