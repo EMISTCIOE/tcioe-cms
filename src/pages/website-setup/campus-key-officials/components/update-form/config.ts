@@ -21,6 +21,7 @@ export const campusKeyOfficialsUpdateFormSchema = z.object({
   isActive: z.boolean().default(true),
   department: z.union([z.string(), z.number()]).optional(),
   campusSection: z.union([z.string(), z.number()]).optional(),
+  unit: z.union([z.string(), z.number()]).optional(),
   photo: z
     .union([z.string().min(1, 'Photo URL cannot be empty.'), z.any()])
     .refine(
@@ -57,6 +58,7 @@ export const defaultValues: Partial<TCampusKeyOfficialsUpdateFormDataType> = {
   isActive: true,
   department: undefined,
   campusSection: undefined,
+  unit: undefined,
   photo: null
 };
 
@@ -85,6 +87,7 @@ export const campusKeyOfficialsUpdateFields: FormField<TCampusKeyOfficialsUpdate
   { name: 'email', label: 'Email', xs: 12, sm: 4, type: 'email' },
   { name: 'phoneNumber', label: 'Phone Number', xs: 12, sm: 4, type: 'text' },
   { name: 'department', label: 'Department', xs: 12, sm: 4, type: 'select', options: [] },
+  { name: 'unit', label: 'Campus Unit', xs: 12, sm: 4, type: 'select', options: [] },
   { name: 'campusSection', label: 'Campus Section', xs: 12, sm: 4, type: 'select', options: [] },
   { name: 'isKeyOfficial', label: 'Key Official', xs: 2, sm: 2, type: 'switch' },
   { name: 'isActive', label: 'Active Status', xs: 2, sm: 2, type: 'switch' },

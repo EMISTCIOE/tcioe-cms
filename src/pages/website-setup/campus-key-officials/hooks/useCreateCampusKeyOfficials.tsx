@@ -18,6 +18,7 @@ import {
   TCampusKeyOfficialsCreateFormDataType
 } from '../components/create-form/config';
 import { useCampusSectionOptions } from '@/hooks/useCampusSectionOptions';
+import { useCampusUnitOptions } from '@/hooks/useCampusUnitOptions';
 
 const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormProps) => {
   const dispatch = useAppDispatch();
@@ -26,6 +27,7 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
   const { data: designationData } = useGetCampusStaffDesignationsQuery();
   const { data: departmentData } = useGetDepartmentsQuery({ search: '', paginationModel: { page: 0, pageSize: 500 }, sortModel: [] });
   const { options: campusSectionOptions } = useCampusSectionOptions();
+  const { options: unitOptions } = useCampusUnitOptions();
   const [formFields, setFormFields] = useState(campusKeyOfficialsCreateFields);
 
   const {
@@ -53,23 +55,32 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
         label: item.name
       })) ?? [];
 
+    // Add an explicit empty option first so the select shows blank when no value is present
+    const departmentOptionsWithEmpty = [{ value: '', label: '' }, ...departmentOptions];
+    const mappedUnitOptions = unitOptions.map((o) => ({ label: o.label, value: Number(o.value) }));
+    const unitOptionsWithEmpty = [{ value: '', label: '' }, ...mappedUnitOptions];
+
     setFormFields((prev) =>
       prev.map((field) => {
         if (field.name === 'designation') return { ...field, options };
-        if (field.name === 'department') return { ...field, options: departmentOptions };
+        if (field.name === 'department') return { ...field, options: departmentOptionsWithEmpty };
+        if (field.name === 'unit') return { ...field, options: unitOptionsWithEmpty };
         if (field.name === 'campusSection') return { ...field, options: campusSectionOptions };
         return field;
       })
     );
-  }, [designationData, departmentData, campusSectionOptions]);
+  }, [designationData, departmentData, campusSectionOptions, unitOptions]);
 
   // NOTE - Form submit handler
   const onSubmit = async (data: TCampusKeyOfficialsCreateFormDataType) => {
     try {
       const payload = { ...data } as ICampusKeyOfficialsCreatePayload;
-      // Normalize campusSection to null instead of empty string/undefined
+      // Normalize optional fields to null instead of empty string/undefined
       if (payload.campusSection === '') {
         payload.campusSection = null as unknown as undefined;
+      }
+      if (payload.unit === '') {
+        payload.unit = null as unknown as undefined;
       }
       const res = await createCampusKeyOfficials(payload).unwrap();
       dispatch(setMessage({ message: res.message, variant: 'success' }));
@@ -90,7 +101,8 @@ const useCreateCampusKeyOfficials = ({ onClose }: ICampusKeyOfficialsCreateFormP
           isKeyOfficial: 'isKeyOfficial',
           isActive: 'isActive',
           department: 'department',
-          campusSection: 'campusSection'
+          campusSection: 'campusSection',
+          unit: 'unit'
         }
       });
     }
