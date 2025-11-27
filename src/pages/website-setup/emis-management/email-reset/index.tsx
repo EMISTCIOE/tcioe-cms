@@ -32,6 +32,7 @@ import {
   Select,
   MenuItem
 } from '@mui/material';
+import * as XLSX from 'xlsx';
 import {
   Search as SearchIcon,
   CheckCircle as CheckCircleIcon,
@@ -435,119 +436,67 @@ const EmailResetManagement = () => {
         </Grid>
       </Paper>
 
-      {/* Summary Cards */}
-      <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid item xs={12} sm={4}>
-          <Card
-            sx={{
-              cursor: 'pointer',
-              bgcolor: statusFilter === 'pending' ? 'warning.lighter' : 'inherit',
-              border: statusFilter === 'pending' ? '2px solid' : '1px solid',
-              borderColor: statusFilter === 'pending' ? 'warning.main' : 'divider',
-              '&:hover': { bgcolor: 'warning.lighter' }
-            }}
-            onClick={() => setStatusFilter('pending')}
-          >
-            <CardContent>
-              <Stack direction="row" alignItems="center" spacing={2}>
-                <Avatar sx={{ bgcolor: 'warning.main' }}>
-                  <AccessTimeIcon />
-                </Avatar>
-                <Box>
-                  <Typography variant="h4">{groupedRequests.pending.length}</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Pending Requests
-                  </Typography>
-                </Box>
-              </Stack>
-            </CardContent>
-          </Card>
+      {/* Summary counts shown inline (kept minimal); cards removed per request */}
+      <Grid container spacing={2} sx={{ mb: 3 }}>
+        <Grid item>
+          <Typography variant="subtitle2">Pending: {groupedRequests.pending.length}</Typography>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <Card
-            sx={{
-              cursor: 'pointer',
-              bgcolor: statusFilter === 'approved' ? 'success.lighter' : 'inherit',
-              border: statusFilter === 'approved' ? '2px solid' : '1px solid',
-              borderColor: statusFilter === 'approved' ? 'success.main' : 'divider',
-              '&:hover': { bgcolor: 'success.lighter' }
-            }}
-            onClick={() => setStatusFilter('approved')}
-          >
-            <CardContent>
-              <Stack direction="row" alignItems="center" spacing={2}>
-                <Avatar sx={{ bgcolor: 'success.main' }}>
-                  <CheckCircleIcon />
-                </Avatar>
-                <Box>
-                  <Typography variant="h4">{groupedRequests.approved.length}</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Approved
-                  </Typography>
-                </Box>
-              </Stack>
-            </CardContent>
-          </Card>
+        <Grid item>
+          <Typography variant="subtitle2">Approved: {groupedRequests.approved.length}</Typography>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <Card
-            sx={{
-              cursor: 'pointer',
-              bgcolor: statusFilter === 'rejected' ? 'error.lighter' : 'inherit',
-              border: statusFilter === 'rejected' ? '2px solid' : '1px solid',
-              borderColor: statusFilter === 'rejected' ? 'error.main' : 'divider',
-              '&:hover': { bgcolor: 'error.lighter' }
-            }}
-            onClick={() => setStatusFilter('rejected')}
-          >
-            <CardContent>
-              <Stack direction="row" alignItems="center" spacing={2}>
-                <Avatar sx={{ bgcolor: 'error.main' }}>
-                  <CancelIcon />
-                </Avatar>
-                <Box>
-                  <Typography variant="h4">{groupedRequests.rejected.length}</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Rejected
-                  </Typography>
-                </Box>
-              </Stack>
-            </CardContent>
-          </Card>
+        <Grid item>
+          <Typography variant="subtitle2">Rejected: {groupedRequests.rejected.length}</Typography>
         </Grid>
       </Grid>
 
-      {/* View Tabs */}
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
-        <Tabs value={tabValue} onChange={(e, newValue) => setTabValue(newValue)}>
-          <Tab label="Card View" />
-          <Tab label="Table View" />
-        </Tabs>
+      {/* Always show table view */}
+      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end' }}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            // Export approved requests to Excel
+            const approved = (allRequests || []).filter((r) => r.status === 'approved');
+            if (!approved || approved.length === 0) {
+              enqueueSnackbar('No approved requests to export', { variant: 'info' });
+              return;
+            }
+
+            // Map to flat rows
+            const rows = approved.map((r) => ({
+              id: r.id,
+              fullName: r.fullName,
+              rollNumber: r.rollNumber,
+              primaryEmail: r.primaryEmail,
+              phoneNumber: r.phoneNumber,
+              requestSequence: r.requestSequence,
+              requestsRemaining: r.requestsRemaining,
+              status: r.status,
+              createdAt: safeFormatDate(r.createdAt, 'yyyy-MM-dd HH:mm:ss'),
+              processedAt: r.processedAt ? safeFormatDate(r.processedAt, 'yyyy-MM-dd HH:mm:ss') : '',
+              processedByName: r.processedByName || '',
+              notes: r.notes || ''
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(rows);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Approved Requests');
+            XLSX.writeFile(wb, `approved-email-reset-requests-${new Date().toISOString().slice(0, 10)}.xlsx`);
+          }}
+          sx={{ ml: 2 }}
+        >
+          Export Approved
+        </Button>
       </Box>
 
-      <TabPanel value={tabValue} index={0}>
-        {filteredRequests.length === 0 ? (
-          <Paper sx={{ p: 4, textAlign: 'center' }}>
-            <Typography variant="h6" color="text.secondary">
-              No email reset requests found
-            </Typography>
-          </Paper>
-        ) : (
-          filteredRequests.map((request) => <RequestCard key={request.id} request={request} />)
-        )}
-      </TabPanel>
-
-      <TabPanel value={tabValue} index={1}>
-        {filteredRequests.length === 0 ? (
-          <Paper sx={{ p: 4, textAlign: 'center' }}>
-            <Typography variant="h6" color="text.secondary">
-              No email reset requests found
-            </Typography>
-          </Paper>
-        ) : (
-          <RequestTable requests={filteredRequests} />
-        )}
-      </TabPanel>
+      {filteredRequests.length === 0 ? (
+        <Paper sx={{ p: 4, textAlign: 'center' }}>
+          <Typography variant="h6" color="text.secondary">
+            No email reset requests found
+          </Typography>
+        </Paper>
+      ) : (
+        <RequestTable requests={filteredRequests} />
+      )}
 
       {/* View Details Dialog */}
       <Dialog open={!!viewDialog} onClose={() => setViewDialog(null)} maxWidth="md" fullWidth>
