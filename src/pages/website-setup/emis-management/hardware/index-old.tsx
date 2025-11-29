@@ -10,13 +10,9 @@ import {
   Stack,
   Typography,
   Button,
-  Paper,
+  Paper
 } from '@mui/material';
-import {
-  Add as AddIcon,
-  Visibility as ViewIcon,
-  PhotoCamera as PhotoCameraIcon,
-} from '@mui/icons-material';
+import { Add as AddIcon, Visibility as ViewIcon, PhotoCamera as PhotoCameraIcon } from '@mui/icons-material';
 import { useForm, Controller } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
 import { useAppDispatch } from '@/libs/hooks';
@@ -24,11 +20,7 @@ import { setMessage } from '@/pages/common/redux/common.slice';
 import FileUpload from '@/components/FileUpload';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import AppTable from '@/components/app-table';
-import {
-  useCreateEmisHardwareMutation,
-  useUpdateEmisHardwareMutation,
-  useDeleteEmisHardwareMutation
-} from '../redux/emis.api';
+import { useCreateEmisHardwareMutation, useUpdateEmisHardwareMutation, useDeleteEmisHardwareMutation } from '../redux/emis.api';
 import { HardwareTypeOption, IEmisHardware, IEmisHardwareCreatePayload } from '../types';
 import { useHardwareTable } from './useHardwareTable';
 import { getHardwareColumnConfig } from './table-config';

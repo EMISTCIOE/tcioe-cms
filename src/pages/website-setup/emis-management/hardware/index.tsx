@@ -131,11 +131,11 @@ const HardwareManagement = () => {
     if (item) {
       setEditingItem(item);
       form.reset({
-        name: item.name,
-        asset_tag: item.asset_tag,
-        hardware_type: item.hardware_type,
-        environment: item.environment,
-        status: item.status,
+        name: item.name || '',
+        asset_tag: item.asset_tag || '',
+        hardware_type: item.hardware_type || 'server',
+        environment: item.environment || 'production',
+        status: item.status || 'operational',
         manufacturer: item.manufacturer || '',
         model_number: item.model_number || '',
         serial_number: item.serial_number || '',
@@ -165,7 +165,21 @@ const HardwareManagement = () => {
 
   const handleNewItem = () => {
     setEditingItem(null);
-    form.reset();
+    form.reset({
+      name: '',
+      asset_tag: '',
+      hardware_type: 'server',
+      environment: 'production',
+      status: 'operational',
+      manufacturer: '',
+      model_number: '',
+      serial_number: '',
+      ip_address: '',
+      location: '',
+      responsible_team: '',
+      description: '',
+      thumbnail_image: null
+    });
     setOpenDialog(true);
   };
 
@@ -237,8 +251,17 @@ const HardwareManagement = () => {
             <Controller
               name="hardware_type"
               control={form.control}
-              render={({ field }) => (
-                <TextField select label="Hardware Type" fullWidth {...field}>
+              rules={{ required: 'Hardware type is required' }}
+              render={({ field, fieldState }) => (
+                <TextField
+                  select
+                  label="Hardware Type"
+                  fullWidth
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                  {...field}
+                  value={field.value || 'server'} // Ensure value is never undefined
+                >
                   {Object.entries(hardwareTypeLabels)
                     .filter(([value]) => value !== 'default')
                     .map(([value, label]) => (
@@ -255,8 +278,17 @@ const HardwareManagement = () => {
                 <Controller
                   name="environment"
                   control={form.control}
-                  render={({ field }) => (
-                    <TextField select label="Environment" fullWidth {...field}>
+                  rules={{ required: 'Environment is required' }}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      select
+                      label="Environment"
+                      fullWidth
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
+                      {...field}
+                      value={field.value || 'production'} // Ensure value is never undefined
+                    >
                       <MenuItem value="production">Production</MenuItem>
                       <MenuItem value="staging">Staging</MenuItem>
                       <MenuItem value="development">Development</MenuItem>
@@ -269,12 +301,21 @@ const HardwareManagement = () => {
                 <Controller
                   name="status"
                   control={form.control}
-                  render={({ field }) => (
-                    <TextField select label="Status" fullWidth {...field}>
+                  rules={{ required: 'Status is required' }}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      select
+                      label="Status"
+                      fullWidth
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
+                      {...field}
+                      value={field.value || 'operational'} // Ensure value is never undefined
+                    >
                       <MenuItem value="operational">Operational</MenuItem>
+                      <MenuItem value="standby">Standby</MenuItem>
                       <MenuItem value="maintenance">Maintenance</MenuItem>
                       <MenuItem value="retired">Retired</MenuItem>
-                      <MenuItem value="faulty">Faulty</MenuItem>
                     </TextField>
                   )}
                 />

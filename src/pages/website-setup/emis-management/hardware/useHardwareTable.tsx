@@ -38,13 +38,34 @@ export const useHardwareTable = () => {
   // Process hardware data for table
   const hardwareList = useMemo(() => {
     if (!hardwareData?.results) return [];
-    return hardwareData.results.map((item: IEmisHardware) => ({
-      ...item,
-      // Normalize data for consistent access
-      ipAddress: item.ip_address,
-      hardwareType: item.hardware_type,
-      assetTag: item.asset_tag,
-      thumbnailImage: item.thumbnail_image
+    return hardwareData.results.map((item: any) => ({
+      // Map camelCase fields from backend to snake_case expected by frontend
+      id: item.id,
+      name: item.name,
+      asset_tag: item.assetTag,
+      hardware_type: item.hardwareType || 'server',
+      manufacturer: item.manufacturer,
+      model_number: item.modelNumber,
+      serial_number: item.serialNumber,
+      ip_address: item.ipAddress,
+      location: item.location,
+      environment: item.environment || 'production',
+      status: item.status || 'operational',
+      responsible_team: item.responsibleTeam,
+      purchase_date: item.purchaseDate,
+      warranty_expires_at: item.warrantyExpiresAt,
+      power_draw_watts: item.powerDrawWatts,
+      rack_unit: item.rackUnit,
+      thumbnail_image: item.thumbnailImage,
+      endpoints: item.endpoints,
+      specifications: item.specifications,
+      description: item.description,
+      metadata: item.metadata,
+      created_at: item.createdAt,
+      updated_at: item.updatedAt,
+      created_by: item.createdBy,
+      updated_by: item.updatedBy,
+      is_active: item.isActive
     }));
   }, [hardwareData]);
 
@@ -55,7 +76,7 @@ export const useHardwareTable = () => {
     const searchLower = searchText.toLowerCase();
     return hardwareList.filter(
       (item) =>
-        item.name.toLowerCase().includes(searchLower) ||
+        item.name?.toLowerCase().includes(searchLower) ||
         item.asset_tag?.toLowerCase().includes(searchLower) ||
         item.location?.toLowerCase().includes(searchLower) ||
         item.hardware_type?.toLowerCase().includes(searchLower) ||

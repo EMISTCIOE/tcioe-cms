@@ -280,26 +280,26 @@ export const getHardwareColumnConfig =
       filterable: true,
       valueOptions: [
         { value: 'operational', label: 'Operational' },
+        { value: 'standby', label: 'Standby' },
         { value: 'maintenance', label: 'Maintenance' },
-        { value: 'retired', label: 'Retired' },
-        { value: 'faulty', label: 'Faulty' }
+        { value: 'retired', label: 'Retired' }
       ],
       colorMap: {
         operational: { backgroundColor: '#e8f5e8', color: '#2e7d32' },
+        standby: { backgroundColor: '#e3f2fd', color: '#1976d2' },
         maintenance: { backgroundColor: '#fff3e0', color: '#f57c00' },
-        retired: { backgroundColor: '#ffebee', color: '#d32f2f' },
-        faulty: { backgroundColor: '#ffebee', color: '#d32f2f' }
+        retired: { backgroundColor: '#ffebee', color: '#d32f2f' }
       },
       renderCell: (params) => {
         const getStatusColor = (status: string) => {
           switch (status?.toLowerCase()) {
             case 'operational':
               return 'success';
+            case 'standby':
+              return 'info';
             case 'maintenance':
               return 'warning';
             case 'retired':
-              return 'error';
-            case 'faulty':
               return 'error';
             default:
               return 'default';
