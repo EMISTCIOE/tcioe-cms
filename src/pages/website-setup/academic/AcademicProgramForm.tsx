@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -38,6 +39,59 @@ export const AcademicProgramForm: React.FC<AcademicProgramFormProps> = ({ progra
   const [departmentId, setDepartmentId] = useState<number | ''>(program?.department?.id ?? '');
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [isActive, setIsActive] = useState<Boolean>(program?.is_active ?? true);
+
+  // Helper function to detect program type based on name
+  const detectProgramType = (programName: string): string => {
+    const lowerName = programName.toLowerCase();
+
+    // Check for masters-related keywords
+    if (
+      lowerName.includes('msc') ||
+      lowerName.includes('m.sc') ||
+      lowerName.includes('master') ||
+      lowerName.includes('mtech') ||
+      lowerName.includes('m.tech') ||
+      lowerName.includes('ma') ||
+      lowerName.includes('m.a') ||
+      lowerName.includes('mba') ||
+      lowerName.includes('m.b.a') ||
+      lowerName.includes('mcom') ||
+      lowerName.includes('m.com')
+    ) {
+      return 'MASTERS';
+    }
+
+    // Check for bachelors-related keywords
+    if (
+      lowerName.includes('bsc') ||
+      lowerName.includes('b.sc') ||
+      lowerName.includes('bachelor') ||
+      lowerName.includes('btech') ||
+      lowerName.includes('b.tech') ||
+      lowerName.includes('ba') ||
+      lowerName.includes('b.a') ||
+      lowerName.includes('bba') ||
+      lowerName.includes('b.b.a') ||
+      lowerName.includes('bcom') ||
+      lowerName.includes('b.com')
+    ) {
+      return 'BACHELORS';
+    }
+
+    // Default to current selection if no clear indicator
+    return programType;
+  };
+
+  // Auto-detect program type when name changes
+  useEffect(() => {
+    if (name && !program) {
+      // Only auto-detect for new programs, not when editing
+      const detectedType = detectProgramType(name);
+      if (detectedType !== programType) {
+        setProgramType(detectedType);
+      }
+    }
+  }, [name, program, programType]);
 
   const { options } = useDepartmentOptions();
   const { roleType, departmentId: userDepartmentId } = useAppSelector(authState);
@@ -82,6 +136,19 @@ export const AcademicProgramForm: React.FC<AcademicProgramFormProps> = ({ progra
     if (!programType) {
       toast.error('Program type is required.');
       return;
+    }
+
+    // Warn about potential program type mismatch
+    const detectedType = detectProgramType(name);
+    if (detectedType !== programType) {
+      const isConfirmed = window.confirm(
+        `The program name "${name}" suggests it should be a ${detectedType === 'MASTERS' ? 'Masters' : 'Bachelors'} program, ` +
+          `but you've selected ${programType === 'MASTERS' ? 'Masters' : 'Bachelors'}. Do you want to continue with ${programType === 'MASTERS' ? 'Masters' : 'Bachelors'}?`
+      );
+
+      if (!isConfirmed) {
+        return;
+      }
     }
 
     const payload: IAcademicProgramCreatePayload = {
@@ -205,6 +272,14 @@ export const AcademicProgramForm: React.FC<AcademicProgramFormProps> = ({ progra
                 </Select>
               </FormControl>
             </Stack>
+
+            {/* Program Type Mismatch Warning */}
+            {name && detectProgramType(name) !== programType && (
+              <Alert severity="warning">
+                The program name "{name}" suggests it should be a {detectProgramType(name) === 'MASTERS' ? 'Masters' : 'Bachelors'} program,
+                but you've selected {programType === 'MASTERS' ? 'Masters' : 'Bachelors'}. Please verify the program type is correct.
+              </Alert>
+            )}
 
             <TextField
               label="Description"
