@@ -32,6 +32,9 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import ComputerIcon from '@mui/icons-material/Computer';
 import CloudIcon from '@mui/icons-material/Cloud';
 import EmailIcon from '@mui/icons-material/Email';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 // project-imports
 import { MenuItem } from './types';
@@ -70,7 +73,10 @@ const icons = {
   AdminPanelSettingsIcon,
   ComputerIcon,
   CloudIcon,
-  EmailIcon
+  EmailIcon,
+  EventAvailableIcon,
+  ScheduleIcon,
+  AccessTimeIcon
 };
 
 // ==============================|| MENU ITEMS - MODULES ||============================== //
@@ -104,6 +110,33 @@ const modules: MenuItem = {
           url: '/website-setup/global-gallery',
           breadcrumbs: false,
           allowedRoles: ['EMIS-STAFF', 'ADMIN', 'UNION', 'CAMPUS-UNIT', 'CAMPUS-SECTION', 'DEPARTMENT-ADMIN', 'CLUB']
+        }
+      ]
+    },
+    {
+      id: 'manage-appointments',
+      title: 'Manage Appointments',
+      type: 'collapse',
+      icon: icons.EventAvailableIcon,
+      allowedRoles: ['ADMIN', 'DEPARTMENT-ADMIN', 'CAMPUS-ADMIN', 'CAMPUS-UNIT', 'CAMPUS-SECTION'],
+      children: [
+        {
+          id: 'appointment-list',
+          title: 'My Appointments',
+          type: 'item',
+          icon: icons.CalendarMonthIcon,
+          url: '/appointments',
+          breadcrumbs: false,
+          allowedRoles: ['ADMIN', 'DEPARTMENT-ADMIN', 'CAMPUS-ADMIN', 'CAMPUS-UNIT', 'CAMPUS-SECTION']
+        },
+        {
+          id: 'appointment-slots',
+          title: 'Time Slots',
+          type: 'item',
+          icon: icons.AccessTimeIcon,
+          url: '/appointments/slots',
+          breadcrumbs: false,
+          allowedRoles: ['ADMIN']
         }
       ]
     },

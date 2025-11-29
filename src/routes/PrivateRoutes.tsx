@@ -49,6 +49,11 @@ const EmisDownloads = Loadable(lazy(() => import('@/pages/website-setup/emis-man
 const EmisNotices = Loadable(lazy(() => import('@/pages/website-setup/emis-management/notices')));
 const UnionMembers = Loadable(lazy(() => import('@/pages/website-setup/union-members')));
 
+// Appointment Pages
+const AppointmentList = Loadable(lazy(() => import('@/pages/appointments')));
+const AppointmentDetail = Loadable(lazy(() => import('@/pages/appointments/AppointmentDetail')));
+const AppointmentSlots = Loadable(lazy(() => import('@/pages/appointments/AppointmentSlots')));
+
 // Contact Setup Pages
 const Contact = Loadable(lazy(() => import('@/pages/contact')));
 
@@ -67,6 +72,7 @@ const PrivateRoutes = () => {
   const isUnit = roleType === 'CAMPUS-UNIT';
   const isSection = roleType === 'CAMPUS-SECTION';
   const isDeptAdmin = roleType === 'DEPARTMENT-ADMIN';
+  const isCampusAdmin = roleType === 'CAMPUS-ADMIN';
 
   return (
     <>
@@ -86,6 +92,14 @@ const PrivateRoutes = () => {
           {(isUnit || isSection) && <Route path="my-unit" element={<MyUnit />} />}
           {/* Notice */}
           <Route path="notice" element={<Notice />} />
+          {/* Appointments */}
+          {(isAdmin || isDeptAdmin || isCampusAdmin || isUnit || isSection) && (
+            <Route path="appointments">
+              <Route index element={<AppointmentList />} />
+              <Route path=":id" element={<AppointmentDetail />} />
+              {isAdmin && <Route path="slots" element={<AppointmentSlots />} />}
+            </Route>
+          )}
           {/* User Setup */}
           {(isEmisStaff || isAdmin) && (
             <Route path="user-setup">
