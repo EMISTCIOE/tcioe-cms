@@ -73,7 +73,13 @@ interface AppointmentCategory {
   id: number;
   name: string;
   description: string;
+  display_name: string;
+  priority: number;
+  max_appointments_per_day: number;
   is_active: boolean;
+  requires_approval: boolean;
+  default_duration_minutes: number;
+  advance_booking_days: number;
 }
 
 interface User {
@@ -285,7 +291,7 @@ export default function AppointmentSlots() {
                 <TableRow key={slot.id} hover>
                   <TableCell>
                     <Typography variant="body2" fontWeight="medium">
-                      {slot.category.name.replace(/_/g, ' ')}
+                      {slot.category.display_name || slot.category.name.replace(/_/g, ' ')}
                     </Typography>
                   </TableCell>
 
@@ -376,7 +382,7 @@ export default function AppointmentSlots() {
               >
                 {categories.map((category) => (
                   <MenuItem key={category.id} value={category.id}>
-                    {category.name.replace(/_/g, ' ')}
+                    {category.display_name || category.name.replace(/_/g, ' ')}
                   </MenuItem>
                 ))}
               </TextField>

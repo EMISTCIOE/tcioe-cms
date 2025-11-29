@@ -242,7 +242,7 @@ export default function AppointmentList() {
   const getPageTitle = () => {
     if (roleType === 'ADMIN') return 'Appointment Management - All Appointments';
     if (roleType === 'DEPARTMENT-ADMIN') return 'My Department Appointments';
-    if (roleType === 'CAMPUS-ADMIN' || roleType === 'CAMPUS-UNIT' || roleType === 'CAMPUS-SECTION') return 'My Appointments';
+    if (roleType === 'CAMPUS-UNIT' || roleType === 'CAMPUS-SECTION' || roleType === 'EMIS-STAFF') return 'My Appointments';
     return 'My Appointments';
   };
 
@@ -251,8 +251,11 @@ export default function AppointmentList() {
     if (roleType === 'DEPARTMENT-ADMIN') {
       return 'You can only view and manage appointments related to your department.';
     }
-    if (roleType === 'CAMPUS-ADMIN' || roleType === 'CAMPUS-UNIT' || roleType === 'CAMPUS-SECTION') {
+    if (roleType === 'CAMPUS-UNIT' || roleType === 'CAMPUS-SECTION') {
       return 'You can only view and manage appointments made with you based on your role and designation.';
+    }
+    if (roleType === 'EMIS-STAFF') {
+      return 'You can view and manage appointments based on your assigned responsibilities.';
     }
     return 'You can only view and manage your own appointments.';
   };

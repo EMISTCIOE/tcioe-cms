@@ -72,7 +72,6 @@ const PrivateRoutes = () => {
   const isUnit = roleType === 'CAMPUS-UNIT';
   const isSection = roleType === 'CAMPUS-SECTION';
   const isDeptAdmin = roleType === 'DEPARTMENT-ADMIN';
-  const isCampusAdmin = roleType === 'CAMPUS-ADMIN';
 
   return (
     <>
@@ -93,7 +92,7 @@ const PrivateRoutes = () => {
           {/* Notice */}
           <Route path="notice" element={<Notice />} />
           {/* Appointments */}
-          {(isAdmin || isDeptAdmin || isCampusAdmin || isUnit || isSection) && (
+          {(isAdmin || isDeptAdmin || isEmisStaff || isUnit || isSection) && (
             <Route path="appointments">
               <Route index element={<AppointmentList />} />
               <Route path=":id" element={<AppointmentDetail />} />
