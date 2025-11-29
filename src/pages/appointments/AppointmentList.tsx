@@ -59,6 +59,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 // types
 interface Appointment {
   id: number;
+  reference_id: string;
   applicantName: string;
   applicantEmail: string;
   applicantPhone: string;
@@ -71,8 +72,7 @@ interface Appointment {
     name: string;
     shortName: string;
   };
-  appointmentDate: string;
-  appointmentTime: string;
+  appointmentDatetime: string;
   purpose: string;
   details: string;
   status: string;
@@ -135,7 +135,9 @@ export default function AppointmentList() {
         filtered = appointments.filter((app) => app.status === 'PENDING');
         break;
       case 'todayPending':
-        filtered = appointments.filter((app) => app.status === 'PENDING' && format(new Date(app.appointmentDate), 'yyyy-MM-dd') === today);
+        filtered = appointments.filter(
+          (app) => app.status === 'PENDING' && format(new Date(app.appointmentDatetime), 'yyyy-MM-dd') === today
+        );
         break;
       case 'approved':
         filtered = appointments.filter((app) => app.status === 'CONFIRMED' || app.status === 'COMPLETED');
@@ -222,7 +224,8 @@ export default function AppointmentList() {
 
   const todayPendingCount = useMemo(() => {
     const today = format(new Date(), 'yyyy-MM-dd');
-    return appointments.filter((app) => app.status === 'PENDING' && format(new Date(app.appointmentDate), 'yyyy-MM-dd') === today).length;
+    return appointments.filter((app) => app.status === 'PENDING' && format(new Date(app.appointmentDatetime), 'yyyy-MM-dd') === today)
+      .length;
   }, [appointments]);
 
   const confirmedCount = useMemo(
@@ -381,10 +384,10 @@ export default function AppointmentList() {
                       <Stack spacing={0.5}>
                         <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                           <CalendarTodayIcon fontSize="small" />
-                          {format(new Date(appointment.appointmentDate), 'MMM dd, yyyy')}
+                          {format(new Date(appointment.appointmentDatetime), 'MMM dd, yyyy h:mm a')}
                         </Typography>
                         <Typography variant="caption" color="textSecondary">
-                          {appointment.appointmentTime}
+                          Reference: #{appointment.reference_id}
                         </Typography>
                       </Stack>
                     </TableCell>

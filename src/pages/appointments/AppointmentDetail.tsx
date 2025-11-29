@@ -44,6 +44,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 // types
 interface AppointmentDetail {
   id: number;
+  reference_id: string;
   applicantName: string;
   applicantEmail: string;
   applicantPhone: string;
@@ -56,8 +57,7 @@ interface AppointmentDetail {
     name: string;
     shortName: string;
   };
-  appointmentDate: string;
-  appointmentTime: string;
+  appointmentDatetime: string;
   purpose: string;
   details: string;
   status: string;
@@ -260,21 +260,20 @@ export default function AppointmentDetail() {
 
                   <Box>
                     <Typography variant="subtitle2" color="textSecondary">
-                      Date
+                      Date & Time
                     </Typography>
                     <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                       <CalendarTodayIcon fontSize="small" />
-                      {format(new Date(appointment.appointmentDate), 'EEEE, MMMM dd, yyyy')}
+                      {format(new Date(appointment.appointmentDatetime), 'EEEE, MMMM dd, yyyy h:mm a')}
                     </Typography>
                   </Box>
 
                   <Box>
                     <Typography variant="subtitle2" color="textSecondary">
-                      Time
+                      Reference ID
                     </Typography>
                     <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                      <AccessTimeIcon fontSize="small" />
-                      {appointment.appointmentTime}
+                      <BusinessIcon fontSize="small" />#{appointment.reference_id}
                     </Typography>
                   </Box>
                 </Stack>
