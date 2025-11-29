@@ -62,11 +62,19 @@ export const academicAPISlice = rootAPI.injectEndpoints({
     createAcademicProgram: builder.mutation<IMutationSuccessResponse, IAcademicProgramCreatePayload>({
       query: (payload) => {
         const body = new FormData();
-        Object.entries(payload).forEach(([key, value]) => {
-          if (value !== undefined && value !== null) {
-            body.append(key, value as string | Blob);
-          }
-        });
+
+        // Handle each field specifically to ensure proper formatting
+        body.append('name', payload.name.trim());
+        if (payload.short_name && payload.short_name.trim()) {
+          body.append('short_name', payload.short_name.trim());
+        }
+        body.append('description', payload.description || '');
+        body.append('program_type', payload.program_type);
+        body.append('department', String(payload.department));
+
+        if (payload.thumbnail && payload.thumbnail instanceof File) {
+          body.append('thumbnail', payload.thumbnail);
+        }
 
         return {
           url: academicProgramsAPI,

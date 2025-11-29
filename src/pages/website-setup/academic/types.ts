@@ -37,10 +37,10 @@ export interface IAcademicProgramFilters {
 
 export interface IAcademicProgramCreatePayload {
   name: string;
-  short_name: string;
-  description: string;
+  short_name?: string;
+  description?: string;
   program_type: string;
-  department: string;
+  department: number;
   thumbnail?: File | null;
 }
 

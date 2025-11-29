@@ -74,14 +74,34 @@ export const AcademicProgramForm: React.FC<AcademicProgramFormProps> = ({ progra
       return;
     }
 
+    if (!name.trim()) {
+      toast.error('Program name is required.');
+      return;
+    }
+
+    if (!programType) {
+      toast.error('Program type is required.');
+      return;
+    }
+
     const payload: IAcademicProgramCreatePayload = {
-      name,
-      short_name: shortName,
-      description,
+      name: name.trim(),
       program_type: programType,
-      department: Number(departmentId),
-      thumbnail: thumbnail ?? undefined
+      department: Number(departmentId)
     };
+
+    // Add optional fields only if they have values
+    if (shortName.trim()) {
+      payload.short_name = shortName.trim();
+    }
+
+    if (description.trim()) {
+      payload.description = description.trim();
+    }
+
+    if (thumbnail) {
+      payload.thumbnail = thumbnail;
+    }
 
     try {
       if (program) {
@@ -93,12 +113,41 @@ export const AcademicProgramForm: React.FC<AcademicProgramFormProps> = ({ progra
         await updateAcademicProgram(updatePayload).unwrap();
         toast.success('Program updated successfully');
       } else {
+        console.log('Payload being sent:', payload);
         await createAcademicProgram(payload).unwrap();
         toast.success('Program created successfully');
       }
       onSuccess();
-    } catch (error) {
-      toast.error('Failed to save program. Please try again.');
+    } catch (error: any) {
+      console.error('API Error:', error);
+
+      // Extract detailed error message
+      let errorMessage = 'Failed to save program. Please try again.';
+
+      if (error?.data) {
+        if (typeof error.data === 'string') {
+          errorMessage = error.data;
+        } else if (error.data.detail) {
+          errorMessage = error.data.detail;
+        } else if (error.data.message) {
+          errorMessage = error.data.message;
+        } else {
+          // Handle field-specific errors
+          const fieldErrors = [];
+          for (const [field, messages] of Object.entries(error.data)) {
+            if (Array.isArray(messages)) {
+              fieldErrors.push(`${field}: ${messages.join(', ')}`);
+            } else if (typeof messages === 'string') {
+              fieldErrors.push(`${field}: ${messages}`);
+            }
+          }
+          if (fieldErrors.length > 0) {
+            errorMessage = fieldErrors.join('\n');
+          }
+        }
+      }
+
+      toast.error(errorMessage);
     }
   };
 
@@ -118,7 +167,7 @@ export const AcademicProgramForm: React.FC<AcademicProgramFormProps> = ({ progra
 
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
               <TextField label="Program Name" value={name} onChange={(event) => setName(event.target.value)} fullWidth required />
-              <TextField label="Short Name" value={shortName} onChange={(event) => setShortName(event.target.value)} fullWidth required />
+              <TextField label="Short Name" value={shortName} onChange={(event) => setShortName(event.target.value)} fullWidth />
             </Stack>
 
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
